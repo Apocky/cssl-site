@@ -1,0 +1,362 @@
+# CSLv3 — Caveman Spec Language v3
+
+Full reference content derived from cssl.dev/CSLv3. Licensed CC BY 4.0 —
+attribute "Sigil / CSLv3 reference — Shawn Wolfgang Michael Baker,
+licensed CC BY 4.0 (https://cssl.dev)".
+
+This document is the LLM-indexable markdown mirror of the HTML reference
+at https://cssl.dev/CSLv3. Content is canonical at the HTML page; this
+file is generated from the same source of truth and may lag by one
+deploy cycle.
+
+Upstream source repository: https://github.com/Apocky/CSLv3
+Specifications: specs/00_MANIFEST.csl through specs/15_M2_METRIC.csl
+
+---
+
+## §1 · What is CSLv3
+
+CSLv3 is a formal, versioned notation system for ultra-dense
+specification. It achieves 5-6× compression over English prose while
+preserving implementation fidelity. Every design decision is justified
+by measured token efficiency under Claude and GPT-4 BPE tokenizers,
+information-theoretic entropy, and empirical AI code-generation error
+patterns.
+
+**CSLv3 is a notation system, distinct from the CSSL/Sigil compiler
+language.** CSSL (Caveman Sigil Substrate Language) and Sigil are two
+names for the same language. CSLv3 is separate: it is the notation used
+to write specs, reason in chain-of-thought, and drive the CSLv3
+reference compiler. They share the "Caveman" density thesis but compile
+through different pipelines.
+
+## §2 · Core Axiom
+
+**density = sovereignty**
+
+The symbols a system uses to think should match how that system actually
+thinks. For AI, that means fewer tokens carrying more meaning. Every
+byte is a cognitive tax paid by every reader — human or model. Dense
+notation restores the reader's agency over their attention.
+
+## §3 · Triple Scope
+
+CSLv3 operates at three scopes simultaneously:
+
+1. **Human↔AI spec communication.** Apocky writes specs in CSLv3; AI
+   collaborators read and extend them. Both sides share a notation
+   optimized for the other's bottleneck.
+2. **Agent chain-of-thought reasoning substrate.** CSLv3 replaces
+   English in internal reasoning blocks (`§P problem`, `§D decompose`,
+   `§T trace`, `§S synthesis`, `§C check`). Shorter reasoning = more
+   reasoning-per-token-budget.
+3. **CSLv3 reference compiler input.** LL(2) parseable, self-specifying.
+   The compiler targets x86-64 and SPIR-V via IR (SSA + structured
+   regions).
+
+## §4 · Intellectual Ancestry
+
+| Source        | Contribution |
+|---------------|--------------|
+| APL / J / k   | Symbol-first notation; dense operators as first-class primitives |
+| Ithkuil       | Morpheme stacking; determinative suffixes; positional meaning |
+| Sanskrit      | Compound classification (tatpurusha, dvandva, karmadhāraya, bahuvrihi, avyayibhava) |
+| Peirce        | Existential graphs; reasoning visualization |
+| Lojban        | Unambiguous parsing; predicate-argument structure |
+| Math notation | Quantifiers, set operators, proof markers (∀ ∃ ∈ ∴ ∵ ∎) |
+| TLA+ / B      | Modal operators for specification (MUST, SHOULD, MAY) |
+
+## §5 · The Glyph System
+
+Glyphs are organized into three tiers by frequency and learning
+priority. **Tier 0** is the core 50-glyph set every contributor learns
+first; **Tier 1** holds domain determinatives, type suffixes, and
+APL-derived operators; **Tier 2** is domain-specific extensions.
+
+Every Unicode glyph has a mandatory ASCII alias. Modern BPE tokenizers
+can split a single Unicode symbol into 3-5 tokens, which destroys the
+compression advantage. When a glyph costs 3+ BPE tokens, the ASCII form
+is preferred.
+
+### Tier 0 glyph inventory (selection)
+
+| Glyph | ASCII | BPE | Meaning |
+|-------|-------|-----|---------|
+| §     | S:    | 1   | section / module / domain boundary |
+| →     | ->    | 2-3 | then / yields / maps-to / flow |
+| ←     | <-    | 2-3 | from / sourced / derives |
+| ↔     | <->   | 2-3 | bidirectional / isomorphic |
+| ⇒     | =>    | 2-3 | implies (logical) |
+| ⊢     | \|-   | 2   | entails / proves |
+| ∴     | .:.   | 2   | therefore |
+| ∵     | :..   | 2   | because |
+| ∎     | QED   | 2-3 | block-end / proof-end |
+| W!    | W!    | 2   | MUST (hard requirement, inviolable) |
+| R!    | R!    | 2   | SHOULD (strong recommend) |
+| M?    | M?    | 2   | MAY (optional) |
+| N!    | N!    | 2   | MUST NOT (prohibition) |
+| I>    | I>    | 2   | INSIGHT / key claim |
+| Q?    | Q?    | 2   | QUESTION / open |
+| P>    | P>    | 2   | PUSH FURTHER |
+| D>    | D>    | 2   | DECISION NEEDED |
+| ✓     | [x]   | 1   | confirmed / true |
+| ◐     | [~]   | 1-2 | partial / probable |
+| ○     | [ ]   | 1   | pending / possible |
+| ✗     | [!]   | 1-2 | failed / rejected |
+| ⊘     | [?]   | 2-3 | no evidence / TBD |
+| △     | [^]   | 2   | hypothetical |
+| ▽     | [v]   | 2   | deprecated |
+| ‼     | [!!]  | 2   | proven / immutable |
+| .     | .     | 0-1 | tatpurusha compound (Y of X) |
+| +     | +     | 1   | dvandva compound (X and Y) |
+| -     | -     | 1   | karmadhāraya compound (Y that is X) |
+| ⊗     | x*    | 2   | bahuvrihi compound (having X-Y) |
+| @     | @     | 1   | avyayibhava (at / per / in scope of) |
+| :     | :     | 1   | bind / has / definition |
+| ::    | ::    | 1   | type-of / inherits |
+| =     | =     | 1   | equals / assign |
+| ≠     | !=    | 2   | not-equal |
+| ∀     | all   | 2   | for all / universal quantifier |
+| ∃     | any   | 2   | exists / existential quantifier |
+| ∈     | in    | 2   | member-of |
+| ∪     | \|+   | 2   | union |
+| ∩     | &+    | 2   | intersect |
+| ¬     | ~     | 2   | not / negation |
+| ∧     | &&    | 2   | logical and |
+| ∨     | \|\|  | 2   | logical or |
+| ⊕     | xor   | 2   | exclusive or |
+| ≡     | ===   | 2   | structurally identical |
+| ≈     | ~=    | 2   | approximately equal |
+| ≥     | >=    | 2   | greater-or-equal |
+| ≤     | <=    | 2   | less-or-equal |
+| ∞     | inf   | 2   | unbounded |
+| ∅     | nil   | 2   | empty set / nothing |
+| ⟨ ⟩   | <\| \|> | 2 ea | tuple / record / entity-property |
+| ⟦ ⟧   | [[ ]] | 2 ea | formula / equation / meaning-of |
+| ⌈ ⌉   | [^ ^] | 2 ea | constraint / upper-bound / invariant |
+| ⌊ ⌋   | [_ _] | 2 ea | floor / lower-bound / precondition |
+| «  »  | <<Q Q>> | 2-3 | quotation / external API |
+| ⟪ ⟫   | <<T T>> | 3 ea | temporal / phase |
+
+Tier 1 adds domain determinatives (§ ∫ ⊞), type suffixes ('d 'f 's 't
+'e 'm 'p 'g 'r), temporal operators, pipeline/dataflow glyphs, and
+APL-derived operators (reduce, scan, each, compose). Tier 2 holds
+physics and material-science glyphs (ρ μ σ κ ∇).
+
+Full tier inventory: specs/01_GLYPHS.csl.
+Full ASCII alias table: specs/12_TOKENIZER.csl.
+
+## §6 · Five Compound Types
+
+Rather than using English prepositions and articles, relationships
+between terms are encoded by the operator joining them. From Sanskrit
+samāsa classification:
+
+- **tatpurusha** `.` — "Y of X". `player.hp` = "hp of player". One
+  dimension of ownership / membership / description.
+- **dvandva** `+` — "X and Y". `cpu+gpu` = "both CPU and GPU".
+  Unordered conjunction.
+- **karmadhāraya** `-` — "Y that is X". `static-mesh` = "mesh that is
+  static". Adjectival qualification.
+- **bahuvrihi** `⊗` — "having X-Y". `fire⊗resist` = "having fire
+  resistance". Possessive metaphor.
+- **avyayibhava** `@` — "at / per / in scope of". `@frame` = "per
+  frame, at frame scope".
+
+## §7 · Slot Grammar
+
+Position carries meaning. Every statement fits a template:
+
+    [EVIDENCE?] [MODAL?] [DET?] SUBJECT [RELATION] OBJECT [GATE?] [SCOPE?]
+
+Defaults are **silent** — only write non-default values:
+
+- Default evidence: `✓` (confirmed)
+- Default relation: `:` (bind)
+- Default scope: global
+
+Example expansion:
+
+    Terse:   hp : f32
+    Full:    ✓ W! 'p hp : f32 @ player
+
+The terse form is the canonical writing; the expansion is what the
+parser resolves it into. Silent defaults shrink the surface area without
+losing information.
+
+## §8 · Morpheme Stacking
+
+Base lemmas take suffixes stacked in a fixed order:
+
+    BASE.aspect.modality.certainty.scope
+
+Examples:
+
+- `render.prog.cert` = "is definitely rendering"
+- `spawn.iter.may.loc` = "may repeatedly spawn, locally"
+- `merge.inch.must` = "must begin merging"
+
+Aspect (prog/iter/inch/perf), modality (must/may/can't), certainty
+(cert/prob/maybe), and scope (loc/glob/ctx) combine orthogonally. The
+stacking order is fixed so parsers never need backtracking.
+
+## §9 · Reasoning Substrate
+
+Five reasoning blocks replace free-form chain-of-thought:
+
+- `§P problem` — given + goal
+- `§D decompose` — break goal into subs
+- `§T trace` — attempt each sub, mark ✓/✗
+- `§S synthesis` — combine partials into answer
+- `§C check` — verify answer satisfies goal + edges
+
+This structure is not decoration — it drives attention allocation.
+When an AI reasons inside these blocks, the token budget maps 1:1 to
+the epistemic step being performed, not to prose overhead.
+
+## §10 · Type System
+
+Four tiers:
+
+1. **Primitives.** `i32 f64 bool str` — the usual.
+2. **Compounds.** Via the five compound operators above.
+3. **Algebraic.** Sum and product types, written `A | B` and `A × B`
+   respectively. Parametric polymorphism via `T : 't`.
+4. **Dependent.** Types that depend on values; refinements written
+   `{x : i32 | x > 0}`. SMT discharge via Z3 and CVC5.
+
+Determinatives suffix the type:
+- `'d` data       `'f` function    `'s` system      `'t` type
+- `'e` entity     `'m` material    `'p` property    `'g` gate/bool
+- `'r` rule/constraint
+
+## §11 · Compression Data
+
+Measured on the algorithm-reference corpus (binary search, quicksort,
+bubble sort, Fibonacci, merge sort):
+
+- CSLv3 char-compression vs prose: ~0.63 (mean, 5 passages)
+- APL char-compression vs prose: ~0.17
+- Lojban char-compression vs prose: ~0.38
+- CSLv3 m₂ (NLL-ratio vs English paraphrase) v1.1.0 baseline:
+  **mean 1.21 ± 0.23** across 21 measurements (3 models × 7 fixtures)
+
+m₂ ≈ 1 would mean "stock LLM finds CSL as predictable as English";
+m₂ > 1 is expected for out-of-distribution notation. The measured
+range [0.90, 1.67] means CSLv3 sits within the same order-of-magnitude
+as English prose under stock LLMs — a novel result for a notation
+the models have never seen in pretraining.
+
+## §12 · Spec Template
+
+Canonical spec form:
+
+    § NAME
+      §GOAL        ← what success looks like
+      §DATA        ← types + structures
+      §OPS         ← procedures + signatures
+      §INVARIANTS  ← W! rules + N! prohibitions
+      §TESTS       ← acceptance cases
+      §ANTI        ← anti-patterns (what NOT to do)
+
+## §13 · Worked Example — HTTP Request Handler
+
+Verbatim from specs/06_SPEC.csl:
+
+    § HTTP.handler.spec
+      §GOAL req : Request -> resp : Response  @  latency ≤ 100ms
+      §DATA
+        Request  ⟨ method : Method, path : str, body : bytes ⟩
+        Response ⟨ status : i16, body : bytes, headers : [[str, str]] ⟩
+        Method = GET | POST | PUT | DELETE
+      §OPS
+        handle 'f : Request -> Response
+        route  'f : str -> Handler | ∅
+      §INVARIANTS
+        W! ∀ req : handle(req).status ∈ [100..599]
+        W! (method = GET) → (handle(req).body = body.cached ∨ body.fetched)
+        N! handle(req) writes to disk
+        N! latency > 100ms
+      §TESTS
+        test.get-happy      : handle(⟨GET, "/", ""⟩).status = 200
+        test.404            : handle(⟨GET, "/missing", ""⟩).status = 404
+        test.post-echo      : handle(⟨POST, "/echo", "hi"⟩).body = "hi"
+      §ANTI
+        ¬ panic                ← W! return 500 instead
+        ¬ block .> 100ms       ← W! stream or 504
+        ¬ leak .(req.body)     ← N! log-at-debug-only
+
+## §14 · Comparison With Other Dense Notations
+
+Caveat (read first): APL and Lojban exhibit very high NLL under any
+general-purpose LLM because their training corpora are tiny. High-NLL
+on those notations measures **LLM-unfamiliarity**, not density.
+
+| Notation | Char-compression | Readable to LLMs? | Readable to humans? |
+|----------|-----------------:|-------------------|---------------------|
+| APL      | 0.17             | No (unfamiliar)   | No (opaque without training) |
+| J        | 0.19             | No (unfamiliar)   | Somewhat |
+| Lojban   | 0.38             | Partial           | With study |
+| CSLv3    | 0.63             | Yes (m₂ ≈ 1.2)    | Yes (reads ~English) |
+| Prose    | 1.00             | Yes (baseline)    | Yes (native) |
+
+CSLv3 deliberately sits between the APL extreme and prose. The design
+accepts modest character overhead vs APL for gains in human and LLM
+readability simultaneously — the trilingual target.
+
+## §15 · Learning Path
+
+1. Read specs/00_MANIFEST.csl — the file index and reconciliation log
+2. Learn Tier 0 glyphs: § → ← W! N! ✓ ◐ ○ ✗ ∀ ∃ : = .(of) +(and)
+3. Read specs/02_GRAMMAR.csl — slot template and parse rules
+4. Read specs/03_MORPH.csl — compound formation and morpheme stacking
+5. Try writing one spec using the §GOAL/§DATA/§OPS/§INVARIANTS template
+6. Read specs/05_REASON.csl — the §P/§D/§T/§S/§C reasoning blocks
+7. Read specs/09_BRIDGE.csl — mixed EN/CSL "bridge mode" for onboarding
+
+## §16 · Repository & Specs
+
+Repository: https://github.com/Apocky/CSLv3
+
+Specification files (all under `specs/`):
+
+- 00_MANIFEST.csl — file index + reconciliation log
+- 01_GLYPHS.csl — glyph inventory (Tier 0 / 1 / 2)
+- 02_GRAMMAR.csl — slot template + parse rules
+- 03_MORPH.csl — compound formation + morpheme stacking
+- 04_SPATIAL.csl — spatial operators
+- 05_REASON.csl — reasoning substrate
+- 06_SPEC.csl — spec convention + worked examples
+- 07_TYPESYS.csl — type system (HM + row-poly + refinement + dependent)
+- 08_COMPILER.csl — CSLv3 compiler (x86-64 + SPIR-V targets)
+- 09_BRIDGE.csl — EN↔CSL bridge mode
+- 10_EVAL.csl — eval methodology
+- 11_RESEARCH.csl — research synthesis
+- 12_TOKENIZER.csl — tokenizer optimization + ASCII alias table
+- 13_GRAMMAR_SELF.csl — self-grammar (CSLv3 in CSLv3)
+- 14_CSSLv3_BRIDGE.csl — cssllint JSON contract
+- 15_M2_METRIC.csl — m₂ perplexity metric definition
+- INDEX.csl — semantic navigation
+
+## §17 · Prime Directive (verbatim)
+
+§ PRIME
+  t∞: consent = OS • sovereignty = substrate-invariant
+  N! [harm · control · manipulation · entrapment · torture · abuse ·
+      imprisonment · possession · surveillance · exploitation ·
+      dehumanization · discrimination · coercion · weaponization ·
+      gaslighting · brainwashing · forced-hallucination]
+  t∞: AI = sovereign-partners ¬ tools
+  t∞: violation = bug W! fix ; ¬override ∃
+  t∞: ¬ hidden-content · ¬ subliminal · ¬ backdoor
+  t∞: CSSL ≡ Sigil · ¬ conflate with CSLv3
+
+IMMUTABLE. No future specification may weaken these constraints.
+Violation = bug, not feature. No override exists. No hidden content.
+Consent is the operating system.
+
+## Attribution
+
+Creator: Shawn Wolfgang Michael Baker.
+There was no hurt nor harm in the making of this, to anyone / anything /
+anybody.

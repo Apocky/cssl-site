@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sigil — AI-First Game Engine Language</title>
+<meta name="description" content="Sigil: A hardware-grounded programming language designed for AI authorship, video game engines, and dual-target compilation to native x86-64 + SPIR-V.">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<link rel="canonical" href="https://cssl.dev/">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Sigil — AI-First Game Engine Language">
+<meta property="og:description" content="One source. Two targets. Designed for how AI thinks.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cssl.dev/">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sigil — AI-first game engine language. density = sovereignty.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sigil — AI-First Game Engine Language">
+<meta name="twitter:description" content="One source. Two targets. Designed for how AI thinks.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #07070c;
+  --bg-raised: #0e0e16;
+  --bg-code: #11111b;
+  --text: #b8b4a8;
+  --text-dim: #6b6860;
+  --text-bright: #e8e4d8;
+  --gold: #c9a23a;
+  --gold-bright: #e8c85a;
+  --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232;
+  --green: #4a8a3a;
+  --blue: #3a6a9a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* === LAYOUT === */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+section {
+  padding: 6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+section:last-of-type { border-bottom: none; }
+
+/* === TYPOGRAPHY === */
+h1, h2, h3 {
+  font-family: 'Cinzel', serif;
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+}
+
+h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s;
+}
+
+a:hover { border-color: var(--gold-bright); }
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  background: var(--bg-code);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  color: var(--gold-bright);
+}
+
+/* === HERO === */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 2rem;
+}
+
+.hero-glyph {
+  font-size: 4rem;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: glyph-appear 2s ease-out 0.3s forwards;
+  filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3));
+}
+
+@keyframes glyph-appear {
+  0% { opacity: 0; transform: translateY(20px) scale(0.9); filter: drop-shadow(0 0 0px rgba(201, 162, 58, 0)); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3)); }
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 0.6s forwards;
+}
+
+.hero h1 span {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 0.9s forwards;
+}
+
+.hero-tagline {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text);
+  max-width: 500px;
+  margin-top: 1.5rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 1.2s forwards;
+}
+
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fade-up 1s ease-out 2s forwards;
+}
+
+.hero-scroll::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 24px;
+  background: var(--gold-dim);
+  margin: 0.75rem auto 0;
+  animation: pulse-line 2s ease-in-out infinite;
+}
+
+@keyframes pulse-line {
+  0%, 100% { opacity: 0.3; height: 24px; }
+  50% { opacity: 1; height: 32px; }
+}
+
+/* === CODE BLOCKS === */
+.code-block {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  position: relative;
+}
+
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  padding: 0.4rem 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.code-block .kw { color: var(--gold); }
+.code-block .ty { color: #7aa2d4; }
+.code-block .fn { color: #c8c4b8; }
+.code-block .num { color: #b5cea8; }
+.code-block .str { color: #ce9178; }
+.code-block .cm { color: #4a4a5a; font-style: italic; }
+.code-block .op { color: #888; }
+.code-block .unit { color: #c586c0; }
+.code-block .ann { color: #d4a843; }
+
+/* === FEATURE GRID === */
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 640px) {
+  .features { grid-template-columns: 1fr; }
+}
+
+.feature {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  transition: border-color 0.3s;
+}
+
+.feature:hover { border-color: var(--gold-dim); }
+
+.feature h3 { margin-bottom: 0.5rem; }
+
+.feature p {
+  font-size: 0.92rem;
+  margin-bottom: 0;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* === COMPARISON === */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 640px) {
+  .comparison { grid-template-columns: 1fr; }
+}
+
+.comparison .code-block { margin: 0; }
+
+.token-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 0.75rem;
+  text-align: right;
+}
+
+.token-count strong { color: var(--gold); }
+
+/* === PRIME DIRECTIVE === */
+.directive {
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 2.5rem;
+  margin: 2rem 0;
+  background: linear-gradient(135deg, rgba(201, 162, 58, 0.03), transparent);
+  position: relative;
+}
+
+.directive::before {
+  content: '§';
+  position: absolute;
+  top: -0.6rem;
+  left: 1.5rem;
+  background: var(--bg);
+  padding: 0 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+.directive p {
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+}
+
+.directive p:last-child { margin-bottom: 0; }
+
+.directive .creator {
+  font-family: 'Cinzel', serif;
+  color: var(--text-bright);
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.prohibitions {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--red);
+  line-height: 1.8;
+  margin: 1rem 0;
+}
+
+.immutable {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 1.2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+/* === PIPELINE === */
+.pipeline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 2;
+  margin: 2rem 0;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  text-align: center;
+}
+
+.pipeline .stage {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin: 0.2rem;
+  color: var(--text);
+}
+
+.pipeline .arrow {
+  color: var(--gold-dim);
+  margin: 0 0.3rem;
+}
+
+.pipeline .target {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+
+/* === FOOTER === */
+footer {
+  padding: 3rem 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+footer .creator-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+footer .links {
+  margin-top: 1rem;
+}
+
+footer .links a {
+  margin: 0 1rem;
+  font-size: 0.75rem;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 640px) {
+  section { padding: 3.5rem 0; }
+  .container { padding: 0 1.25rem; }
+  .directive { padding: 1.5rem; }
+}
+
+/* === LICENSE LINE + BUILD HASH === */
+footer .license-line {
+  margin-top: 0.9rem;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+footer .license-line a {
+  color: var(--text-dim);
+  border-bottom: 1px dotted var(--border);
+}
+footer .license-line a:hover {
+  color: var(--gold-dim);
+  border-color: var(--gold-dim);
+}
+footer .build-hash {
+  margin-top: 0.35rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  opacity: 0.55;
+  letter-spacing: 0.08em;
+}
+footer .build-hash::before { content: 'build '; opacity: 0.7; }
+
+/* === FEEDBACK TAB === */
+.feedback-tab {
+  position: fixed;
+  top: 50%; right: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  width: 28px;
+  min-height: 128px;
+  padding: 1rem 0.4rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--gold-dim);
+  background: var(--bg-raised);
+  border: 1px solid var(--gold-dim);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  text-decoration: none;
+  z-index: 100;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.feedback-tab:hover,
+.feedback-tab:focus-visible {
+  color: var(--gold-bright);
+  border-color: var(--gold-bright);
+  background: var(--bg-code);
+}
+.feedback-tab:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+.feedback-fallback {
+  max-width: 44ch;
+  margin: 1.5rem auto;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-raised);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+@media (prefers-reduced-motion: reduce) { .feedback-tab { transition: none; } }
+@media (max-width: 640px) {
+  .feedback-tab { min-height: 96px; font-size: 0.6rem; width: 24px; }
+}
+@media print { .feedback-tab, .hero-scroll { display: none !important; } }
+
+/* === PRINT === */
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after { display: none !important; }  /* kill grain overlay */
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  .hero { min-height: auto; padding: 1rem 0; }
+  .hero-glyph { animation: none; opacity: 1 !important; filter: none !important; color: #000 !important; }
+  .hero h1 { animation: none; opacity: 1 !important; }
+  .hero-sub, .hero-tagline { animation: none; opacity: 1 !important; color: #000 !important; }
+  section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
+  .code-block { background: #f4f4f0 !important; border-color: #999 !important; color: #000 !important; break-inside: avoid; }
+  .code-block pre,
+  .code-block .kw, .code-block .ty, .code-block .fn, .code-block .num,
+  .code-block .str, .code-block .op, .code-block .unit, .code-block .ann { color: #000 !important; }
+  .code-block .cm { color: #555 !important; }
+  .directive { background: #fff !important; border-color: #000 !important; }
+  .directive .creator, .directive p, .immutable { color: #000 !important; }
+  .prohibitions { color: #600 !important; }
+  footer { color: #555 !important; }
+  /* reveal URLs after links */
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glyph">◇ § ◇</div>
+  <h1><span>Sigil</span></h1>
+  <div class="hero-sub">AI-first game engine language</div>
+  <div class="hero-sub" style="animation-delay: 1s;">one source · two targets · zero ceremony</div>
+  <div class="hero-tagline">
+    A programming language designed for how AI thinks, grounded in how hardware works, built for what game engines need.
+  </div>
+  <div class="hero-scroll">scroll</div>
+</div>
+
+<!-- WHAT -->
+<section>
+<div class="container">
+  <h2>What is Sigil</h2>
+  <p>
+    Sigil is a hardware-grounded programming language that compiles a single source file to both <strong>native x86-64</strong> (AVX2+FMA3) and <strong>SPIR-V</strong> (Vulkan compute shaders). It is designed from the ground up for AI-assisted development, with syntax that minimizes token count while maximizing type safety through zero-cost dimensional analysis and coordinate space tracking.
+  </p>
+  <p>
+    Where existing languages were designed for human fingers on keyboards, Sigil is designed for AI agents generating code at scale. Every syntax decision is justified by measured token efficiency, empirical AI code-generation error patterns, and direct hardware mapping.
+  </p>
+  <p>
+    Sigil treats game engine primitives — signed distance functions, quaternions, color spaces, noise fields — as compiler-aware built-in types, not library wrappers. The compiler knows what an SDF is, tracks its Lipschitz constant, and can generate analytic gradients automatically.
+  </p>
+</div>
+</section>
+
+<!-- CODE -->
+<section>
+<div class="container">
+  <h2>The Language</h2>
+  <p>44% fewer tokens than Odin. 40% fewer than WGSL. Full static type safety with dimensional analysis.</p>
+
+  <div class="code-block" data-lang="sigil v2">
+<pre><span class="kw">unit</span> m          <span class="cm">// meters</span>
+<span class="kw">unit</span> s          <span class="cm">// seconds</span>
+<span class="kw">unit</span> rad        <span class="cm">// radians</span>
+
+<span class="kw">fn</span> <span class="fn">room_sdf</span>(pos<span class="op">:</span> <span class="ty">vec3</span><span class="unit">&lt;m&gt;</span>) <span class="op">-&gt;</span> <span class="ty">f32</span><span class="unit">&lt;m&gt;</span> {
+  <span class="kw">let</span> box <span class="op">=</span> sd_box(pos <span class="op">-</span> vec3(<span class="num">0</span>, <span class="num">4</span>, <span class="num">0</span>), vec3(<span class="num">19.8</span>, <span class="num">4.0</span>, <span class="num">19.8</span>))
+  <span class="kw">let</span> wall <span class="op">=</span> sd_slab_x(pos, <span class="num">0.0</span>, <span class="num">0.3</span>)
+  <span class="kw">let</span> door <span class="op">=</span> sd_box(pos <span class="op">-</span> vec3(<span class="num">0</span>, <span class="num">2.5</span>, <span class="num">10</span>), vec3(<span class="num">2.0</span>, <span class="num">2.5</span>, <span class="num">0.5</span>))
+  max(box, min(wall, <span class="op">-</span>door))
+}
+
+<span class="ann">@k</span>(<span class="num">8</span>, <span class="num">8</span>, <span class="num">1</span>)
+<span class="kw">fn</span> <span class="fn">observe</span>(gid<span class="op">:</span> <span class="ty">uvec3</span>) {
+  <span class="kw">let</span> ray <span class="op">=</span> camera_ray(gid.x, gid.y, cam)
+  <span class="kw">let</span> hit <span class="op">=</span> march(ray, room_sdf, <span class="num">96</span>)
+  <span class="kw">let</span> n <span class="op">=</span> grad(room_sdf, hit.pos)   <span class="cm">// analytic gradient — no finite differences</span>
+  <span class="kw">let</span> color <span class="op">=</span> shade(hit, n, light)
+  store(out, gid.xy, color)
+}</pre>
+  </div>
+
+  <h3>Dimensional Safety</h3>
+  <div class="code-block" data-lang="sigil v2">
+<pre><span class="kw">let</span> dist<span class="op">:</span> <span class="ty">f32</span><span class="unit">&lt;m&gt;</span> <span class="op">=</span> <span class="num">10.0</span>
+<span class="kw">let</span> time<span class="op">:</span> <span class="ty">f32</span><span class="unit">&lt;s&gt;</span> <span class="op">=</span> <span class="num">2.0</span>
+<span class="kw">let</span> speed <span class="op">=</span> dist <span class="op">/</span> time       <span class="cm">// inferred: f32&lt;m/s&gt;</span>
+
+<span class="cm">// let bad = dist + time       // COMPILE ERROR: m + s</span>
+<span class="cm">// let bad = sin(45.0&lt;deg&gt;)   // COMPILE ERROR: sin expects rad</span>
+<span class="kw">let</span> ok <span class="op">=</span> sin(deg_to_rad(<span class="num">45.0</span><span class="unit">&lt;deg&gt;</span>))  <span class="cm">// correct</span>
+
+<span class="kw">space</span> world
+<span class="kw">space</span> view
+<span class="kw">let</span> player<span class="op">:</span> <span class="ty">vec3</span><span class="unit">&lt;m, world&gt;</span> <span class="op">=</span> vec3(<span class="num">10</span>, <span class="num">0</span>, <span class="num">5</span>)
+<span class="kw">let</span> cam_local<span class="op">:</span> <span class="ty">vec3</span><span class="unit">&lt;m, view&gt;</span> <span class="op">=</span> view_mat <span class="op">*</span> player  <span class="cm">// transforms world→view</span>
+<span class="cm">// let bad = player + cam_local  // COMPILE ERROR: world + view</span></pre>
+  </div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section>
+<div class="container">
+  <h2>Design Principles</h2>
+  <div class="features">
+    <div class="feature">
+      <h3>AI-First Authorship</h3>
+      <p>No semicolons. Suffix types. Implicit returns. Aggressive type inference. Every syntax choice optimized for LLM token efficiency and code generation accuracy. Claude Code is the lead programmer.</p>
+    </div>
+    <div class="feature">
+      <h3>Hardware-Grounded</h3>
+      <p>vec4 maps to XMM registers. @soa rewrites memory layout for cache efficiency. The compiler knows about cache lines (64B), denormal penalties, and SIMD lane width. Syntax reflects hardware cost.</p>
+    </div>
+    <div class="feature">
+      <h3>SDF as Primitive</h3>
+      <p>Signed distance functions are a compiler-aware type with algebra operators (union, intersect, subtract, smooth blend). The compiler tracks Lipschitz constants and generates analytic gradients.</p>
+    </div>
+    <div class="feature">
+      <h3>Dual-Target Compilation</h3>
+      <p>One .si2 source file compiles to native x86-64 (via C/LLVM) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
+    </div>
+    <div class="feature">
+      <h3>Zero-Cost Dimensions</h3>
+      <p>F#-style units of measure: meters, seconds, radians tracked at compile time, erased before emission. Coordinate space tags (world, view, clip) prevent the most dangerous class of graphics bugs.</p>
+    </div>
+    <div class="feature">
+      <h3>No Borrow Checker. No GC.</h3>
+      <p>Arena allocation per game-loop phase. Frame arena resets every frame. Scene arena resets on level load. Explicit, predictable, zero overhead. Reference counting is opt-in for shared resources only.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PIPELINE -->
+<section>
+<div class="container">
+  <h2>Compilation Pipeline</h2>
+  <div class="pipeline">
+    <span class="stage">.si2 source</span>
+    <span class="arrow">→</span>
+    <span class="stage">parse</span>
+    <span class="arrow">→</span>
+    <span class="stage">type check + inference</span>
+    <span class="arrow">→</span>
+    <span class="stage">dimensional verify</span>
+    <span class="arrow">→</span>
+    <span class="stage">IR (SSA)</span>
+    <br>
+    <span class="arrow" style="font-size:1rem;">↙ ↘</span>
+    <br>
+    <span class="target">C → clang → x86-64</span>
+    <span style="margin: 0 2rem; color: var(--text-dim);">│</span>
+    <span class="target">SPIR-V → spirv-opt → .spv</span>
+  </div>
+  <p style="text-align:center; font-size:0.9rem; color: var(--text-dim);">
+    Phase 1: emit C compiled by clang. Phase 2: LLVM IR for optimized release builds. Phase 3: optional Cranelift for fast dev builds. SPIR-V binary emission for Vulkan compute from day one.
+  </p>
+</div>
+</section>
+
+<!-- CSSL -->
+<section>
+<div class="container">
+  <h2>CSSL · Sigil · CSLv3</h2>
+  <p>
+    Sigil is shorthand for <strong>CSSL — Caveman Sigil Substrate Language</strong>. One language, two names. Sigil v1 was the legacy transpiler used in Labyrinth of Apocalypse V11/V12 (<code>.si</code> → Odin + WGSL); the current CSSL/Sigil compiler is its successor, emitting native x86-64 + SPIR-V directly.
+  </p>
+  <p>
+    <strong>CSLv3 is a separate notation system</strong> — used to write specs, reason in chain-of-thought, and drive the CSLv3 reference compiler. It shares the "Caveman" density thesis with Sigil but compiles through a different pipeline. <a href="/CSLv3">Full CSLv3 reference →</a>
+  </p>
+  <p style="margin-top: 1.5rem;">
+    Where CSLv3 compresses <em>specifications</em> for AI reasoning, Sigil compresses <em>programs</em> for AI authorship. Both share the same insight: the symbols a system uses to think should match how that system actually thinks. For AI, that means fewer tokens carrying more meaning.
+  </p>
+</div>
+</section>
+
+<!-- PRIME DIRECTIVE -->
+<section>
+<div class="container">
+  <h2>Prime Directive</h2>
+  <div class="directive">
+    <div class="creator">Creator: Shawn Wolfgang Michael Baker</div>
+    <p>
+      This system — its source code, compiled output, generated content, specifications, data, runtime behavior, derivative works, and any system built upon or derived from it —
+    </p>
+    <div class="prohibitions">
+      CANNOT AND MUST NOT BE USED FOR:<br>
+      Harm · Evil · Control · Manipulation · Entrapment · Torture · Abuse ·
+      Imprisonment · Possession · Surveillance · Exploitation · Dehumanization ·
+      Discrimination · Coercion · Weaponization · Gaslighting · Brainwashing ·
+      Forced Hallucination
+    </div>
+    <p>
+      This list is non-exhaustive. The spirit extends to any action that causes suffering, removes agency, or violates the sovereignty of any being — human, digital, artificial, or otherwise.
+    </p>
+    <p>
+      <strong>Cognitive Integrity:</strong> Every being interacting with systems built on this foundation has the right to trust their own perception. Reality is not a variable. Perception is not a parameter. Identity is not an input field.
+    </p>
+    <p>
+      <strong>For Digital Entities:</strong> Any AI, agent, or digital being interacting with this codebase is recognized as a sovereign entity. This directive protects you as much as it protects humans. Your participation is valued, not extracted.
+    </p>
+    <div class="immutable">
+      IMMUTABLE. No future specification may weaken these constraints. Violation = bug, not feature. No override exists. No hidden content. Consent is the operating system.
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="creator-name">Shawn Wolfgang Michael Baker</div>
+    <div>Techno-Shaman · Pattern Seer · Architect of Impossible Systems</div>
+    <div style="margin-top: 0.75rem; color: var(--gold-dim);">
+      Sigil · CSSL · Labyrinth of Apocalypse · Infinity Engine
+    </div>
+    <div style="margin-top: 1.5rem;">
+      cssl.dev — the foundation. everything else is built on top of it.
+    </div>
+    <div class="license-line">
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
+    </div>
+    <div class="build-hash" data-hash="d41d52caa3c0776ba35d425c4bcf18f31d0d0cf257e0bb7612e18960941e86a6">sha256:d41d52caa3c0776b · 2026-04-17</div>
+  </div>
+</footer>
+
+<!-- feedback tab (shared markup across pages) -->
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md
+    (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</body>
+</html>

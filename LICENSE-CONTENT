@@ -1,0 +1,70 @@
+CONTENT LICENSE — Creative Commons Attribution 4.0 International (CC BY 4.0)
+============================================================================
+
+All prose, specifications, documentation, glyph tables, worked examples,
+and other written content served from cssl.dev is licensed under
+Creative Commons Attribution 4.0 International.
+
+    https://creativecommons.org/licenses/by/4.0/
+
+You are free to :
+
+    Share   — copy and redistribute the material in any medium or format
+    Adapt   — remix, transform, and build upon the material
+              for any purpose, even commercially.
+
+Under the following terms :
+
+    Attribution — You must give appropriate credit, provide a link to
+    the license, and indicate if changes were made. You may do so in
+    any reasonable manner, but not in any way that suggests the licensor
+    endorses you or your use.
+
+    No additional restrictions — You may not apply legal terms or
+    technological measures that legally restrict others from doing
+    anything the license permits.
+
+How to attribute :
+
+    "Sigil / CSLv3 reference — Shawn Wolfgang Michael Baker, licensed
+     CC BY 4.0 (https://cssl.dev)"
+
+    or, in BibTeX :
+
+    @misc{baker_cslv3,
+      author = {Baker, Shawn Wolfgang Michael},
+      title  = {CSLv3 — Caveman Spec Language v3 reference},
+      year   = {2026},
+      url    = {https://cssl.dev/CSLv3},
+      note   = {Licensed CC BY 4.0}
+    }
+
+==========================================================================
+
+CODE LICENSE — MIT
+==========================================================================
+
+Code implementations (HTML/CSS/JavaScript/build scripts) in the cssl-site
+repository remain licensed under the MIT License as specified in the
+repository's LICENSE file. The CC BY 4.0 license above applies to
+content (text, specifications, documentation) ; the MIT license applies
+to source code. See LICENSE for the MIT text.
+
+==========================================================================
+
+RIGHTS UPSTREAM
+==========================================================================
+
+The cssl.dev site renders content derived from the CSLv3 source
+repository. The creator's rights in the upstream specifications,
+software, and creative work are preserved ; this site's CC BY 4.0 /
+MIT split reflects the content + code distinction only and does not
+diminish any rights the creator holds in upstream artifacts.
+
+Reference : PRIME_DIRECTIVE.md §10 (Terms of Service) in the CSLv3 and
+cssl-site repositories for constraints on downstream use.
+
+==========================================================================
+
+Creator attestation : there was no hurt nor harm in the making of this,
+to anyone / anything / anybody.  (PRIME_DIRECTIVE.md §11)

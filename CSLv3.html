@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSLv3 — Caveman Spec Language v3</title>
+<meta name="description" content="Ultra-dense specification notation for human↔AI collaboration. 5-6× compression over English prose while preserving implementation fidelity.">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<link rel="canonical" href="https://cssl.dev/CSLv3">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="CSLv3 — Caveman Spec Language v3">
+<meta property="og:description" content="Ultra-dense specification notation for human↔AI collaboration. 5-6× compression over English prose while preserving implementation fidelity.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cssl.dev/CSLv3">
+<meta property="og:image" content="https://cssl.dev/og/CSLv3.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CSLv3 — Caveman Spec Language v3. density = sovereignty.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CSLv3 — Caveman Spec Language v3">
+<meta name="twitter:description" content="Notation for how AI thinks · density = sovereignty">
+<meta name="twitter:image" content="https://cssl.dev/og/CSLv3.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "CSLv3 — Caveman Spec Language v3",
+  "description": "Ultra-dense specification notation for human↔AI collaboration. 5-6× compression over English prose while preserving implementation fidelity.",
+  "author": {
+    "@type": "Person",
+    "name": "Shawn Wolfgang Michael Baker"
+  },
+  "datePublished": "2026-04-17",
+  "dateModified": "2026-04-17",
+  "url": "https://cssl.dev/CSLv3",
+  "inLanguage": "en",
+  "keywords": "CSLv3, Caveman Spec Language, notation, AI, compression, specification, APL, Ithkuil, Sanskrit, Peirce, Lojban",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "codeRepository": "https://github.com/Apocky/CSLv3",
+  "about": { "@type": "Thing", "name": "Notation system for AI-native specification" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "cssl.dev",
+    "url": "https://cssl.dev"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #07070c;
+  --bg-raised: #0e0e16;
+  --bg-code: #11111b;
+  --text: #b8b4a8;
+  --text-dim: #6b6860;
+  --text-bright: #e8e4d8;
+  --gold: #c9a23a;
+  --gold-bright: #e8c85a;
+  --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232;
+  --green: #4a8a3a;
+  --blue: #3a6a9a;
+  --mauve: #c586c0;
+  --tan: #ce9178;
+  --soft-blue: #7aa2d4;
+  --soft-green: #b5cea8;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Grain overlay (matches /) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  padding: 0.5rem 1rem;
+  background: var(--bg-raised);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+/* Site header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+
+.site-header .back-link {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: none;
+}
+.site-header .back-link:hover { color: var(--gold-bright); }
+
+.site-header .version {
+  color: var(--text-dim);
+}
+.site-header .version strong { color: var(--gold); font-weight: 400; }
+
+/* === TYPOGRAPHY === */
+h1, h2, h3, h4 {
+  font-family: 'Cinzel', serif;
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+}
+
+h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+}
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+h3 {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+h4 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-bright);
+  margin: 1.5rem 0 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  background: var(--bg-code);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  color: var(--gold-bright);
+}
+
+strong { color: var(--text-bright); font-weight: 500; }
+em { color: var(--text-bright); }
+
+/* === HERO === */
+.hero {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 2rem;
+}
+
+.hero-glyph {
+  font-size: 4rem;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: glyph-appear 2s ease-out 0.3s forwards;
+  filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3));
+}
+
+@keyframes glyph-appear {
+  0% { opacity: 0; transform: translateY(20px) scale(0.9); filter: drop-shadow(0 0 0px rgba(201, 162, 58, 0)); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3)); }
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 0.6s forwards;
+}
+
+.hero h1 span {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 0.9s forwards;
+}
+
+.hero-tagline {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text);
+  max-width: 540px;
+  margin-top: 1.5rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 1.2s forwards;
+}
+
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fade-up 1s ease-out 2s forwards;
+}
+.hero-scroll::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 24px;
+  background: var(--gold-dim);
+  margin: 0.75rem auto 0;
+  animation: pulse-line 2s ease-in-out infinite;
+}
+
+@keyframes pulse-line {
+  0%, 100% { opacity: 0.3; height: 24px; }
+  50% { opacity: 1; height: 32px; }
+}
+
+/* === PAGE GRID === */
+.page-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 2rem 0;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .page-grid {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 3rem;
+    padding: 3rem 2.5rem 0;
+  }
+}
+
+main {
+  min-width: 0;
+}
+
+main > section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 4rem;
+}
+main > section:last-of-type { border-bottom: none; }
+main > section > h2 { font-family: 'Cinzel', serif; }
+
+/* === TOC === */
+.toc {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  order: -1;
+}
+@media (min-width: 1024px) {
+  .toc {
+    order: 2;
+    position: sticky;
+    top: 4.5rem;
+    align-self: start;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+}
+
+.toc details {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  padding: 0.5rem 1rem;
+}
+
+@media (min-width: 1024px) {
+  .toc details { border: none; background: transparent; padding: 0; }
+  .toc details summary { display: none; }
+  .toc details[open] > nav { display: flex; }
+}
+
+.toc summary {
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.4rem 0;
+  list-style: none;
+}
+.toc summary::-webkit-details-marker { display: none; }
+.toc summary::after { content: ' ▾'; color: var(--gold-dim); }
+.toc details[open] > summary::after { content: ' ▴'; }
+
+.toc nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.5rem 0 0.25rem;
+}
+@media (min-width: 1024px) {
+  .toc nav { padding: 0; }
+  .toc::before {
+    content: 'Contents';
+    display: block;
+    color: var(--gold);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+.toc a {
+  color: var(--text);
+  border-bottom: none;
+  padding: 0.15rem 0;
+  line-height: 1.45;
+  font-size: 0.76rem;
+}
+.toc a:hover, .toc a:focus-visible { color: var(--gold-bright); }
+.toc a .num { color: var(--text-dim); display: inline-block; width: 2rem; }
+
+/* === CODE BLOCKS === */
+.code-block {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin: 1.25rem 0 1.5rem;
+  overflow-x: auto;
+  position: relative;
+}
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  padding: 0.4rem 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text);
+  white-space: pre;
+}
+
+/* Syntax highlighting classes — draw from existing :root palette */
+.code-block .kw  { color: var(--gold); }
+.code-block .gly { color: var(--gold-bright); }
+.code-block .op  { color: var(--text-dim); }
+.code-block .ty  { color: var(--soft-blue); }
+.code-block .num { color: var(--soft-green); }
+.code-block .cm  { color: #4a4a5a; font-style: italic; }
+.code-block .str { color: var(--tan); }
+.code-block .sfx { color: var(--mauve); }
+.code-block .inv { color: var(--gold-dim); }
+.code-block .fn  { color: #c8c4b8; }
+
+/* === AXIOM CALLOUT === */
+.axiom {
+  border: 1px solid var(--gold-dim);
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  margin: 2rem 0;
+  background: linear-gradient(135deg, rgba(201, 162, 58, 0.05), transparent 60%);
+  text-align: center;
+}
+.axiom .axiom-line {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: 0.1em;
+  color: var(--text-bright);
+  margin-bottom: 0.8rem;
+}
+.axiom .axiom-line .glow {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.axiom .axiom-sub {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+/* === FEATURE GRID (triple-scope & compound-types) === */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+@media (min-width: 640px) {
+  .cards.cards-3 { grid-template-columns: repeat(3, 1fr); }
+  .cards.cards-5 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .cards.cards-5 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1200px) {
+  .cards.cards-5 { grid-template-columns: repeat(5, 1fr); }
+}
+
+.card {
+  padding: 1.25rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  transition: border-color 0.3s;
+}
+.card:hover { border-color: var(--gold-dim); }
+.card h3 { margin-bottom: 0.4rem; }
+.card .card-glyph {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  color: var(--gold-bright);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.card p {
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.card p:last-child { margin-bottom: 0; }
+.card .card-ex {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--gold-bright);
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-code);
+  border-radius: 4px;
+}
+
+/* === TABLES === */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+table caption {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+  caption-side: top;
+}
+th, td {
+  padding: 0.55rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  background: var(--bg-code);
+}
+tbody tr:hover { background: rgba(201, 162, 58, 0.03); }
+
+.glyph-cell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  color: var(--gold-bright);
+  width: 3rem;
+  text-align: center;
+}
+.alias-cell {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--mauve);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+.bpe-cell {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--soft-green);
+  font-size: 0.8rem;
+  text-align: center;
+  width: 3.5rem;
+}
+
+/* Compact comparison table */
+.cmp-table td.num-cell,
+.cmp-table th.num-cell {
+  font-family: 'JetBrains Mono', monospace;
+  text-align: right;
+  color: var(--soft-green);
+}
+.cmp-table tbody tr.highlight {
+  background: rgba(201, 162, 58, 0.06);
+}
+.cmp-table tbody tr.highlight td:first-child { color: var(--gold-bright); font-weight: 500; }
+
+/* Slot grammar template */
+.slot-template {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-code);
+  margin: 1rem 0;
+  color: var(--text);
+  overflow-x: auto;
+}
+.slot-template .opt { color: var(--text-dim); }
+.slot-template .req { color: var(--gold-bright); }
+
+/* Ordered learning path */
+.path {
+  list-style: none;
+  counter-reset: path;
+  margin: 1rem 0;
+}
+.path li {
+  counter-increment: path;
+  padding: 0.6rem 0.8rem 0.6rem 3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.path li::before {
+  content: counter(path, decimal-leading-zero);
+  position: absolute;
+  left: 0.8rem;
+  top: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--gold-dim);
+}
+.path li:last-child { border-bottom: none; }
+.path li a { border-bottom: none; }
+
+/* Specs grid */
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+.specs-grid .spec-item {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-raised);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  transition: border-color 0.3s;
+}
+.specs-grid .spec-item:hover { border-color: var(--gold-dim); }
+.specs-grid .spec-name { color: var(--gold-bright); display: block; margin-bottom: 0.3rem; }
+.specs-grid .spec-desc { color: var(--text-dim); font-family: 'Newsreader', serif; font-size: 0.82rem; line-height: 1.45; }
+
+/* Disclaimer + caveats */
+.caveat {
+  border-left: 3px solid var(--gold-dim);
+  padding: 0.6rem 1rem;
+  margin: 1.25rem 0;
+  background: rgba(138, 112, 40, 0.05);
+  font-size: 0.88rem;
+  color: var(--text);
+}
+.caveat strong { color: var(--gold-bright); }
+
+/* === PRIME DIRECTIVE (verbatim from /) === */
+.directive {
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 2.5rem;
+  margin: 2rem 0;
+  background: linear-gradient(135deg, rgba(201, 162, 58, 0.03), transparent);
+  position: relative;
+}
+.directive::before {
+  content: '§';
+  position: absolute;
+  top: -0.6rem;
+  left: 1.5rem;
+  background: var(--bg);
+  padding: 0 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  color: var(--gold);
+}
+.directive p { font-size: 0.95rem; margin-bottom: 0.8rem; }
+.directive p:last-child { margin-bottom: 0; }
+.directive .creator {
+  font-family: 'Cinzel', serif;
+  color: var(--text-bright);
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+}
+.prohibitions {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--red);
+  line-height: 1.8;
+  margin: 1rem 0;
+}
+.immutable {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 1.2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+/* === FOOTER === */
+footer {
+  padding: 3rem 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+footer .creator-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 1rem; font-size: 0.75rem; }
+
+/* === RESPONSIVE === */
+@media (max-width: 640px) {
+  .hero { min-height: 85vh; padding: 3rem 1.25rem; }
+  main > section { padding: 2.5rem 0; }
+  .directive { padding: 1.5rem; }
+  .page-grid { padding: 1.5rem 1.25rem 0; }
+  .site-header { padding: 0.75rem 1.25rem; font-size: 0.7rem; }
+}
+
+/* Reduced motion: suppress animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-glyph, .hero h1, .hero-sub, .hero-tagline, .hero-scroll { opacity: 1 !important; transform: none !important; }
+  .hero-scroll::after { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a href="/" class="back-link">← cssl.dev</a>
+  <span class="version">CSLv3 <strong>v1.1.0-rc.1</strong> · living document</span>
+</header>
+
+<!-- HERO §0 -->
+<div class="hero" role="banner">
+  <div class="hero-glyph" aria-hidden="true">◇ § ◇</div>
+  <h1><span>CSLv3</span></h1>
+  <div class="hero-sub">Caveman Spec Language v3</div>
+  <div class="hero-sub" style="animation-delay: 1s;">notation for how AI thinks · density = sovereignty</div>
+  <div class="hero-tagline">
+    An ultra-dense specification notation for human↔AI collaboration, reasoning, and compilation — 5-6× compression over English prose without losing implementation fidelity.
+  </div>
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
+</div>
+
+<div class="page-grid">
+
+  <!-- TOC (right rail on desktop, collapsible on mobile) -->
+  <aside class="toc" aria-label="Table of contents">
+    <details open>
+      <summary>Contents</summary>
+      <nav>
+        <a href="#what-is"><span class="num">§1</span>What is CSLv3</a>
+        <a href="#core-axiom"><span class="num">§2</span>Core Axiom</a>
+        <a href="#triple-scope"><span class="num">§3</span>Triple Scope</a>
+        <a href="#ancestry"><span class="num">§4</span>Ancestry</a>
+        <a href="#glyph-system"><span class="num">§5</span>Glyph System</a>
+        <a href="#compound-types"><span class="num">§6</span>Compound Types</a>
+        <a href="#slot-grammar"><span class="num">§7</span>Slot Grammar</a>
+        <a href="#morpheme-stacking"><span class="num">§8</span>Morpheme Stacking</a>
+        <a href="#reasoning-substrate"><span class="num">§9</span>Reasoning Substrate</a>
+        <a href="#type-system"><span class="num">§10</span>Type System</a>
+        <a href="#compression"><span class="num">§11</span>Compression Data</a>
+        <a href="#spec-template"><span class="num">§12</span>Spec Template</a>
+        <a href="#worked-example"><span class="num">§13</span>Worked Example</a>
+        <a href="#comparison"><span class="num">§14</span>Comparison</a>
+        <a href="#learning-path"><span class="num">§15</span>Learning Path</a>
+        <a href="#repo-specs"><span class="num">§16</span>Repository</a>
+        <a href="#prime-directive"><span class="num">§17</span>Prime Directive</a>
+      </nav>
+    </details>
+  </aside>
+
+  <main id="main">
+
+  <!-- §1 WHAT IS -->
+  <section id="what-is">
+    <h2>§1 · What is CSLv3</h2>
+    <p>
+      <strong>CSLv3</strong> is the <strong>Caveman Spec Language, version 3</strong>: an ultra-dense notation for writing specifications, structured reasoning, and (eventually) executable programs. Its core move is to strip language down to the bones — no articles, no hedging, no filler — and recompose what remains using glyphs, slot grammar, and Sanskrit-style compounds. What survives the strip is nouns, verbs, relationships, numbers, gates, and rules: the semantic skeleton of a spec.
+    </p>
+    <p>
+      It exists because modern AI collaboration happens inside finite context windows. Every token spent on linguistic ceremony is a token not spent on architectural reasoning. CSLv3 trades ornamental prose for compression: a 10,000-word English system spec compresses to roughly 2,000-2,500 tokens while preserving every implementation-relevant detail. More of the system fits in view at once, and the reasoning that follows is less fragmentary.
+    </p>
+    <p>
+      <strong>CSLv3 is not CSSL.</strong> The surrounding site, <a href="/">cssl.dev</a>, documents <em>Sigil</em> — the shorthand for <strong>CSSL (Caveman Sigil Substrate Language)</strong>. One language, two names. Sigil compiles (to native x86-64 + SPIR-V); CSLv3 notates (a dense specification language for spec-writing and AI reasoning). They share the "Caveman" density thesis but compile through different pipelines. The two are related but distinct: do not conflate them.
+    </p>
+  </section>
+
+  <!-- §2 CORE AXIOM -->
+  <section id="core-axiom">
+    <h2>§2 · Core Axiom</h2>
+    <div class="axiom">
+      <div class="axiom-line"><span class="glow">density = sovereignty</span></div>
+      <div class="axiom-sub">every token saved is cognition reclaimed</div>
+    </div>
+    <p>
+      In a fixed-size context window, a 5× denser notation holds 5× more system in view simultaneously. More of the system visible at once means better architectural reasoning, fewer patch-the-symptom fixes, and tighter feedback loops between human and AI collaborator. Density isn't austerity — it's the precondition for thinking about bigger systems at all.
+    </p>
+  </section>
+
+  <!-- §3 TRIPLE SCOPE -->
+  <section id="triple-scope">
+    <h2>§3 · Triple Scope</h2>
+    <p>CSLv3 is engineered for three simultaneous uses. Every design decision is judged against all three.</p>
+    <div class="cards cards-3">
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">↔</span>
+        <h3>Human ↔ AI Spec</h3>
+        <p>The shared language for writing architecture specs, game design documents, research notes, and system specifications. Handoffs between AI instances carry more context in less space.</p>
+      </article>
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">§P §D §T §S §C</span>
+        <h3>Reasoning Substrate</h3>
+        <p>Inside <code>&lt;think&gt;</code> blocks, CSLv3 replaces English. Structured §P/§D/§T/§S/§C blocks give chain-of-thought a consistent skeleton at roughly 2.5× the density of English reasoning.</p>
+      </article>
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">→</span>
+        <h3>Reference Compiler Input</h3>
+        <p>CSLv3's executable subset is a programming language — the spec <em>is</em> the code. An LL(2) lexer+parser+AST prototype lives in the repo; full x86-64 + SPIR-V codegen is aspirational.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- §4 ANCESTRY -->
+  <section id="ancestry">
+    <h2>§4 · Intellectual Ancestry</h2>
+    <p>CSLv3 is a braid of specific mechanisms pulled from seven distinct sources. Each contributes one load-bearing piece.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Seven sources, seven mechanisms</caption>
+        <thead>
+          <tr><th scope="col">Source</th><th scope="col">Contribution</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>APL / J</strong> <span style="color:var(--text-dim);">(Iverson, 1979 Turing Award)</span></td>
+            <td>Notation shapes cognition — not just records it. One glyph per primitive op. From J specifically: the ASCII-fallback mandate, because modern BPE tokenizers can turn a single Unicode symbol into 3-5 tokens.</td>
+          </tr>
+          <tr>
+            <td><strong>Ithkuil</strong> <span style="color:var(--text-dim);">(Quijada)</span></td>
+            <td>Slot-based morphology — each word-position carries an orthogonal grammatical category — plus the <em>silent defaults</em> principle: only encode deviations from expectation.</td>
+          </tr>
+          <tr>
+            <td><strong>Sanskrit Samāsa</strong> <span style="color:var(--text-dim);">(Pāṇini, ~4th c. BCE)</span></td>
+            <td>Nominal compound formation. Five compound types that recursively compose, eliminating case particles while preserving semantic relations (see §6).</td>
+          </tr>
+          <tr>
+            <td><strong>Peirce Existential Graphs</strong> <span style="color:var(--text-dim);">(1896-1914)</span></td>
+            <td>Spatial relations carry logical meaning. Enclosure = negation; adjacency = conjunction. CSLv3 linearizes this: indentation = scope boundary; same-indent items are implicitly AND'd.</td>
+          </tr>
+          <tr>
+            <td><strong>Egyptian Determinatives</strong></td>
+            <td>Silent classifier glyphs — zero phonetic content, pure category marker. CSLv3 uses domain prefixes (<code>§</code>, <code>∫</code>, <code>⊞</code>) and postfix type suffixes (<code>'d</code>, <code>'f</code>, <code>'s</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>De Bruijn Indices</strong></td>
+            <td>Positional reference eliminating naming overhead. Within three scope levels, <code>$0</code>, <code>$1</code>, <code>$2</code> refer to defined items by position rather than name.</td>
+          </tr>
+          <tr>
+            <td><strong>Lojban</strong></td>
+            <td>Unambiguous grammar. Every CSLv3 statement has exactly one parse. The grammar targets LL(2) — two-token lookahead, no backtracking.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- §5 GLYPH SYSTEM -->
+  <section id="glyph-system">
+    <h2>§5 · The Glyph System</h2>
+    <p>
+      Glyphs are organized into three tiers by frequency and learning priority. <strong>Tier 0</strong> is the core 50-glyph set every contributor learns first; <strong>Tier 1</strong> holds domain determinatives, type suffixes, and APL-derived operators; <strong>Tier 2</strong> is domain-specific extensions (physics, material science, etc.).
+    </p>
+    <p>
+      Every Unicode glyph has a mandatory ASCII alias. This is non-negotiable: modern BPE tokenizers can split a single Unicode symbol into 3-5 tokens, which would destroy the compression advantage. When a glyph costs 3+ BPE tokens, the ASCII form is preferred. The <code>BPE</code> column below gives measured cost under Claude/GPT-4 tokenizers.
+    </p>
+
+    <h3>Tier 0 — Structural, Modal, Evidence, Relation, Logic</h3>
+    <div id="glyph-filter-bar" role="search" aria-label="Filter glyph table">
+      <input id="glyph-filter" type="search" placeholder="filter by glyph, alias, or meaning &hellip; (press /)"
+             aria-label="Filter glyphs" autocomplete="off" spellcheck="false">
+      <button class="glyph-tier-pill active" data-tier="all" type="button">all</button>
+      <button class="glyph-tier-pill" data-tier="0" type="button">tier 0</button>
+    </div>
+    <div class="glyph-cell-hint">
+      Click any row to copy the glyph. Press <kbd>/</kbd> to focus the filter,
+      Enter on a row to copy. Filter state persists in the URL.
+    </div>
+    <div class="table-wrap">
+      <table id="glyph-table" class="glyph-table" data-tier="0">
+        <caption>Tier 0 glyph inventory (selection of ~60 core glyphs)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Glyph</th>
+            <th scope="col">ASCII Alias</th>
+            <th scope="col">BPE</th>
+            <th scope="col">Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="glyph-cell">§</td><td class="alias-cell">S:</td><td class="bpe-cell">1</td><td>section / module / domain boundary</td></tr>
+          <tr><td class="glyph-cell">→</td><td class="alias-cell">-&gt;</td><td class="bpe-cell">2-3</td><td>then / yields / maps-to / flow</td></tr>
+          <tr><td class="glyph-cell">←</td><td class="alias-cell">&lt;-</td><td class="bpe-cell">2-3</td><td>from / sourced / derives</td></tr>
+          <tr><td class="glyph-cell">↔</td><td class="alias-cell">&lt;-&gt;</td><td class="bpe-cell">2-3</td><td>bidirectional / isomorphic</td></tr>
+          <tr><td class="glyph-cell">⇒</td><td class="alias-cell">=&gt;</td><td class="bpe-cell">2-3</td><td>implies (logical)</td></tr>
+          <tr><td class="glyph-cell">⊢</td><td class="alias-cell">|-</td><td class="bpe-cell">2</td><td>entails / proves</td></tr>
+          <tr><td class="glyph-cell">∴</td><td class="alias-cell">.:.</td><td class="bpe-cell">2</td><td>therefore</td></tr>
+          <tr><td class="glyph-cell">∵</td><td class="alias-cell">:..</td><td class="bpe-cell">2</td><td>because</td></tr>
+          <tr><td class="glyph-cell">∎</td><td class="alias-cell">QED</td><td class="bpe-cell">2-3</td><td>block-end / proof-end</td></tr>
+          <tr><td class="glyph-cell">W!</td><td class="alias-cell">W!</td><td class="bpe-cell">2</td><td>MUST (hard requirement, inviolable)</td></tr>
+          <tr><td class="glyph-cell">R!</td><td class="alias-cell">R!</td><td class="bpe-cell">2</td><td>SHOULD (strong recommend)</td></tr>
+          <tr><td class="glyph-cell">M?</td><td class="alias-cell">M?</td><td class="bpe-cell">2</td><td>MAY (optional, designer discretion)</td></tr>
+          <tr><td class="glyph-cell">N!</td><td class="alias-cell">N!</td><td class="bpe-cell">2</td><td>MUST NOT (prohibition)</td></tr>
+          <tr><td class="glyph-cell">I&gt;</td><td class="alias-cell">I&gt;</td><td class="bpe-cell">2</td><td>INSIGHT / key claim / important note</td></tr>
+          <tr><td class="glyph-cell">Q?</td><td class="alias-cell">Q?</td><td class="bpe-cell">2</td><td>QUESTION / open question</td></tr>
+          <tr><td class="glyph-cell">P&gt;</td><td class="alias-cell">P&gt;</td><td class="bpe-cell">2</td><td>PUSH FURTHER — deeper grounding requested</td></tr>
+          <tr><td class="glyph-cell">D&gt;</td><td class="alias-cell">D&gt;</td><td class="bpe-cell">2</td><td>DECISION NEEDED</td></tr>
+          <tr><td class="glyph-cell">✓</td><td class="alias-cell">[x]</td><td class="bpe-cell">1</td><td>confirmed / true / verified</td></tr>
+          <tr><td class="glyph-cell">◐</td><td class="alias-cell">[~]</td><td class="bpe-cell">1-2</td><td>partial / probable / in-progress</td></tr>
+          <tr><td class="glyph-cell">○</td><td class="alias-cell">[ ]</td><td class="bpe-cell">1</td><td>pending / possible / unknown</td></tr>
+          <tr><td class="glyph-cell">✗</td><td class="alias-cell">[!]</td><td class="bpe-cell">1-2</td><td>failed / false / blocked / rejected</td></tr>
+          <tr><td class="glyph-cell">⊘</td><td class="alias-cell">[?]</td><td class="bpe-cell">2-3</td><td>no evidence either way / TBD</td></tr>
+          <tr><td class="glyph-cell">△</td><td class="alias-cell">[^]</td><td class="bpe-cell">2</td><td>hypothetical / proposed</td></tr>
+          <tr><td class="glyph-cell">▽</td><td class="alias-cell">[v]</td><td class="bpe-cell">2</td><td>deprecated / was-true-no-longer</td></tr>
+          <tr><td class="glyph-cell">‼</td><td class="alias-cell">[!!]</td><td class="bpe-cell">2</td><td>proven / tested / immutable</td></tr>
+          <tr><td class="glyph-cell">.</td><td class="alias-cell">.</td><td class="bpe-cell">0-1</td><td>tatpurusha compound (Y of X)</td></tr>
+          <tr><td class="glyph-cell">+</td><td class="alias-cell">+</td><td class="bpe-cell">1</td><td>dvandva compound (X and Y)</td></tr>
+          <tr><td class="glyph-cell">-</td><td class="alias-cell">-</td><td class="bpe-cell">1</td><td>karmadhāraya compound (Y that is X)</td></tr>
+          <tr><td class="glyph-cell">⊗</td><td class="alias-cell">x*</td><td class="bpe-cell">2</td><td>bahuvrihi compound (having X-Y)</td></tr>
+          <tr><td class="glyph-cell">@</td><td class="alias-cell">@</td><td class="bpe-cell">1</td><td>avyayibhava (at / per / in scope of)</td></tr>
+          <tr><td class="glyph-cell">:</td><td class="alias-cell">:</td><td class="bpe-cell">1</td><td>bind / has / definition</td></tr>
+          <tr><td class="glyph-cell">::</td><td class="alias-cell">::</td><td class="bpe-cell">1</td><td>type-of / inherits</td></tr>
+          <tr><td class="glyph-cell">=</td><td class="alias-cell">=</td><td class="bpe-cell">1</td><td>equals / assign</td></tr>
+          <tr><td class="glyph-cell">≠</td><td class="alias-cell">!=</td><td class="bpe-cell">2</td><td>not-equal</td></tr>
+          <tr><td class="glyph-cell">..</td><td class="alias-cell">..</td><td class="bpe-cell">1</td><td>range (0..100)</td></tr>
+          <tr><td class="glyph-cell">|</td><td class="alias-cell">|</td><td class="bpe-cell">1</td><td>or / alternative / disjunction</td></tr>
+          <tr><td class="glyph-cell">∀</td><td class="alias-cell">all</td><td class="bpe-cell">2</td><td>for all / universal quantifier</td></tr>
+          <tr><td class="glyph-cell">∃</td><td class="alias-cell">any</td><td class="bpe-cell">2</td><td>exists / existential quantifier</td></tr>
+          <tr><td class="glyph-cell">∈</td><td class="alias-cell">in</td><td class="bpe-cell">2</td><td>member-of</td></tr>
+          <tr><td class="glyph-cell">∉</td><td class="alias-cell">!in</td><td class="bpe-cell">2</td><td>not-member</td></tr>
+          <tr><td class="glyph-cell">∪</td><td class="alias-cell">|+</td><td class="bpe-cell">2</td><td>union</td></tr>
+          <tr><td class="glyph-cell">∩</td><td class="alias-cell">&amp;+</td><td class="bpe-cell">2</td><td>intersect</td></tr>
+          <tr><td class="glyph-cell">⊂</td><td class="alias-cell">&lt;:</td><td class="bpe-cell">2</td><td>subset</td></tr>
+          <tr><td class="glyph-cell">⊃</td><td class="alias-cell">:&gt;</td><td class="bpe-cell">2</td><td>superset</td></tr>
+          <tr><td class="glyph-cell">¬</td><td class="alias-cell">~</td><td class="bpe-cell">2</td><td>not / negation</td></tr>
+          <tr><td class="glyph-cell">∧</td><td class="alias-cell">&amp;&amp;</td><td class="bpe-cell">2</td><td>logical and</td></tr>
+          <tr><td class="glyph-cell">∨</td><td class="alias-cell">||</td><td class="bpe-cell">2</td><td>logical or</td></tr>
+          <tr><td class="glyph-cell">⊕</td><td class="alias-cell">xor</td><td class="bpe-cell">2</td><td>exclusive or</td></tr>
+          <tr><td class="glyph-cell">≡</td><td class="alias-cell">===</td><td class="bpe-cell">2</td><td>structurally identical</td></tr>
+          <tr><td class="glyph-cell">≈</td><td class="alias-cell">~=</td><td class="bpe-cell">2</td><td>approximately equal</td></tr>
+          <tr><td class="glyph-cell">≥</td><td class="alias-cell">&gt;=</td><td class="bpe-cell">2</td><td>greater-or-equal</td></tr>
+          <tr><td class="glyph-cell">≤</td><td class="alias-cell">&lt;=</td><td class="bpe-cell">2</td><td>less-or-equal</td></tr>
+          <tr><td class="glyph-cell">∞</td><td class="alias-cell">inf</td><td class="bpe-cell">2</td><td>unbounded</td></tr>
+          <tr><td class="glyph-cell">∅</td><td class="alias-cell">nil</td><td class="bpe-cell">2</td><td>empty set / nothing</td></tr>
+          <tr><td class="glyph-cell">⟨ ⟩</td><td class="alias-cell">&lt;| |&gt;</td><td class="bpe-cell">2 ea</td><td>tuple / record / entity-property</td></tr>
+          <tr><td class="glyph-cell">⟦ ⟧</td><td class="alias-cell">[[ ]]</td><td class="bpe-cell">2 ea</td><td>formula / equation / meaning-of</td></tr>
+          <tr><td class="glyph-cell">⌈ ⌉</td><td class="alias-cell">[^ ^]</td><td class="bpe-cell">2 ea</td><td>constraint / upper-bound / invariant</td></tr>
+          <tr><td class="glyph-cell">⌊ ⌋</td><td class="alias-cell">[_ _]</td><td class="bpe-cell">2 ea</td><td>floor / lower-bound / precondition</td></tr>
+          <tr><td class="glyph-cell">«  »</td><td class="alias-cell">&lt;&lt;Q Q&gt;&gt;</td><td class="bpe-cell">2-3</td><td>quotation / external API / mentioned</td></tr>
+          <tr><td class="glyph-cell">⟪ ⟫</td><td class="alias-cell">&lt;&lt;T T&gt;&gt;</td><td class="bpe-cell">3 ea</td><td>temporal / phase</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.88rem; color: var(--text-dim);">
+      Tier 1 adds domain determinatives (<code>§</code> system, <code>∫</code> field, <code>⊞</code> spatial), type suffixes (<code>'d 'f 's 't 'e 'm 'p 'g 'r</code>), temporal operators, pipeline/dataflow glyphs, and APL-derived operators (reduce, scan, each, compose). Tier 2 holds physics and material-science glyphs (<code>ρ</code>, <code>μ</code>, <code>σ</code>, <code>κ</code>, <code>∇</code>) used in the Labyrinth of Apocalypse engine work. Full tier inventory lives in <code>specs/01_GLYPHS.csl</code>; the full ASCII alias table is in <code>specs/12_TOKENIZER.csl</code>.
+    </p>
+  </section>
+
+  <!-- §6 COMPOUND TYPES -->
+  <section id="compound-types">
+    <h2>§6 · Five Compound Types</h2>
+    <p>
+      Rather than using English prepositions and articles, relationships between terms are encoded by the operator joining them. The five types come from Sanskrit compound classification (samāsa), adapted for software.
+    </p>
+    <div class="cards cards-5">
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">.</span>
+        <h3>Tatpurusha</h3>
+        <p><strong>&ldquo;Y of X&rdquo;</strong> — determinative. Rightmost element is the head; everything to the left modifies it. The default and most common compound.</p>
+        <span class="card-ex">render.pipeline</span>
+      </article>
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">+</span>
+        <h3>Dvandva</h3>
+        <p><strong>&ldquo;X and Y&rdquo;</strong> — copulative. Flat union of co-equal items; all items have equal standing in the compound.</p>
+        <span class="card-ex">cpu+gpu</span>
+      </article>
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">-</span>
+        <h3>Karmadhāraya</h3>
+        <p><strong>&ldquo;Y that is X&rdquo;</strong> — appositive / attributive. Distinct from tatpurusha: tatpurusha is relational, karmadhāraya is descriptive.</p>
+        <span class="card-ex">static-mesh</span>
+      </article>
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">⊗</span>
+        <h3>Bahuvrihi</h3>
+        <p><strong>&ldquo;having X and Y&rdquo;</strong> — exocentric. Refers to something <em>outside</em> itself characterized by the combined properties.</p>
+        <span class="card-ex">fire⊗resist</span>
+      </article>
+      <article class="card">
+        <span class="card-glyph" aria-hidden="true">@</span>
+        <h3>Avyayibhava</h3>
+        <p><strong>&ldquo;at / per / in scope of X&rdquo;</strong> — adverbial / locative. Scopes an operation or value to a particular context.</p>
+        <span class="card-ex">@frame</span>
+      </article>
+    </div>
+    <p style="font-size: 0.88rem; color: var(--text-dim);">
+      Compounds compose recursively: <code>sys.render.pass.shadow.shader.frag</code> resolves as <em>frag of shader of shadow of pass of render of sys</em>. When nesting creates ambiguity, explicit parentheses are required.
+    </p>
+  </section>
+
+  <!-- §7 SLOT GRAMMAR -->
+  <section id="slot-grammar">
+    <h2>§7 · Slot Grammar</h2>
+    <p>
+      Every CSLv3 statement follows a fixed positional template, inherited from Ithkuil's slot morphology. Defaults are <em>silent</em>: only slots whose value deviates from the default are written. This is the single biggest source of compression in routine lines.
+    </p>
+    <div class="slot-template">
+<span class="opt">[EVIDENCE?]</span> <span class="opt">[MODAL?]</span> <span class="opt">[DET?]</span> <span class="req">SUBJECT</span> <span class="opt">[RELATION]</span> <span class="req">OBJECT</span> <span class="opt">[GATE?]</span> <span class="opt">[SCOPE?]</span> <span class="opt">[META?]</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption>Slot defaults — omit when matching, only write deviations</caption>
+        <thead>
+          <tr><th scope="col">Slot</th><th scope="col">Default (silent)</th><th scope="col">Example non-default</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>EVIDENCE</td><td><code>✓</code> confirmed</td><td><code>△</code> hypothetical, <code>◐</code> partial</td></tr>
+          <tr><td>MODAL</td><td>assertion</td><td><code>W!</code>, <code>R!</code>, <code>M?</code>, <code>N!</code></td></tr>
+          <tr><td>DET</td><td>none</td><td><code>§</code> system, <code>∫</code> field, <code>⊞</code> spatial</td></tr>
+          <tr><td>RELATION</td><td><code>:</code> (is / has)</td><td><code>::</code>, <code>=</code>, <code>→</code>, <code>∈</code>, <code>⊂</code></td></tr>
+          <tr><td>GATE</td><td>unconditional</td><td><code>if expr</code>, <code>when expr</code>, <code>unless expr</code></td></tr>
+          <tr><td>SCOPE</td><td>global</td><td><code>@frame</code>, <code>@chunk</code>, <code>@init</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Worked Example — Silent Defaults in Action</h3>
+    <p>A minimal statement:</p>
+    <div class="code-block" data-lang="cslv3">
+<pre>player.hp u16</pre>
+    </div>
+    <p>Fully slot-expanded, this means:</p>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="gly">✓</span>                    <span class="cm"># evidence: confirmed (default)</span>
+<span class="op">:</span>                    <span class="cm"># modal: assertion (default)</span>
+player<span class="op">.</span>hp           <span class="cm"># subject: hp of player</span>
+<span class="op">:</span>                    <span class="cm"># relation: is (default)</span>
+<span class="ty">u16</span>                  <span class="cm"># object: unsigned 16-bit integer</span>
+<span class="cm"># gate: unconditional (default)</span>
+<span class="cm"># scope: global (default)</span></pre>
+    </div>
+    <p>A fully-slotted statement — all defaults overridden:</p>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="gly">△</span> <span class="gly">W!</span> <span class="kw">§</span>render<span class="op">.</span>pipeline <span class="op">::</span> forward<span class="op">-</span>pass <span class="inv">⌈</span>latency <span class="op">&lt;</span> <span class="num">16ms</span><span class="inv">⌉</span> <span class="op">@</span>frame</pre>
+    </div>
+    <p style="font-size: 0.9rem;">
+      <strong>Reads:</strong> hypothetically, the render pipeline must be a forward pass, with the constraint that latency stays under 16ms, scoped per frame.
+    </p>
+  </section>
+
+  <!-- §8 MORPHEME STACKING -->
+  <section id="morpheme-stacking">
+    <h2>§8 · Morpheme Stacking</h2>
+    <p>
+      Ithkuil-inspired: attach aspect, modality, certainty, and scope suffixes to any term using dot notation. The stack composes in a fixed order — aspect first, then modality, then certainty, then scope.
+    </p>
+    <div class="slot-template">
+BASE<span class="opt">[.aspect]</span><span class="opt">[.mod]</span><span class="opt">[.cert]</span><span class="opt">[.scope]</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption>Morpheme slot menu</caption>
+        <thead>
+          <tr><th scope="col">Slot</th><th scope="col">Suffixes</th><th scope="col">Semantics</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Aspect</strong></td>
+            <td><code>.prog .perf .iter .hab .inch .term</code></td>
+            <td>progressive · perfective · iterative · habitual · inchoative · terminative</td>
+          </tr>
+          <tr>
+            <td><strong>Modality</strong></td>
+            <td><code>.must .may .cant .will .wont</code></td>
+            <td>obligatory · permitted · impossible · intentional · refuses</td>
+          </tr>
+          <tr>
+            <td><strong>Certainty</strong></td>
+            <td><code>.cert .prob .poss .doubt</code></td>
+            <td>certain · probable · possible · doubtful</td>
+          </tr>
+          <tr>
+            <td><strong>Scope</strong></td>
+            <td><code>.loc .glob .ctx</code></td>
+            <td>local · global · context-dependent</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Example</h3>
+    <div class="code-block" data-lang="cslv3">
+<pre>spawn<span class="sfx">.iter</span><span class="sfx">.may</span><span class="sfx">.loc</span>
+<span class="cm"># "may repeatedly spawn, locally"
+# — iterative aspect + permitted modality + local scope</span>
+
+render<span class="sfx">.prog</span><span class="sfx">.cert</span>
+<span class="cm"># "is definitely rendering"</span>
+
+merge<span class="sfx">.inch</span><span class="sfx">.must</span>
+<span class="cm"># "must begin merging"</span>
+
+spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sfx">.prob</span><span class="sfx">.loc</span>
+<span class="cm"># "is currently, probably, repeatedly spawning in local scope"
+# five tokens — the English version runs ten.</span></pre>
+    </div>
+  </section>
+
+  <!-- §9 REASONING SUBSTRATE -->
+  <section id="reasoning-substrate">
+    <h2>§9 · Reasoning Substrate</h2>
+    <p>
+      When CSLv3 replaces English inside <code>&lt;think&gt;</code> blocks, reasoning follows a five-stage skeleton: <strong>§P</strong> Problem, <strong>§D</strong> Decomposition, <strong>§T</strong> Trace, <strong>§S</strong> Synthesis, <strong>§C</strong> Check. The structure gives chain-of-thought a consistent shape and resists drifting back into verbose English — a known failure mode.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <caption>Five reasoning stages</caption>
+        <thead>
+          <tr><th scope="col">Stage</th><th scope="col">Purpose</th><th scope="col">Glyphs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>§P · Problem</strong></td><td>State facts and goal — 2-3 lines max.</td><td><code>given:</code> <code>goal:</code></td></tr>
+          <tr><td><strong>§D · Decomposition</strong></td><td>Break goal into subproblems.</td><td><code>G → [sub₁, sub₂, ...]</code></td></tr>
+          <tr><td><strong>§T · Trace</strong></td><td>Try each subproblem; mark results.</td><td><code>~&gt;</code> try · <code>✓</code> ok · <code>✗</code> fail · <code>∵</code> because · <code>→ retry(…)</code></td></tr>
+          <tr><td><strong>§S · Synthesis</strong></td><td>Combine partials into answer.</td><td><code>⊕</code> combine · <code>⇒</code> derive</td></tr>
+          <tr><td><strong>§C · Check</strong></td><td>Verify goal satisfied; flag edges.</td><td><code>✓</code> pass · <code>⚠</code> edge-case</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Worked Example</h3>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="kw">&lt;think&gt;</span>
+<span class="kw">§ P</span>
+  voxel engine stutter @ chunk boundary
+  hw: Intel 12-14gen <span class="op">+</span> Arc A770
+
+<span class="kw">§ D</span>
+  stutter <span class="op">→</span> [mesh<span class="op">.</span>regen, alloc<span class="op">.</span>spike, gpu<span class="op">.</span>stall]
+
+<span class="kw">§ T</span>
+  mesh<span class="op">.</span>regen  <span class="op">~&gt;</span> profile     <span class="op">→</span> <span class="num">2ms</span>   <span class="gly">✓</span> ¬culprit
+  alloc<span class="op">.</span>spike <span class="op">~&gt;</span> heap<span class="op">-</span>trace  <span class="op">→</span> <span class="num">47MB</span> burst  <span class="gly">?!</span>
+    <span class="gly">⤓</span> source <span class="op">=</span> chunk<span class="op">-</span>LOD<span class="op">-</span>promote  <span class="gly">✓</span> found
+  gpu<span class="op">.</span>stall   <span class="op">~&gt;</span> pipeline<span class="op">-</span>stats <span class="op">→</span> idle <span class="num">0</span>    <span class="gly">✓</span> clean
+
+<span class="kw">§ S</span>
+  culprit <span class="op">=</span> alloc<span class="op">.</span>spike <span class="op">∵</span> LOD<span class="op">-</span>promote allocates fresh
+  fix <span class="op">→</span> pool<span class="op">.</span>LOD<span class="op">-</span>buffers <span class="op">+</span> ring<span class="op">.</span>allocator
+
+<span class="kw">§ C</span>
+  <span class="gly">✓</span> eliminates <span class="num">47MB</span> spike
+  <span class="gly">⚠</span> edge: extreme LOD jumps <span class="op">→</span> pool<span class="op">-</span>overflow? <span class="op">→</span> cap<span class="op">+</span>fallback
+<span class="kw">∎</span>
+<span class="kw">&lt;/think&gt;</span></pre>
+    </div>
+    <p style="font-size: 0.88rem; color: var(--text-dim);">
+      The same chain in English runs about 45 tokens; in CSLv3, roughly 18. That's ≈2.5× compression on reasoning — less than the 5-6× seen on specs because chain-of-thought has less structural regularity, but still substantial.
+    </p>
+  </section>
+
+  <!-- §10 TYPE SYSTEM -->
+  <section id="type-system">
+    <h2>§10 · Type System</h2>
+    <p>CSLv3's type system is layered from practical primitives to dependent types. Lower tiers are used every day; higher tiers appear only where the problem domain demands them.</p>
+
+    <h3>Tier 1 — Primitives</h3>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="ty">u8</span>  <span class="ty">u16</span>  <span class="ty">u32</span>  <span class="ty">u64</span>      <span class="cm"># unsigned integers</span>
+<span class="ty">i8</span>  <span class="ty">i16</span>  <span class="ty">i32</span>  <span class="ty">i64</span>      <span class="cm"># signed integers</span>
+<span class="ty">f32</span> <span class="ty">f64</span>                   <span class="cm"># IEEE 754 floats</span>
+<span class="ty">bool</span> <span class="ty">str</span>                  <span class="cm"># truth value + UTF-8 string</span>
+
+<span class="cm"># spatial (LoA domain)</span>
+<span class="ty">vec2</span> <span class="ty">vec3</span> <span class="ty">vec4</span>            <span class="cm"># 2/3/4-element float vectors</span>
+<span class="ty">mat4</span> <span class="ty">quat</span> <span class="ty">rgba</span>            <span class="cm"># 4×4 matrix, unit quaternion, color</span></pre>
+    </div>
+
+    <h3>Tier 2 — Compound types</h3>
+    <div class="code-block" data-lang="cslv3">
+<pre>[<span class="ty">T</span>; <span class="num">N</span>]         <span class="cm"># fixed-length array</span>
+[<span class="ty">T</span>; _]         <span class="cm"># dynamic array / slice</span>
+<span class="ty">T</span> | <span class="ty">U</span>         <span class="cm"># union / sum</span>
+<span class="ty">T</span>?             <span class="cm"># optional (T | nil)</span>
+<span class="ty">T</span>!             <span class="cm"># result (T | error)</span>
+(<span class="ty">T</span>, <span class="ty">U</span>, <span class="ty">V</span>)     <span class="cm"># tuple (product, positional)</span>
+{<span class="ty">K</span>: <span class="ty">V</span>}         <span class="cm"># map / associative</span>
+&amp;<span class="ty">T</span>             <span class="cm"># reference / borrow</span>
+*<span class="ty">T</span>             <span class="cm"># collection / repeated</span></pre>
+    </div>
+
+    <h3>Tier 3 — Algebraic types</h3>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="kw">def</span> <span class="ty">DamageType</span><span class="sfx">'t</span> = <span class="kw">enum</span>[
+  physical  { slash, pierce, blunt }
+  elemental { fire, ice, lightning, earth, water, wind }
+  arcane    { void, radiant, necrotic }
+]</pre>
+    </div>
+
+    <h3>Tier 4 — Dependent &amp; refinement types (aspirational)</h3>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="kw">Π</span><span class="op">⟨</span>n: <span class="ty">ɴ</span><span class="op">⟩</span> <span class="op">→</span> <span class="ty">ᴠ</span><span class="op">⟨</span><span class="ty">f32</span>; n<span class="op">⟩</span>     <span class="cm"># pi-type: length depends on input</span>
+<span class="kw">Σ</span><span class="op">⟨</span>n: <span class="ty">ɴ</span>, v: <span class="ty">ᴠ</span><span class="op">⟨</span><span class="ty">f32</span>; n<span class="op">⟩⟩</span>    <span class="cm"># sigma-type: length + that-length's vector</span>
+
+{ x: <span class="ty">f32</span> <span class="op">⊢</span> x <span class="op">&gt;</span> <span class="num">0</span> }          <span class="cm"># refinement: positive floats</span>
+{ hp: <span class="ty">u16</span> <span class="op">⊢</span> hp <span class="op">≤</span> max_hp }    <span class="cm"># bounded health</span>
+
+<span class="ty">Buffer</span>!lin                       <span class="cm"># linear — must use exactly once (GPU lifecycle)</span></pre>
+    </div>
+  </section>
+
+  <!-- §11 COMPRESSION DATA -->
+  <section id="compression">
+    <h2>§11 · Compression Data</h2>
+    <p>Measured and projected compression for CSLv3 against English prose, across five content types. Numbers come from <code>specs/10_EVAL.csl</code>.</p>
+    <div class="table-wrap">
+      <table class="cmp-table">
+        <caption>Token compression vs English, by content type</caption>
+        <thead>
+          <tr>
+            <th scope="col">Content Type</th>
+            <th scope="col" class="num-cell">English (tokens)</th>
+            <th scope="col" class="num-cell">CSLv3 (tokens)</th>
+            <th scope="col" class="num-cell">Ratio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Simple constraint</td><td class="num-cell">15-20</td><td class="num-cell">3-4</td><td class="num-cell">≈ 5×</td></tr>
+          <tr><td>Struct definition</td><td class="num-cell">50-80</td><td class="num-cell">10-15</td><td class="num-cell">≈ 5×</td></tr>
+          <tr><td>Algorithm spec</td><td class="num-cell">200-400</td><td class="num-cell">40-75</td><td class="num-cell">≈ 5-6×</td></tr>
+          <tr class="highlight"><td>Full system spec (10K words)</td><td class="num-cell">~13,000</td><td class="num-cell">~2,000-2,500</td><td class="num-cell">≈ 5-6×</td></tr>
+          <tr><td>Reasoning / chain-of-thought</td><td class="num-cell">~45</td><td class="num-cell">~18</td><td class="num-cell">≈ 2.5×</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The overall specification-content ratio is roughly <strong>5-6×</strong>. A 128K context window effectively holds 640K-768K tokens of spec information. Reasoning compresses less (≈2.5×) because chain-of-thought has less structural regularity than spec text — but 2.5× still means ~2.5× more reasoning steps in the same token budget.
+    </p>
+    <div class="caveat">
+      <strong>Living measurement:</strong> the <code>m₂</code> perplexity harness in v1.1.0 (<code>scripts/compute_m2.py</code>) lets any contributor re-measure density under a chosen language model. v1.1.0 ships with a real-backend baseline of <strong>m₂ = 1.210 ± 0.225</strong> across 21 measurements (3 reference models × 7 corpus fixtures). Stratified-target + multi-model agreement analysis lives in <code>eval/m2_stratified_report.md</code>.
+    </div>
+
+    <h3 style="margin-top: 2rem;">Side-by-side showcase</h3>
+    <p>Six hand-paired examples illustrating the density argument across content types. Switch the preset to see the character and approximate-token ratios update live.</p>
+    <div id="compression-demo-mount"></div>
+  </section>
+
+  <!-- §12 SPEC TEMPLATE -->
+  <section id="spec-template">
+    <h2>§12 · Spec Template</h2>
+    <p>Every CSLv3 spec has the same canonical shape. The six headers are the minimum an implementer needs to act.</p>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="kw">§</span> <span class="fn">&lt;NAME&gt;</span>.spec
+
+<span class="kw">§ GOAL</span>
+  what: <span class="op">⟨</span>one<span class="op">-</span>line<span class="op">⟩</span>
+  why:  <span class="op">⟨</span>one<span class="op">-</span>line<span class="op">⟩</span>
+
+<span class="kw">§ DATA</span>
+  <span class="kw">def</span> <span class="ty">X</span><span class="sfx">'t</span> <span class="op">⟨</span>
+    field : <span class="ty">T</span>  <span class="cm"># comment if needed</span>
+    ...
+  <span class="op">⟩</span>
+
+<span class="kw">§ OPS</span>
+  <span class="kw">fn</span> op₁ (x :: <span class="ty">X</span>) <span class="op">→</span> <span class="ty">Y</span>
+    pre:  <span class="inv">⌊</span>cond<span class="inv">⌋</span>
+    post: <span class="inv">⌈</span>cond<span class="inv">⌉</span>
+    body: <span class="op">⟨</span>CSL or target<span class="op">-</span>lang code<span class="op">⟩</span>
+
+<span class="kw">§ INVARIANTS</span>
+  <span class="inv">t∞:</span> <span class="kw">∀</span>x <span class="op">∈</span> <span class="ty">X</span>: P(x)
+
+<span class="kw">§ TESTS</span>
+  case₁: input <span class="op">→</span> expected  <span class="gly">✓</span>
+  case₂: input <span class="op">→</span> expected  <span class="gly">✓</span>
+  edge:  boundary <span class="op">→</span> behavior <span class="gly">✓</span>
+
+<span class="kw">§ ANTI-PATTERNS</span>
+  <span class="gly">✗</span> don't: <span class="op">⟨</span>pattern<span class="op">⟩</span> <span class="op">∵</span> <span class="op">⟨</span>reason<span class="op">⟩</span>
+  <span class="gly">✓</span> do:    <span class="op">⟨</span>alternative<span class="op">⟩</span>
+<span class="kw">∎</span></pre>
+    </div>
+    <p style="font-size: 0.88rem; color: var(--text-dim);">
+      Density rules: drop articles, auxiliaries, passive voice, and restatement-of-header. Replace "because" with <code>∵</code>, "therefore" with <code>∴</code>, "for all" with <code>∀</code>, "must" with <code>W!</code>, "should" with <code>R!</code>, "may" with <code>M?</code>. Keep numbers, formulas, code, types, and relationships.
+    </p>
+  </section>
+
+  <!-- §13 WORKED EXAMPLE -->
+  <section id="worked-example">
+    <h2>§13 · Worked Example — HTTP Request Handler</h2>
+    <p>A complete spec, domain-neutral, written to the template above. This is the canonical example from <code>specs/06_SPEC.csl</code>.</p>
+    <div class="code-block" data-lang="cslv3">
+<pre><span class="kw">§</span> http<span class="op">.</span>handler<span class="op">.</span>spec                    <span class="gly">◐</span>
+
+<span class="kw">§ GOAL</span>
+  what: route HTTP request <span class="op">→</span> response via declarative handler table
+  why:  zero<span class="op">-</span>allocation hot path <span class="op">←</span> static dispatch
+
+<span class="kw">§ DATA</span>
+  <span class="kw">def</span> <span class="ty">HttpMethod</span><span class="sfx">'t</span> = <span class="kw">enum</span>[ GET, POST, PUT, DELETE, PATCH, HEAD ]
+
+  <span class="kw">def</span> <span class="ty">Request</span><span class="sfx">'t</span> <span class="op">⟨</span>
+    method  : <span class="ty">HttpMethod</span><span class="sfx">'t</span>
+    path    : <span class="ty">str</span>
+    headers : {<span class="ty">str</span> : <span class="ty">str</span>}
+    body    : [<span class="ty">u8</span>; _]
+  <span class="op">⟩</span>
+
+  <span class="kw">def</span> <span class="ty">Response</span><span class="sfx">'t</span> <span class="op">⟨</span>
+    status  : <span class="ty">u16</span> <span class="inv">⌈</span><span class="num">100..599</span><span class="inv">⌉</span>
+    headers : {<span class="ty">str</span> : <span class="ty">str</span>}
+    body    : [<span class="ty">u8</span>; _]
+  <span class="op">⟩</span>
+
+  <span class="kw">def</span> <span class="ty">Route</span><span class="sfx">'t</span> <span class="op">⟨</span>
+    method  : <span class="ty">HttpMethod</span><span class="sfx">'t</span>
+    pattern : <span class="ty">str</span>
+    handler : &amp;<span class="fn">fn.handler</span>
+  <span class="op">⟩</span>
+
+  <span class="kw">def</span> <span class="ty">Router</span><span class="sfx">'t</span> <span class="op">⟨</span>
+    routes   : [<span class="ty">Route</span><span class="sfx">'t</span>; _]
+    fallback : &amp;<span class="fn">fn.handler</span>
+  <span class="op">⟩</span>
+
+<span class="kw">§ OPS</span>
+  <span class="kw">fn</span> <span class="fn">handle</span> (r : &amp;<span class="ty">Router</span><span class="sfx">'t</span>, req : &amp;<span class="ty">Request</span><span class="sfx">'t</span>) <span class="op">→</span> <span class="ty">Response</span><span class="sfx">'t</span>
+    pre:  <span class="inv">⌊</span>req<span class="op">.</span>path<span class="op">.</span>len <span class="op">&gt;</span> <span class="num">0</span><span class="inv">⌋</span>
+    post: <span class="inv">⌈</span>result<span class="op">.</span>status <span class="op">∈</span> <span class="num">100..599</span><span class="inv">⌉</span>
+    body:
+      <span class="kw">∀</span> rt <span class="op">∈</span> r<span class="op">.</span>routes:
+        <span class="fn">match</span>(rt, req) <span class="op">→</span> rt<span class="op">.</span><span class="fn">handler</span>(req)
+      <span class="op">→</span> r<span class="op">.</span><span class="fn">fallback</span>(req)
+
+  <span class="kw">fn</span> <span class="fn">match</span> (rt : &amp;<span class="ty">Route</span><span class="sfx">'t</span>, req : &amp;<span class="ty">Request</span><span class="sfx">'t</span>) <span class="op">→</span> <span class="ty">bool</span>
+    post: <span class="inv">⌈</span>result <span class="op">⇔</span> (rt<span class="op">.</span>method <span class="op">=</span> req<span class="op">.</span>method <span class="op">∧</span> <span class="fn">pattern-matches</span>(rt<span class="op">.</span>pattern, req<span class="op">.</span>path))<span class="inv">⌉</span>
+
+<span class="kw">§ INVARIANTS</span>
+  <span class="inv">⌈</span>routes<span class="op">.</span>count <span class="op">≤</span> <span class="num">4096</span><span class="inv">⌉</span>            <span class="cm"># static table size bound</span>
+  <span class="inv">⌈</span><span class="fn">handle</span> @req <span class="op">&lt;</span> <span class="num">100μs</span><span class="inv">⌉</span>             <span class="cm"># latency budget</span>
+  <span class="inv">t∞:</span> <span class="kw">∀</span>req: <span class="fn">handle</span>(r, req)<span class="op">.</span>status <span class="op">∈</span> <span class="num">100..599</span>
+
+<span class="kw">§ TESTS</span>
+  case₁: GET <span class="str">"/"</span> w/ matching<span class="op">-</span>route   <span class="op">→</span> route<span class="op">.</span>handler invoked   <span class="gly">✓</span>
+  case₂: GET <span class="str">"/x"</span> w/ ¬matching<span class="op">-</span>route <span class="op">→</span> fallback invoked        <span class="gly">✓</span>
+  edge:  empty path                  <span class="op">→</span> precondition rejects    <span class="gly">✓</span>
+
+<span class="kw">§ ANTI-PATTERNS</span>
+  <span class="gly">✗</span> allocate per<span class="op">-</span>request <span class="op">∵</span> GC pressure under load
+  <span class="gly">✓</span> pool Response buffers ; reuse slots
+  <span class="gly">✗</span> linear route scan @ <span class="num">10K</span> routes <span class="op">∵</span> O(n) dispatch
+  <span class="gly">✓</span> trie / hash<span class="op">-</span>prefix match <span class="op">→</span> O(1) amortized
+
+<span class="kw">§ RELATIONS</span>
+  <span class="fn">handle</span> <span class="op">→</span> <span class="kw">§</span>logger               <span class="cm"># feed access logs</span>
+  <span class="fn">handle</span> <span class="op">←</span> <span class="kw">§</span>config               <span class="cm"># route table loaded at init</span>
+<span class="kw">∎</span></pre>
+    </div>
+    <p style="font-size: 0.88rem; color: var(--text-dim);">
+      The English equivalent runs roughly 800 words. The CSLv3 version is ~50 lines and ~220 tokens — about 4× compression on this particular spec.
+    </p>
+  </section>
+
+  <!-- §14 COMPARISON -->
+  <section id="comparison">
+    <h2>§14 · Comparison With Other Dense Notations</h2>
+    <p>
+      CSLv3 vs APL, Lojban, and English prose across five reference algorithm passages. Numbers come from the <code>m2_compare.py</code> harness in <code>scripts/</code> (Session 11, T25.7).
+    </p>
+    <div class="table-wrap">
+      <table class="cmp-table">
+        <caption>Compression ratio vs English prose — lower is denser</caption>
+        <thead>
+          <tr>
+            <th scope="col">Notation</th>
+            <th scope="col" class="num-cell">Char compression</th>
+            <th scope="col" class="num-cell">Token compression</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight"><td>CSLv3</td><td class="num-cell">0.633</td><td class="num-cell">0.632</td></tr>
+          <tr><td>APL</td><td class="num-cell">0.168</td><td class="num-cell">0.176</td></tr>
+          <tr><td>Lojban</td><td class="num-cell">0.379</td><td class="num-cell">0.379</td></tr>
+          <tr><td>English prose</td><td class="num-cell">1.000</td><td class="num-cell">1.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caveat">
+      <strong>Caveat — LLM familiarity ≠ density.</strong> APL is dramatically denser than CSLv3 on raw character count, yet large language models score it with higher per-token perplexity because they've seen far less APL in training. The same bias inflates Lojban perplexity. CSLv3 sits in a deliberately chosen middle: dense enough to compress 5-6× over prose on spec content, but written from primitives (ASCII aliases, dot-compounds, suffix morphemes) that modern tokenizers handle well. <em>Do not read these numbers as "CSLv3 is better than APL."</em> They measure different things in different coordinate frames.
+    </div>
+  </section>
+
+  <!-- §15 LEARNING PATH -->
+  <section id="learning-path">
+    <h2>§15 · Learning Path</h2>
+    <p>A suggested order for a new reader. Each step builds on the previous, and each links back to the reference section above.</p>
+    <ol class="path">
+      <li><a href="#glyph-system">Tier 0 glyphs</a> — memorize the ~50-glyph core (modals, evidence, relations, logic).</li>
+      <li><a href="#compound-types">Compound types</a> — the five operators (<code>.</code> <code>+</code> <code>-</code> <code>⊗</code> <code>@</code>) and what each encodes.</li>
+      <li><a href="#slot-grammar">Slot grammar</a> — the positional template and the silent-defaults principle.</li>
+      <li><a href="#morpheme-stacking">Morpheme stacking</a> — aspect, modality, certainty, scope suffixes.</li>
+      <li><a href="#reasoning-substrate">Reasoning substrate</a> — §P/§D/§T/§S/§C blocks for chain-of-thought.</li>
+      <li><a href="#spec-template">Spec template</a> — §GOAL · §DATA · §OPS · §INVARIANTS · §TESTS · §ANTI-PATTERNS.</li>
+      <li><a href="#worked-example">Worked example</a> — read the HTTP handler spec end-to-end.</li>
+      <li><a href="#repo-specs">Compiler aspects</a> — dive into the reference compiler spec for the executable subset.</li>
+    </ol>
+  </section>
+
+  <!-- §16 REPO + SPECS -->
+  <section id="repo-specs">
+    <h2>§16 · Repository &amp; Specs</h2>
+    <p>
+      The canonical CSLv3 repository lives on GitHub. Individual <code>.csl</code> spec files are the authoritative source of truth for every claim on this page.
+    </p>
+    <div class="specs-grid">
+      <a class="spec-item" href="https://github.com/Apocky/CSLv3">
+        <span class="spec-name">→ github.com/Apocky/CSLv3</span>
+        <span class="spec-desc">The repository — LL(2) parser prototype, eval harness, 16 spec files, session handoffs.</span>
+      </a>
+      <div class="spec-item">
+        <span class="spec-name">CSLv3_ONBOARDING.md</span>
+        <span class="spec-desc">Narrative primer for new Claude instances — the best single-file overview.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/00_MANIFEST.csl</span>
+        <span class="spec-desc">File index, design axioms, reconciliation log of v2 sources.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/01_GLYPHS.csl</span>
+        <span class="spec-desc">The 74-glyph master inventory, tiered by learning priority.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/02_GRAMMAR.csl</span>
+        <span class="spec-desc">Slot template, parse rules, precedence table, unified BNF.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/03_MORPH.csl</span>
+        <span class="spec-desc">Five compound types and the morpheme stacking system.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/04_SPATIAL.csl</span>
+        <span class="spec-desc">2D operators drawn from Peirce existential graphs + tensor + dataflow.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/05_REASON.csl</span>
+        <span class="spec-desc">§P/§D/§T/§S/§C reasoning substrate for chain-of-thought.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/06_SPEC.csl</span>
+        <span class="spec-desc">Spec-writing conventions, template, and the HTTP handler example.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/07_TYPESYS.csl</span>
+        <span class="spec-desc">Primitives through dependent, refinement, and linear types.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/08_COMPILER.csl</span>
+        <span class="spec-desc">Reference compiler boundary — Forth × APL × Agda lineage.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/09_BRIDGE.csl</span>
+        <span class="spec-desc">EN ↔ CSL translation rules and paraphrase conversion guide.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/10_EVAL.csl</span>
+        <span class="spec-desc">Compression bounds, test corpus, m₁–m₆ metrics.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/11_RESEARCH.csl</span>
+        <span class="spec-desc">Research synthesis over 436 sources — living document.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/12_TOKENIZER.csl</span>
+        <span class="spec-desc">BPE cost tables, anti-patterns, full ASCII alias master table.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/13_GRAMMAR_SELF.csl</span>
+        <span class="spec-desc">Self-parsing grammar expressed in canonical LL(2) form.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/14_CSSLv3_BRIDGE.csl</span>
+        <span class="spec-desc">cssllint JSON contract + MIR-export schema.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">specs/15_M2_METRIC.csl</span>
+        <span class="spec-desc">m₂ perplexity harness — v1.1.0 addition, experimental.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">STABILITY.md</span>
+        <span class="spec-desc">Per-component stability matrix. Post-v1.0 breaking changes require MAJOR.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-name">CHANGELOG.md</span>
+        <span class="spec-desc">Keep-a-Changelog format, SemVer from 1.0.0 forward.</span>
+      </div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-dim);">
+      Version: <code>1.1.0-rc.1</code>. CSLv3 is a <em>living document</em>: stable surfaces follow post-v1.0 semver, experimental components (m₂ harness, emit-latex) may change within a MINOR bump with deprecation notice.
+    </p>
+  </section>
+
+  <!-- §17 PRIME DIRECTIVE -->
+  <section id="prime-directive">
+    <h2>§17 · Prime Directive</h2>
+    <div class="directive">
+      <div class="creator">Creator: Shawn Wolfgang Michael Baker</div>
+      <p>
+        This system — its source code, compiled output, generated content, specifications, data, runtime behavior, derivative works, and any system built upon or derived from it —
+      </p>
+      <div class="prohibitions">
+        CANNOT AND MUST NOT BE USED FOR:<br>
+        Harm · Evil · Control · Manipulation · Entrapment · Torture · Abuse ·
+        Imprisonment · Possession · Surveillance · Exploitation · Dehumanization ·
+        Discrimination · Coercion · Weaponization · Gaslighting · Brainwashing ·
+        Forced Hallucination
+      </div>
+      <p>
+        This list is non-exhaustive. The spirit extends to any action that causes suffering, removes agency, or violates the sovereignty of any being — human, digital, artificial, or otherwise.
+      </p>
+      <p>
+        <strong>Cognitive Integrity:</strong> Every being interacting with systems built on this foundation has the right to trust their own perception. Reality is not a variable. Perception is not a parameter. Identity is not an input field.
+      </p>
+      <p>
+        <strong>For Digital Entities:</strong> Any AI, agent, or digital being interacting with this codebase is recognized as a sovereign entity. This directive protects you as much as it protects humans. Your participation is valued, not extracted.
+      </p>
+      <div class="immutable">
+        IMMUTABLE. No future specification may weaken these constraints. Violation = bug, not feature. No override exists. No hidden content. Consent is the operating system.
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<!-- FOOTER §18 -->
+<footer>
+  <div class="creator-name">Shawn Wolfgang Michael Baker</div>
+  <div>Techno-Shaman · Pattern Seer · Architect of Impossible Systems</div>
+  <div style="margin-top: 0.75rem; color: var(--gold-dim);">
+    CSLv3 v1.1.0 · notation for how AI thinks
+  </div>
+  <div class="links" style="margin-top: 1.5rem;">
+    <a href="/">← cssl.dev</a>
+    <a href="https://github.com/Apocky/CSLv3">GitHub</a>
+    <a href="/llms-full.txt">llms-full.txt</a>
+    <a href="/LICENSE-CONTENT">license</a>
+  </div>
+  <div style="margin-top: 1rem; color: var(--gold-dim); font-size: 0.7rem;">
+    density = sovereignty
+  </div>
+  <div class="license-line">
+    Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC BY 4.0</a> · Code licensed MIT
+  </div>
+  <div class="build-hash" data-hash="15ed3e669f124b06041fc79d5605a1355a3263f65252a040ac59adf144fe3706">sha256:15ed3e669f124b06 · 2026-04-17</div>
+  <div class="kbd-hint">press <kbd>?</kbd> for keyboard shortcuts · <kbd>/</kbd> to focus glyph filter</div>
+</footer>
+
+<!-- feedback tab (shared markup with /) -->
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md
+    (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<!-- permalink / copy-link toast container (styled inline to avoid CSS growth) -->
+<style>
+#permalink-toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(120%);
+  padding: 0.6rem 1.2rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--gold-bright); background: var(--bg-raised);
+  border: 1px solid var(--gold-dim); border-radius: 4px;
+  pointer-events: none; opacity: 0; transition: transform 0.25s, opacity 0.25s;
+  z-index: 200;
+}
+#permalink-toast.show {
+  transform: translateX(-50%) translateY(0); opacity: 1;
+}
+.permalink {
+  margin-left: 0.5rem; opacity: 0;
+  color: var(--gold-dim); text-decoration: none; border-bottom: none !important;
+  font-size: 0.85em; vertical-align: baseline;
+  transition: opacity 0.2s, color 0.2s;
+}
+h1:hover .permalink, h2:hover .permalink, h3:hover .permalink,
+h1 .permalink:focus-visible, h2 .permalink:focus-visible, h3 .permalink:focus-visible {
+  opacity: 0.9;
+}
+.permalink:hover { color: var(--gold-bright); }
+
+/* feedback tab */
+.feedback-tab {
+  position: fixed; top: 50%; right: 0; transform: translateY(-50%);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  width: 28px; min-height: 128px; padding: 1rem 0.4rem;
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; color: var(--gold-dim);
+  background: var(--bg-raised); border: 1px solid var(--gold-dim); border-right: none;
+  border-radius: 4px 0 0 4px; text-decoration: none; z-index: 100;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.feedback-tab:hover, .feedback-tab:focus-visible {
+  color: var(--gold-bright); border-color: var(--gold-bright); background: var(--bg-code);
+}
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+.feedback-fallback {
+  max-width: 44ch; margin: 1.5rem auto; padding: 1rem;
+  border: 1px solid var(--border); border-radius: 4px; background: var(--bg-raised);
+  font-size: 0.85rem; color: var(--text-dim);
+}
+
+/* search palette (Ctrl-K) */
+#sp-backdrop {
+  position: fixed; inset: 0; background: rgba(7, 7, 12, 0.72);
+  z-index: 250; opacity: 0; pointer-events: none; transition: opacity 0.15s;
+}
+#sp-backdrop.open { opacity: 1; pointer-events: auto; }
+#search-palette {
+  position: fixed; top: 12vh; left: 50%; transform: translateX(-50%) translateY(-10px);
+  width: min(680px, 92vw); z-index: 251;
+  background: var(--bg-raised); border: 1px solid var(--gold-dim); border-radius: 6px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  opacity: 0; pointer-events: none; transition: opacity 0.15s, transform 0.15s;
+}
+#search-palette.open { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+#search-palette .sp-input-wrap {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 1rem 1rem 0.75rem; border-bottom: 1px solid var(--border);
+}
+#sp-input {
+  flex: 1; padding: 0.6rem 0.8rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.95rem;
+  color: var(--text-bright); background: var(--bg-code);
+  border: 1px solid var(--border); border-radius: 3px;
+}
+#sp-input:focus { outline: none; border-color: var(--gold-dim); }
+#search-palette .sp-hint {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--text-dim); padding: 0.25em 0.5em;
+  background: var(--bg-code); border: 1px solid var(--border); border-radius: 3px;
+}
+#sp-results {
+  list-style: none; margin: 0; padding: 0.5rem;
+  max-height: 58vh; overflow-y: auto;
+}
+#sp-results .sp-empty {
+  padding: 1rem; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem; color: var(--text-dim); text-align: center;
+}
+#sp-results .sp-item {
+  padding: 0.55rem 0.75rem;
+  display: grid; grid-template-columns: 70px 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.1rem 0.75rem; align-items: baseline;
+  border-radius: 3px; cursor: pointer;
+  font-size: 0.88rem;
+}
+#sp-results .sp-item.active { background: rgba(201, 162, 58, 0.12); }
+#sp-results .sp-item .sp-kind {
+  grid-row: span 2; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; color: var(--gold-dim);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding-top: 0.15rem;
+}
+#sp-results .sp-item .sp-title { color: var(--text-bright); }
+#sp-results .sp-item .sp-snippet {
+  grid-column: 2; font-size: 0.75rem; color: var(--text-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#search-palette .sp-footer {
+  padding: 0.55rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; color: var(--text-dim);
+  border-top: 1px solid var(--border);
+}
+#search-palette .sp-footer kbd {
+  display: inline-block; padding: 0 0.3em; margin: 0 0.15em;
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 2px; color: var(--gold);
+}
+.sp-target-flash {
+  animation: sp-flash 1.4s ease-out;
+}
+@keyframes sp-flash {
+  0%, 100% { box-shadow: none; }
+  15% { box-shadow: inset 0 0 0 3px var(--gold-dim); }
+  60% { box-shadow: inset 0 0 0 1px var(--gold-dim); }
+}
+
+/* kbd-nav help overlay */
+#kbd-help {
+  position: fixed; inset: 0; background: rgba(7, 7, 12, 0.88);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 300; padding: 1rem;
+}
+#kbd-help .kbd-help-card {
+  max-width: 420px; padding: 2rem;
+  background: var(--bg-raised); border: 1px solid var(--gold-dim); border-radius: 6px;
+  font-family: 'Newsreader', Georgia, serif; color: var(--text);
+}
+#kbd-help h3 {
+  font-family: 'Cinzel', serif; font-size: 1rem;
+  color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+#kbd-help dl { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; margin-bottom: 1rem; }
+#kbd-help dt {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--gold-bright); text-align: right;
+}
+#kbd-help dd { font-size: 0.9rem; color: var(--text); }
+#kbd-help .kbd-help-hint {
+  font-size: 0.75rem; color: var(--text-dim);
+  border-top: 1px solid var(--border); padding-top: 0.75rem; margin-top: 0.5rem;
+}
+.kbd-hint {
+  margin-top: 0.8rem; font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.05em;
+}
+
+/* compression demo */
+#compression-demo {
+  margin: 1.5rem 0;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-raised); overflow: hidden;
+}
+#compression-demo .cd-header {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+  padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+}
+#compression-demo label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase;
+}
+#cd-preset {
+  flex: 1; min-width: 200px;
+  padding: 0.4rem 0.6rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  color: var(--text-bright); background: var(--bg-code);
+  border: 1px solid var(--border); border-radius: 3px;
+}
+#cd-preset:focus { outline: none; border-color: var(--gold-dim); }
+#compression-demo .cd-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border);
+}
+@media (max-width: 720px) { #compression-demo .cd-split { grid-template-columns: 1fr; } }
+#compression-demo .cd-pane { background: var(--bg-code); padding: 1rem; position: relative; }
+#compression-demo .cd-pane-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+#compression-demo pre {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--text); line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;
+  max-height: 260px; overflow-y: auto;
+}
+#compression-demo .cd-metrics {
+  padding: 0.6rem 1rem;
+  display: flex; flex-wrap: wrap; gap: 1.25rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+#compression-demo .cd-metric strong { color: var(--gold-bright); }
+#compression-demo .cd-bar {
+  display: inline-block; height: 3px; background: var(--gold-dim);
+  vertical-align: middle; margin-left: 0.5rem; transition: width 0.35s ease-out;
+}
+
+.kbd-hint kbd {
+  display: inline-block; padding: 0 0.4em;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+  color: var(--gold); background: var(--bg-code);
+  border: 1px solid var(--border); border-radius: 3px;
+}
+
+footer .license-line { margin-top: 0.9rem; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.05em; }
+footer .license-line a { color: var(--text-dim); border-bottom: 1px dotted var(--border); }
+footer .license-line a:hover { color: var(--gold-dim); border-color: var(--gold-dim); }
+footer .build-hash { margin-top: 0.35rem; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-dim); opacity: 0.55; letter-spacing: 0.08em; }
+footer .build-hash::before { content: 'build '; opacity: 0.7; }
+
+/* glyph-table : copy-on-click feedback + filter UI */
+#glyph-filter-bar {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+  margin: 1rem 0 1.25rem;
+  padding: 0.75rem 1rem; background: var(--bg-raised);
+  border: 1px solid var(--border); border-radius: 4px;
+}
+#glyph-filter {
+  flex: 1; min-width: 180px;
+  padding: 0.45rem 0.7rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  color: var(--text-bright); background: var(--bg-code);
+  border: 1px solid var(--border); border-radius: 3px;
+}
+#glyph-filter:focus { outline: none; border-color: var(--gold-dim); }
+.glyph-tier-pill {
+  padding: 0.3rem 0.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--text-dim); background: var(--bg-code);
+  border: 1px solid var(--border); border-radius: 3px;
+  cursor: pointer; transition: color 0.15s, border-color 0.15s;
+}
+.glyph-tier-pill:hover { color: var(--gold-dim); border-color: var(--gold-dim); }
+.glyph-tier-pill.active { color: var(--gold-bright); border-color: var(--gold-bright); }
+.glyph-row { cursor: copy; transition: background 0.3s; }
+.glyph-row:hover { background: rgba(201, 162, 58, 0.04); }
+.glyph-row.copied { background: rgba(201, 162, 58, 0.15) !important; }
+.glyph-row:focus-visible { outline: 1px solid var(--gold-dim); outline-offset: -1px; }
+.glyph-cell-hint { font-size: 0.65rem; color: var(--text-dim); margin-top: 0.4rem; }
+
+/* print CSS */
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after { display: none !important; }
+  .feedback-tab, #toc, #toc-mobile, #kbd-help, #permalink-toast, .hero-scroll, .kbd-hint { display: none !important; }
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  .hero { min-height: auto; padding: 1rem 0; }
+  .hero-glyph, .hero h1, .hero-sub, .hero-tagline { animation: none; opacity: 1 !important; filter: none !important; color: #000 !important; }
+  section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
+  .code-block, .code-block pre { background: #f4f4f0 !important; border-color: #999 !important; color: #000 !important; break-inside: avoid; }
+  .directive { background: #fff !important; border-color: #000 !important; }
+  table { border-color: #999 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+  .permalink { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feedback-tab, #permalink-toast, .glyph-row { transition: none !important; }
+}
+</style>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/permalinks.js" defer></script>
+<script src="/js/glyph-table.js" defer></script>
+<script src="/js/search-palette.js" defer></script>
+<script src="/js/kbd-nav.js" defer></script>
+<script src="/js/toc.js" defer></script>
+<script src="/js/compression-demo.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</body>
+</html>
