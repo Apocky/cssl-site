@@ -3,19 +3,26 @@
 § SITE
   creator   : Shawn Wolfgang Michael Baker
   tagline   : density = sovereignty
-  pages     : / (Sigil language) , /CSLv3 (CSLv3 notation reference)
+  pages     : / (CSSLv3 · Sigil language) , /CSLv3 (CSLv3 notation reference)
   license   : content CC-BY-4.0 ; code MIT
 
 § WHAT-IS-HERE
-  I> two-distinct-things : Sigil = programming-language , CSLv3 = notation
+  I> two-distinct-things : Sigil/CSSLv3 = programming-language , CSLv3 = notation
   I> ¬ conflate ← they share density-thesis ¬ implementation
-  I> Sigil ≡ CSSL (same language, two names)
+  I> Sigil ≡ CSSL ≡ CSSLv3 (same language, multiple names)
 
-## / — Sigil
-Sigil is an AI-first programming language for game engines. One source
-compiles to native x86-64 (AVX2+FMA3) + SPIR-V (Vulkan compute). Zero-cost
-dimensional analysis, coordinate-space tracking, SDF as a compiler-aware
-primitive. Designed for how AI generates code, not how humans type.
+## / — CSSLv3 · Sigil
+CSSLv3 (Caveman Sigil Substrate Language v3), also called Sigil, is a
+hardware-first systems language with a working compiler (31 Rust crates,
+26 spec files). Key features: source-to-source autodiff (no LLVM/Enzyme),
+Koka row-polymorphic effect system with 28+ built-in effects (NoAlloc,
+Deadline, Realtime, Audit, Telemetry, GPU, SIMD256, etc.), LiquidHaskell-
+style refinement types with Z3/CVC5 SMT backing, Lipschitz-tagged SDF
+types, Pony-6 capability types, and no LLVM dependency. Stage-0 backends:
+Cranelift (CPU) + rspirv (GPU/SPIR-V). Targets: Vulkan 1.4, Level-Zero
+(Intel Arc), D3D12, Metal, WebGPU, console stubs. Dual syntax surface:
+CSLv3-native glyphs + Rust-hybrid ASCII, both parse to the same HIR.
+Source files use .cssl extension.
 
 ## /CSLv3 — Caveman Spec Language v3
 CSLv3 is an ultra-dense specification notation (5-6× compression over

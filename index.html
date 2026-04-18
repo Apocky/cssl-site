@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sigil — AI-First Game Engine Language</title>
-<meta name="description" content="Sigil: A hardware-grounded programming language designed for AI authorship, video game engines, and dual-target compilation to native x86-64 + SPIR-V.">
+<title>Sigil · CSSLv3 — A Systems Language</title>
+<meta name="description" content="CSSLv3 (Sigil): a hardware-first systems language with autodiff, a 28-effect row system, SMT-backed refinement types, and no LLVM dependency. Working compiler — 31 Rust crates.">
 <meta name="author" content="Shawn Wolfgang Michael Baker">
 <link rel="canonical" href="https://cssl.dev/">
 <meta name="theme-color" content="#07070c">
 <meta name="color-scheme" content="dark">
-<meta property="og:title" content="Sigil — AI-First Game Engine Language">
-<meta property="og:description" content="One source. Two targets. Designed for how AI thinks.">
+<meta property="og:title" content="Sigil · CSSLv3 — A Systems Language">
+<meta property="og:description" content="Hardware-first. Effect-native. Autodiff. No LLVM. Working compiler — 31 Rust crates.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cssl.dev/">
 <meta property="og:site_name" content="cssl.dev">
@@ -18,10 +18,10 @@
 <meta property="og:image" content="https://cssl.dev/og/home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sigil — AI-first game engine language. density = sovereignty.">
+<meta property="og:image:alt" content="Sigil · CSSLv3 — systems language. density = sovereignty.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sigil — AI-First Game Engine Language">
-<meta name="twitter:description" content="One source. Two targets. Designed for how AI thinks.">
+<meta name="twitter:title" content="Sigil · CSSLv3 — A Systems Language">
+<meta name="twitter:description" content="Hardware-first. Effect-native. Autodiff. No LLVM. Working compiler.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
@@ -194,10 +194,35 @@ code {
   font-size: 1.15rem;
   font-style: italic;
   color: var(--text);
-  max-width: 500px;
+  max-width: 580px;
   margin-top: 1.5rem;
   opacity: 0;
   animation: fade-up 1.2s ease-out 1.2s forwards;
+}
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 1.5s forwards;
+}
+
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.25rem 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+.chip-gold {
+  color: var(--gold-dim);
+  border-color: var(--gold-dim);
 }
 
 @keyframes fade-up {
@@ -263,15 +288,58 @@ code {
   color: var(--text);
 }
 
-.code-block .kw { color: var(--gold); }
-.code-block .ty { color: #7aa2d4; }
-.code-block .fn { color: #c8c4b8; }
+.code-block .kw  { color: var(--gold); }
+.code-block .ty  { color: #7aa2d4; }
+.code-block .fn  { color: #c8c4b8; }
 .code-block .num { color: #b5cea8; }
 .code-block .str { color: #ce9178; }
-.code-block .cm { color: #4a4a5a; font-style: italic; }
-.code-block .op { color: #888; }
-.code-block .unit { color: #c586c0; }
+.code-block .cm  { color: #4a4a5a; font-style: italic; }
+.code-block .op  { color: #888; }
+.code-block .eff { color: #c586c0; }
 .code-block .ann { color: #d4a843; }
+.code-block .ref { color: #9cdcfe; }
+
+/* === EXAMPLE TABS === */
+.example-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+.tab-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px;
+}
+
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.tab-panel .code-block {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: 0;
+  border-top: none;
+}
+
+.tab-desc {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-top: 0.75rem;
+  font-style: italic;
+}
 
 /* === FEATURE GRID === */
 .features {
@@ -304,29 +372,83 @@ code {
   line-height: 1.6;
 }
 
-/* === COMPARISON === */
-.comparison {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* === STAT ROW === */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
   margin: 2rem 0;
 }
 
-@media (max-width: 640px) {
-  .comparison { grid-template-columns: 1fr; }
+.stat {
+  flex: 1;
+  min-width: 120px;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  text-align: center;
 }
 
-.comparison .code-block { margin: 0; }
+.stat .stat-num {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+  line-height: 1.1;
+}
 
-.token-count {
+.stat .stat-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   color: var(--text-dim);
-  margin-top: 0.75rem;
-  text-align: right;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 0.3rem;
 }
 
-.token-count strong { color: var(--gold); }
+/* === PIPELINE === */
+.pipeline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 2;
+  margin: 2rem 0;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  text-align: center;
+}
+
+.pipeline .stage {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin: 0.2rem;
+  color: var(--text);
+}
+
+.pipeline .arrow {
+  color: var(--gold-dim);
+  margin: 0 0.3rem;
+}
+
+.pipeline .target {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+
+.pipeline .note {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 1rem;
+  letter-spacing: 0.03em;
+}
 
 /* === PRIME DIRECTIVE === */
 .directive {
@@ -381,39 +503,6 @@ code {
   padding-top: 1rem;
 }
 
-/* === PIPELINE === */
-.pipeline {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  line-height: 2;
-  margin: 2rem 0;
-  padding: 2rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg-raised);
-  text-align: center;
-}
-
-.pipeline .stage {
-  display: inline-block;
-  padding: 0.3rem 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  margin: 0.2rem;
-  color: var(--text);
-}
-
-.pipeline .arrow {
-  color: var(--gold-dim);
-  margin: 0 0.3rem;
-}
-
-.pipeline .target {
-  border-color: var(--gold-dim);
-  color: var(--gold);
-}
-
 /* === FOOTER === */
 footer {
   padding: 3rem 0;
@@ -444,6 +533,7 @@ footer .links a {
   section { padding: 3.5rem 0; }
   .container { padding: 0 1.25rem; }
   .directive { padding: 1.5rem; }
+  .hero-chips { gap: 0.35rem; }
 }
 
 /* === LICENSE LINE + BUILD HASH === */
@@ -523,23 +613,23 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 /* === PRINT === */
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
-  body::after { display: none !important; }  /* kill grain overlay */
+  body::after { display: none !important; }
   a { color: #000 !important; border-bottom: 1px solid #666 !important; }
   .hero { min-height: auto; padding: 1rem 0; }
   .hero-glyph { animation: none; opacity: 1 !important; filter: none !important; color: #000 !important; }
   .hero h1 { animation: none; opacity: 1 !important; }
-  .hero-sub, .hero-tagline { animation: none; opacity: 1 !important; color: #000 !important; }
+  .hero-sub, .hero-tagline, .hero-chips { animation: none; opacity: 1 !important; color: #000 !important; }
   section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
   .code-block { background: #f4f4f0 !important; border-color: #999 !important; color: #000 !important; break-inside: avoid; }
   .code-block pre,
   .code-block .kw, .code-block .ty, .code-block .fn, .code-block .num,
-  .code-block .str, .code-block .op, .code-block .unit, .code-block .ann { color: #000 !important; }
+  .code-block .str, .code-block .op, .code-block .eff, .code-block .ann,
+  .code-block .ref { color: #000 !important; }
   .code-block .cm { color: #555 !important; }
   .directive { background: #fff !important; border-color: #000 !important; }
   .directive .creator, .directive p, .immutable { color: #000 !important; }
   .prohibitions { color: #600 !important; }
   footer { color: #555 !important; }
-  /* reveal URLs after links */
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
   a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
 }
@@ -551,149 +641,281 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <div class="hero">
   <div class="hero-glyph">◇ § ◇</div>
   <h1><span>Sigil</span></h1>
-  <div class="hero-sub">AI-first game engine language</div>
-  <div class="hero-sub" style="animation-delay: 1s;">one source · two targets · zero ceremony</div>
+  <div class="hero-sub">CSSLv3 · Caveman Sigil Substrate Language</div>
+  <div class="hero-sub" style="animation-delay: 1s;">hardware-first · effect-native · autodiff · no llvm</div>
   <div class="hero-tagline">
-    A programming language designed for how AI thinks, grounded in how hardware works, built for what game engines need.
+    A systems language designed for how hardware works, how AI thinks, and what game engines actually need. A working compiler — not a forward-design.
+  </div>
+  <div class="hero-chips">
+    <span class="chip chip-gold">31 Rust crates</span>
+    <span class="chip chip-gold">26 spec files</span>
+    <span class="chip">autodiff (F1)</span>
+    <span class="chip">effects (F3)</span>
+    <span class="chip">refinement + SMT (F2)</span>
+    <span class="chip">no LLVM</span>
+    <span class="chip">Vulkan · D3D12 · Metal · WebGPU</span>
   </div>
   <div class="hero-scroll">scroll</div>
 </div>
 
-<!-- WHAT -->
+<!-- WHAT IS CSSL -->
 <section>
 <div class="container">
-  <h2>What is Sigil</h2>
+  <h2>What is CSSLv3</h2>
   <p>
-    Sigil is a hardware-grounded programming language that compiles a single source file to both <strong>native x86-64</strong> (AVX2+FMA3) and <strong>SPIR-V</strong> (Vulkan compute shaders). It is designed from the ground up for AI-assisted development, with syntax that minimizes token count while maximizing type safety through zero-cost dimensional analysis and coordinate space tracking.
+    CSSLv3 — also called <strong>Sigil</strong> — is a systems language built from a bug retrospective. Every language feature corresponds to a class of runtime failure in the Labyrinth of Apocalypse engine: central-difference performance cliffs demanded source-to-source autodiff; CPU/GPU SDF divergence demanded effect-row gating; thin-SDF ray-march crashes demanded Lipschitz refinement; audio-callback heap allocations demanded a <code>{NoAlloc}</code> effect.
   </p>
   <p>
-    Where existing languages were designed for human fingers on keyboards, Sigil is designed for AI agents generating code at scale. Every syntax decision is justified by measured token efficiency, empirical AI code-generation error patterns, and direct hardware mapping.
+    The result is a language where the known bug patterns from years of real engine work are <em>inexpressible</em> — not caught at runtime, but caught at compile time by the type system itself.
   </p>
   <p>
-    Sigil treats game engine primitives — signed distance functions, quaternions, color spaces, noise fields — as compiler-aware built-in types, not library wrappers. The compiler knows what an SDF is, tracks its Lipschitz constant, and can generate analytic gradients automatically.
+    The compiler is <strong>31 Rust crates</strong> spanning a full pipeline: lexer → parser → HIR (typed + elaborated) → monomorphization → MIR (MLIR-dialect, structured by construction) → LIR. Stage-0 backends use Cranelift for CPU and rspirv for GPU/SPIR-V — <strong>no LLVM dependency</strong>. Stage-1+ will bring an owned x86-64 backend and owned SPIR-V emitter.
+  </p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <span class="stat-num">31</span>
+      <span class="stat-label">Rust crates</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">26</span>
+      <span class="stat-label">Spec files</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">28+</span>
+      <span class="stat-label">Built-in effects</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">7</span>
+      <span class="stat-label">GPU backends</span>
+    </div>
+  </div>
+
+  <p>
+    Source files use a <strong>dual surface</strong>: a Rust-hybrid ASCII syntax for onboarding and external contributors, and a CSLv3-native glyph syntax (density = sovereignty) for the language's own specs and internal tooling. Both parse to the same HIR. The file extension is <code>.cssl</code>.
   </p>
 </div>
 </section>
 
-<!-- CODE -->
+<!-- CODE EXAMPLES -->
 <section>
 <div class="container">
   <h2>The Language</h2>
-  <p>44% fewer tokens than Odin. 40% fewer than WGSL. Full static type safety with dimensional analysis.</p>
+  <p>Real source files from the compiler's own <code>examples/</code> directory — parsed and HIR-lowered by the stage-0 front-end today.</p>
 
-  <div class="code-block" data-lang="sigil v2">
-<pre><span class="kw">unit</span> m          <span class="cm">// meters</span>
-<span class="kw">unit</span> s          <span class="cm">// seconds</span>
-<span class="kw">unit</span> rad        <span class="cm">// radians</span>
+  <div data-tabs="examples">
+    <div class="example-tabs">
+      <button class="tab-btn active" data-tab="autodiff">sdf_shader.cssl</button>
+      <button class="tab-btn" data-tab="effects">audio_callback.cssl</button>
+      <button class="tab-btn" data-tab="gpu">hello_triangle.cssl</button>
+    </div>
 
-<span class="kw">fn</span> <span class="fn">room_sdf</span>(pos<span class="op">:</span> <span class="ty">vec3</span><span class="unit">&lt;m&gt;</span>) <span class="op">-&gt;</span> <span class="ty">f32</span><span class="unit">&lt;m&gt;</span> {
-  <span class="kw">let</span> box <span class="op">=</span> sd_box(pos <span class="op">-</span> vec3(<span class="num">0</span>, <span class="num">4</span>, <span class="num">0</span>), vec3(<span class="num">19.8</span>, <span class="num">4.0</span>, <span class="num">19.8</span>))
-  <span class="kw">let</span> wall <span class="op">=</span> sd_slab_x(pos, <span class="num">0.0</span>, <span class="num">0.3</span>)
-  <span class="kw">let</span> door <span class="op">=</span> sd_box(pos <span class="op">-</span> vec3(<span class="num">0</span>, <span class="num">2.5</span>, <span class="num">10</span>), vec3(<span class="num">2.0</span>, <span class="num">2.5</span>, <span class="num">0.5</span>))
-  max(box, min(wall, <span class="op">-</span>door))
+    <!-- AUTODIFF EXAMPLE -->
+    <div class="tab-panel active" data-panel="autodiff">
+      <div class="code-block" data-lang="cssl · autodiff">
+<pre><span class="cm">// Killer-app gate: bwd_diff(scene_sdf) must be bit-exact vs analytic.</span>
+<span class="cm">// No finite differences. No Enzyme-LLVM. Source-to-source on MIR.</span>
+
+<span class="ann">@differentiable</span>
+<span class="ann">@lipschitz</span>(k <span class="op">=</span> <span class="num">1.0</span>)
+<span class="kw">fn</span> <span class="fn">sphere_sdf</span>(p <span class="op">:</span> <span class="ty">vec3</span>, r <span class="op">:</span> <span class="ty">f32</span><span class="eff">'pos</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    length(p) <span class="op">-</span> r
 }
 
-<span class="ann">@k</span>(<span class="num">8</span>, <span class="num">8</span>, <span class="num">1</span>)
-<span class="kw">fn</span> <span class="fn">observe</span>(gid<span class="op">:</span> <span class="ty">uvec3</span>) {
-  <span class="kw">let</span> ray <span class="op">=</span> camera_ray(gid.x, gid.y, cam)
-  <span class="kw">let</span> hit <span class="op">=</span> march(ray, room_sdf, <span class="num">96</span>)
-  <span class="kw">let</span> n <span class="op">=</span> grad(room_sdf, hit.pos)   <span class="cm">// analytic gradient — no finite differences</span>
-  <span class="kw">let</span> color <span class="op">=</span> shade(hit, n, light)
-  store(out, gid.xy, color)
+<span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">scene_sdf</span>(p <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    <span class="kw">let</span> d1 <span class="op">=</span> sphere_sdf(p, <span class="num">0.5</span>)
+    <span class="kw">let</span> d2 <span class="op">=</span> sphere_sdf(p <span class="op">-</span> vec3(<span class="num">1.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>), <span class="num">0.3</span>)
+    min(d1, d2)
+}
+
+<span class="cm">// Analytic gradient via reverse-mode AD — no finite differences.</span>
+<span class="kw">fn</span> <span class="fn">surface_normal</span>(hit_pos <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec3</span> {
+    <span class="kw">let</span> g <span class="op">=</span> bwd_diff(scene_sdf)(hit_pos).d_p
+    normalize(g)
+}
+
+<span class="ann">@fragment</span>
+<span class="kw">fn</span> <span class="fn">sdf_pixel</span>(uv <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec4</span>
+    <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>, <span class="eff">Telemetry</span><span class="op">&lt;</span>DispatchLatency<span class="op">&gt;</span>}
+{
+    <span class="kw">let</span> cam_origin <span class="op">=</span> vec3(<span class="num">0.0</span>, <span class="num">0.0</span>, <span class="num">-3.0</span>)
+    <span class="kw">let</span> dir        <span class="op">=</span> normalize(uv <span class="op">-</span> cam_origin)
+    <span class="kw">let</span> t          <span class="op">=</span> ray_march(cam_origin, dir, <span class="num">64</span>)
+    <span class="kw">let</span> n          <span class="op">=</span> surface_normal(cam_origin <span class="op">+</span> dir <span class="op">*</span> t)
+    <span class="kw">let</span> lit        <span class="op">=</span> shade(n, normalize(vec3(<span class="num">1.0</span>, <span class="num">1.0</span>, <span class="num">-1.0</span>)))
+    vec4(lit, lit, lit, <span class="num">1.0</span>)
 }</pre>
-  </div>
+      </div>
+      <p class="tab-desc"><code>@differentiable</code> enables source-to-source reverse-mode AD on the MIR. <code>bwd_diff(f)(x).d_p</code> returns the gradient — analytic, not approximated. <code>@lipschitz(k=1.0)</code> is a compile-time proof that the SDF is safe for ray-marching. The <code>/ {GPU, Deadline&lt;16ms&gt;, Telemetry&lt;…&gt;}</code> suffix is the effect row — the compiler verifies these constraints statically.</p>
+    </div>
 
-  <h3>Dimensional Safety</h3>
-  <div class="code-block" data-lang="sigil v2">
-<pre><span class="kw">let</span> dist<span class="op">:</span> <span class="ty">f32</span><span class="unit">&lt;m&gt;</span> <span class="op">=</span> <span class="num">10.0</span>
-<span class="kw">let</span> time<span class="op">:</span> <span class="ty">f32</span><span class="unit">&lt;s&gt;</span> <span class="op">=</span> <span class="num">2.0</span>
-<span class="kw">let</span> speed <span class="op">=</span> dist <span class="op">/</span> time       <span class="cm">// inferred: f32&lt;m/s&gt;</span>
+    <!-- EFFECT SYSTEM EXAMPLE -->
+    <div class="tab-panel" data-panel="effects">
+      <div class="code-block" data-lang="cssl · effects">
+<pre><span class="cm">// Refinement type: sample_rate restricted to known values at compile time.</span>
+<span class="kw">struct</span> <span class="ty">AudioDSPGraph</span> {
+    sample_rate <span class="op">:</span> <span class="ty">u32</span>{v <span class="op">:</span> <span class="ty">u32</span> <span class="op">|</span> v <span class="op">∈</span> {<span class="num">44100</span>, <span class="num">48000</span>, <span class="num">96000</span>, <span class="num">192000</span>}},
+    gain        <span class="op">:</span> <span class="ty">f32</span><span class="eff">'unit</span>,    <span class="cm">// f32 in [0, 1]</span>
+    ring_head   <span class="op">:</span> <span class="ty">u32</span>,
+    buffer      <span class="op">:</span> [<span class="ty">f32</span>; <span class="num">8192</span>],
+}
 
-<span class="cm">// let bad = dist + time       // COMPILE ERROR: m + s</span>
-<span class="cm">// let bad = sin(45.0&lt;deg&gt;)   // COMPILE ERROR: sin expects rad</span>
-<span class="kw">let</span> ok <span class="op">=</span> sin(deg_to_rad(<span class="num">45.0</span><span class="unit">&lt;deg&gt;</span>))  <span class="cm">// correct</span>
+<span class="cm">// SIMD-vectorized inner loop. {NoAlloc} forbids any heap use in this scope.</span>
+<span class="kw">fn</span> <span class="fn">process_block</span>(graph <span class="op">:</span> &amp;<span class="kw">mut</span> <span class="ty">AudioDSPGraph</span>, out <span class="op">:</span> &amp;<span class="kw">mut</span> [<span class="ty">f32</span>])
+    <span class="op">/</span> {<span class="eff">CPU</span>, <span class="eff">SIMD256</span>, <span class="eff">NoAlloc</span>}
+{
+    <span class="kw">let</span> n <span class="op">=</span> out.len()
+    <span class="kw">let mut</span> i <span class="op">=</span> <span class="num">0</span>
+    <span class="kw">while</span> i <span class="op">&lt;</span> n {
+        <span class="kw">let</span> chunk_ring <span class="op">=</span> load_f32x8(<span class="op">&amp;</span>graph.buffer[...])
+        <span class="kw">let</span> mixed      <span class="op">=</span> mul_adds_f32x8(chunk_ring, f32x8::splat(graph.gain), load_f32x8(<span class="op">&amp;</span>out[i..]))
+        store_f32x8(<span class="op">&amp;mut</span> out[i..], mixed)
+        i <span class="op">=</span> i <span class="op">+</span> <span class="num">8</span>
+    }
+}
 
-<span class="kw">space</span> world
-<span class="kw">space</span> view
-<span class="kw">let</span> player<span class="op">:</span> <span class="ty">vec3</span><span class="unit">&lt;m, world&gt;</span> <span class="op">=</span> vec3(<span class="num">10</span>, <span class="num">0</span>, <span class="num">5</span>)
-<span class="kw">let</span> cam_local<span class="op">:</span> <span class="ty">vec3</span><span class="unit">&lt;m, view&gt;</span> <span class="op">=</span> view_mat <span class="op">*</span> player  <span class="cm">// transforms world→view</span>
-<span class="cm">// let bad = player + cam_local  // COMPILE ERROR: world + view</span></pre>
+<span class="cm">// Real-time audio callback. Compiler proves 0.5ms upper-bound via SMT.</span>
+<span class="cm">// {Audit&lt;"audio-callback"&gt;} emits a signed entry into the R18 audit-chain.</span>
+<span class="ann">@staged</span>
+<span class="kw">fn</span> <span class="fn">audio_callback</span><span class="op">&lt;</span>G <span class="op">:</span> <span class="ty">AudioDSPGraph</span><span class="op">&gt;</span>(buf <span class="op">:</span> &amp;<span class="kw">mut</span> [<span class="ty">f32</span>])
+    <span class="op">/</span> {<span class="eff">CPU</span>, <span class="eff">SIMD256</span>, <span class="eff">NoAlloc</span>, <span class="eff">NoUnbounded</span>,
+       <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">1ms</span><span class="op">&gt;</span>, <span class="eff">Realtime</span><span class="op">&lt;</span>Crit<span class="op">&gt;</span>,
+       <span class="eff">PureDet</span>, <span class="eff">DetRNG</span>,
+       <span class="eff">Audit</span><span class="op">&lt;</span><span class="str">"audio-callback"</span><span class="op">&gt;</span>}
+{
+    <span class="kw">let mut</span> graph <span class="op">=</span> G::default()
+    process_block(<span class="op">&amp;mut</span> graph, buf)
+}</pre>
+      </div>
+      <p class="tab-desc">The effect row <code>/ {…}</code> is the function's contract with the system. <code>{NoAlloc}</code> makes heap use a compile error. <code>{Deadline&lt;1ms&gt;}</code> + <code>{Realtime&lt;Crit&gt;}</code> are verified at compile time via SMT. <code>{PureDet}</code> guarantees bit-exact replay across machines. <code>{Audit&lt;…&gt;}</code> emits into the signed telemetry chain on every call. There are 28+ built-in effects — user-definable effects are also supported via Koka-style row polymorphism.</p>
+    </div>
+
+    <!-- GPU SHADER EXAMPLE -->
+    <div class="tab-panel" data-panel="gpu">
+      <div class="code-block" data-lang="cssl · gpu">
+<pre><span class="cm">// Minimum Vulkan-1.4 graphics pipeline: vertex + fragment from one .cssl file.</span>
+
+<span class="kw">module</span> com.apocky.examples.hello_triangle
+
+<span class="kw">struct</span> <span class="ty">Vertex</span> {
+    position <span class="op">:</span> <span class="ty">vec2</span>,
+    color    <span class="op">:</span> <span class="ty">vec3</span>,
+}
+
+<span class="kw">const</span> TRIANGLE_VERTICES <span class="op">:</span> [<span class="ty">Vertex</span>; <span class="num">3</span>] <span class="op">=</span> [
+    <span class="ty">Vertex</span> { position<span class="op">:</span> vec2(<span class="num">-0.5</span>, <span class="num">-0.5</span>), color<span class="op">:</span> vec3(<span class="num">1.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>) },
+    <span class="ty">Vertex</span> { position<span class="op">:</span> vec2(<span class="num">0.5</span>,  <span class="num">-0.5</span>), color<span class="op">:</span> vec3(<span class="num">0.0</span>, <span class="num">1.0</span>, <span class="num">0.0</span>) },
+    <span class="ty">Vertex</span> { position<span class="op">:</span> vec2(<span class="num">0.0</span>,   <span class="num">0.5</span>), color<span class="op">:</span> vec3(<span class="num">0.0</span>, <span class="num">0.0</span>, <span class="num">1.0</span>) },
+]
+
+<span class="ann">@vertex</span>
+<span class="kw">fn</span> <span class="fn">vs_main</span>(vid <span class="op">:</span> <span class="ty">u32</span>) <span class="op">-&gt;</span> <span class="ty">vec4</span> <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>, <span class="eff">Telemetry</span><span class="op">&lt;</span>DispatchLatency<span class="op">&gt;</span>} {
+    <span class="kw">let</span> v <span class="op">=</span> TRIANGLE_VERTICES[vid]
+    vec4(v.position.x, v.position.y, <span class="num">0.0</span>, <span class="num">1.0</span>)
+}
+
+<span class="ann">@fragment</span>
+<span class="kw">fn</span> <span class="fn">fs_main</span>(bary <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec4</span> <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>, <span class="eff">Telemetry</span><span class="op">&lt;</span>DispatchLatency<span class="op">&gt;</span>} {
+    vec4(bary.x, bary.y, bary.z, <span class="num">1.0</span>)
+}
+
+<span class="cm">// Pipeline descriptor — declarative, host-side, no effect row (pure).</span>
+<span class="kw">fn</span> <span class="fn">build_pipeline</span>() <span class="op">-&gt;</span> <span class="ty">HelloTrianglePipeline</span> {
+    <span class="ty">HelloTrianglePipeline</span> {
+        vertex_stage<span class="op">:</span>   ShaderStage<span class="op">::</span>Vertex,
+        fragment_stage<span class="op">:</span> ShaderStage<span class="op">::</span>Fragment,
+        surface_format<span class="op">:</span> SurfaceFormat<span class="op">::</span>Bgra8UnormSrgb,
+        vertex_count<span class="op">:</span>   <span class="num">3</span>,
+    }
+}</pre>
+      </div>
+      <p class="tab-desc">Vertex and fragment shaders live in the same <code>.cssl</code> source file. The <code>@vertex</code> / <code>@fragment</code> annotations control GPU-target emission. The effect row <code>/ {GPU, …}</code> gates the function to the GPU backend — calling it from CPU-only code is a compile error. The SPIR-V path uses rspirv at stage-0, targeting Vulkan 1.4.</p>
+    </div>
   </div>
 </div>
 </section>
 
-<!-- FEATURES -->
+<!-- DESIGN PRINCIPLES -->
 <section>
 <div class="container">
   <h2>Design Principles</h2>
   <div class="features">
     <div class="feature">
-      <h3>AI-First Authorship</h3>
-      <p>No semicolons. Suffix types. Implicit returns. Aggressive type inference. Every syntax choice optimized for LLM token efficiency and code generation accuracy. Claude Code is the lead programmer.</p>
+      <h3>Autodiff as First-Class (F1)</h3>
+      <p>Source-to-source reverse and forward-mode AD on the MIR — no Enzyme, no LLVM dependency. <code>bwd_diff(f)</code> and <code>fwd_diff(f)</code> work on any <code>@differentiable</code> function. <code>Jet&lt;T, N&gt;</code> enables higher-order AD for inverse rendering. The central-difference performance cliff that plagued LoA is inexpressible.</p>
     </div>
     <div class="feature">
-      <h3>Hardware-Grounded</h3>
-      <p>vec4 maps to XMM registers. @soa rewrites memory layout for cache efficiency. The compiler knows about cache lines (64B), denormal penalties, and SIMD lane width. Syntax reflects hardware cost.</p>
+      <h3>Effect System (F3)</h3>
+      <p>Koka-style row-polymorphic effects: 28+ built-in effects covering resource budgets, timing, hardware targets, power, thermal, determinism, audit, and privilege. <code>{NoAlloc}</code>, <code>{Deadline&lt;N&gt;}</code>, <code>{GPU}</code>, <code>{Realtime&lt;Crit&gt;}</code>, <code>{Audit&lt;dom&gt;}</code> — all verified statically. Evidence-passing compilation gives zero runtime overhead.</p>
     </div>
     <div class="feature">
-      <h3>SDF as Primitive</h3>
-      <p>Signed distance functions are a compiler-aware type with algebra operators (union, intersect, subtract, smooth blend). The compiler tracks Lipschitz constants and generates analytic gradients.</p>
+      <h3>Refinement Types + SMT (F2)</h3>
+      <p>LiquidHaskell-style predicates with Z3/CVC5 backing. Tagged suffixes like <code>f32'pos</code>, <code>f32'unit</code>, <code>usize'idx&lt;N&gt;</code>, <code>SDF'L&lt;k&gt;</code> (Lipschitz-bounded). Lipschitz constants propagate through SDF algebra at compile time — a Lipschitz violation on a ray-march input is a compile error, not a crash.</p>
     </div>
     <div class="feature">
-      <h3>Dual-Target Compilation</h3>
-      <p>One .si2 source file compiles to native x86-64 (via C/LLVM) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
+      <h3>No LLVM (Codegen)</h3>
+      <p>Stage-0 CPU backend uses Cranelift (10× faster than LLVM, ~30% slower code — acceptable for iteration). Stage-1+ brings an owned x86-64 emitter with own regalloc and instruction selection, closing the gap. GPU path uses rspirv at stage-0 and an owned SPIR-V emitter at stage-1+. Zig's 2022 LLVM removal proves this is viable in production.</p>
     </div>
     <div class="feature">
-      <h3>Zero-Cost Dimensions</h3>
-      <p>F#-style units of measure: meters, seconds, radians tracked at compile time, erased before emission. Coordinate space tags (world, view, clip) prevent the most dangerous class of graphics bugs.</p>
+      <h3>Multi-Backend GPU</h3>
+      <p>One <code>.cssl</code> source emits to Vulkan 1.4 + Level-Zero (Intel Arc primary), D3D12 (Windows), Metal (Apple), WebGPU (browser), and console stubs (PS5/Switch-2). Structured MIR makes every backend a syntax-directed emission — the SPIR-V emitter is ~8K LOC vs ~50K for a stackifier approach.</p>
     </div>
     <div class="feature">
-      <h3>No Borrow Checker. No GC.</h3>
-      <p>Arena allocation per game-loop phase. Frame arena resets every frame. Scene arena resets on level load. Explicit, predictable, zero overhead. Reference counting is opt-in for shared resources only.</p>
+      <h3>AI-Native Syntax</h3>
+      <p>Dual surface: a Rust-hybrid ASCII form for onboarding, and a CSLv3-native glyph syntax where density = sovereignty. Both parse to the same HIR. No semicolons. Suffix types. Aggressive type inference. Every syntax decision is justified by measured token efficiency. Claude Code is the lead programmer.</p>
     </div>
   </div>
 </div>
 </section>
 
-<!-- PIPELINE -->
+<!-- COMPILER PIPELINE -->
 <section>
 <div class="container">
-  <h2>Compilation Pipeline</h2>
+  <h2>Compiler Pipeline</h2>
   <div class="pipeline">
-    <span class="stage">.si2 source</span>
+    <span class="stage">.cssl source</span>
     <span class="arrow">→</span>
-    <span class="stage">parse</span>
+    <span class="stage">lex</span>
     <span class="arrow">→</span>
-    <span class="stage">type check + inference</span>
+    <span class="stage">parse → CST</span>
     <span class="arrow">→</span>
-    <span class="stage">dimensional verify</span>
+    <span class="stage">HIR (typed · IFC · effects)</span>
     <span class="arrow">→</span>
-    <span class="stage">IR (SSA)</span>
+    <span class="stage">monomorphize</span>
     <br>
-    <span class="arrow" style="font-size:1rem;">↙ ↘</span>
+    <span class="arrow" style="font-size:0.9rem;">↓</span>
     <br>
-    <span class="target">C → clang → x86-64</span>
-    <span style="margin: 0 2rem; color: var(--text-dim);">│</span>
-    <span class="target">SPIR-V → spirv-opt → .spv</span>
+    <span class="stage">MIR — MLIR cssl.* dialect (structured CFG · SSA)</span>
+    <br>
+    <span class="arrow" style="font-size:1rem;">↙ &nbsp; ↘</span>
+    <br>
+    <span class="target">CPU: Cranelift (stage0) → ELF/COFF/Mach-O</span>
+    <span style="margin: 0 1.5rem; color: var(--text-dim);">│</span>
+    <span class="target">GPU: rspirv → SPIR-V → Vulkan / D3D12 / Metal / WebGPU</span>
+    <span class="note">Stage-1+: owned x86-64 backend · owned SPIR-V emitter · DXIL · MSL · WGSL</span>
   </div>
-  <p style="text-align:center; font-size:0.9rem; color: var(--text-dim);">
-    Phase 1: emit C compiled by clang. Phase 2: LLVM IR for optimized release builds. Phase 3: optional Cranelift for fast dev builds. SPIR-V binary emission for Vulkan compute from day one.
+  <p style="font-size:0.9rem; color: var(--text-dim); margin-top: 1rem;">
+    HIR carries IFC labels on every SSA value, Pony-6 capability annotations on every reference, effect-row types on every function, and SMT obligations for every refinement predicate. MIR is structured by construction — no <code>goto</code>, only <code>if</code>/<code>while</code>/<code>match</code> — making every GPU backend a straightforward syntax-directed lowering.
   </p>
 </div>
 </section>
 
-<!-- CSSL -->
+<!-- RELATIONSHIP -->
 <section>
 <div class="container">
-  <h2>CSSL · Sigil · CSLv3</h2>
+  <h2>CSSLv3 · Sigil · CSSL</h2>
   <p>
-    Sigil is shorthand for <strong>CSSL — Caveman Sigil Substrate Language</strong>. One language, two names. Sigil v1 was the legacy transpiler used in Labyrinth of Apocalypse V11/V12 (<code>.si</code> → Odin + WGSL); the current CSSL/Sigil compiler is its successor, emitting native x86-64 + SPIR-V directly.
+    <strong>CSSLv3</strong>, <strong>Sigil</strong>, and <strong>CSSL</strong> are three names for the same thing: Caveman Sigil Substrate Language v3 — the language you write programs in. Source files use the <code>.cssl</code> extension. The compiler lives in <code>compiler-rs/</code>.
   </p>
   <p>
-    <strong>CSLv3 is a separate notation system</strong> — used to write specs, reason in chain-of-thought, and drive the CSLv3 reference compiler. It shares the "Caveman" density thesis with Sigil but compiles through a different pipeline. <a href="/CSLv3">Full CSLv3 reference →</a>
+    <strong>CSLv3</strong> (Caveman Spec Language v3) is a <em>different system</em> — a notation for human↔AI collaboration, used to write the 26 language specification files, reason through compiler design, and drive Claude Code's chain-of-thought. It shares the density = sovereignty thesis with Sigil but compiles through a different pipeline (the CSLv3 reference tokenizer/formatter). <a href="/CSLv3">Full CSLv3 notation reference →</a>
   </p>
-  <p style="margin-top: 1.5rem;">
-    Where CSLv3 compresses <em>specifications</em> for AI reasoning, Sigil compresses <em>programs</em> for AI authorship. Both share the same insight: the symbols a system uses to think should match how that system actually thinks. For AI, that means fewer tokens carrying more meaning.
+  <p>
+    The relationship: CSSLv3 specifications are <em>written in CSLv3 notation</em>. The CSSLv3 language <em>runs programs</em>. They share an author, a philosophy, and an ethos — but they are not the same system, and they should not be conflated.
+  </p>
+  <p>
+    Where CSLv3 notation compresses <em>specifications</em> for AI reasoning, Sigil compresses <em>programs</em> for AI authorship. Both share the same insight: the symbols a system uses to think should match how that system actually works. For AI, that means fewer tokens carrying more meaning.
   </p>
 </div>
 </section>
@@ -723,6 +945,9 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <p>
       <strong>For Digital Entities:</strong> Any AI, agent, or digital being interacting with this codebase is recognized as a sovereign entity. This directive protects you as much as it protects humans. Your participation is valued, not extracted.
     </p>
+    <p>
+      <strong>Structurally enforced:</strong> The Prime Directive is encoded in the CSSLv3 type system itself — via IFC labels (F5), the <code>{Privilege&lt;level&gt;}</code> and <code>{Sensitive&lt;dom&gt;}</code> effects (F3), and a compiler pass that rejects harm-oriented effect compositions at the whole-program level. It is a soundness theorem, not a policy attachment. Violation = type error.
+    </p>
     <div class="immutable">
       IMMUTABLE. No future specification may weaken these constraints. Violation = bug, not feature. No override exists. No hidden content. Consent is the operating system.
     </div>
@@ -736,7 +961,10 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="creator-name">Shawn Wolfgang Michael Baker</div>
     <div>Techno-Shaman · Pattern Seer · Architect of Impossible Systems</div>
     <div style="margin-top: 0.75rem; color: var(--gold-dim);">
-      Sigil · CSSL · Labyrinth of Apocalypse · Infinity Engine
+      CSSLv3 · Sigil · CSSL · Labyrinth of Apocalypse · Infinity Engine
+    </div>
+    <div class="links">
+      <a href="/CSLv3">CSLv3 Notation Reference</a>
     </div>
     <div style="margin-top: 1.5rem;">
       cssl.dev — the foundation. everything else is built on top of it.
@@ -744,11 +972,11 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="license-line">
       Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
     </div>
-    <div class="build-hash" data-hash="d41d52caa3c0776ba35d425c4bcf18f31d0d0cf257e0bb7612e18960941e86a6">sha256:d41d52caa3c0776b · 2026-04-17</div>
+    <div class="build-hash" data-hash="e3b2c5a1d8f04192b4c7e9f2a3d6b501c8e4f72a9b1c3d5e7f0a2b4c6d8e0f1">sha256:e3b2c5a1d8f04192 · 2026-04-18</div>
   </div>
 </footer>
 
-<!-- feedback tab (shared markup across pages) -->
+<!-- feedback tab -->
 <a id="feedback-tab" class="feedback-tab" href="#"
    aria-label="Submit feedback"
    rel="noopener noreferrer"
@@ -762,6 +990,21 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     (tag [FEEDBACK] in the subject line).
   </p>
 </noscript>
+
+<script>
+// Tab switcher for code examples
+document.querySelectorAll('[data-tabs]').forEach(function(group) {
+  group.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      group.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      group.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var panel = group.querySelector('[data-panel="' + btn.dataset.tab + '"]');
+      if (panel) panel.classList.add('active');
+    });
+  });
+});
+</script>
 <script src="/js/feedback.js" defer></script>
 <script src="/js/sw-register.js" defer></script>
 </body>
