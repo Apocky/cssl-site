@@ -774,6 +774,88 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 .badge-ext { height: 20px; display: inline-block; vertical-align: middle; }
 @media (max-width: 640px) { .credibility-badges { gap: 0.9rem; } }
 
+/* === NEWSLETTER === */
+.newsletter-section { border-top: 1px solid var(--border); }
+.newsletter-card {
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.newsletter-glyph {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  color: var(--gold-dim);
+  margin-bottom: 1.25rem;
+  opacity: 0.7;
+}
+.newsletter-card h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25rem;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.newsletter-card > p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  margin-bottom: 1.75rem;
+  line-height: 1.75;
+}
+.newsletter-row {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.newsletter-input {
+  flex: 1;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  color: var(--text-bright);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.65rem 1rem;
+  border-radius: 3px;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+.newsletter-input::placeholder { color: var(--text-dim); }
+.newsletter-input:focus { border-color: var(--gold-dim); }
+.newsletter-btn {
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.65rem 1.25rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.newsletter-btn:hover { background: var(--gold-dim); color: var(--bg); }
+.newsletter-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.newsletter-status {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 1.2em;
+}
+.newsletter-status.ok { color: var(--green); }
+.newsletter-status.err { color: var(--red); }
+@media (max-width: 640px) {
+  .newsletter-row { flex-direction: column; }
+  .newsletter-card { padding: 2rem 1.25rem; }
+}
+
 /* === PRINT === */
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
@@ -795,7 +877,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   footer { color: #555 !important; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
   a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
-  .start-here, .audience-tabs, .llm-callout { display: none !important; }
+  .start-here, .audience-tabs, .llm-callout, .newsletter-section { display: none !important; }
 }
 </style>
 </head>
@@ -1449,6 +1531,29 @@ effect-row gate:
 </div>
 </section>
 
+<!-- NEWSLETTER -->
+<section class="newsletter-section" aria-labelledby="newsletter-heading">
+<div class="container" style="padding-top: 4rem; padding-bottom: 4rem;">
+  <div class="newsletter-card">
+    <div class="newsletter-glyph">◈</div>
+    <h2 id="newsletter-heading">Follow the Build</h2>
+    <p>Get notified when Sigil reaches 1.0.<br>Milestone releases, no noise.</p>
+    <form id="newsletter-form" novalidate>
+      <div class="newsletter-row">
+        <input type="email" id="newsletter-email" name="email"
+               class="newsletter-input"
+               placeholder="your@email.com"
+               autocomplete="email"
+               required
+               aria-label="Email address">
+        <button type="submit" class="newsletter-btn" id="newsletter-submit">Notify Me</button>
+      </div>
+      <div id="newsletter-status" class="newsletter-status" aria-live="polite" role="status"></div>
+    </form>
+  </div>
+</div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="container">
@@ -1463,7 +1568,7 @@ effect-row gate:
     <div class="license-line">
       Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
     </div>
-    <div class="build-hash" data-hash="d41d52caa3c0776ba35d425c4bcf18f31d0d0cf257e0bb7612e18960941e86a6">sha256:d41d52caa3c0776b · 2026-04-18</div>
+    <div class="build-hash" data-hash="ed2305718499ab7d51db197600108e257bbbde93e94e19017435c73523ea3d42">sha256:ed2305718499ab7d · 2026-04-19</div>
   </div>
 </footer>
 
@@ -1498,6 +1603,44 @@ effect-row gate:
       btn.classList.add('active');
       btn.setAttribute('aria-selected', 'true');
       document.getElementById(target).classList.add('active');
+    });
+  });
+}());
+</script>
+
+<script>
+(function () {
+  var form   = document.getElementById('newsletter-form');
+  var input  = document.getElementById('newsletter-email');
+  var btn    = document.getElementById('newsletter-submit');
+  var status = document.getElementById('newsletter-status');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = input.value.trim();
+    if (!email) return;
+    btn.disabled = true;
+    status.textContent = '';
+    status.className = 'newsletter-status';
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d.ok) {
+        status.textContent = d.already ? 'Already on the list.' : "You're on the list.";
+        status.className = 'newsletter-status ok';
+        input.value = '';
+      } else {
+        throw new Error(d.error || 'Something went wrong');
+      }
+    })
+    .catch(function (err) {
+      status.textContent = err.message || 'Something went wrong. Try again.';
+      status.className = 'newsletter-status err';
+      btn.disabled = false;
     });
   });
 }());
