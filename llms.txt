@@ -4,6 +4,7 @@
   creator   : Shawn Wolfgang Michael Baker
   tagline   : density = sovereignty
   pages     : / (Sigil language) , /CSLv3 (CSLv3 notation reference)
+  kb        : docs.cssl.dev (Sigil knowledge base — annotated specs, examples, learning paths)
   license   : content CC-BY-4.0 ; code MIT
 
 § WHAT-IS-HERE
