@@ -742,6 +742,38 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   font-weight: 600;
 }
 
+/* === CREDIBILITY BAR === */
+.credibility-bar {
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--border);
+  padding: 0.55rem 0;
+}
+.credibility-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.badge-tests {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.71rem;
+  background: rgba(74,138,58,0.12);
+  border: 1px solid #2a5a2a;
+  border-radius: 3px;
+  padding: 0.22rem 0.65rem;
+  color: #6abd5a;
+  letter-spacing: 0.03em;
+}
+.badge-tests .chk { color: #4a9a3a; font-size: 0.9rem; line-height: 1; }
+.badge-img-link { border: none !important; line-height: 0; }
+.badge-img-link:hover { border: none !important; }
+.badge-ext { height: 20px; display: inline-block; vertical-align: middle; }
+@media (max-width: 640px) { .credibility-badges { gap: 0.9rem; } }
+
 /* === PRINT === */
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
@@ -790,6 +822,23 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <a class="start-link" href="/CSLv3">CSL Spec</a>
   </div>
 </nav>
+
+<!-- CREDIBILITY BAR -->
+<div class="credibility-bar" role="note" aria-label="Project status">
+  <div class="container">
+    <div class="credibility-badges">
+      <span class="badge-tests">
+        <span class="chk">✓</span>1,600+ tests passing
+      </span>
+      <a class="badge-img-link" href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer" aria-label="GitHub stars for CSSL3">
+        <img class="badge-ext" src="https://img.shields.io/github/stars/Apocky/CSSL3?style=social" alt="GitHub stars" loading="lazy" width="90" height="20">
+      </a>
+      <a class="badge-img-link" href="https://github.com/Apocky/CSSL3/actions" target="_blank" rel="noopener noreferrer" aria-label="CI build status">
+        <img class="badge-ext" src="https://img.shields.io/github/actions/workflow/status/Apocky/CSSL3/ci.yml?branch=main&style=flat-square&label=CI&logoColor=white" alt="CI build status" loading="lazy" width="76" height="20">
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- AUDIENCE TABS -->
 <div class="audience-tabs">
@@ -1257,26 +1306,90 @@ effect-row gate:
 <!-- PIPELINE -->
 <section>
 <div class="container">
-  <h2>Compilation Pipeline</h2>
-  <div class="pipeline">
-    <span class="stage">.cssl source</span>
-    <span class="arrow">→</span>
-    <span class="stage">parse</span>
-    <span class="arrow">→</span>
-    <span class="stage">type check + inference</span>
-    <span class="arrow">→</span>
-    <span class="stage">dimensional verify</span>
-    <span class="arrow">→</span>
-    <span class="stage">IR (SSA)</span>
-    <br>
-    <span class="arrow" style="font-size:1rem;">↙ ↘</span>
-    <br>
-    <span class="target">C → clang → x86-64</span>
-    <span style="margin: 0 2rem; color: var(--text-dim);">│</span>
-    <span class="target">SPIR-V → spirv-opt → .spv</span>
-  </div>
-  <p style="text-align:center; font-size:0.9rem; color: var(--text-dim);">
-    Phase 1: emit C compiled by clang. Phase 2: LLVM IR for optimized release builds. Phase 3: optional Cranelift for fast dev builds. SPIR-V binary emission for Vulkan compute from day one.
+  <h2>Architecture</h2>
+  <svg viewBox="0 0 840 210" xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;height:auto;display:block;margin:1.5rem 0;"
+       role="img" aria-label="Sigil compiler pipeline: .cssl source through Parser, HIR, MIR, Cranelift to native x86-64 and SPIR-V 1.3+. Effect Checker branches from HIR, Autodiff Transform from MIR, SMT Verification from Cranelift.">
+    <defs>
+      <marker id="cpl-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L8,3 L0,6 Z" fill="#8a7028"/>
+      </marker>
+      <marker id="cpl-p" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+        <path d="M0,0 L6,2.5 L0,5 Z" fill="#3a3a4a"/>
+      </marker>
+    </defs>
+
+    <!-- background -->
+    <rect width="840" height="210" fill="#0e0e16" rx="6"/>
+
+    <!-- ── main pipeline ── -->
+
+    <!-- .cssl source (entry — gold border) -->
+    <rect x="10" y="40" width="85" height="38" rx="4" fill="#11111b" stroke="#c9a23a" stroke-width="1.5"/>
+    <text x="52" y="57" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8c85a" font-weight="500">.cssl</text>
+    <text x="52" y="70" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#6b6860">source</text>
+    <line x1="95" y1="59" x2="113" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
+
+    <!-- Parser -->
+    <rect x="113" y="40" width="78" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
+    <text x="152" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">Parser</text>
+    <line x1="191" y1="59" x2="209" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
+
+    <!-- HIR -->
+    <rect x="209" y="40" width="62" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
+    <text x="240" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">HIR</text>
+    <line x1="271" y1="59" x2="289" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
+
+    <!-- MIR -->
+    <rect x="289" y="40" width="62" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
+    <text x="320" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">MIR</text>
+    <line x1="351" y1="59" x2="369" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
+
+    <!-- Cranelift -->
+    <rect x="369" y="40" width="90" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
+    <text x="414" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">Cranelift</text>
+
+    <!-- fork: horizontal stub → vertical split → two branches -->
+    <line x1="459" y1="59" x2="476" y2="59" stroke="#8a7028" stroke-width="1.5"/>
+    <line x1="476" y1="35" x2="476" y2="98" stroke="#8a7028" stroke-width="1.5"/>
+    <line x1="476" y1="35" x2="494" y2="35" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
+    <line x1="476" y1="98" x2="494" y2="98" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
+
+    <!-- x86-64 output (gold border) -->
+    <rect x="494" y="16" width="118" height="38" rx="4" fill="#11111b" stroke="#c9a23a" stroke-width="1.5"/>
+    <text x="553" y="32" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#6b6860">native</text>
+    <text x="553" y="47" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11.5" fill="#e8c85a" font-weight="500">x86-64</text>
+
+    <!-- SPIR-V output (gold border) -->
+    <rect x="494" y="79" width="118" height="38" rx="4" fill="#11111b" stroke="#c9a23a" stroke-width="1.5"/>
+    <text x="553" y="94" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#6b6860">vulkan</text>
+    <text x="553" y="109" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11.5" fill="#e8c85a" font-weight="500">SPIR-V 1.3+</text>
+
+    <!-- ── key passes (dashed branches) ── -->
+
+    <!-- Effect Checker off HIR -->
+    <path d="M 240,78 L 240,130 L 210,130 L 210,148" fill="none" stroke="#3a3a4a" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#cpl-p)"/>
+    <rect x="150" y="148" width="120" height="34" rx="4" fill="#0e0e16" stroke="#3a5a8a" stroke-width="1"/>
+    <text x="210" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5a8abb">Effect</text>
+    <text x="210" y="176" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5a8abb">Checker</text>
+    <text x="210" y="196" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#3a3a4a">IFC @ type-check</text>
+
+    <!-- Autodiff Transform off MIR -->
+    <path d="M 320,78 L 320,148" fill="none" stroke="#3a3a4a" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#cpl-p)"/>
+    <rect x="275" y="148" width="130" height="34" rx="4" fill="#0e0e16" stroke="#3a7a3a" stroke-width="1"/>
+    <text x="340" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5ab05a">Autodiff</text>
+    <text x="340" y="176" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5ab05a">Transform</text>
+    <text x="340" y="196" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#3a3a4a">bwd_diff · fwd_diff</text>
+
+    <!-- SMT Verification off Cranelift -->
+    <path d="M 414,78 L 414,130 L 470,130 L 470,148" fill="none" stroke="#3a3a4a" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#cpl-p)"/>
+    <rect x="410" y="148" width="120" height="34" rx="4" fill="#0e0e16" stroke="#8a7028" stroke-width="1"/>
+    <text x="470" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#c9a23a">SMT</text>
+    <text x="470" y="176" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#c9a23a">Verification</text>
+    <text x="470" y="196" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#3a3a4a">refinement types</text>
+  </svg>
+  <p style="text-align:center; font-size:0.88rem; color: var(--text-dim);">
+    One <code>.cssl</code> source compiles to native x86-64 (AVX2+FMA3) via Cranelift and to SPIR-V 1.3+ for Vulkan. Effect Checker enforces IFC at type-check time; Autodiff Transform generates forward and backward AD variants from MIR; SMT Verification discharges refinement obligations before emission.
   </p>
 </div>
 </section>
