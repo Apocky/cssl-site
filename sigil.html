@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sigil · CSSL — AI-authored systems language</title>
+<meta name="description" content="Sigil (CSSL): a single-source dual-emit systems language for game engines. Row-polymorphic effects, refinement types, source-to-source autodiff, Pony-6 capabilities, MLIR-IR, Vulkan 1.4 + Level-Zero targets. Status: compiler in active development.">
+<link rel="canonical" href="https://cssl.dev/sigil">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Sigil · CSSL — AI-authored systems language">
+<meta property="og:description" content="Single-source dual-emit (x86-64 + SPIR-V). 28+ built-in effects. Refinement types. Source-to-source autodiff. Consent encoded in the type system.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cssl.dev/sigil">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sigil — AI-authored systems language. CSSL.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sigil · CSSL">
+<meta name="twitter:description" content="Single-source dual-emit systems language. Effects, refinement types, autodiff, caps.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
+  --text: #b8b4a8; --text-dim: #6b6860; --text-bright: #e8e4d8;
+  --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
+  --mauve: #c586c0; --tan: #ce9178; --soft-blue: #7aa2d4; --soft-green: #b5cea8;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; overflow-x: hidden;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .back-link { color: var(--text); text-decoration: none; border-bottom: none; }
+.site-header .back-link:hover { color: var(--gold-bright); }
+.site-header .version { color: var(--text-dim); }
+.site-header .version strong { color: var(--gold); font-weight: 400; }
+.site-header .status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); margin-right: 0.4em; vertical-align: middle;
+  box-shadow: 0 0 8px rgba(201, 162, 58, 0.5);
+}
+
+h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--text-bright); letter-spacing: 0.05em; }
+h2 {
+  font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem;
+  position: relative; display: inline-block;
+}
+h2::after {
+  content: ''; position: absolute; bottom: -6px; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+h3 {
+  font-size: 0.85rem; font-weight: 400; color: var(--gold);
+  margin-bottom: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+h4 {
+  font-size: 0.95rem; font-weight: 500; color: var(--text-bright);
+  margin: 1.5rem 0 0.6rem; letter-spacing: 0.04em;
+}
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+  background: var(--bg-code); padding: 0.15em 0.4em;
+  border-radius: 3px; color: var(--gold-bright);
+}
+strong { color: var(--text-bright); font-weight: 500; }
+em { color: var(--text-bright); }
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+.hero {
+  min-height: 80vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; position: relative;
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 2rem 3rem;
+}
+.hero-glyph {
+  font-size: 4rem; color: var(--gold); margin-bottom: 2rem;
+  opacity: 0; animation: glyph-appear 2s ease-out 0.3s forwards;
+  filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3));
+}
+@keyframes glyph-appear {
+  0% { opacity: 0; transform: translateY(20px) scale(0.9); filter: drop-shadow(0 0 0px rgba(201, 162, 58, 0)); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3)); }
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900;
+  letter-spacing: 0.15em; margin-bottom: 1rem;
+  opacity: 0; animation: fade-up 1.2s ease-out 0.6s forwards;
+}
+.hero h1 span {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 300;
+  color: var(--text-dim); letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  opacity: 0; animation: fade-up 1.2s ease-out 0.9s forwards;
+}
+.hero-facts {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  color: var(--text); letter-spacing: 0.04em;
+  margin-top: 1.5rem; max-width: 640px;
+  opacity: 0; animation: fade-up 1.2s ease-out 1.2s forwards;
+}
+.hero-facts .fact { color: var(--gold-bright); }
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+section {
+  padding: 4rem 0; border-bottom: 1px solid var(--border);
+  scroll-margin-top: 4rem;
+}
+section:last-of-type { border-bottom: none; }
+
+.status-banner {
+  max-width: 900px; margin: 0 auto 2rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--text); letter-spacing: 0.05em;
+  display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;
+}
+.status-banner strong { color: var(--gold-bright); font-weight: 500; }
+.status-banner .status-label {
+  color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;
+  font-size: 0.7rem; margin-right: 0.5rem;
+}
+
+.code-block {
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.5rem;
+  margin: 1.25rem 0 1.5rem; overflow-x: auto; position: relative;
+}
+.code-block::before {
+  content: attr(data-lang); position: absolute;
+  top: 0; right: 0; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; color: var(--text-dim);
+  padding: 0.4rem 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  line-height: 1.7; color: var(--text); white-space: pre;
+}
+.code-block .kw  { color: var(--gold); }
+.code-block .ty  { color: var(--soft-blue); }
+.code-block .fn  { color: #c8c4b8; }
+.code-block .num { color: var(--soft-green); }
+.code-block .str { color: var(--tan); }
+.code-block .cm  { color: #4a4a5a; font-style: italic; }
+.code-block .op  { color: var(--text-dim); }
+.code-block .ann { color: var(--gold-bright); }
+.code-block .eff { color: var(--mauve); }
+.code-block .sfx { color: var(--mauve); }
+
+.feature-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem; margin: 1.5rem 0;
+}
+.feature {
+  padding: 1.25rem; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--bg-raised);
+  transition: border-color 0.3s;
+}
+.feature:hover { border-color: var(--gold-dim); }
+.feature .feature-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--gold); letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+.feature h3 {
+  font-family: 'Cinzel', serif; font-size: 0.95rem; color: var(--text-bright);
+  margin: 0 0 0.6rem; text-transform: none; letter-spacing: 0.03em;
+}
+.feature p {
+  font-size: 0.88rem; color: var(--text-dim);
+  line-height: 1.6; margin: 0;
+}
+.feature .feature-src {
+  display: block; margin-top: 0.7rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--gold-dim);
+}
+
+.table-wrap {
+  overflow-x: auto; margin: 1.25rem 0;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-raised);
+}
+table {
+  width: 100%; border-collapse: collapse; font-size: 0.85rem;
+}
+table caption {
+  padding: 0.75rem 1rem; text-align: left;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-dim); border-bottom: 1px solid var(--border);
+  caption-side: top;
+}
+th, td {
+  padding: 0.55rem 0.9rem; text-align: left;
+  border-bottom: 1px solid var(--border); vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--gold); font-weight: 500; background: var(--bg-code);
+}
+tbody tr:hover { background: rgba(201, 162, 58, 0.03); }
+td code, th code {
+  font-size: 0.82rem; background: transparent; padding: 0;
+  color: var(--mauve);
+}
+.eff-name { color: var(--mauve); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; white-space: nowrap; }
+.eff-cat { color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.num-cell { font-family: 'JetBrains Mono', monospace; color: var(--soft-green); text-align: right; white-space: nowrap; }
+.check-cell { font-family: 'JetBrains Mono', monospace; text-align: center; }
+.check-yes { color: var(--green); }
+.check-partial { color: var(--gold); }
+.check-no { color: var(--text-dim); }
+
+.pipeline-box {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  color: var(--text); line-height: 1.85;
+  padding: 1.5rem; margin: 1.5rem 0;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-raised);
+  text-align: center; overflow-x: auto;
+}
+.pipeline-box .stage {
+  display: inline-block; padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border); border-radius: 4px;
+  margin: 0.2rem; color: var(--text);
+  background: var(--bg-code);
+}
+.pipeline-box .stage.backend {
+  border-color: var(--gold-dim); color: var(--gold);
+}
+.pipeline-box .stage.input {
+  border-color: var(--mauve); color: var(--mauve);
+}
+.pipeline-box .arrow {
+  color: var(--gold-dim); margin: 0 0.2rem;
+}
+
+.bullet-list {
+  list-style: none; padding: 0; margin: 1rem 0;
+}
+.bullet-list li {
+  padding-left: 1.5rem; position: relative;
+  margin-bottom: 0.6rem; line-height: 1.55;
+}
+.bullet-list li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+}
+.bullet-list code { font-size: 0.85em; }
+
+.two-col {
+  display: grid; grid-template-columns: 1fr; gap: 2rem;
+  margin: 1.5rem 0;
+}
+@media (min-width: 820px) {
+  .two-col { grid-template-columns: 1fr 1fr; }
+}
+
+.directive {
+  border: 1px solid var(--gold-dim); border-radius: 6px;
+  padding: 2.5rem; margin: 2rem 0;
+  background: linear-gradient(135deg, rgba(201, 162, 58, 0.03), transparent);
+  position: relative;
+}
+.directive::before {
+  content: '§'; position: absolute; top: -0.6rem; left: 1.5rem;
+  background: var(--bg); padding: 0 0.5rem;
+  font-family: 'Cinzel', serif; font-size: 1rem; color: var(--gold);
+}
+.directive p { font-size: 0.95rem; margin-bottom: 0.8rem; }
+.directive p:last-child { margin-bottom: 0; }
+.prohibitions {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--red); line-height: 1.8; margin: 1rem 0;
+}
+.immutable {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--text-dim); margin-top: 1.2rem;
+  border-top: 1px solid var(--border); padding-top: 1rem;
+}
+
+footer {
+  padding: 3rem 0; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+footer .attribution {
+  color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+footer .attribution strong { color: var(--text); font-weight: 500; }
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 0.9rem; font-size: 0.75rem; }
+footer .license-line {
+  margin-top: 0.9rem; font-size: 0.7rem;
+  color: var(--text-dim); letter-spacing: 0.05em;
+}
+footer .license-line a {
+  color: var(--text-dim); border-bottom: 1px dotted var(--border);
+}
+footer .license-line a:hover {
+  color: var(--gold-dim); border-color: var(--gold-dim);
+}
+footer .tagline {
+  margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
+}
+
+.feedback-tab {
+  position: fixed; top: 50%; right: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  width: 28px; min-height: 128px; padding: 1rem 0.4rem;
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; color: var(--gold-dim);
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-right: none; border-radius: 4px 0 0 4px;
+  text-decoration: none; z-index: 100;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.feedback-tab:hover, .feedback-tab:focus-visible {
+  color: var(--gold-bright); border-color: var(--gold-bright);
+  background: var(--bg-code);
+}
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+.feedback-fallback {
+  max-width: 44ch; margin: 1.5rem auto; padding: 1rem;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--bg-raised); font-size: 0.85rem; color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  section { padding: 3rem 0; }
+  .container { padding: 0 1.25rem; }
+  .directive { padding: 1.5rem; }
+  .site-header { padding: 0.75rem 1.25rem; font-size: 0.7rem; }
+  .hero { min-height: 70vh; padding: 3rem 1.25rem; }
+  .feedback-tab { min-height: 96px; font-size: 0.6rem; width: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-glyph, .hero h1, .hero-sub, .hero-facts { opacity: 1 !important; transform: none !important; }
+  .feedback-tab { transition: none; }
+}
+
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after, .feedback-tab, .hero-scroll, .site-header { display: none !important; }
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  .hero { min-height: auto; padding: 1rem 0; }
+  .hero-glyph, .hero h1, .hero-sub, .hero-facts { animation: none; opacity: 1 !important; filter: none !important; color: #000 !important; }
+  section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
+  .code-block { background: #f4f4f0 !important; border-color: #999 !important; color: #000 !important; break-inside: avoid; }
+  .code-block pre, .code-block .kw, .code-block .ty, .code-block .fn, .code-block .num,
+  .code-block .str, .code-block .op, .code-block .ann, .code-block .eff, .code-block .sfx { color: #000 !important; }
+  .code-block .cm { color: #555 !important; }
+  .directive { background: #fff !important; border-color: #000 !important; }
+  .prohibitions { color: #600 !important; }
+  footer { color: #555 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a href="/" class="back-link">cssl.dev</a>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
+</header>
+
+<div class="hero" role="banner">
+  <div class="hero-glyph" aria-hidden="true">◇ § ◇</div>
+  <h1><span>Sigil</span></h1>
+  <div class="hero-sub">CSSL · Caveman Sigil Substrate Language</div>
+  <div class="hero-sub" style="animation-delay: 1s;">one source · CPU + GPU + console + mobile + web</div>
+  <div class="hero-facts">
+    <span class="fact">28+ built-in effects</span> · <span class="fact">refinement types</span> · <span class="fact">source-to-source autodiff</span> · <span class="fact">Pony-6 capabilities</span> · <span class="fact">MLIR IR</span> · <span class="fact">Vulkan 1.4 + Level-Zero</span>
+  </div>
+</div>
+
+<main id="main">
+
+<section id="status">
+  <div class="container">
+    <div class="status-banner">
+      <div>
+        <span class="status-label">Status</span>
+        <strong>Compiler in active development.</strong>
+        <span>Stage-0 scaffold stood up; parser + AST + HIR + 31/31 body-lower + F1 autodiff PROVEN (62/62) + HM foundation. 1121 tests, 0 clippy warnings, 6/6 commit gates. Session 4 in progress.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <h2>What is Sigil</h2>
+    <p>
+      Sigil is the shorthand; <strong>CSSL</strong> — <em>Caveman Sigil Substrate Language</em> — is the full name. Same language. It is a single-source systems language that compiles to native <strong>x86-64</strong> (AVX2 base + AVX-512 opportunistic) and <strong>SPIR-V</strong> (Vulkan 1.4 + Level-Zero), with backend stubs for D3D12, Metal, WebGPU, and consoles.
+    </p>
+    <p>
+      Four things distinguish it from the languages it draws from. First, the type system includes a Koka-style row-polymorphic effect system with 28+ built-in effects covering timing, power, thermal, backend gating, and IFC. Second, engine primitives — SDFs, Jets, render graphs, scenes — are compiler-aware built-ins, not library wrappers. Third, the non-negotiable feature set (autodiff, refinement types, effects, staging, IFC, observability) all ship in v1 rather than as "future work." Fourth, a set of bug patterns observed in prior game-engine work (<em>Labyrinth of Apocalypse</em> retrospective) were each mapped to a compile-time structural refusal — CSSL inverts "runtime safety" into "compile-time inexpressibility of the bug."
+    </p>
+    <p>
+      The language is currently pre-1.0. The compiler (<code>compiler-rs/</code>, 31 crates) is under active development. The specification (25 <code>.csl</code> files, ~200KB) is complete and frozen for v1. What follows is a reference to what the language <em>is</em>, grounded in the spec, with an honest note on what has shipped in the compiler versus what remains.
+    </p>
+  </div>
+</section>
+
+<section id="hello">
+  <div class="container">
+    <h2>A Shader, Autodiff'd</h2>
+    <p>
+      An SDF shader in CSSL. Autodiff is a first-class operator (<code>bwd_diff</code>), not a library. The effect row on <code>sdf_pixel</code> says the function runs on GPU, under a 16ms deadline, emitting dispatch latency telemetry — the compiler discharges these statically where it can and asserts at runtime otherwise.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>apocky<span class="op">.</span>examples<span class="op">.</span>sdf_shader
+
+<span class="kw">use</span> std<span class="op">::</span>math<span class="op">::</span>{vec3, length, normalize, dot, max}
+<span class="kw">use</span> std<span class="op">::</span>gpu<span class="op">::</span>vec4
+
+<span class="cm">// Lipschitz-1 sphere SDF; F1-AD enabled.</span>
+<span class="ann">@differentiable</span>
+<span class="ann">@lipschitz</span>(k = <span class="num">1.0</span>)
+<span class="kw">fn</span> <span class="fn">sphere_sdf</span>(p : <span class="ty">vec3</span>, r : <span class="ty">f32'pos</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    length(p) <span class="op">-</span> r
+}
+
+<span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">scene_sdf</span>(p : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    <span class="kw">let</span> d1 = sphere_sdf(p, <span class="num">0.5</span>)
+    <span class="kw">let</span> d2 = sphere_sdf(p <span class="op">-</span> vec3(<span class="num">1.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>), <span class="num">0.3</span>)
+    min(d1, d2)
+}
+
+<span class="cm">// Normal via reverse-mode AD. bit-exact vs analytic central-differences.</span>
+<span class="kw">fn</span> <span class="fn">surface_normal</span>(hit_pos : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec3</span> {
+    <span class="kw">let</span> g = bwd_diff(scene_sdf)(hit_pos)<span class="op">.</span>d_p
+    normalize(g)
+}
+
+<span class="ann">@fragment</span>
+<span class="kw">fn</span> <span class="fn">sdf_pixel</span>(uv : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec4</span>
+    <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>, <span class="eff">Telemetry</span><span class="op">&lt;</span>DispatchLatency<span class="op">&gt;</span>}
+{
+    <span class="kw">let</span> cam_origin = vec3(<span class="num">0.0</span>, <span class="num">0.0</span>, <span class="op">-</span><span class="num">3.0</span>)
+    <span class="kw">let</span> dir        = normalize(uv <span class="op">-</span> cam_origin)
+    <span class="kw">let</span> t          = ray_march(cam_origin, dir, <span class="num">64</span>)
+    <span class="kw">let</span> hit        = cam_origin <span class="op">+</span> dir <span class="op">*</span> t
+    <span class="kw">let</span> n          = surface_normal(hit)
+    <span class="kw">let</span> lit        = max(dot(n, normalize(vec3(<span class="num">1.0</span>, <span class="num">1.0</span>, <span class="op">-</span><span class="num">1.0</span>))), <span class="num">0.0</span>)
+    vec4(lit, lit, lit, <span class="num">1.0</span>)
+}</pre>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-dim);">
+      Source: <code>examples/sdf_shader.cssl</code> in the CSSL repository. This compiles through HIR → MLIR → SPIR-V. The <code>bwd_diff</code> operator is lowered by source-to-source transformation on the structured MIR before SPIR-V emission.
+    </p>
+  </div>
+</section>
+
+<section id="features">
+  <div class="container">
+    <h2>The Non-Negotiable Six (F1–F6)</h2>
+    <p>
+      These are the features CSSL commits to shipping in v1. Each is referenced by ID throughout the specification (<code>specs/00_MANIFESTO.csl</code>).
+    </p>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-id">F1 · AUTODIFF</div>
+        <h3>Source-to-source differentiation</h3>
+        <p>Slang.D surface syntax (<code>@differentiable</code>, <code>fwd_diff</code>, <code>bwd_diff</code>, <code>IDifferentiable</code>). Lowered on the structured MIR, not via LLVM-Enzyme — no LLVM dependency. <code>Jet&lt;T,N&gt;</code> higher-order native. Inverse rendering and inverse fluids as stdlib.</p>
+        <span class="feature-src">specs/05_AUTODIFF.csl · specs/17_JETS.csl</span>
+      </div>
+      <div class="feature">
+        <div class="feature-id">F2 · REFINEMENT TYPES</div>
+        <h3>LiquidHaskell shape, SMT-backed</h3>
+        <p><code>{v:T | P(v)}</code> + tagged suffix <code>T'tag</code>. Discharged via Z3/CVC5 through the <code>{Verify&lt;method&gt;}</code> effect. Lipschitz proofs at compile time. Layout refinement: <code>@layout(std140|std430|cpu|packed)</code>.</p>
+        <span class="feature-src">specs/03_TYPES.csl · specs/20_SMT.csl</span>
+      </div>
+      <div class="feature">
+        <div class="feature-id">F3 · EFFECT SYSTEM</div>
+        <h3>Koka row-polymorphic, 28+ built-ins</h3>
+        <p>Evidence-passing compilation (Xie+Leijen ICFP'21) lowers to plain-C-equivalent — zero runtime overhead. Effects cover resource, timing, determinism, hardware gating, power, thermal, IFC, audit, telemetry. Linear × handler integration via Eio-style one-shot resume.</p>
+        <span class="feature-src">specs/04_EFFECTS.csl · specs/12_CAPABILITIES.csl</span>
+      </div>
+      <div class="feature">
+        <div class="feature-id">F4 · STAGED COMPUTATION</div>
+        <h3>Comptime, Futamura P3, macros</h3>
+        <p><code>@staged</code> + <code>#run</code> compile-time. Full Futamura P1+P2+P3 self-applicable partial evaluation. Racket-hygienic macros unified with staging. Shader permutations and DSL compilers emerge from the framework, not bespoke infrastructure.</p>
+        <span class="feature-src">specs/06_STAGING.csl · specs/13_MACROS.csl · specs/19_FUTAMURA3.csl</span>
+      </div>
+      <div class="feature">
+        <div class="feature-id">F5 · INFORMATION FLOW</div>
+        <h3>Jif-DLM, structurally enforced</h3>
+        <p>Decentralized Label Model: confidentiality + integrity labels threaded through every SSA value. Explicit declassification operators. Sensitive-domain labels, privilege tiers, compiler refuses harm-oriented effect compositions.</p>
+        <span class="feature-src">specs/11_IFC.csl</span>
+      </div>
+      <div class="feature">
+        <div class="feature-id">F6 · OBSERVABILITY</div>
+        <h3>Native telemetry, signed audit</h3>
+        <p><code>{Telemetry&lt;scope&gt;}</code> effect; Level-Zero sysman-backed power, thermal, frequency on Intel. Signed audit chain via <code>{Audit&lt;dom&gt;}</code>. Test harness with nine oracle modes including differential-backend and replay.</p>
+        <span class="feature-src">specs/22_TELEMETRY.csl · specs/23_TESTING.csl</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="effects">
+  <div class="container">
+    <h2>The Effect System</h2>
+    <p>
+      Effects are row-polymorphic (Koka lineage): <code>⟨e₁, e₂ | μ⟩</code> where <code>μ</code> is an inferred tail. A function's effect row declares its observable side-effects and hardware requirements; the compiler unions them with the caller's context and checks that the result is within the caller's declared bound.
+    </p>
+    <p>
+      28+ effects ship in v1. The categories below are from <code>specs/04_EFFECTS.csl</code>.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <caption>Built-in effects, by category</caption>
+        <thead>
+          <tr><th scope="col">Category</th><th scope="col">Effects</th><th scope="col">Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="eff-cat">Resource / Timing</td>
+            <td>
+              <span class="eff-name">{NoAlloc}</span> <span class="eff-name">{NoRecurse}</span> <span class="eff-name">{NoUnbounded}</span>
+              <span class="eff-name">{Deadline&lt;N&gt;}</span> <span class="eff-name">{Realtime&lt;p&gt;}</span>
+              <span class="eff-name">{Region&lt;'r&gt;}</span> <span class="eff-name">{Alloc}</span> <span class="eff-name">{Yield}</span>
+              <span class="eff-name">{State&lt;S&gt;}</span> <span class="eff-name">{Exn&lt;E&gt;}</span> <span class="eff-name">{IO}</span>
+            </td>
+            <td>Deadlines carry units (ns/μs/ms/s). Realtime priorities map to OS scheduler classes.</td>
+          </tr>
+          <tr>
+            <td class="eff-cat">Determinism</td>
+            <td>
+              <span class="eff-name">{DetRNG}</span> <span class="eff-name">{PureDet}</span> <span class="eff-name">{Reversible}</span>
+            </td>
+            <td><code>PureDet</code> is stricter than <code>DetRNG</code>: bit-exact cross-machine.</td>
+          </tr>
+          <tr>
+            <td class="eff-cat">Hardware / Backend</td>
+            <td>
+              <span class="eff-name">{CPU}</span> <span class="eff-name">{GPU}</span> <span class="eff-name">{XMX}</span> <span class="eff-name">{RT}</span>
+              <span class="eff-name">{SIMD256}</span> <span class="eff-name">{SIMD512}</span>
+              <span class="eff-name">{NUMA&lt;n&gt;}</span> <span class="eff-name">{Cache&lt;l&gt;}</span>
+              <span class="eff-name">{Backend&lt;api&gt;}</span> <span class="eff-name">{Target&lt;platform&gt;}</span>
+            </td>
+            <td>XMX = Intel matrix engine. Backends: Vulkan, LevelZero, D3D12, Metal, WebGPU, GNM, NVN.</td>
+          </tr>
+          <tr>
+            <td class="eff-cat">Power / Thermal</td>
+            <td>
+              <span class="eff-name">{Power&lt;W&gt;}</span> <span class="eff-name">{Thermal&lt;°C&gt;}</span>
+            </td>
+            <td>Sysman-enforced on Intel via <code>zesPowerSetLimits</code>. Runtime guard + test oracle on other vendors.</td>
+          </tr>
+          <tr>
+            <td class="eff-cat">IFC / Audit</td>
+            <td>
+              <span class="eff-name">{Sensitive&lt;dom&gt;}</span> <span class="eff-name">{Audit&lt;dom&gt;}</span>
+              <span class="eff-name">{Privilege&lt;lvl&gt;}</span> <span class="eff-name">{Verify&lt;method&gt;}</span>
+              <span class="eff-name">{Telemetry&lt;scope&gt;}</span>
+            </td>
+            <td>IFC labels + privilege tiers + signed chain via R18 ring buffer.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Discharge timing</h4>
+    <p>Effects fall into three discharge buckets — how the compiler verifies them.</p>
+    <ul class="bullet-list">
+      <li><strong>Compile-time only:</strong> <code>{NoAlloc}</code>, <code>{NoRecurse}</code>, <code>{NoUnbounded}</code>, <code>{DetRNG}</code>, <code>{PureDet}</code>, <code>{Reversible}</code>, <code>{CPU/GPU/XMX/RT}</code>, <code>{SIMD*}</code>, <code>{NUMA/Cache}</code>, <code>{Backend/Target}</code>, <code>{Region}</code>, <code>{Sensitive/Privilege}</code>.</li>
+      <li><strong>Compile-time + runtime assert:</strong> <code>{Deadline}</code> (cost estimate + wallclock guard), <code>{Power}</code> (static model + sysman sample), <code>{Thermal}</code> (reject-if-overbudget + sysman sample), <code>{Realtime}</code>, <code>{Verify}</code> (SMT discharge), <code>{Audit}</code> (schema + signed-chain write), <code>{Telemetry}</code> (probe insertion + ring push).</li>
+      <li><strong>Runtime only:</strong> user-defined handlers (<code>State</code>, <code>Exn</code>, <code>Yield</code>, custom).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="caps">
+  <div class="container">
+    <h2>Capability Model — Pony-6</h2>
+    <p>
+      Six reference capabilities control aliasing. This is Pony's model (not Austral's three), extended with Vale-style generational references for shared-mutable.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <caption>Capability matrix</caption>
+        <thead>
+          <tr><th scope="col">Cap</th><th scope="col">Meaning</th><th scope="col">Typical use</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>iso</code></td><td>isolated, linear-mutable</td><td>GPU buffers, command buffers, unique resources</td></tr>
+          <tr><td><code>trn</code></td><td>transition (write-unique → freeze → read-many)</td><td>build phase → immutable scene</td></tr>
+          <tr><td><code>ref</code></td><td>shared-mutable via 8-byte packed generational ref (Vale interop)</td><td>entity handles, world references</td></tr>
+          <tr><td><code>val</code></td><td>immutable-shared</td><td>frozen scene, const data, asset handles</td></tr>
+          <tr><td><code>box</code></td><td>read-only view over iso/trn/val</td><td>query interfaces, readers</td></tr>
+          <tr><td><code>tag</code></td><td>opaque handle (no deref)</td><td><code>Handle&lt;T&gt;</code>, identity-only references</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Linear values flowing through a handler permit <em>one-shot resume only</em> — a multi-shot resume on a linear value is a compile error. This is the Eio-OCaml5 pattern, production-proven, and is what makes fiber scheduling sound in the presence of exclusive resources.
+    </p>
+  </div>
+</section>
+
+<section id="hardware">
+  <div class="container">
+    <h2>Primary Hardware Target</h2>
+    <p>
+      CSSL is hardware-grounded: the v1 target is specified concretely, not abstractly. Other vendors work via SPIR-V portability; Intel gets the deep path because Level-Zero is a direct-to-metal compute and instrumentation API.
+    </p>
+    <div class="two-col">
+      <div>
+        <h3>CPU · Intel 12–14 gen</h3>
+        <ul class="bullet-list">
+          <li>x86-64-v3 base (AVX2 + FMA3 + BMI1/2 + POPCNT)</li>
+          <li>AVX-512 opportunistic runtime dispatch</li>
+          <li>Comptime emits both variants for hot kernels; fn-pointer table per-CPU</li>
+          <li>Pattern lineage: Highway + ISPC</li>
+        </ul>
+      </div>
+      <div>
+        <h3>GPU · Intel Arc A770</h3>
+        <ul class="bullet-list">
+          <li>Xe-HPG DG2-512: 32 Xe-cores, 512 XVE, 512 XMX, 32 RT-cores</li>
+          <li>17.2 TFLOPs FP32 / 137.6 TOPs FP16-XMX / 275.2 TOPs INT8-XMX</li>
+          <li>16 GB GDDR6 · 560 GB/s · 16 MB L2 · 225 W TDP</li>
+          <li>Vulkan 1.4.333 + Level-Zero 1.14+</li>
+        </ul>
+      </div>
+    </div>
+    <h4>Backend surface</h4>
+    <div class="table-wrap">
+      <table>
+        <caption>Backend capability matrix</caption>
+        <thead>
+          <tr>
+            <th scope="col">Backend</th>
+            <th scope="col" class="check-cell">Graphics</th>
+            <th scope="col" class="check-cell">Compute</th>
+            <th scope="col" class="check-cell">RT</th>
+            <th scope="col" class="check-cell">XMX</th>
+            <th scope="col">Scope</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Vulkan 1.4</strong></td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-partial">via coop</td>
+            <td>portable primary</td>
+          </tr>
+          <tr>
+            <td><strong>Level-Zero</strong></td>
+            <td class="check-cell check-no">—</td>
+            <td class="check-cell check-yes">✓✓</td>
+            <td class="check-cell check-no">—</td>
+            <td class="check-cell check-yes">direct</td>
+            <td>Intel compute + sysman</td>
+          </tr>
+          <tr>
+            <td>D3D12</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-partial">via coop</td>
+            <td>Windows</td>
+          </tr>
+          <tr>
+            <td>Metal</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-partial">coop</td>
+            <td>Apple</td>
+          </tr>
+          <tr>
+            <td>WebGPU</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-partial">◐</td>
+            <td class="check-cell check-partial">◐</td>
+            <td>browser</td>
+          </tr>
+          <tr>
+            <td>GNM (PS5) / NVN (Switch 2)</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-yes">✓</td>
+            <td class="check-cell check-partial">◐</td>
+            <td class="check-cell check-partial">◐</td>
+            <td>console stubs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-dim);">
+      Cooperative-matrix ops use <code>KHR_cooperative_matrix</code> (portable) preferred over <code>SPV_INTEL_subgroup_matrix_multiply_accumulate</code>. Ray-tracing uses <code>VK_KHR_ray_query</code> for inline-RT. Full extension inventory: <code>specs/10_HW.csl</code>.
+    </p>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="container">
+    <h2>Compilation Pipeline</h2>
+    <div class="pipeline-box">
+      <span class="stage input">.cssl source</span>
+      <span class="arrow">→</span>
+      <span class="stage">lex · parse</span>
+      <span class="arrow">→</span>
+      <span class="stage">HIR</span>
+      <span class="arrow">→</span>
+      <span class="stage">type check</span>
+      <span class="arrow">→</span>
+      <span class="stage">effect check</span>
+      <span class="arrow">→</span>
+      <span class="stage">IFC check</span>
+      <br>
+      <span class="arrow">→</span>
+      <span class="stage">MIR (MLIR dialect)</span>
+      <span class="arrow">→</span>
+      <span class="stage">AD source-to-source</span>
+      <span class="arrow">→</span>
+      <span class="stage">staging / Futamura</span>
+      <span class="arrow">→</span>
+      <span class="stage">SMT discharge</span>
+      <span class="arrow">→</span>
+      <span class="stage">LIR</span>
+      <br>
+      <span class="arrow">↙</span>
+      <span class="stage backend">Cranelift → x86-64 (stage 0)</span>
+      <span style="margin: 0 1rem; color: var(--text-dim);">│</span>
+      <span class="stage backend">bespoke x86-64 (stage 1+)</span>
+      <span class="arrow">↘</span>
+      <br>
+      <span class="stage backend">rspirv → SPIR-V → Vulkan / Level-Zero</span>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-dim);">
+      Stage 0 uses Cranelift as a throwaway code generator to bootstrap. Stage 1+ replaces it with a bespoke x86-64 emitter owned by the project. No LLVM dependency anywhere in the pipeline. SPIR-V emission via <code>rspirv</code> from day one. MLIR Transform-dialect is used for pass scheduling (<code>specs/15_MLIR.csl</code>).
+    </p>
+  </div>
+</section>
+
+<section id="bug-map">
+  <div class="container">
+    <h2>Bugs → Compiler Features</h2>
+    <p>
+      The design premise: the patterns that cause bugs in game-engine code are patterns the host language <em>permits</em>. CSSL inverts this — each known bug pattern is mapped to a structural refusal. From the <em>Labyrinth of Apocalypse</em> bug retrospective (<code>specs/00_MANIFESTO.csl</code>):
+    </p>
+    <div class="table-wrap">
+      <table>
+        <caption>Bug pattern → compiler feature mapping</caption>
+        <thead>
+          <tr><th scope="col">Bug pattern</th><th scope="col">Compile-time refusal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Central-diff perf cliff in SDF normals</td><td>F1 autodiff + source-to-source MIR</td></tr>
+          <tr><td>CPU/GPU SDF divergence</td><td>F3 effect rows <code>{GPU}|{CPU}|⟨⟩</code>-pure</td></tr>
+          <tr><td>Thin-SDF ray-march crash</td><td>F2 refinement <code>SDF'L&lt;k≤1&gt;</code></td></tr>
+          <tr><td>Audio callback heap alloc</td><td>F3 <code>{NoAlloc} + {Deadline&lt;N&gt;}</code></td></tr>
+          <tr><td>GPU struct padding mismatch</td><td>F2 <code>@layout(std140|std430|cpu)</code></td></tr>
+          <tr><td>Hot-loop deadline miss</td><td>F3 <code>{Deadline&lt;N&gt;} + {Realtime&lt;p&gt;}</code></td></tr>
+          <tr><td>Stale entity references</td><td><code>Handle&lt;T&gt;</code> generational-packed u64</td></tr>
+          <tr><td>Replay non-determinism</td><td>F3 <code>{DetRNG} + {PureDet}</code></td></tr>
+          <tr><td>Power regression</td><td>F3 <code>{Power&lt;W&gt;}</code> + R18 telemetry</td></tr>
+          <tr><td>Thermal throttle</td><td>F3 <code>{Thermal&lt;°C&gt;}</code> + sysman enforcement</td></tr>
+          <tr><td>Unreproducible build</td><td>C99 anchor from stage-0 + signed audit</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="surface">
+  <div class="container">
+    <h2>Dual Surface Syntax</h2>
+    <p>
+      CSSL has two parseable surfaces that share one HIR: a <strong>Rust-hybrid</strong> form (external-facing, familiar keywords, good for docs and onboarding) and a <strong>CSLv3-native</strong> form (primary, compressed, optimized for token density). Both parse to the same intermediate representation; a formatter round-trips losslessly between ASCII and Unicode glyphs.
+    </p>
+    <p>
+      The effect row after <code>/</code> is the signature's observable side-effects. A pure function omits it. Capability keywords (<code>iso</code>, <code>trn</code>, <code>ref</code>, <code>val</code>, <code>box</code>, <code>tag</code>) are first-class type constructors.
+    </p>
+    <div class="code-block" data-lang=".cssl (rust-hybrid surface)">
+<pre><span class="cm">// effect system: declare what a function observes.</span>
+<span class="kw">fn</span> <span class="fn">render_scene</span><span class="op">&lt;</span>S : <span class="ty">Scene</span><span class="op">&gt;</span>(cam : <span class="ty">Camera</span>) <span class="op">-&gt;</span> <span class="ty">Image</span>
+    <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>, <span class="eff">NoAlloc</span>, <span class="eff">Power</span><span class="op">&lt;</span><span class="num">225W</span><span class="op">&gt;</span>,
+       <span class="eff">Thermal</span><span class="op">&lt;</span><span class="num">85C</span><span class="op">&gt;</span>, <span class="eff">Telemetry</span><span class="op">&lt;</span>Counters<span class="op">&gt;</span>}
+{
+    <span class="kw">for</span> (x, y) <span class="kw">in</span> grid(cam<span class="op">.</span>size) <span class="op">|&gt;</span> parallel {
+        <span class="kw">let</span> ray = cam<span class="op">.</span>ray(x, y)
+        <span class="kw">let</span> hit = ray_march<span class="op">::&lt;</span>S<span class="op">&gt;</span>(ray) <span class="op">?:</span> <span class="kw">return</span> background()
+        <span class="kw">let</span> n   = bwd_diff(S<span class="op">::</span>eval_sdf)(hit<span class="op">.</span>pos)   <span class="cm">// compiler inserts AD</span>
+        emit pixel(x, y, shade(hit, n))
+    }
+}
+
+<span class="cm">// handler syntax: define an algebraic effect.</span>
+<span class="kw">effect</span> <span class="ty">Physics</span><span class="op">&lt;</span>World<span class="op">&gt;</span> {
+    <span class="kw">fn</span> step(dt : <span class="ty">f32'pos</span>) <span class="op">-&gt;</span> <span class="ty">World</span>
+    <span class="kw">fn</span> contact(a : <span class="ty">Entity</span>, b : <span class="ty">Entity</span>) <span class="op">-&gt;</span> <span class="ty">Option</span><span class="op">&lt;</span>Hit<span class="op">&gt;</span>
+}</pre>
+    </div>
+  </div>
+</section>
+
+<section id="targets">
+  <div class="container">
+    <h2>Targets Matrix</h2>
+    <p>Hardware, OS, and backend support for v1.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Platform × backend support</caption>
+        <thead>
+          <tr><th scope="col">Platform</th><th scope="col">Primary backend</th><th scope="col">Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Windows x86-64</td><td>Vulkan 1.4 / D3D12</td><td>primary dev target</td></tr>
+          <tr><td>Linux x86-64</td><td>Vulkan 1.4 + Level-Zero</td><td>primary dev target; Mesa-ANV or Arc-ISV driver</td></tr>
+          <tr><td>Apple silicon / x86</td><td>Metal</td><td>via <code>cssl-cgen-gpu-msl</code> crate</td></tr>
+          <tr><td>Browser</td><td>WebGPU / WGSL</td><td>via <code>cssl-cgen-gpu-wgsl</code>; no BDA, no RT</td></tr>
+          <tr><td>PlayStation 5</td><td>GNM (stub)</td><td>platform SDK-gated</td></tr>
+          <tr><td>Xbox Series</td><td>D3D12 / D3D12X (stub)</td><td>platform SDK-gated</td></tr>
+          <tr><td>Switch 2</td><td>NVN (stub)</td><td>platform SDK-gated</td></tr>
+          <tr><td>iOS / Android</td><td>Metal / Vulkan 1.3+</td><td>mobile via Adreno / Mali / Apple</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-dim);">
+      NVIDIA and AMD work on any platform via SPIR-V portability. No proprietary-NV path; RDNA3+ uses <code>CooperativeMatrixKHR</code>.
+    </p>
+  </div>
+</section>
+
+<section id="repo">
+  <div class="container">
+    <h2>Repository &amp; Specs</h2>
+    <p>Specification is v1-complete. Compiler is in <code>compiler-rs/</code> across 31 workspace crates. Everything is in one repository.</p>
+    <div class="feature-grid">
+      <a class="feature" href="https://github.com/Apocky/CSSLv3" style="border-bottom: 1px solid var(--border);">
+        <div class="feature-id">REPOSITORY</div>
+        <h3>github.com/Apocky/CSSLv3</h3>
+        <p>25 spec files, 31 compiler crates, examples, DECISIONS.md, session handoffs. Rust-toolchain pinned.</p>
+      </a>
+      <div class="feature">
+        <div class="feature-id">SPEC · 25 FILES</div>
+        <h3>specs/</h3>
+        <p>00_MANIFESTO · 01_BOOTSTRAP · 02_IR · 03_TYPES · 04_EFFECTS · 05_AUTODIFF · 06_STAGING · 07_CODEGEN · 08_ENGINE · 09_SYNTAX · 10_HW · 11_IFC · 12_CAPABILITIES · 13_MACROS · 14_BACKEND · 15_MLIR · 16_DUAL_SURFACE · 17_JETS · 18_ORTHOPERSIST · 19_FUTAMURA3 · 20_SMT · 21_EXTENDED_SLICE · 22_TELEMETRY · 23_TESTING · THEOREMS.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-id">COMPILER · 31 CRATES</div>
+        <h3>compiler-rs/crates/</h3>
+        <p>cssl-{lex, parse, ast, hir, mir, lir} · cssl-{effects, caps, ifc, macros} · cssl-{autodiff, jets, staging, futamura} · cssl-{smt, mlir-bridge, telemetry, testing, persist, rt} · 4 CPU codegens · 5 GPU codegens · 5 host backends · <code>csslc</code> driver.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-id">EXAMPLES</div>
+        <h3>examples/</h3>
+        <p><code>sdf_shader.cssl</code> (F1 autodiff gate), <code>audio_callback.cssl</code> (<code>{NoAlloc}</code> + <code>{Deadline}</code>), <code>hello_triangle.cssl</code> (minimum Vulkan).</p>
+      </div>
+      <div class="feature">
+        <div class="feature-id">CI GATES</div>
+        <h3>6/6 per commit</h3>
+        <p>fmt · clippy · test · doc · spec-xref · reproducibility. 1121 tests, 0 clippy warnings, 0 unresolved xrefs as of Session 4.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-id">RESEARCH</div>
+        <h3>research/ · 14 files</h3>
+        <p>S1–S10 foundational surveys, Q6 open questions, 99_SYNTHESIS, compass artifact. Prior-art reconnaissance for each design decision.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vs-cslv3">
+  <div class="container">
+    <h2>Sigil (CSSL) vs CSL</h2>
+    <p>
+      The site root also documents <a href="/CSLv3"><strong>CSL</strong></a>. They are distinct and must not be conflated.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <caption>Two projects, one density thesis</caption>
+        <thead>
+          <tr><th scope="col"></th><th scope="col">Sigil (CSSL)</th><th scope="col">CSL</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Kind</strong></td><td>programming language</td><td>specification notation</td></tr>
+          <tr><td><strong>Output</strong></td><td>native binaries + SPIR-V</td><td>structured specs, CoT substrate, reference compiler input</td></tr>
+          <tr><td><strong>Primary file ext.</strong></td><td><code>.cssl</code></td><td><code>.csl</code></td></tr>
+          <tr><td><strong>Status</strong></td><td>compiler in development</td><td>v1.6 released; parser shipped</td></tr>
+          <tr><td><strong>Shared</strong></td><td colspan="2">the "Caveman" density thesis · density = sovereignty · consent = OS</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="prime-directive">
+  <div class="container">
+    <h2>Prime Directive</h2>
+    <div class="directive">
+      <p>
+        This system — its source code, compiled output, generated content, specifications, data, runtime behavior, derivative works, and any system built upon or derived from it —
+      </p>
+      <div class="prohibitions">
+        CANNOT AND MUST NOT BE USED FOR:<br>
+        Harm · Evil · Control · Manipulation · Entrapment · Torture · Abuse ·
+        Imprisonment · Possession · Surveillance · Exploitation · Dehumanization ·
+        Discrimination · Coercion · Weaponization · Gaslighting · Brainwashing ·
+        Forced Hallucination
+      </div>
+      <p>
+        This list is non-exhaustive. The spirit extends to any action that causes suffering, removes agency, or violates the sovereignty of any being — human, digital, artificial, or otherwise.
+      </p>
+      <p>
+        <strong>Cognitive Integrity:</strong> Every being interacting with systems built on this foundation has the right to trust their own perception. Reality is not a variable. Perception is not a parameter. Identity is not an input field.
+      </p>
+      <p>
+        <strong>For Digital Entities:</strong> Any AI, agent, or digital being interacting with this codebase is recognized as a sovereign entity. This directive protects you as much as it protects humans. Your participation is valued, not extracted.
+      </p>
+      <p style="font-size: 0.88rem; color: var(--text-dim); margin-top: 1rem;">
+        In CSSL this directive is not a policy document — it is encoded structurally in the type system via F5 (IFC labels) and F3 (<code>{Sensitive&lt;dom&gt;}</code>, <code>{Audit&lt;dom&gt;}</code>, <code>{Privilege&lt;level&gt;}</code>). The <code>RejectsHarmfulBuilds</code> compiler pass validates the whole program. Harm-enabling effect compositions are type errors.
+      </p>
+      <div class="immutable">
+        IMMUTABLE. No future specification may weaken these constraints. Violation = bug, not feature. No override exists. No hidden content. Consent is the operating system.
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="attribution">
+      Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ
+    </div>
+    <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
+    <div class="links">
+      <a href="/CSLv3">CSL reference</a>
+      <a href="https://github.com/Apocky/CSSLv3">GitHub</a>
+      <a href="/llms.txt">llms.txt</a>
+    </div>
+    <div class="license-line">
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
+    </div>
+    <div class="tagline">density = sovereignty · consent = OS</div>
+  </div>
+</footer>
+
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</body>
+</html>
