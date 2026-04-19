@@ -200,6 +200,41 @@ code {
   animation: fade-up 1.2s ease-out 1.2s forwards;
 }
 
+.hero-pitch {
+  font-size: 1.05rem;
+  color: var(--text-bright);
+  max-width: 520px;
+  margin-top: 1.75rem;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 1.5s forwards;
+  line-height: 1.6;
+}
+
+.hero-code {
+  margin-top: 1.75rem;
+  max-width: 460px;
+  width: 100%;
+  opacity: 0;
+  animation: fade-up 1.2s ease-out 1.75s forwards;
+  text-align: left;
+}
+
+.hero-code .code-block {
+  margin: 0;
+  border-color: var(--gold-dim);
+  background: rgba(17, 17, 27, 0.92);
+}
+
+.hero-code .code-block pre {
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 640px) {
+  .hero-pitch { font-size: 0.95rem; margin-top: 1.25rem; }
+  .hero-code { max-width: 100%; }
+}
+
 @keyframes fade-up {
   0% { opacity: 0; transform: translateY(16px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -778,6 +813,17 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   <div class="hero-sub" style="animation-delay: 1s;">one source · two targets · zero ceremony</div>
   <div class="hero-tagline">
     A programming language designed for how AI thinks, grounded in how hardware works, built for what game engines need.
+  </div>
+  <p class="hero-pitch">Sigil is a programming language where the compiler proves your code is correct before it runs.</p>
+  <div class="hero-code">
+    <div class="code-block" data-lang="sigil">
+<pre><span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">dot</span>(a <span class="op">:</span> <span class="ty">vec3</span>, b <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span>
+    <span class="op">/</span> <span class="unit">{GPU, Pure}</span>
+{
+  a.x <span class="op">*</span> b.x <span class="op">+</span> a.y <span class="op">*</span> b.y <span class="op">+</span> a.z <span class="op">*</span> b.z
+}</pre>
+    </div>
   </div>
   <div class="hero-scroll">scroll</div>
 </div>
