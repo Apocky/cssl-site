@@ -1,0 +1,44 @@
+/* HUMANS.TXT — cssl.dev
+   Because the web is still made by people. */
+
+/* TEAM */
+
+Creator & Architect: Shawn Wolfgang Michael Baker
+Role: Language designer, compiler architect, Techno-Shaman
+Location: Earth
+Contact: cssl.dev/feedback
+
+Lead Programmer: Claude Code (Anthropic)
+Role: AI co-author — primary implementor of the Sigil compiler
+Model: Claude (claude-sonnet-4-6 and ancestors)
+
+/* THE LANGUAGE */
+
+This site documents Sigil — also known as CSSL and CSSLv3.
+One language. Three names. One source. Two targets.
+
+Compiler repository: https://github.com/Apocky/CSSL3
+Spec notation: CSLv3 (Caveman Spec Language v3)
+Full machine-readable docs: https://cssl.dev/llms-full.txt
+
+/* TECHNOLOGY */
+
+HTML5 · CSS3 · Vanilla JS (zero frameworks)
+Service Worker (offline-first)
+Deployed on Vercel
+Fonts: Cinzel · JetBrains Mono · Newsreader (Google Fonts)
+
+/* PHILOSOPHY */
+
+density = sovereignty
+consent = OS
+violation = bug
+
+The spec, compiler, and this site are built on the Prime Directive:
+no system derived from this foundation may be used for harm, control,
+manipulation, surveillance, or the violation of any being's sovereignty.
+IMMUTABLE. No override exists.
+
+/* LAST UPDATED */
+
+2026-04-19

@@ -16,6 +16,7 @@ var PRECACHE = [
   '/CSLv3',
   '/manifest.webmanifest',
   '/js/feedback.js',
+  '/js/tabs.js',
   '/js/sw-register.js',
   '/js/kbd-nav.js',
   '/js/permalinks.js',
