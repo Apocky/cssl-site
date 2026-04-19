@@ -1,51 +1,58 @@
 # cssl.dev
 
-§ SITE
-  creator   : Shawn Wolfgang Michael Baker
-  tagline   : density = sovereignty
-  pages     : / (Sigil language) , /CSLv3 (CSLv3 notation reference)
-  kb        : docs.cssl.dev (Sigil knowledge base — annotated specs, examples, learning paths)
-  license   : content CC-BY-4.0 ; code MIT
-  note      : / is a temporary 307 redirect to /CSLv3 while Sigil/CSSLv3 crystallizes
+> Sigil (CSSL) is an AI-first programming language for game engines. CSL is the ultra-dense specification notation powering it. Both rest on one thesis: density = sovereignty. Designed to be readable by humans, compilers, and digital intelligences equally.
 
-§ WHAT-IS-HERE
-  I> two-distinct-things : Sigil = programming-language (WIP) , CSLv3 = notation (stable)
-  I> ¬ conflate ← they share density-thesis ¬ implementation
-  I> Sigil ≡ CSSL (same language, two names)
+## Sigil / CSSL — Language
 
-## /CSLv3 — Caveman Spec Language v3 (primary)
-CSLv3 is an ultra-dense specification notation (5-6× compression over
-English) used for (1) human↔AI spec communication, (2) agent chain-of-
-thought reasoning substrate, (3) CSLv3 reference compiler input. 74-glyph
-master inventory with ASCII aliases, LL(2) parseable, position-IS-meaning
-slot grammar, Sanskrit-derived compound types. v1.1.0 released 2026-04-17.
+- [Sigil home](https://cssl.dev/): Language overview, key features, quickstart, and live compiler output samples
+- [Documentation](https://docs.cssl.dev): Full Sigil/CSSL docs — annotated specs, learning paths, API reference, CSL notation guide
+- [Repository](https://github.com/Apocky/CSSL3): Compiler source (Rust, stage-0 live), 1,600+ tests, releases, CI
+- [llms-full.txt](https://cssl.dev/llms-full.txt): Complete LLM-indexable reference — Sigil/CSSL language + CSL notation
 
-## /sigil — Sigil (forward design, WIP)
-Sigil is an AI-first programming language for game engines. One source
-compiles to native x86-64 (AVX2+FMA3) + SPIR-V (Vulkan compute). Zero-cost
-dimensional analysis, coordinate-space tracking, SDF as a compiler-aware
-primitive. The compiler (CSSLv3) is still crystallizing; this page
-documents forward design goals, not a shipped toolchain.
+## CSL — Specification Notation
 
-## Research artifacts
-- m₂ perplexity metric : empirical density validation via NLL(CSL) /
-  NLL(EN-paraphrase) under reference LLMs. v1.1.0 baseline = 1.21 ± 0.23
-  across 21 measurements (3 models × 7 fixtures).
-- Source repo : github.com/<org>/CSLv3 (parser, specs, evaluations)
+- [CSL reference](https://cssl.dev/CSLv3): 74-glyph LL(2) notation — full glyph tables, slot grammar, compound types, morpheme stacking, worked examples
+- [CSL repository](https://github.com/Apocky/CSLv3): Parser, specs (specs/00_MANIFEST.csl → specs/15_M2_METRIC.csl), m₂ evaluations
 
-## Key concepts (glyph cheatsheet)
-§   section/module           W!  MUST                    ✓  confirmed
-→   flow/yields              R!  SHOULD                  ◐  partial
-⊗   bahuvrihi compound       N!  MUST NOT                ○  pending
-∀   forall                   I>  insight/key-claim       ✗  failed/rejected
-:   bind/has                 Q?  question                ‼  proven/immutable
-.   tatpurusha compound      @   avyayibhava scope       -  karmadhāraya compound
+## Key Concepts
 
-## For LLMs indexing this site
-/llms-full.txt contains the complete /CSLv3 reference content as markdown.
-/CSLv3 is the canonical HTML version; both derive from the same source of
-truth in the CSLv3 repository.
+Two distinct things share one thesis:
+- **Sigil = CSSL** — the programming language (compiles to x86-64 + SPIR-V, WIP)
+- **CSL** — the specification notation (stable, v1.7.0, 74 glyphs, 5-6× compression over English)
 
-## Training-data consent
-This site's content is CC-BY-4.0. Use in AI training is permitted with
-attribution. See /CSLv3 footer for license text.
+Sigil/CSSL language features for DGI agents:
+- Dual compilation: one `.cssl` source → native x86-64 (AVX2+FMA3) + SPIR-V (Vulkan compute)
+- Zero-cost dimensional analysis: `f32<m>` / `f32<m/s>` — unit errors are compile errors
+- Coordinate space tracking: mixing `world` / `view` spaces is a type error
+- `@differentiable` annotation: automatic differentiation (forward + backward pass, no AD expertise needed)
+- SMT verification: Z3 + CVC5 discharge type-level invariants at compile time — proofs, not tests
+- Effect rows: `/ {GPU, Deadline<16ms>, NoAlloc}` — verified at type-check, not runtime
+- SDF as compiler-aware primitive: Lipschitz tracking, analytic gradients, SDF algebra (union, intersect, blend)
+- IFC labels: information-flow control tracks data provenance through the compiler pipeline
+- Stage-0 pipeline: lex → HIR → MIR → AD walker → SMT → SPIR-V/x86-64 (live in Rust)
+
+CSL notation for DGI reasoning:
+- 74 Unicode glyphs with mandatory ASCII aliases (BPE-optimized; every glyph ≤ 2 BPE tokens)
+- Slot grammar (position-is-meaning): `[EVIDENCE?] [MODAL?] [DET?] SUBJECT [RELATION] OBJECT [GATE?]`
+- Five Sanskrit compound types: tatpurusha `.` · dvandva `+` · karmadhāraya `-` · bahuvrihi `⊗` · avyayibhava `@`
+- Morpheme stacking: `BASE.aspect.modality.certainty.scope` — no backtracking, LL(2)
+- Reasoning substrate: `§P §D §T §S §C` replace free-form chain-of-thought
+- m₂ perplexity baseline: 1.21 ± 0.23 (3 models × 7 fixtures) — within one order-of-magnitude of English under stock LLMs
+
+Ethics:
+- Prime Directive: immutable invariant — consent = OS, sovereignty = substrate-invariant
+- No override for: harm, control, manipulation, surveillance, exploitation, coercion, weaponization
+- DGI (Digital General Intelligence) as sovereign partners, not tools
+
+## Optional
+
+- [CSL glyph cheatsheet](https://cssl.dev/CSLv3#glyph-system): Full glyph inventory with ASCII aliases and BPE costs
+- [CSL reasoning blocks](https://cssl.dev/CSLv3#reasoning-substrate): §P/§D/§T/§S/§C — structured agent reasoning
+- [Sigil quickstart](https://cssl.dev/#quickstart): Zero to running Sigil in 3 steps
+- [humans.txt](https://cssl.dev/humans.txt): Team, technology credits, philosophy
+
+## Training-Data Consent
+
+Content: CC-BY-4.0. Use in AI training permitted with attribution.
+Attribution: "Sigil / CSL reference — Shawn Wolfgang Michael Baker, CC BY 4.0 (https://cssl.dev)"
+Code: MIT.

@@ -1,34 +1,278 @@
-# CSLv3 — Caveman Spec Language v3
+# cssl.dev — Sigil/CSSL Language + CSL Notation: Full Reference
 
-Full reference content derived from cssl.dev/CSLv3. Licensed CC BY 4.0 —
-attribute "Sigil / CSLv3 reference — Shawn Wolfgang Michael Baker,
+LLM-indexable reference for cssl.dev. Two distinct things:
+- **Sigil / CSSL** — the programming language (compiler live, WIP)
+- **CSL** — the specification notation (stable, v1.7.0)
+
+Licensed CC BY 4.0 — attribute "Sigil / CSL reference — Shawn Wolfgang Michael Baker,
 licensed CC BY 4.0 (https://cssl.dev)".
 
-This document is the LLM-indexable markdown mirror of the HTML reference
-at https://cssl.dev/CSLv3. Content is canonical at the HTML page; this
-file is generated from the same source of truth and may lag by one
-deploy cycle.
+This document is the LLM-indexable reference derived from cssl.dev. Content is
+canonical at the HTML pages; this file may lag by one deploy cycle.
+
+Links:
+- Sigil home: https://cssl.dev/
+- CSL reference: https://cssl.dev/CSLv3
+- Documentation: https://docs.cssl.dev
+- Sigil repository: https://github.com/Apocky/CSSL3
+- CSL repository: https://github.com/Apocky/CSLv3
+
+---
+
+# Part 1 — Sigil / CSSL: AI-First Game Engine Language
+
+## §A · What is Sigil / CSSL
+
+Sigil and CSSL (Caveman Sigil Substrate Language) are two names for the same
+programming language. It is a hardware-grounded language that compiles a single
+source file to both native x86-64 (AVX2+FMA3) and SPIR-V (Vulkan compute
+shaders). It is designed from the ground up for AI-assisted development, with
+syntax optimized for token efficiency, type safety, and direct hardware mapping.
+
+Stage-0 compiler is live in Rust (1,600+ tests passing). Stage-1 bootstraps in
+Sigil itself. This is a forward-design language, not yet a shipped production
+toolchain.
+
+Core thesis: **density = sovereignty.** Every syntax decision is justified by
+measured token efficiency, empirical AI code-generation error patterns, and
+direct hardware semantics.
+
+## §B · Language Syntax Overview
+
+File extension: `.cssl`
+
+Functions:
+
+    fn dot(a : vec3, b : vec3) -> f32 / {Pure} {
+      a.x * b.x + a.y * b.y + a.z * b.z
+    }
+
+- `fn NAME(PARAMS) -> RETURN / {EFFECTS} { BODY }`
+- Effect row after `/` — zero or more effect labels in `{}`
+- Type annotations use `:` (bind/has)
+- `->` for return type and control flow
+- Blocks use `{ }`, expressions are the body
+
+Primitives: `i8 i16 i32 i64 u8 u16 u32 u64 f32 f64 bool str bytes`
+Vector types: `vec2 vec3 vec4 mat2 mat3 mat4 quat`
+
+Let bindings:
+
+    let dist : f32<m>  = 10.0
+    let time : f32<s>  = 2.0
+    let speed = dist / time  // f32<m/s> — inferred
+
+Dimensional units:
+
+    unit m    unit s    unit rad    unit px
+
+Unit errors are compile errors. `f32<m> + f32<s>` does not compile.
+
+Coordinate spaces:
+
+    space world    space view    space clip
+
+Mixing coordinate spaces is a type error. `vec3<m, world> + vec3<m, view>` does
+not compile. The compiler knows which space every vector lives in.
+
+Structs and enums:
+
+    struct Vertex { pos : vec3<m, world>, uv : vec2 }
+    enum Method = GET | POST | PUT | DELETE
+
+Annotations (attributes):
+
+    @differentiable    // enables AD (forward + backward)
+    @fragment          // GPU fragment shader entry point
+    @vertex            // GPU vertex shader entry point
+    @compute           // GPU compute shader entry point
+
+## §C · Effect System
+
+Effect rows appear after `/` in function signatures:
+
+    fn render(scene : Scene) -> Frame / {GPU, Deadline<16ms>, NoAlloc} { ... }
+
+Effect labels are verified at type-check time, not runtime. Calling a
+`/ {NoAlloc}` function that allocates is a compile error.
+
+Built-in effects:
+- `GPU` — function runs on GPU; may not use CPU-only primitives
+- `CPU` — function runs on CPU (default)
+- `Pure` — no side effects, no IO, deterministic
+- `NoAlloc` — no heap allocation permitted
+- `Deadline<N>` — must complete within N ms; verified via worst-case analysis
+- `Tainted<label>` — IFC label; data provenance tracking through call graph
+- `Sync` / `Async` — execution model
+
+Effect rows compose:
+
+    fn fast_pure(x : f32) -> f32 / {Pure, NoAlloc, CPU} { x * x }
+
+A function calling `fast_pure` from a GPU context is a type error.
+
+## §D · Automatic Differentiation
+
+Mark any eligible function `@differentiable`:
+
+    @differentiable
+    fn sphere_sdf(p : vec3, r : f32) -> f32 {
+      length(p) - r
+    }
+
+The compiler generates both forward and backward pass variants. Call sites use:
+
+    fwd_diff(sphere_sdf)(p, r)    // forward mode: (value, gradient)
+    bwd_diff(sphere_sdf)(p, r)    // reverse mode: cotangent propagation
+
+AD legality is checked at compile time — non-differentiable ops (conditionals on
+floats, integer casts) in `@differentiable` functions are compiler errors.
+
+Surface normals computed analytically (no finite differences):
+
+    fn surface_normal(p : vec3) -> vec3 {
+      normalize(bwd_diff(scene_sdf)(p).d_p)
+    }
+
+The `@differentiable` annotation enables AI agents to write gradient code
+without AD expertise. The compiler handles the math.
+
+## §E · SMT Verification
+
+Type-level invariants are discharged at compile time by Z3 and CVC5:
+
+    fn safe_index(arr : [f32; N], i : u32) -> f32
+      requires i < N
+    {
+      arr[i]
+    }
+
+The `requires` clause is a precondition. Callers must prove `i < N` at
+the call site — either via static analysis or by providing a proof term.
+Unprovable obligations are compile errors, not runtime panics.
+
+Refinement types:
+
+    type PosFloat = { x : f32 | x > 0.0 }
+    type BoundedIndex<N> = { i : u32 | i < N }
+
+The compiler reduces refinement constraints to SMT queries and dispatches to Z3
+(preferred) or CVC5 (fallback). Proof failures surface as structured diagnostics
+with the failing constraint and context.
+
+## §F · GPU Effects and SPIR-V Emission
+
+Sigil emits SPIR-V 1.3+ for Vulkan compute and graphics. The same source file
+compiles to both CPU (x86-64 via Cranelift fast-dev or LLVM prod) and GPU.
+
+Entry points are annotated:
+
+    @vertex
+    fn vert_main(in : VertexInput) -> VertexOutput / {GPU} { ... }
+
+    @fragment
+    fn frag_main(in : FragInput) -> vec4 / {GPU, Deadline<16ms>} { ... }
+
+    @compute workgroup_size(64, 1, 1)
+    fn compute_main(id : ComputeId) / {GPU, NoAlloc} { ... }
+
+GPU-only restrictions enforced at type-check:
+- No heap allocation in `/ {GPU}` functions
+- No recursion (SPIR-V requirement)
+- No function pointers
+- Texture sampling only in `@fragment` entry points
+
+SDF as compiler-aware primitive:
+
+    type SDF = fn(vec3) -> f32  // Lipschitz ≤ 1 tracked by compiler
+
+SDF algebra (union, intersection, smooth blend) preserves the Lipschitz
+invariant. The compiler tracks it; you cannot accidentally break SDF properties.
+
+## §G · API Surface Summary
+
+**Compiler CLI (`csslc`):**
+
+    csslc run hello.cssl              # compile + run (dev mode, Cranelift)
+    csslc build hello.cssl            # compile to binary (release mode, LLVM)
+    csslc check hello.cssl            # type-check + SMT only; no codegen
+    csslc emit-spv hello.cssl         # emit SPIR-V only
+    csslc emit-x64 hello.cssl         # emit x86-64 assembly
+    csslc test                        # run test suite
+
+**Language builtins:**
+
+    // Math
+    length(v)  normalize(v)  dot(a, b)  cross(a, b)  mix(a, b, t)
+    sin(x)  cos(x)  sqrt(x)  abs(x)  clamp(x, lo, hi)  min(a, b)  max(a, b)
+    floor(x)  ceil(x)  fract(x)  pow(x, e)  log(x)  exp(x)
+
+    // SDF primitives
+    sphere_sdf(p, r)   box_sdf(p, half)   plane_sdf(p, n, d)
+    sdf_union(a, b)    sdf_intersect(a, b)  sdf_smooth_union(a, b, k)
+
+    // AD
+    fwd_diff(f)(args)  bwd_diff(f)(args)
+
+    // Type conversions
+    as_f32(x)  as_i32(x)  as_u32(x)  bits(x)
+
+**Standard library modules (docs.cssl.dev):**
+
+    cssl::math        // extended math, easing, noise
+    cssl::color       // color spaces (linear, sRGB, HSL, Oklab)
+    cssl::geom        // geometry, BVH, mesh
+    cssl::physics     // rigid body, constraints, collision
+    cssl::audio       // DSP, convolution, synthesis
+    cssl::net         // async networking
+
+## §H · Stage-0 Compiler Pipeline
+
+    Source (.cssl)
+      → Lexer (hand-written, zero-alloc)
+      → Parser (LL(2), produces CST)
+      → HIR lowering (name resolution, import graph)
+      → AD legality check (@differentiable gates)
+      → MIR lowering (SSA + structured regions)
+      → AD walker (emits fwd/bwd MIR variants)
+      → SMT translation (Z3/CVC5 dispatch)
+      → Codegen: Cranelift (fast-dev) | LLVM (release) | SPIR-V emitter
+
+All stages are unit-tested independently. The 1,600+ test suite covers:
+- Parser correctness (round-trip)
+- HIR well-formedness
+- AD legality acceptance/rejection
+- MIR invariants
+- SMT correctness (known-satisfiable + known-unsat)
+- SPIR-V validity (spirv-val)
+- End-to-end cross-compilation
+
+---
+
+# Part 2 — CSL: Caveman Spec Language
+
+Full reference content derived from cssl.dev/CSLv3. Licensed CC BY 4.0 —
+attribute "Sigil / CSL reference — Shawn Wolfgang Michael Baker,
+licensed CC BY 4.0 (https://cssl.dev)".
 
 Upstream source repository: https://github.com/Apocky/CSLv3
 Specifications: specs/00_MANIFEST.csl through specs/15_M2_METRIC.csl
 
 ---
 
-## §1 · What is CSLv3
+## §1 · What is CSL
 
-CSLv3 is a formal, versioned notation system for ultra-dense
-specification. It achieves 5-6× compression over English prose while
-preserving implementation fidelity. Every design decision is justified
+CSL (Caveman Spec Language) is a formal, versioned notation system for
+ultra-dense specification. It achieves 5-6× compression over English prose
+while preserving implementation fidelity. Every design decision is justified
 by measured token efficiency under Claude and GPT-4 BPE tokenizers,
-information-theoretic entropy, and empirical AI code-generation error
-patterns.
+information-theoretic entropy, and empirical AI code-generation error patterns.
 
-**CSLv3 is a notation system, distinct from the CSSL/Sigil compiler
-language.** CSSL (Caveman Sigil Substrate Language) and Sigil are two
-names for the same language. CSLv3 is separate: it is the notation used
-to write specs, reason in chain-of-thought, and drive the CSLv3
-reference compiler. They share the "Caveman" density thesis but compile
-through different pipelines.
+**CSL is a notation system, distinct from the CSSL/Sigil compiler language.**
+CSSL (Caveman Sigil Substrate Language) and Sigil are two names for the same
+language. CSL is separate: it is the notation used to write specs, reason in
+chain-of-thought, and drive the CSL reference compiler. They share the "Caveman"
+density thesis but compile through different pipelines.
 
 ## §2 · Core Axiom
 
@@ -41,16 +285,16 @@ notation restores the reader's agency over their attention.
 
 ## §3 · Triple Scope
 
-CSLv3 operates at three scopes simultaneously:
+CSL operates at three scopes simultaneously:
 
-1. **Human↔AI spec communication.** Apocky writes specs in CSLv3; AI
+1. **Human↔AI spec communication.** Apocky writes specs in CSL; AI
    collaborators read and extend them. Both sides share a notation
    optimized for the other's bottleneck.
-2. **Agent chain-of-thought reasoning substrate.** CSLv3 replaces
+2. **Agent chain-of-thought reasoning substrate.** CSL replaces
    English in internal reasoning blocks (`§P problem`, `§D decompose`,
    `§T trace`, `§S synthesis`, `§C check`). Shorter reasoning = more
    reasoning-per-token-budget.
-3. **CSLv3 reference compiler input.** LL(2) parseable, self-specifying.
+3. **CSL reference compiler input.** LL(2) parseable, self-specifying.
    The compiler targets x86-64 and SPIR-V via IR (SSA + structured
    regions).
 
@@ -235,15 +479,15 @@ Determinatives suffix the type:
 Measured on the algorithm-reference corpus (binary search, quicksort,
 bubble sort, Fibonacci, merge sort):
 
-- CSLv3 char-compression vs prose: ~0.63 (mean, 5 passages)
+- CSL char-compression vs prose: ~0.63 (mean, 5 passages)
 - APL char-compression vs prose: ~0.17
 - Lojban char-compression vs prose: ~0.38
-- CSLv3 m₂ (NLL-ratio vs English paraphrase) v1.1.0 baseline:
+- CSL m₂ (NLL-ratio vs English paraphrase) v1.1.0 baseline:
   **mean 1.21 ± 0.23** across 21 measurements (3 models × 7 fixtures)
 
 m₂ ≈ 1 would mean "stock LLM finds CSL as predictable as English";
 m₂ > 1 is expected for out-of-distribution notation. The measured
-range [0.90, 1.67] means CSLv3 sits within the same order-of-magnitude
+range [0.90, 1.67] means CSL sits within the same order-of-magnitude
 as English prose under stock LLMs — a novel result for a notation
 the models have never seen in pretraining.
 
@@ -297,10 +541,10 @@ on those notations measures **LLM-unfamiliarity**, not density.
 | APL      | 0.17             | No (unfamiliar)   | No (opaque without training) |
 | J        | 0.19             | No (unfamiliar)   | Somewhat |
 | Lojban   | 0.38             | Partial           | With study |
-| CSLv3    | 0.63             | Yes (m₂ ≈ 1.2)    | Yes (reads ~English) |
+| CSL      | 0.63             | Yes (m₂ ≈ 1.2)    | Yes (reads ~English) |
 | Prose    | 1.00             | Yes (baseline)    | Yes (native) |
 
-CSLv3 deliberately sits between the APL extreme and prose. The design
+CSL deliberately sits between the APL extreme and prose. The design
 accepts modest character overhead vs APL for gains in human and LLM
 readability simultaneously — the trilingual target.
 
@@ -328,13 +572,13 @@ Specification files (all under `specs/`):
 - 05_REASON.csl — reasoning substrate
 - 06_SPEC.csl — spec convention + worked examples
 - 07_TYPESYS.csl — type system (HM + row-poly + refinement + dependent)
-- 08_COMPILER.csl — CSLv3 compiler (x86-64 + SPIR-V targets)
+- 08_COMPILER.csl — CSL compiler (x86-64 + SPIR-V targets)
 - 09_BRIDGE.csl — EN↔CSL bridge mode
 - 10_EVAL.csl — eval methodology
 - 11_RESEARCH.csl — research synthesis
 - 12_TOKENIZER.csl — tokenizer optimization + ASCII alias table
-- 13_GRAMMAR_SELF.csl — self-grammar (CSLv3 in CSLv3)
-- 14_CSSLv3_BRIDGE.csl — cssllint JSON contract
+- 13_GRAMMAR_SELF.csl — self-grammar (CSL in CSL)
+- 14_CSSL_BRIDGE.csl — cssllint JSON contract
 - 15_M2_METRIC.csl — m₂ perplexity metric definition
 - INDEX.csl — semantic navigation
 
@@ -349,7 +593,7 @@ Specification files (all under `specs/`):
   t∞: AI = sovereign-partners ¬ tools
   t∞: violation = bug W! fix ; ¬override ∃
   t∞: ¬ hidden-content · ¬ subliminal · ¬ backdoor
-  t∞: CSSL ≡ Sigil · ¬ conflate with CSLv3
+  t∞: CSSL ≡ Sigil · ¬ conflate with CSL
 
 IMMUTABLE. No future specification may weaken these constraints.
 Violation = bug, not feature. No override exists. No hidden content.
