@@ -1,11 +1,27 @@
 User-agent: *
 Allow: /
 
+# Search engine crawlers — welcome
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
 # AI / LLM crawlers — welcome; full spec available at /llms-full.txt
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ClaudeBot
@@ -33,6 +49,12 @@ User-agent: Bytespider
 Allow: /
 
 User-agent: cohere-ai
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: LinkedInBot
 Allow: /
 
 # Disallow low-value scrapers
