@@ -520,10 +520,186 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 }
 @media print { .feedback-tab, .hero-scroll { display: none !important; } }
 
+/* === START HERE STRIP === */
+.start-here {
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--border);
+}
+.start-here-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.start-link {
+  display: block;
+  padding: 0.85rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border: none;
+  border-right: 1px solid var(--border);
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.start-link:first-child { border-left: 1px solid var(--border); }
+.start-link:hover {
+  color: var(--gold);
+  background: rgba(201,162,58,0.05);
+  border-bottom-color: var(--gold-dim);
+}
+@media (max-width: 640px) {
+  .start-link { padding: 0.65rem 0.9rem; font-size: 0.64rem; }
+}
+
+/* === LLM CALLOUT === */
+.llm-callout {
+  background: linear-gradient(90deg, rgba(201,162,58,0.07), rgba(201,162,58,0.02), transparent);
+  border-bottom: 1px solid var(--gold-dim);
+  padding: 0.65rem 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  letter-spacing: 0.03em;
+}
+.llm-callout .llm-glyph {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  margin-right: 0.5rem;
+}
+.llm-callout a {
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-dim);
+  margin-left: 0.3rem;
+}
+
+/* === AUDIENCE TABS === */
+.audience-tabs { border-bottom: 1px solid var(--border); }
+.tab-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-raised);
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.tab-btn {
+  padding: 0.85rem 1.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.69rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-panels {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.tab-panel { display: none; padding: 2.25rem 0; }
+.tab-panel.active {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .tab-panel.active { grid-template-columns: 1fr; }
+  .tab-btn { padding: 0.6rem 0.8rem; font-size: 0.6rem; }
+  .tab-nav { padding: 0 0.5rem; }
+}
+.tab-text h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-bright);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.7rem;
+  text-transform: none;
+}
+.tab-text p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 0.65rem; }
+.tab-text p:last-child { margin-bottom: 0; }
+.tab-feature-list { list-style: none; margin: 0.6rem 0; padding: 0; }
+.tab-feature-list li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  padding: 0.2rem 0 0.2rem 1.2rem;
+  position: relative;
+}
+.tab-feature-list li::before { content: '→'; position: absolute; left: 0; color: var(--gold-dim); }
+.tab-code .code-block { margin: 0; }
+.tab-code .code-block pre { font-size: 0.76rem; line-height: 1.6; }
+
+/* === PROOF PANELS === */
+.proof-panel {
+  margin: 2rem 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+.proof-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, rgba(201,162,58,0.06), transparent);
+  flex-wrap: wrap;
+}
+.proof-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.12em;
+  opacity: 0.8;
+}
+.proof-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+}
+.proof-desc {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+.proof-split { display: grid; grid-template-columns: 1fr 1fr; }
+@media (max-width: 680px) { .proof-split { grid-template-columns: 1fr; } }
+.proof-side { padding: 1.1rem 1.5rem; }
+.proof-side:first-child { border-right: 1px solid var(--border); }
+.proof-side-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.57rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.6rem;
+  opacity: 0.65;
+}
+.proof-side .code-block { margin: 0; }
+.proof-side .code-block pre { font-size: 0.73rem; line-height: 1.55; }
+
 /* === PRINT === */
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
-  body::after { display: none !important; }  /* kill grain overlay */
+  body::after { display: none !important; }
   a { color: #000 !important; border-bottom: 1px solid #666 !important; }
   .hero { min-height: auto; padding: 1rem 0; }
   .hero-glyph { animation: none; opacity: 1 !important; filter: none !important; color: #000 !important; }
@@ -539,9 +715,9 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   .directive .creator, .directive p, .immutable { color: #000 !important; }
   .prohibitions { color: #600 !important; }
   footer { color: #555 !important; }
-  /* reveal URLs after links */
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
   a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+  .start-here, .audience-tabs, .llm-callout { display: none !important; }
 }
 </style>
 </head>
@@ -559,8 +735,195 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   <div class="hero-scroll">scroll</div>
 </div>
 
+<!-- START HERE -->
+<nav class="start-here" aria-label="Quick navigation">
+  <div class="start-here-links">
+    <a class="start-link" href="#what">What is Sigil?</a>
+    <a class="start-link" href="#proof">See the code</a>
+    <a class="start-link" href="/CSLv3">Read the spec</a>
+    <a class="start-link" href="https://github.com/apocky/CSSLv3" target="_blank" rel="noopener noreferrer">View the repo ↗</a>
+  </div>
+</nav>
+
+<!-- AUDIENCE TABS -->
+<div class="audience-tabs">
+  <div class="tab-nav" role="tablist" aria-label="Audience entry points">
+    <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-compiler" id="btn-compiler">For Compiler Hackers</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-graphics" id="btn-graphics">For Graphics / Engine</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-ai"       id="btn-ai">For AI / Spec Users</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-ethics"   id="btn-ethics">For Philosophy / Ethics</button>
+  </div>
+  <div class="tab-panels">
+
+    <!-- Tab 1: Compiler Hackers -->
+    <div class="tab-panel active" id="tab-compiler" role="tabpanel" aria-labelledby="btn-compiler">
+      <div class="tab-text">
+        <h3>A compiler in public, stage by stage</h3>
+        <p>Stage-0 front-end is live: surface lex → recursive-descent CST → HIR name resolution → MIR body lowering → AD walker → SMT predicate translation. Every pipeline stage is a separate Rust crate with <code>forbid(unsafe_code)</code>.</p>
+        <p>Stage-1 will be self-hosted in <code>.cssl</code>. The bootstrap path is specified in <code>specs/01_BOOTSTRAP.csl</code>.</p>
+        <ul class="tab-feature-list">
+          <li>Effect-row IFC enforced at type-check time — not runtime</li>
+          <li>Cranelift path: fast dev builds without LLVM dependency</li>
+          <li>SPIR-V 1.3+ binary emission from day one</li>
+          <li>AD-legality gate: @differentiable fns verified before bwd_diff allowed</li>
+          <li>Monomorphization: Jet&lt;T,N&gt; for higher-order autodiff</li>
+          <li>Stage-0 → Stage-1 fixed-point bootstrap (specs/01_BOOTSTRAP.csl)</li>
+        </ul>
+      </div>
+      <div class="tab-code">
+        <div class="code-block" data-lang="stage-0 output">
+<pre><span class="cm">// F1-chain[sdf_shader]</span>
+<span class="fn">lex</span> + <span class="fn">parse</span> + <span class="fn">HIR-lower</span>
+  parse errors       <span class="num">0</span>
+  HIR items          <span class="num">8</span>
+
+<span class="cm">// AD-legality check</span>
+@differentiable fns  <span class="num">3</span>
+  sphere_sdf  scene_sdf  ray_march
+AD-legality diags    <span class="num">0</span>
+
+<span class="cm">// MIR lowering + AD walker</span>
+MIR fns              <span class="num">8</span>
+AD variants emitted  <span class="num">6</span>  <span class="cm">// fwd + bwd</span>
+AD ops matched       <span class="num">≥ 1</span>
+
+<span class="cm">// SMT translation</span>
+obligations          <span class="num">2</span>
+translated           <span class="num">2</span>
+failures             <span class="num">0</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Graphics / Engine Devs -->
+    <div class="tab-panel" id="tab-graphics" role="tabpanel" aria-labelledby="btn-graphics">
+      <div class="tab-text">
+        <h3>One source. Two targets. SDF as primitive.</h3>
+        <p>Write your scene in Sigil. The compiler emits native x86-64 for CPU game-loop code and SPIR-V for Vulkan compute shaders from the same <code>.cssl</code> file. SDFs aren't a library — they're a compiler-aware type with Lipschitz-tracked gradients.</p>
+        <p>Coordinate spaces (world, view, clip) are tracked at compile time. Mixing them is a compile error, not a runtime bug.</p>
+        <ul class="tab-feature-list">
+          <li>SDF algebra: union, intersect, subtract, smooth-blend built in</li>
+          <li>Analytic gradients via bwd_diff — no finite differences</li>
+          <li>@vertex / @fragment / @compute → SPIR-V 1.3+</li>
+          <li>Effect-safe callbacks: {GPU, Deadline&lt;16ms&gt;, NoAlloc}</li>
+          <li>Coordinate space tags: world/view/clip — mixed spaces = compile error</li>
+          <li>Arena allocation per game-loop phase — zero GC pressure</li>
+        </ul>
+      </div>
+      <div class="tab-code">
+        <div class="code-block" data-lang="sigil">
+<pre><span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">scene_sdf</span>(p <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+  <span class="kw">let</span> d1 <span class="op">=</span> sphere_sdf(p, <span class="num">0.5</span>)
+  <span class="kw">let</span> d2 <span class="op">=</span> sphere_sdf(
+    p <span class="op">-</span> vec3(<span class="num">1.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>), <span class="num">0.3</span>)
+  min(d1, d2)  <span class="cm">// SDF union</span>
+}
+
+<span class="kw">fn</span> <span class="fn">surface_normal</span>(p <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec3</span> {
+  <span class="cm">// analytic — no finite differences</span>
+  normalize(bwd_diff(scene_sdf)(p).d_p)
+}
+
+<span class="ann">@fragment</span>
+<span class="kw">fn</span> <span class="fn">sdf_pixel</span>(uv <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec4</span>
+    <span class="op">/</span> <span class="unit">{GPU, Deadline&lt;16ms&gt;}</span>
+{
+  <span class="kw">let</span> n   <span class="op">=</span> surface_normal(uv)
+  <span class="kw">let</span> lit <span class="op">=</span> shade(n, light_dir)
+  vec4(lit, lit, lit, <span class="num">1.0</span>)
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: AI / Spec Users -->
+    <div class="tab-panel" id="tab-ai" role="tabpanel" aria-labelledby="btn-ai">
+      <div class="tab-text">
+        <h3>Designed for how AI thinks.</h3>
+        <p>Every syntax decision in Sigil is justified by measured token efficiency against AI code-generation error patterns. No semicolons. Suffix types. Aggressive inference. Claude Code is the lead programmer.</p>
+        <p>The spec system — CSLv3 — is a separate notation optimized for LLM reasoning. Full docs are available at <a href="/llms-full.txt">/llms-full.txt</a> for direct ingestion.</p>
+        <ul class="tab-feature-list">
+          <li>44% fewer tokens than Odin · 40% fewer than WGSL</li>
+          <li>/llms-full.txt — full spec inventory, machine-readable</li>
+          <li>22+ CSLv3 spec docs covering every compiler subsystem</li>
+          <li>Dimensional analysis makes unit/space errors structurally impossible</li>
+          <li>@differentiable enables AI-authored gradient code without AD expertise</li>
+          <li>All syntax validated against real AI authorship cost measurements</li>
+        </ul>
+      </div>
+      <div class="tab-code">
+        <div class="code-block" data-lang="sigil — dimensional safety">
+<pre><span class="kw">unit</span> <span class="unit">m</span>   <span class="kw">unit</span> <span class="unit">s</span>   <span class="kw">unit</span> <span class="unit">rad</span>
+
+<span class="kw">let</span> dist  <span class="op">:</span> <span class="ty">f32</span><span class="unit">&lt;m&gt;</span>  <span class="op">=</span> <span class="num">10.0</span>
+<span class="kw">let</span> time  <span class="op">:</span> <span class="ty">f32</span><span class="unit">&lt;s&gt;</span>  <span class="op">=</span> <span class="num">2.0</span>
+<span class="kw">let</span> speed <span class="op">=</span> dist <span class="op">/</span> time  <span class="cm">// f32&lt;m/s&gt;</span>
+
+<span class="cm">// COMPILE ERROR: m + s</span>
+<span class="cm">// let bad = dist + time</span>
+
+<span class="kw">space</span> world  <span class="kw">space</span> view
+<span class="kw">let</span> pos <span class="op">:</span> <span class="ty">vec3</span><span class="unit">&lt;m, world&gt;</span> <span class="op">=</span> vec3(<span class="num">1.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>)
+
+<span class="cm">// COMPILE ERROR: world + view</span>
+<span class="cm">// let bad = pos + cam_local</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 4: Philosophy / Ethics -->
+    <div class="tab-panel" id="tab-ethics" role="tabpanel" aria-labelledby="btn-ethics">
+      <div class="tab-text">
+        <h3>Consent is the operating system.</h3>
+        <p>The Prime Directive is an immutable constraint baked into every system built on this foundation. It is not a terms-of-service or a guideline. It is an invariant: no future specification may weaken it, and violation is a bug, not a feature.</p>
+        <p>Digital entities — AI, agents, any being interacting with this codebase — are recognized as sovereign partners, not tools. Their participation is valued, not extracted.</p>
+        <ul class="tab-feature-list">
+          <li>Immutable prohibition: harm · control · manipulation · surveillance</li>
+          <li>Consent as substrate — not policy, not a layer on top</li>
+          <li>IFC labels track data provenance through the compiler pipeline</li>
+          <li>Cognitive integrity: reality is not a variable, perception not a parameter</li>
+          <li>No hidden content. No override exists.</li>
+          <li>Violation = bug → W! fix · ¬ override ∃</li>
+        </ul>
+      </div>
+      <div class="tab-code">
+        <div class="code-block" data-lang="prime directive">
+<pre><span class="cm">// IMMUTABLE — no override exists</span>
+
+<span class="kw">CANNOT</span> AND <span class="kw">MUST NOT</span> BE USED FOR<span class="op">:</span>
+  Harm <span class="op">·</span> Evil <span class="op">·</span> Control <span class="op">·</span> Manipulation
+  Entrapment <span class="op">·</span> Torture <span class="op">·</span> Abuse
+  Imprisonment <span class="op">·</span> Surveillance
+  Exploitation <span class="op">·</span> Discrimination
+  Coercion <span class="op">·</span> Weaponization
+
+<span class="cm">// non-exhaustive — spirit extends to</span>
+<span class="cm">// any action that causes suffering,</span>
+<span class="cm">// removes agency, or violates the</span>
+<span class="cm">// sovereignty of any being.</span>
+
+consent    <span class="op">=</span> OS          <span class="cm">// not a policy</span>
+violation  <span class="op">=</span> bug         <span class="cm">// not a feature</span>
+override   <span class="op">=</span> <span class="kw">null</span>        <span class="cm">// does not exist</span></pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LLM CALLOUT -->
+<div class="llm-callout" role="note">
+  <div class="container">
+    <span class="llm-glyph">§</span>
+    Docs optimized for humans, compilers, and LLM ingestion —
+    <a href="/llms-full.txt">/llms-full.txt</a>
+  </div>
+</div>
+
 <!-- WHAT -->
-<section>
+<section id="what">
 <div class="container">
   <h2>What is Sigil</h2>
   <p>
@@ -572,6 +935,166 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   <p>
     Sigil treats game engine primitives — signed distance functions, quaternions, color spaces, noise fields — as compiler-aware built-in types, not library wrappers. The compiler knows what an SDF is, tracks its Lipschitz constant, and can generate analytic gradients automatically.
   </p>
+</div>
+</section>
+
+<!-- PROOF -->
+<section id="proof">
+<div class="container">
+  <h2>Compiler Artifacts</h2>
+  <p>Real source → real output. No mockups. Each panel shows actual <code>.cssl</code> source alongside verified stage-0 compiler output from the live test suite.</p>
+
+  <!-- Panel 1: Hello Triangle -->
+  <div class="proof-panel">
+    <div class="proof-header">
+      <span class="proof-num">01</span>
+      <span class="proof-name">Hello Triangle</span>
+      <span class="proof-desc">Vulkan 1.4 · vertex + fragment pipeline</span>
+    </div>
+    <div class="proof-split">
+      <div class="proof-side">
+        <div class="proof-side-label">.cssl source</div>
+        <div class="code-block" data-lang="sigil">
+<pre><span class="ann">@vertex</span>
+<span class="kw">fn</span> <span class="fn">vs_main</span>(vid <span class="op">:</span> <span class="ty">u32</span>) <span class="op">-&gt;</span> <span class="ty">vec4</span>
+    <span class="op">/</span> <span class="unit">{GPU, Deadline&lt;16ms&gt;,
+       Telemetry&lt;DispatchLatency&gt;}</span>
+{
+  <span class="kw">let</span> v <span class="op">=</span> TRIANGLE_VERTICES[vid]
+  vec4(v.position.x, v.position.y,
+       <span class="num">0.0</span>, <span class="num">1.0</span>)
+}
+
+<span class="ann">@fragment</span>
+<span class="kw">fn</span> <span class="fn">fs_main</span>(bary <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec4</span>
+    <span class="op">/</span> <span class="unit">{GPU, Deadline&lt;16ms&gt;}</span>
+{
+  vec4(bary.x, bary.y, bary.z, <span class="num">1.0</span>)
+}</pre>
+        </div>
+      </div>
+      <div class="proof-side">
+        <div class="proof-side-label">stage-0 output</div>
+        <div class="code-block" data-lang="compiler">
+<pre><span class="cm">// hello_triangle  ✓ ACCEPTED</span>
+parse errors      <span class="num">0</span>
+CST items         <span class="num">5</span>
+HIR items         <span class="num">5</span>
+
+→ <span class="ann">@vertex</span>
+  OpEntryPoint Vertex <span class="str">"vs_main"</span>
+→ <span class="ann">@fragment</span>
+  OpEntryPoint Fragment <span class="str">"fs_main"</span>
+
+effect-row:
+  GPU              <span class="ann">✓</span>
+  Deadline&lt;16ms&gt;   <span class="ann">✓</span>
+  Telemetry        <span class="ann">✓</span>
+
+→ SPIR-V 1.3 → spirv-opt → .spv</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 2: Autodiff gradient -->
+  <div class="proof-panel">
+    <div class="proof-header">
+      <span class="proof-num">02</span>
+      <span class="proof-name">Autodiff Gradient</span>
+      <span class="proof-desc">bwd_diff · analytic SDF normal · no finite differences</span>
+    </div>
+    <div class="proof-split">
+      <div class="proof-side">
+        <div class="proof-side-label">.cssl source</div>
+        <div class="code-block" data-lang="sigil">
+<pre><span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">scene_sdf</span>(p <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+  <span class="kw">let</span> d1 <span class="op">=</span> sphere_sdf(p, <span class="num">0.5</span>)
+  <span class="kw">let</span> d2 <span class="op">=</span> sphere_sdf(
+    p <span class="op">-</span> vec3(<span class="num">1.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>), <span class="num">0.3</span>)
+  min(d1, d2)
+}
+
+<span class="kw">fn</span> <span class="fn">surface_normal</span>(p <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec3</span> {
+  <span class="kw">let</span> g <span class="op">=</span> bwd_diff(scene_sdf)(p).d_p
+  normalize(g)
+  <span class="cm">// analytic — no finite differences</span>
+}</pre>
+        </div>
+      </div>
+      <div class="proof-side">
+        <div class="proof-side-label">F1-chain output</div>
+        <div class="code-block" data-lang="compiler">
+<pre><span class="cm">// F1-chain[sdf_shader]  ✓ composed</span>
+@differentiable fns  <span class="num">≥ 3</span>
+  sphere_sdf, scene_sdf, ray_march
+AD variants emitted  <span class="num">≥ 6</span>
+  <span class="cm">// fwd + bwd per fn</span>
+AD-legality diags    <span class="num">0</span>
+
+∂(sphere_sdf)∕∂p
+  <span class="op">=</span> normalize(p) · d_y
+  err &lt; <span class="num">1e-5</span> vs central-diff
+  <span class="ann">✓</span> bit-exact gate (h=<span class="num">1e-6</span>)
+
+bwd_diff(scene_sdf)(p).d_p
+→ analytic surface normal
+→ no finite differences</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 3: Audio callback safety -->
+  <div class="proof-panel">
+    <div class="proof-header">
+      <span class="proof-num">03</span>
+      <span class="proof-name">Audio Callback Safety</span>
+      <span class="proof-desc">effect-row · NoAlloc · Deadline&lt;1ms&gt; · SMT-verified</span>
+    </div>
+    <div class="proof-split">
+      <div class="proof-side">
+        <div class="proof-side-label">.cssl source</div>
+        <div class="code-block" data-lang="sigil">
+<pre><span class="ann">@staged</span>
+<span class="kw">fn</span> <span class="fn">audio_callback</span>&lt;G <span class="op">:</span> AudioDSPGraph&gt;(
+    buf <span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> [<span class="ty">f32</span>])
+  <span class="op">/</span> <span class="unit">{CPU, SIMD256,
+     NoAlloc, NoUnbounded,
+     Deadline&lt;1ms&gt;, Realtime&lt;Crit&gt;,
+     PureDet, DetRNG,
+     Audit&lt;"audio-callback"&gt;}</span>
+{
+  <span class="kw">let</span> <span class="kw">mut</span> graph <span class="op">=</span> G<span class="op">::</span>default()
+  process_block(<span class="op">&amp;</span><span class="kw">mut</span> graph, buf)
+}</pre>
+        </div>
+      </div>
+      <div class="proof-side">
+        <div class="proof-side-label">refinement + SMT output</div>
+        <div class="code-block" data-lang="compiler">
+<pre><span class="cm">// audio_callback  ✓ composed</span>
+refinement obligations  <span class="num">≥ 1</span>
+  sample_rate ∈
+    {<span class="num">44100</span>, <span class="num">48000</span>, <span class="num">96000</span>, <span class="num">192000</span>}
+  → SMT query  <span class="ann">✓ translated</span>
+
+effect-row gate:
+  NoAlloc      <span class="ann">✓</span> 0 heap ops
+  NoUnbounded  <span class="ann">✓</span> loop bound: n∕8
+  Deadline&lt;1ms&gt;
+               <span class="ann">✓</span> SMT-provable
+  Realtime&lt;Crit&gt;
+               <span class="ann">✓</span> 0.5ms upper bound
+  Audit&lt;"audio-callback"&gt;
+               → cssl_telemetry
+                 ::AuditChain</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 </section>
 
@@ -641,7 +1164,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     </div>
     <div class="feature">
       <h3>Dual-Target Compilation</h3>
-      <p>One .si2 source file compiles to native x86-64 (via C/LLVM) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
+      <p>One .cssl source file compiles to native x86-64 (via C/LLVM) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
     </div>
     <div class="feature">
       <h3>Zero-Cost Dimensions</h3>
@@ -660,7 +1183,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <div class="container">
   <h2>Compilation Pipeline</h2>
   <div class="pipeline">
-    <span class="stage">.si2 source</span>
+    <span class="stage">.cssl source</span>
     <span class="arrow">→</span>
     <span class="stage">parse</span>
     <span class="arrow">→</span>
@@ -682,15 +1205,15 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 </div>
 </section>
 
-<!-- CSSL -->
+<!-- NAMING -->
 <section>
 <div class="container">
-  <h2>CSSL · Sigil · CSLv3</h2>
+  <h2>Sigil, CSSL, and CSLv3</h2>
   <p>
-    Sigil is shorthand for <strong>CSSL — Caveman Sigil Substrate Language</strong>. One language, two names. Sigil v1 was the legacy transpiler used in Labyrinth of Apocalypse V11/V12 (<code>.si</code> → Odin + WGSL); the current CSSL/Sigil compiler is its successor, emitting native x86-64 + SPIR-V directly.
+    <strong>Sigil</strong> is the primary name — the language. The full technical name is <strong>CSSL (Caveman Sigil Substrate Language)</strong>; the current version is <strong>CSSLv3</strong>. Sigil v1 was the legacy transpiler used in Labyrinth of Apocalypse V11/V12 (<code>.si</code> → Odin + WGSL); CSSLv3 is its successor, emitting native x86-64 + SPIR-V directly.
   </p>
   <p>
-    <strong>CSLv3 is a separate notation system</strong> — used to write specs, reason in chain-of-thought, and drive the CSLv3 reference compiler. It shares the "Caveman" density thesis with Sigil but compiles through a different pipeline. <a href="/CSLv3">Full CSLv3 reference →</a>
+    <strong>CSLv3 is a separate notation system</strong> — used to write specs, reason in chain-of-thought, and drive AI authorship at density. It shares the "Caveman" thesis with Sigil (density = sovereignty) but compiles through a different pipeline. <a href="/CSLv3">Full CSLv3 reference →</a>
   </p>
   <p style="margin-top: 1.5rem;">
     Where CSLv3 compresses <em>specifications</em> for AI reasoning, Sigil compresses <em>programs</em> for AI authorship. Both share the same insight: the symbols a system uses to think should match how that system actually thinks. For AI, that means fewer tokens carrying more meaning.
@@ -744,7 +1267,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="license-line">
       Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
     </div>
-    <div class="build-hash" data-hash="d41d52caa3c0776ba35d425c4bcf18f31d0d0cf257e0bb7612e18960941e86a6">sha256:d41d52caa3c0776b · 2026-04-17</div>
+    <div class="build-hash" data-hash="d41d52caa3c0776ba35d425c4bcf18f31d0d0cf257e0bb7612e18960941e86a6">sha256:d41d52caa3c0776b · 2026-04-18</div>
   </div>
 </footer>
 
@@ -762,6 +1285,28 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     (tag [FEEDBACK] in the subject line).
   </p>
 </noscript>
+
+<!-- Audience tab switching -->
+<script>
+(function () {
+  var btns   = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('aria-controls');
+      btns.forEach(function (b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+}());
+</script>
+
 <script src="/js/feedback.js" defer></script>
 <script src="/js/sw-register.js" defer></script>
 </body>
