@@ -52,3 +52,7 @@ User-agent: BLEXBot
 Disallow: /
 
 Sitemap: https://cssl.dev/sitemap.xml
+
+# Machine-discoverable API specification
+# OpenAPI spec:     https://cssl.dev/openapi.yaml
+# AI plugin manifest: https://cssl.dev/.well-known/ai-plugin.json

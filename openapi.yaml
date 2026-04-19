@@ -1,0 +1,474 @@
+openapi: "3.1.0"
+info:
+  title: "Sigil / CSSL API"
+  description: |
+    API for the **Sigil** programming language (also known as **CSSL** — Caveman Sigil
+    Substrate Language).
+
+    Sigil is a hardware-grounded, AI-first language that compiles a single source file to
+    both native x86-64 (AVX2+FMA3) and SPIR-V (Vulkan compute shaders). It features
+    zero-cost dimensional analysis, coordinate space tracking, differentiable programming
+    (`@differentiable`), and CSSL — a compact AI-first notation for dense specification.
+
+    These endpoints let AI agents and developer tools compile Sigil code, look up language
+    constructs, retrieve curated examples, and query the formal grammar.
+
+    **Naming:** The language is "Sigil" (brand name) or "CSSL" (full name). Not "CSSLv3".
+  version: "1.0.0"
+  contact:
+    name: "cssl.dev"
+    url: "https://cssl.dev"
+    email: "apocky13@gmail.com"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+servers:
+  - url: "https://cssl.dev"
+    description: "Production"
+tags:
+  - name: "compilation"
+    description: "Compile Sigil source code to native targets"
+  - name: "syntax"
+    description: "Look up keywords, annotations, types, and CSSL glyphs"
+  - name: "examples"
+    description: "Browse and retrieve curated Sigil / CSSL code examples"
+  - name: "grammar"
+    description: "Access the formal Sigil / CSSL grammar specification"
+paths:
+  /api/compile:
+    post:
+      operationId: "compileSigil"
+      summary: "Compile Sigil source code"
+      tags: ["compilation"]
+      description: |
+        Compiles Sigil (CSSL) source code to the specified target.
+
+        - **x86-64**: Produces AVX2+FMA3 assembly for CPUs
+        - **spirv**: Produces SPIR-V bytecode for Vulkan compute shaders
+
+        Returns the compiled output along with any diagnostics (errors, warnings, hints).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompileRequest"
+            examples:
+              dot_product:
+                summary: "Differentiable dot product (SPIR-V)"
+                value:
+                  source: |
+                    @differentiable
+                    fn dot(a: vec3<f32>, b: vec3<f32>) -> f32 {
+                      a.x * b.x + a.y * b.y + a.z * b.z
+                    }
+                  target: "spirv"
+              matrix_multiply:
+                summary: "Matrix multiply (x86-64)"
+                value:
+                  source: |
+                    fn matmul(a: mat4<f32>, b: mat4<f32>) -> mat4<f32> {
+                      a * b
+                    }
+                  target: "x86-64"
+                  optimization: "speed"
+      responses:
+        "200":
+          description: "Compilation succeeded or failed with diagnostics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompileResponse"
+        "400":
+          description: "Invalid request body"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: "Source code could not be parsed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: "Compiler unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/syntax/{keyword}:
+    get:
+      operationId: "lookupSyntax"
+      summary: "Look up a Sigil / CSSL keyword or construct"
+      tags: ["syntax"]
+      description: |
+        Returns documentation, syntax rules, and usage examples for a specific Sigil or
+        CSSL keyword, annotation, built-in type, or glyph.
+
+        Examples of valid lookups: `fn`, `@differentiable`, `@kernel`, `@pure`, `vec3`,
+        `mat4`, `f32`, `§`, `W!`, `I>`, `R!`, `∀`, `∃`, `→`, `⊑`.
+      parameters:
+        - name: keyword
+          in: path
+          required: true
+          description: "Keyword, annotation, type name, or CSSL glyph to look up"
+          schema:
+            type: string
+          examples:
+            fn_keyword:
+              value: "fn"
+              summary: "Function declaration keyword"
+            differentiable:
+              value: "@differentiable"
+              summary: "Autodiff annotation"
+            vec3_type:
+              value: "vec3"
+              summary: "3-component vector type"
+            sigil_glyph:
+              value: "§"
+              summary: "Section / scope glyph"
+            must_glyph:
+              value: "W!"
+              summary: "Must / warning modal glyph"
+      responses:
+        "200":
+          description: "Syntax documentation for the requested construct"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyntaxEntry"
+        "404":
+          description: "Keyword or construct not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/examples:
+    get:
+      operationId: "listExamples"
+      summary: "List available Sigil / CSSL examples"
+      tags: ["examples"]
+      description: |
+        Returns a paginated list of curated Sigil and CSSL code examples with metadata.
+        Filter by tag to narrow results.
+
+        Common tags: `autodiff`, `spirv`, `x86-64`, `graphics`, `game-engine`, `cssl`,
+        `types`, `constraints`, `struct`, `algorithm`.
+      parameters:
+        - name: tag
+          in: query
+          required: false
+          description: "Filter examples by tag"
+          schema:
+            type: string
+          example: "autodiff"
+        - name: language
+          in: query
+          required: false
+          description: "Filter by sub-language: `sigil` (compiled) or `cssl` (notation)"
+          schema:
+            type: string
+            enum: ["sigil", "cssl"]
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        "200":
+          description: "Paginated list of examples"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExampleList"
+
+  /api/examples/{id}:
+    get:
+      operationId: "getExample"
+      summary: "Retrieve a specific Sigil / CSSL example"
+      tags: ["examples"]
+      description: |
+        Returns the full source code, description, and metadata for a specific example.
+        Use `listExamples` first to discover available IDs.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "Example identifier (from listExamples)"
+          schema:
+            type: string
+          example: "dot-product-autodiff"
+      responses:
+        "200":
+          description: "Full example with source code"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Example"
+        "404":
+          description: "Example not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/grammar:
+    get:
+      operationId: "getGrammar"
+      summary: "Retrieve the Sigil / CSSL grammar specification"
+      tags: ["grammar"]
+      description: |
+        Returns the formal grammar for Sigil / CSSL. Useful for building parsers, linters,
+        syntax highlighters, or other language tooling.
+
+        Formats:
+        - **peg**: Parsing Expression Grammar (default)
+        - **ebnf**: Extended Backus–Naur Form
+        - **json**: Structured JSON object with named rules
+      parameters:
+        - name: format
+          in: query
+          required: false
+          description: "Grammar notation to return"
+          schema:
+            type: string
+            enum: ["peg", "ebnf", "json"]
+            default: "peg"
+        - name: subset
+          in: query
+          required: false
+          description: |
+            Return only a named subset of the grammar.
+            Valid subsets: `expressions`, `types`, `statements`, `annotations`,
+            `cssl-glyphs`, `top-level`.
+          schema:
+            type: string
+          example: "expressions"
+      responses:
+        "200":
+          description: "Grammar specification in the requested format"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GrammarResponse"
+            text/plain:
+              schema:
+                type: string
+                description: "Raw grammar text (PEG or EBNF)"
+
+components:
+  schemas:
+    CompileRequest:
+      type: object
+      required: ["source"]
+      properties:
+        source:
+          type: string
+          description: "Sigil source code to compile"
+        target:
+          type: string
+          enum: ["x86-64", "spirv"]
+          default: "x86-64"
+          description: |
+            Compilation target.
+            - `x86-64`: native CPU assembly (AVX2+FMA3)
+            - `spirv`: Vulkan compute shader SPIR-V bytecode
+        optimization:
+          type: string
+          enum: ["none", "speed", "size"]
+          default: "speed"
+          description: "Optimization level"
+        options:
+          type: object
+          properties:
+            emit_diagnostics:
+              type: boolean
+              default: true
+              description: "Include compiler diagnostics in the response"
+            include_source_map:
+              type: boolean
+              default: false
+              description: "Attach source map for debugger integration"
+
+    CompileResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: "True if compilation succeeded without errors"
+        output:
+          type: string
+          description: "Compiled output: assembly listing (x86-64) or base64-encoded SPIR-V"
+        output_encoding:
+          type: string
+          enum: ["text", "base64"]
+          description: "Encoding of the `output` field"
+        diagnostics:
+          type: array
+          items:
+            $ref: "#/components/schemas/Diagnostic"
+        metadata:
+          type: object
+          properties:
+            target:
+              type: string
+            optimization:
+              type: string
+            compile_time_ms:
+              type: number
+
+    Diagnostic:
+      type: object
+      properties:
+        level:
+          type: string
+          enum: ["error", "warning", "info", "hint"]
+        message:
+          type: string
+        span:
+          type: object
+          properties:
+            line:
+              type: integer
+            column:
+              type: integer
+            length:
+              type: integer
+        code:
+          type: string
+          description: "Diagnostic code (e.g. E0001, W0042)"
+
+    SyntaxEntry:
+      type: object
+      properties:
+        keyword:
+          type: string
+          description: "The canonical form of the keyword or construct"
+        category:
+          type: string
+          description: "Category: control-flow | type | annotation | cssl-glyph | builtin | operator"
+        description:
+          type: string
+          description: "Human-readable description"
+        syntax:
+          type: string
+          description: "Formal syntax rule (PEG notation)"
+        examples:
+          type: array
+          items:
+            type: object
+            required: ["code"]
+            properties:
+              code:
+                type: string
+              description:
+                type: string
+        see_also:
+          type: array
+          items:
+            type: string
+          description: "Related keywords or constructs"
+        documentation_url:
+          type: string
+          description: "Direct link to the relevant section of the language reference"
+
+    ExampleList:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: "Total number of matching examples"
+        offset:
+          type: integer
+        limit:
+          type: integer
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: string
+              language:
+                type: string
+                enum: ["sigil", "cssl"]
+
+    Example:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        source:
+          type: string
+          description: "Full Sigil or CSSL source code"
+        tags:
+          type: array
+          items:
+            type: string
+        language:
+          type: string
+          enum: ["sigil", "cssl"]
+        expected_output:
+          type: string
+          description: "Expected compiler output or rendered result"
+        documentation_url:
+          type: string
+
+    GrammarResponse:
+      type: object
+      properties:
+        format:
+          type: string
+          enum: ["peg", "ebnf", "json"]
+        version:
+          type: string
+          description: "Language version this grammar corresponds to"
+        subset:
+          type: string
+          description: "Which subset was returned (null = full grammar)"
+        grammar:
+          type: string
+          description: "Raw grammar text (for peg/ebnf formats)"
+        rules:
+          type: object
+          description: "Named grammar rules (for json format)"
+          additionalProperties:
+            type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: "Error message"
+        details:
+          type: string
+          description: "Additional diagnostic information"
+        code:
+          type: string
+          description: "Machine-readable error code"
