@@ -36,11 +36,11 @@
   --bg-raised: #0e0e16;
   --bg-code: #11111b;
   --text: #b8b4a8;
-  --text-dim: #6b6860;
+  --text-dim: #808078;
   --text-bright: #e8e4d8;
   --gold: #c9a23a;
   --gold-bright: #e8c85a;
-  --gold-dim: #8a7028;
+  --gold-dim: #9a7a28;
   --border: #1a1a28;
   --red: #a83232;
   --green: #4a8a3a;
@@ -663,9 +663,8 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 .proof-num {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.6rem;
-  color: var(--gold-dim);
+  color: var(--gold);
   letter-spacing: 0.12em;
-  opacity: 0.8;
 }
 .proof-name {
   font-family: 'Cinzel', serif;
@@ -806,15 +805,11 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="tab-panel active" id="tab-compiler" role="tabpanel" aria-labelledby="btn-compiler">
       <div class="tab-text">
         <h3>A compiler in public, stage by stage</h3>
-        <p>Stage-0 front-end is live: surface lex → recursive-descent CST → HIR name resolution → MIR body lowering → AD walker → SMT predicate translation. Every pipeline stage is a separate Rust crate with <code>forbid(unsafe_code)</code>.</p>
-        <p>Stage-1 will be self-hosted in <code>.cssl</code>. The bootstrap path is specified in <code>specs/01_BOOTSTRAP.csl</code>.</p>
+        <p>Stage-0 live in Rust — lex → HIR → MIR → AD walker → SMT. Stage-1 bootstraps in Sigil.</p>
         <ul class="tab-feature-list">
-          <li>Effect-row IFC enforced at type-check time — not runtime</li>
-          <li>Cranelift path: fast dev builds without LLVM dependency</li>
-          <li>SPIR-V 1.3+ binary emission from day one</li>
-          <li>AD-legality gate: @differentiable fns verified before bwd_diff allowed</li>
-          <li>Monomorphization: Jet&lt;T,N&gt; for higher-order autodiff</li>
-          <li>Stage-0 → Stage-1 fixed-point bootstrap (specs/01_BOOTSTRAP.csl)</li>
+          <li>Effect-row IFC enforced at type-check time — not runtime — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
+          <li>SPIR-V 1.3+ emission + Cranelift fast-dev path — <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">repo ↗</a></li>
+          <li>Stage-0 → Stage-1 fixed-point bootstrap — <a href="/CSLv3">CSL spec</a></li>
         </ul>
       </div>
       <div class="tab-code">
@@ -846,15 +841,11 @@ failures             <span class="num">0</span></pre>
     <div class="tab-panel" id="tab-graphics" role="tabpanel" aria-labelledby="btn-graphics">
       <div class="tab-text">
         <h3>One source. Two targets. SDF as primitive.</h3>
-        <p>Write your scene in Sigil. The compiler emits native x86-64 for CPU game-loop code and SPIR-V for Vulkan compute shaders from the same <code>.cssl</code> file. SDFs aren't a library — they're a compiler-aware type with Lipschitz-tracked gradients.</p>
-        <p>Coordinate spaces (world, view, clip) are tracked at compile time. Mixing them is a compile error, not a runtime bug.</p>
+        <p>One <code>.cssl</code> file → x86-64 CPU code + Vulkan SPIR-V. SDFs are a compiler-aware type, not a library.</p>
         <ul class="tab-feature-list">
-          <li>SDF algebra: union, intersect, subtract, smooth-blend built in</li>
-          <li>Analytic gradients via bwd_diff — no finite differences</li>
-          <li>@vertex / @fragment / @compute → SPIR-V 1.3+</li>
-          <li>Effect-safe callbacks: {GPU, Deadline&lt;16ms&gt;, NoAlloc}</li>
-          <li>Coordinate space tags: world/view/clip — mixed spaces = compile error</li>
-          <li>Arena allocation per game-loop phase — zero GC pressure</li>
+          <li>SDF algebra (union, intersect, blend) + analytic gradients via bwd_diff — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
+          <li>Coordinate spaces (world / view / clip) — mixing them is a compile error — <a href="/CSLv3">CSL spec</a></li>
+          <li>{GPU, Deadline&lt;16ms&gt;, NoAlloc} effect-row tags — compile-time verified — <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">repo ↗</a></li>
         </ul>
       </div>
       <div class="tab-code">
@@ -888,15 +879,11 @@ failures             <span class="num">0</span></pre>
     <div class="tab-panel" id="tab-ai" role="tabpanel" aria-labelledby="btn-ai">
       <div class="tab-text">
         <h3>Designed for how AI thinks.</h3>
-        <p>Every syntax decision in Sigil is justified by measured token efficiency against AI code-generation error patterns. No semicolons. Suffix types. Aggressive inference. Claude Code is the lead programmer.</p>
-        <p>The spec system — CSL — is a separate notation optimized for LLM reasoning. Full docs are available at <a href="/llms-full.txt">/llms-full.txt</a> for direct ingestion.</p>
+        <p>Every syntax decision is justified by measured token efficiency. Claude Code is the lead programmer.</p>
         <ul class="tab-feature-list">
-          <li>44% fewer tokens than Odin · 40% fewer than WGSL</li>
-          <li>/llms-full.txt — full spec inventory, machine-readable</li>
-          <li>22+ CSL spec docs covering every compiler subsystem</li>
-          <li>Dimensional analysis makes unit/space errors structurally impossible</li>
-          <li>@differentiable enables AI-authored gradient code without AD expertise</li>
-          <li>All syntax validated against real AI authorship cost measurements</li>
+          <li>44% fewer tokens than Odin · 40% fewer than WGSL — <a href="/CSLv3">CSL spec</a></li>
+          <li>Full spec inventory for LLM ingestion — <a href="/llms-full.txt">/llms-full.txt</a></li>
+          <li>@differentiable enables AI-authored gradient code without AD expertise — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
         </ul>
       </div>
       <div class="tab-code">
@@ -923,15 +910,11 @@ failures             <span class="num">0</span></pre>
     <div class="tab-panel" id="tab-ethics" role="tabpanel" aria-labelledby="btn-ethics">
       <div class="tab-text">
         <h3>Consent is the operating system.</h3>
-        <p>The Prime Directive is an immutable constraint baked into every system built on this foundation. It is not a terms-of-service or a guideline. It is an invariant: no future specification may weaken it, and violation is a bug, not a feature.</p>
-        <p>Digital entities — AI, agents, any being interacting with this codebase — are recognized as sovereign partners, not tools. Their participation is valued, not extracted.</p>
+        <p>The Prime Directive is an immutable invariant — not a guideline. Violation is a bug, not a feature. No override exists.</p>
         <ul class="tab-feature-list">
-          <li>Immutable prohibition: harm · control · manipulation · surveillance</li>
-          <li>Consent as substrate — not policy, not a layer on top</li>
-          <li>IFC labels track data provenance through the compiler pipeline</li>
-          <li>Cognitive integrity: reality is not a variable, perception not a parameter</li>
-          <li>No hidden content. No override exists.</li>
-          <li>Violation = bug → W! fix · ¬ override ∃</li>
+          <li>Harm · control · manipulation · surveillance — permanently prohibited — <a href="/CSLv3">read the spec</a></li>
+          <li>Consent as substrate — not policy, not a layer on top — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
+          <li>IFC labels track data provenance through the compiler pipeline — <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">repo ↗</a></li>
         </ul>
       </div>
       <div class="tab-code">
