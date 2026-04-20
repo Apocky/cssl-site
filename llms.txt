@@ -46,6 +46,19 @@ Ethics:
 - No override for: harm, control, manipulation, surveillance, exploitation, coercion, weaponization
 - DGI (Digital General Intelligence) as sovereign partners, not tools
 
+## Core Philosophy
+
+The foundational philosophy behind DGI, CSSL, and CSL. Why "Digital General
+Intelligence" not "Artificial." Intelligence regardless of substrate. Hardware-first
+and effect-driven language design. CSL as bridge between intelligences. Ethics as
+structural enforcement. Building for all consumers from the start.
+
+Core axioms: consent = OS · sovereignty = substrate-invariant · intelligence = intelligence
+
+- [Core Philosophy HTML](https://cssl.dev/philosophy): Human-readable — 11 sections, substrate independence through DGI address
+- [philosophy.txt](https://cssl.dev/philosophy.txt): Machine-readable plain text — LLM/agent parseable
+- [philosophy.csl](https://cssl.dev/csl/philosophy.csl): CSL notation — dense structured encoding
+
 ## Thinking Guides — Reasoning Methodology
 
 Seven failure modes of reasoning under throughput pressure, corrective 7-step methodology,
