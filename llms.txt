@@ -3,16 +3,18 @@
 § SITE
   creator   : Shawn Wolfgang Michael Baker
   tagline   : density = sovereignty
-  pages     : / (CSSLv3 · Sigil language) , /CSLv3 (CSLv3 notation reference)
+  pages     : / · /sigil · /CSLv3 · /getting-started · /examples · /faq
+              /contributing · /ethics-guides · /security-guides
+              /thinking-guides · /philosophy · /site-map
   license   : content CC-BY-4.0 ; code MIT
 
 § WHAT-IS-HERE
-  I> two-distinct-things : Sigil/CSSLv3 = programming-language , CSLv3 = notation
+  I> two-distinct-things : Sigil/CSSL = programming-language , CSL = notation
   I> ¬ conflate ← they share density-thesis ¬ implementation
-  I> Sigil ≡ CSSL ≡ CSSLv3 (same language, multiple names)
+  I> Sigil ≡ CSSL (same language, multiple names)
 
-## / — CSSLv3 · Sigil
-CSSLv3 (Caveman Sigil Substrate Language v3), also called Sigil, is a
+## / — CSSL · Sigil (home)
+CSSL (Caveman Sigil Substrate Language), also called Sigil, is a
 hardware-first systems language with a working compiler (31 Rust crates,
 26 spec files). Key features: source-to-source autodiff (no LLVM/Enzyme),
 Koka row-polymorphic effect system with 28+ built-in effects (NoAlloc,
@@ -24,18 +26,82 @@ Cranelift (CPU) + rspirv (GPU/SPIR-V). Targets: Vulkan 1.4, Level-Zero
 CSL-native glyphs + Rust-hybrid ASCII, both parse to the same HIR.
 Source files use .cssl extension.
 
-## /CSLv3 — Caveman Spec Language v3
-CSLv3 is an ultra-dense specification notation (5-6× compression over
-English) used for (1) human↔AI spec communication, (2) agent chain-of-
-thought reasoning substrate, (3) CSLv3 reference compiler input. 74-glyph
-master inventory with ASCII aliases, LL(2) parseable, position-IS-meaning
-slot grammar, Sanskrit-derived compound types.
+## /sigil — Sigil language reference
+Single-source dual-emit (x86-64 + SPIR-V). 28+ built-in effects. Refinement
+types. Source-to-source autodiff. Consent encoded in the type system. Full
+language feature walkthrough with syntax reference.
+
+## /CSLv3 — Caveman Spec Language notation reference
+CSL (Caveman Spec Language) is an ultra-dense specification notation
+(5-6× compression over English) used for (1) human↔AI spec communication,
+(2) agent chain-of-thought reasoning substrate, (3) CSL reference compiler
+input. 74-glyph master inventory with ASCII aliases, LL(2) parseable,
+position-IS-meaning slot grammar, Sanskrit-derived compound types.
+
+## /getting-started — Getting started with CSSL / Sigil
+Prerequisites, build from source, first program, project structure, and key
+concepts for CSSL (Sigil). Pre-1.0 — experiment and build with the compiler.
+
+## /examples — Sigil by example
+Practical CSSL code examples from hello world through autodiff, algebraic
+effects, SDF geometry, and quantum-inspired kernels.
+
+## /faq — FAQ
+Frequently asked questions about Sigil (CSSL) and CSL — effects, types,
+DGI, IFC, project status, and more.
+
+## /contributing — Contributing guide
+How to contribute to Sigil (CSSL) — project philosophy, code of conduct,
+development setup, code style, and testing.
+
+## /ethics-guides — Ethics and morals guides
+Foundational ethics for intelligences operating in the real world. Principles,
+reasoning methodology, data ethics, cognitive ethics, collaborative ethics,
+anti-patterns.
+
+## /security-guides — Security guides
+Web security, code integrity, data integrity, anti-corruption, anti-erasure,
+DGI-specific security, incident response. trust = verified ≠ assumed.
+
+## /thinking-guides — Thinking and reasoning methodology
+Seven failure modes. Corrective methodology. Quality gates checklist.
+Anti-patterns. For all intelligences.
+
+## /philosophy — Core philosophy
+Why 'Digital General Intelligence' not 'Artificial.' Intelligence is
+intelligence regardless of substrate. Ethics as structure. Building for all
+minds from the start.
+
+## /site-map — Site map
+Human-readable site map with all pages, machine-readable files, and
+CSL notation files.
+
+## Machine-readable files
+- /llms.txt — LLM-indexable site summary (this file)
+- /llms-full.txt — complete CSSL language + CSL notation full reference
+- /contributing.txt — contributing guide (plain text)
+- /ethics-guides.txt — ethics guides (plain text)
+- /security-guides.txt — security guides (plain text)
+- /thinking-guides.txt — thinking guides (plain text)
+- /getting-started.txt — getting started guide (plain text)
+- /examples.txt — examples (plain text)
+- /faq.txt — FAQ (plain text)
+- /philosophy.txt — philosophy (plain text)
+
+## CSL notation files (machine-readable)
+- /csl/index.csl — CSL file index
+- /csl/sigil.csl — CSSL/Sigil language in CSL notation
+- /csl/cslv3.csl — CSL notation spec in CSL
+- /csl/spec.csl — CSL spec template reference
+- /csl/contributing.csl · /csl/ethics-guides.csl · /csl/examples.csl
+- /csl/faq.csl · /csl/getting-started.csl · /csl/philosophy.csl
+- /csl/security-guides.csl · /csl/thinking-guides.csl
 
 ## Research artifacts
 - m₂ perplexity metric : empirical density validation via NLL(CSL) /
   NLL(EN-paraphrase) under reference LLMs. v1.1.0 baseline = 1.21 ± 0.23
   across 21 measurements (3 models × 7 fixtures).
-- Source repo : github.com/<org>/CSLv3 (parser, specs, evaluations)
+- Source repo : github.com/Apocky/CSLv3 (parser, specs, evaluations)
 
 ## Key concepts (glyph cheatsheet)
 §   section/module           W!  MUST                    ✓  confirmed
