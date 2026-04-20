@@ -1093,6 +1093,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <a class="start-link" href="/sigil">Sigil</a>
     <a class="start-link" href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">Repo ↗</a>
     <a class="start-link" href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">Docs ↗</a>
+    <a class="start-link" href="/sigil">Sigil</a>
     <a class="start-link" href="/CSLv3">CSL Spec</a>
   </div>
 </nav>
@@ -1565,7 +1566,7 @@ effect-row gate:
     </div>
     <div class="feature">
       <h3>Dual-Target Compilation</h3>
-      <p>One .cssl source file compiles to native x86-64 (via C/LLVM) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
+      <p>One .cssl source file compiles to native x86-64 (via Cranelift) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
     </div>
     <div class="feature">
       <h3>Zero-Cost Dimensions</h3>
