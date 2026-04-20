@@ -14,8 +14,8 @@ Links:
 - Sigil home: https://cssl.dev/
 - CSL reference: https://cssl.dev/CSLv3
 - Documentation: https://docs.cssl.dev
-- Sigil repository: https://github.com/ApockyCSSL/CSSLv3
-- CSL repository: https://github.com/ApockyCSSL/CSLv3
+- Sigil repository: https://github.com/Apocky/CSSL3
+- CSL repository: https://github.com/Apocky/CSLv3
 
 ---
 
@@ -255,7 +255,7 @@ Full reference content derived from cssl.dev/CSLv3. Licensed CC BY 4.0 —
 attribute "Sigil / CSL reference — Shawn Wolfgang Michael Baker,
 licensed CC BY 4.0 (https://cssl.dev)".
 
-Upstream source repository: https://github.com/ApockyCSSL/CSLv3
+Upstream source repository: https://github.com/Apocky/CSLv3
 Specifications: specs/00_MANIFEST.csl through specs/15_M2_METRIC.csl
 
 ---
@@ -560,7 +560,7 @@ readability simultaneously — the trilingual target.
 
 ## §16 · Repository & Specs
 
-Repository: https://github.com/ApockyCSSL/CSLv3
+Repository: https://github.com/Apocky/CSLv3
 
 Specification files (all under `specs/`):
 

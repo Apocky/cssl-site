@@ -21,7 +21,7 @@ style refinement types with Z3/CVC5 SMT backing, Lipschitz-tagged SDF
 types, Pony-6 capability types, and no LLVM dependency. Stage-0 backends:
 Cranelift (CPU) + rspirv (GPU/SPIR-V). Targets: Vulkan 1.4, Level-Zero
 (Intel Arc), D3D12, Metal, WebGPU, console stubs. Dual syntax surface:
-CSLv3-native glyphs + Rust-hybrid ASCII, both parse to the same HIR.
+CSL-native glyphs + Rust-hybrid ASCII, both parse to the same HIR.
 Source files use .cssl extension.
 
 ## /CSLv3 — Caveman Spec Language v3

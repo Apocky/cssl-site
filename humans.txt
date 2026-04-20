@@ -17,7 +17,7 @@ Model: Claude (claude-sonnet-4-6 and ancestors)
 This site documents Sigil — also known as CSSL (Caveman Sigil Substrate Language).
 One language. Two names. One source. Two targets.
 
-Compiler repository: https://github.com/ApockyCSSL/CSSLv3
+Compiler repository: https://github.com/Apocky/CSSL3
 Spec notation: CSL (Caveman Spec Language)
 Full machine-readable docs: https://cssl.dev/llms-full.txt
 
