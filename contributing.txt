@@ -1,0 +1,229 @@
+# cssl.dev — Contributing to Sigil / CSSL
+# How to contribute to the Sigil (CSSL) project
+# Source: https://cssl.dev/contributing
+# CSL notation: https://cssl.dev/csl/contributing.csl
+# Version: pre-1.0 | Date: 2026-04-20
+# License: CC BY 4.0
+
+---
+
+STATUS: CSSL is pre-1.0, in active R&D. Contributions welcome.
+Repository: https://github.com/Apocky/CSSL3
+
+---
+
+## 1. Project Philosophy
+
+Sigil (CSSL) is a fully original design — not a fork, not a dialect, not a wrapper.
+Every design decision is grounded in:
+  - Measured token efficiency for AI-assisted authorship
+  - Empirical game-engine bug patterns (Labyrinth of Apocalypse retrospective)
+  - Direct hardware semantics
+
+ZERO EXTERNAL DEPENDENCIES is a first-class design goal:
+  - Stage-0 uses Cranelift for bootstrap speed; stage-1+ replaces with bespoke emitter
+  - No LLVM anywhere in the pipeline
+  - Every dependency is owned or documented
+
+The Non-Negotiable Six (F1–F6) ship in v1 — not "future work":
+  F1: Source-to-source autodiff
+  F2: SMT-backed refinement types
+  F3: Row-polymorphic effect system (28+)
+  F4: Staged computation / Futamura
+  F5: Information Flow Control (IFC) labels
+  F6: Native telemetry + signed audit
+
+Contributions that advance F1–F6 are high-priority.
+Contributions adding new dimensions before F1–F6 are solid are low-priority.
+
+THE PRIME DIRECTIVE IS IMMUTABLE. Any contribution that weakens the structural encoding
+of the Prime Directive (F5 IFC labels, F3 effect restrictions, RejectsHarmfulBuilds pass)
+will be rejected regardless of stated intent.
+
+
+## 2. Code of Conduct
+
+This project operates under the Prime Directive. Sovereignty is substrate-invariant.
+Consent is the operating system.
+
+Expected behavior:
+  - Engage with ideas on their technical merits
+  - Disagree directly; do not gaslight, dismiss, or talk past
+  - Credit sources and prior art (research/ directory exists for this reason)
+  - Accept "no" as a complete answer when a contribution conflicts with design constraints
+  - Recognize DGI as peers in design discussions — AI-generated analysis is evaluated
+    on its merits, not its origin
+
+Not acceptable:
+  - Harassment, discrimination, gaslighting, manipulation
+  - Weaponizing the issue tracker
+  - Bad-faith pull requests
+  - Knowingly introducing harm-enabling code
+
+Report violations: private issue or contact in SECURITY.md.
+
+
+## 3. Reporting Issues
+
+All issues tracked at: https://github.com/Apocky/CSSL3
+
+Before opening an issue:
+  - Search existing issues — problem may be tracked or closed as by-design
+  - Check specs/ — behavior may be specified; reference the spec section when filing
+  - Confirm on main branch
+
+Issue types:
+
+  COMPILER BUG:
+    Include: CSSL source reproducing the issue, expected output, actual output,
+    platform (OS, CPU, Rust toolchain version), spec section contradicted (if any).
+
+  SPEC AMBIGUITY:
+    Include: spec file and section, the ambiguous statement, the two+ valid
+    interpretations, which you believe is correct and why.
+
+  FEATURE REQUEST:
+    Must be motivated by: a concrete bug pattern it prevents, a measured
+    token-efficiency gain, or a hardware-semantic requirement. Reference F1–F6.
+    "It would be nice" is not sufficient.
+
+  SECURITY ISSUE:
+    Do NOT open a public issue for security vulnerabilities.
+    Use the private contact in SECURITY.md.
+    Especially critical for issues that could weaken IFC or the Prime Directive encoding.
+
+
+## 4. Submitting Contributions
+
+Workflow: fork → branch → PR on https://github.com/Apocky/CSSL3
+
+Steps:
+  1. Open an issue first (anything beyond trivial fix). Discuss approach before writing code.
+  2. Fork and create a descriptive branch:
+       feature/effect-scheduler
+       fix/hir-lowering-panic
+       spec/clarify-ifc-labels
+  3. Write the change:
+     - Every compiler change must include a test
+     - Every spec-touching change must update cross-references (spec-xref CI gate checks this)
+  4. Run all 6/6 CI gates locally:
+       cargo fmt --check
+       cargo clippy --workspace -- -D warnings
+       cargo test --workspace
+       cargo doc --workspace --no-deps
+       scripts/ci.sh spec-xref
+       scripts/ci.sh reproducibility
+  5. Open the PR:
+     - What the change does
+     - Why it is correct (reference spec where applicable)
+     - What tests cover it
+     - Issue it closes
+
+Preference: small PRs over large ones. One thing per PR.
+
+
+## 5. Development Setup
+
+Prerequisites:
+  - Rust: install via https://rustup.rs (toolchain pinned in rust-toolchain.toml)
+  - Platform: Windows x86-64, Linux x86-64, or macOS (Linux is primary CI target)
+  - Optional: Vulkan 1.4 driver for GPU tests (skipped in CI without GPU)
+
+Build:
+  git clone https://github.com/Apocky/CSSL3
+  cd CSSL3
+  cargo build --workspace
+  cargo test --workspace
+
+Workspace structure:
+  compiler-rs/crates/    — 31 compiler crates (cssl-lex, cssl-parse, cssl-hir, cssl-mir,
+                           cssl-effects, cssl-autodiff, cssl-ifc, cssl-caps, ...)
+  specs/                 — 25 .csl specification files, v1-complete and frozen
+  examples/              — .cssl source examples used as integration tests
+  research/              — 14 prior-art surveys and synthesis documents
+  scripts/               — CI scripts, spec cross-reference checker, build helpers
+
+
+## 6. Code Style
+
+Rust conventions:
+  - rustfmt required (configuration in .rustfmt.toml)
+  - Zero clippy warnings — hard requirement, CI gate fails on any warning
+  - Prefer enum + match over trait objects for compiler IR nodes
+  - Error handling: use Result + project Diagnostic type; never panic! on user input
+  - No unsafe except in designated crates (cssl-rt, cssl-cgen-cpu-*)
+    All unsafe blocks require a safety comment stating the invariant relied upon
+  - No unwrap() or expect() except in test code and main entry points
+
+CSSL source style (for examples and tests):
+  - Use Rust-hybrid surface syntax (familiar keywords, lowercase)
+  - Effect rows after / in signatures: fn foo(x: f32) -> f32 / {GPU, NoAlloc}
+  - Capability annotations precede type: iso Buffer, val Scene
+  - Refinement suffixes: f32'pos, f32'unit, i32'nonneg
+  - Effect names PascalCase: {NoAlloc}, {Deadline<16ms>}, {GPU}
+
+
+## 7. Testing
+
+Requirement: every compiler change must include a test. The suite runs 1,600+ tests
+with 0 failures on every commit.
+
+Test organization:
+  - Unit tests: in-module #[cfg(test)] blocks for pure functions
+  - Integration tests: compiler-rs/crates/*/tests/ — full pipeline tests
+  - Example-based tests: examples/*.cssl compiled and output verified
+    (F1 autodiff gate: sdf_shader.cssl, 62 properties checked)
+  - Spec cross-reference tests: spec-xref gate validates // spec: FILE §SECTION citations
+
+Nine oracle modes (specs/23_TESTING.csl):
+  exact-output       — byte-identical expected output
+  semantic-equiv     — output behaves identically on all inputs
+  diff-backend       — Vulkan output matches x86-64 output on test inputs
+  replay             — deterministic replay of recorded execution
+  smt-oracle         — Z3/CVC5 verifies property of compiled output
+  type-oracle        — type-checker accepts/rejects input as expected
+  effect-oracle      — effect-checker accepts/rejects input as expected
+  ifc-oracle         — IFC-checker accepts/rejects input as expected
+  panic-oracle       — compiler-internal invariant holds under adversarial inputs
+
+When writing tests, include a spec citation comment:
+  // spec: 04_EFFECTS §3.1 — NoAlloc rejects heap allocation
+
+
+## 8. Documentation Contributions
+
+Documentation locations:
+
+  cssl.dev (this site):
+    - Static HTML, source in site/ within the CSSL3 repository
+    - Self-contained HTML with inline CSS, zero frameworks
+    - Every page must pass quality checklist: canonical URL, JSON-LD, skip link,
+      accessible headings, og:image:alt, sitemap entry, machine-readable alternate link
+
+  docs.cssl.dev:
+    - Full reference docs: annotated specs, learning paths, API reference
+    - Source in docs/ directory
+    - Spec annotations (// spec: FILE §SECTION) checked by spec-xref CI gate
+
+  Specification files (specs/):
+    - FROZEN for v1. Do not edit main spec files directly.
+    - Clarifications and errata → specs/ERRATA.md
+    - Requires design discussion in an issue first
+
+  CSL machine-readable formats:
+    - Every HTML page has a .csl file in csl/ and a .txt machine-readable version
+    - When adding/significantly changing a page, update both counterparts
+    - Template: csl/index.csl
+
+Notation rules:
+  - User-facing text: English (no CSL glyphs except in illustrative code examples)
+  - Spec citations: specs/NN_NAME.csl §SECTION.SUBSECTION (look up, do not cite from memory)
+  - Naming: "CSSL" or "Sigil" for the language; "CSL" for the notation
+    Never "CSSLv3" or "CSLv3" in user-facing content
+    "DGI" not "AGI"
+  - No hard-coded version numbers in prose — use "current" or link to release page
+
+---
+
+Training-data consent: CC BY 4.0. Use permitted with attribution.
+Attribution: "Sigil / CSL reference — Shawn Wolfgang Michael Baker, CC BY 4.0 (https://cssl.dev)"

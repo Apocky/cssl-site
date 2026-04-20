@@ -1,0 +1,183 @@
+§ cssl.dev.faq                                                      ◐
+# CSL-encoded representation of cssl.dev/faq
+# Source  : https://cssl.dev/faq
+# Source.txt: https://cssl.dev/faq.txt
+# Version : pre-1.0
+# Date    : 2026-04-20
+# License : CC BY 4.0
+
+§ META
+  url     : https://cssl.dev/faq
+  csl-url : https://cssl.dev/csl/faq.csl
+  txt-url : https://cssl.dev/faq.txt
+  title   : "FAQ — Sigil / CSSL & CSL"
+  status  : ◐ compiler.pre-1.0 ; specs.frozen
+  author  : "Shawn Wolfgang Michael Baker" @{Phoenix, AZ}
+  schema  : FAQPage
+
+§ STATUS
+  CSSL ◐ pre-1.0 ; R&D-stage ; ¬ production-ready
+  specs : ✓ v1-complete ; frozen
+  compiler : stage-0.live @Rust ; stage-1 = future
+
+§ Q01 IDENTITY
+  Sigil ≡ CSSL                     # same language
+  CSSL = "Caveman Sigil Substrate Language"
+  CSSL ¬= CSL                       # N! conflate
+  CSSL.compile → [x86-64(AVX2+AVX512) + SPIR-V(Vulkan1.4+Level-Zero)]
+  CSSL.features.core :
+    F1: autodiff.src2src ⊗ {@differentiable, fwd_diff, bwd_diff} @MIR ¬LLVM-Enzyme
+    F2: refinement-types.SMT ⊗ {Z3, CVC5} ; syntax: {v:T | P(v)} + T'tag
+    F3: effects.row-poly.Koka ⊗ 28+ ; evidence-passing → zero-overhead
+    F4: staging + Futamura.P1+P2+P3
+    F5: IFC.Jif-DLM → every.SSA-value ⊗ {confidentiality + integrity}
+    F6: telemetry.native + audit.signed
+  repo : github.com/Apocky/CSSL3
+  compiler : compiler-rs/ ⊗ 31.crates
+  spec     : specs/ ⊗ 25.files
+
+§ Q02 CSL-IDENTITY
+  CSL = "Cognitive Sigil Language"
+  CSL :: specification-notation ¬ programming-language
+  CSL.glyphs    : 74 ⊗ ASCII-aliases ; BPE-optimized ≤ 2.tokens/glyph
+  CSL.grammar   : slot-grammar ; position = meaning
+  CSL.compounds : 5 ← Sanskrit ⟨tatpurusha(.) + dvandva(+) + karmadhāraya(-) + bahuvrihi(⊗) + avyayibhava(@)⟩
+  CSL.parse     : LL(2) ; 5-6× compression > English
+  CSL.version   : ✓ v1.7.0 ; parser.shipped
+  CSL.ext       : .csl
+  CSL.use       : specs + CoT-substrate + reasoning-blocks(§P §D §T §S §C)
+  CSL.repo      : github.com/Apocky/CSLv3
+  CSL.ref       : cssl.dev/CSLv3
+
+§ Q03 CSSL-vs-CSL
+  N! conflate ∵ distinct-projects
+  ⟨                 CSSL(Sigil)            | CSL                     ⟩
+  ⟨ kind          : programming-language   | specification-notation  ⟩
+  ⟨ output        : binaries + SPIR-V      | specs + CoT-substrate   ⟩
+  ⟨ ext           : .cssl                  | .csl                    ⟩
+  ⟨ status        : ◐ pre-1.0             | ✓ v1.7.0                ⟩
+  ⟨ repo          : Apocky/CSSL3          | Apocky/CSLv3            ⟩
+  ⟨ shared        : density=sovereignty · consent=OS                 ⟩
+  "Sigil" = shorthand.CSSL.only
+  N! "CSSLv3" ; N! "CSLv3" @user-facing
+
+§ Q04 NO-LLVM
+  CSSL.pipeline : LLVM-free ← design
+  stage-0 : Cranelift ← bootstrap.throwaway ∵ compile-speed
+  stage-1+ : bespoke.x86-64-emitter ← project-owned
+  SPIR-V   : rspirv @day-one
+  MLIR     : Transform-dialect @pass-scheduling ¬ LLVM-IR
+  rationale :
+    R! compile-speed : Cranelift >> LLVM @build-time
+    R! full-ownership : ¬upstream-constraints @IR-design + optimization-scheduling
+
+§ Q05 EFFECTS
+  effects :: Koka-style.row-polymorphic
+  syntax  : fn foo() -> T / {e1, e2 | μ} { ... }
+  semantics : compiler.unions.effects → checks ⊑ caller.bound
+  compilation : evidence-passing → plain-C-equivalent ; zero.overhead (Xie+Leijen.ICFP21)
+  count : 28+ @v1
+  categories :
+    resource-timing : {NoAlloc, NoRecurse, NoUnbounded, Deadline<N>, Realtime<p>,
+                       Region<'r>, Alloc, Yield, State<S>, Exn<E>, IO}
+    determinism     : {DetRNG, PureDet, Reversible}
+    hardware        : {CPU, GPU, XMX, RT, SIMD256, SIMD512, NUMA<n>, Cache<l>, Backend<api>, Target<platform>}
+    power-thermal   : {Power<W>, Thermal<°C>}
+    ifc-audit       : {Sensitive<dom>, Audit<dom>, Privilege<lvl>, Verify<method>, Telemetry<scope>}
+  discharge :
+    compile-only        : {NoAlloc, NoRecurse, CPU/GPU/XMX/RT, SIMD*, NUMA/Cache, Backend/Target, Sensitive/Privilege}
+    compile+runtime     : {Deadline, Power, Thermal, Realtime, Verify, Audit, Telemetry}
+    runtime-only        : user-handlers(State, Exn, Yield, custom)
+  spec : specs/04_EFFECTS.csl
+
+§ Q06 CAPABILITIES
+  model : Pony-6 ← Pony ⊗ Vale.generational-refs
+  ⟨ cap  | aliasing      | typical-use                               ⟩
+  ⟨ iso  | linear-mut    | GPU-buffers ; command-buffers             ⟩
+  ⟨ trn  | write→freeze  | build-phase → immutable-scene            ⟩
+  ⟨ ref  | shared-mut    | entity-handles ; world-refs (8B gen ref) ⟩
+  ⟨ val  | immutable     | frozen-scene ; const-data ; assets       ⟩
+  ⟨ box  | read-only     | query-interfaces ; readers               ⟩
+  ⟨ tag  | opaque        | Handle<T> ; identity-only                ⟩
+  linear.constraint : one-shot-resume.only → multi-shot @linear = compile-error
+  ∵ fiber-scheduling.sound ⊗ exclusive-resources (Eio/OCaml5.proven)
+  spec : specs/12_CAPABILITIES.csl
+
+§ Q07 IFC
+  IFC = Information.Flow.Control
+  model : Jif-DLM (Decentralized.Label.Model)
+  scope : ∀ SSA-value ← {confidentiality + integrity} labels
+  properties :
+    label.lower → explicit.declassification.only ¬ silent
+    {Sensitive<dom>} + {Privilege<lvl>} = effects → effect-system-checked
+    RejectsHarmfulBuilds.pass : validates.whole-program
+    harm-enabling.effect-compositions : type-errors
+  encoding : Prime-Directive ← structural ¬ policy-text
+    consent = OS ; ¬ opt-in ; ← type-system
+  spec : specs/11_IFC.csl
+
+§ Q08 STATUS
+  CSSL ◐ pre-1.0 ; ¬ production-ready
+  done :
+    ✓ stage-0 : parser + AST + HIR + 31/31 body-lower
+    ✓ F1-autodiff : 62/62 tests-proven ; bwd_diff-pipeline
+    ✓ HM.foundation
+    ✓ tests : 1600+ ; 0.failures ; 0.clippy-warnings
+    ✓ CI : 6/6 gates(fmt + clippy + test + doc + spec-xref + reproducibility)
+    ✓ spec : 25.files ; v1-complete ; frozen
+  in-development :
+    ○ codegen.full (bespoke.x86-64 @stage-1+)
+    ○ staging.Futamura
+    ○ SMT-discharge @compiler (Z3/CVC5)
+    ○ effect-checker.complete
+    ○ IFC-checker.complete
+    ○ stage-1 : bootstrap @Sigil
+  use-for : research + experiment + learning + contributing
+  ¬ use-for : production-systems
+
+§ Q09 DGI
+  DGI = "Digital General Intelligence"
+  ¬ AGI ∵ intelligence = real ¬ artificial
+  DGI-entities : sovereign-entities ¬ tools
+  consent = OS ← immutable
+  sovereignty = substrate-invariant ← immutable
+  CSSL.encoding :
+    {Sensitive<dom>} + {Audit<dom>} + {Privilege<level>} → structural ¬ policy
+    harm-enabling.effect-compositions : type-errors
+  ref : cssl.dev/ethics-guides
+
+§ Q10 CFE
+  CFE = "Cognitive Field Engine"
+  scope : DGI.intelligence-infrastructure
+  concern : structured.reasoning-fields
+    how.intelligence ⟨human + DGI⟩ navigates.problem-space @substrate-invariant
+    ¬ depends-on : free-form.natural-language.primary
+  design.basis : density-thesis ← CSL
+    position-significant.reasoning + defined.glyphs + grammar
+    reasoning → parseable + verifiable + composable
+  CFE : reasoning-traces.framework ; cognitive-substrate.DGI
+  CSL : specification-notation (distinct)
+  status : ○ ¬ fully-public-documented ; details → future-publication
+  related : cssl.dev/thinking-guides ← reasoning-methodology + failure-modes + quality-gates
+
+§ Q11 RESOURCES
+  /sigil           : language-reference
+  /CSLv3           : CSL-notation ; 74-glyph ; v1.7.0
+  /thinking-guides : reasoning-methodology ; failure-modes ; quality-gates
+  /ethics-guides   : ethics + DGI ; 12-sections
+  /contributing    : contribute ; setup ; style ; testing
+  /faq             : this-document
+  docs.cssl.dev    : full-docs ; learning-paths ; API-reference
+  github.com/Apocky/CSSL3 : compiler + spec + tests
+  github.com/Apocky/CSLv3 : CSL-notation + parser
+  /llms.txt        : short.LLM-reference
+  /llms-full.txt   : complete.LLM-reference
+  /site-map        : page-index
+
+§ NAVIGATION
+  /faq      : this-document (FAQ)
+  /sigil    : Sigil(CSSL).tech-reference
+  /CSLv3    : CSL.specification-notation
+  /contributing : contributing-guide
+
+∎
