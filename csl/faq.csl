@@ -37,7 +37,7 @@
   spec     : specs/ ⊗ 25.files
 
 § Q02 CSL-IDENTITY
-  CSL = "Cognitive Sigil Language"
+  CSL = "Caveman Spec Language"
   CSL :: specification-notation ¬ programming-language
   CSL.glyphs    : 74 ⊗ ASCII-aliases ; BPE-optimized ≤ 2.tokens/glyph
   CSL.grammar   : slot-grammar ; position = meaning

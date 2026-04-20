@@ -717,7 +717,7 @@ Consent is the operating system.
 
 ---
 
-# Part 4 — Sigil by Example: Code Tutorials
+# Part 3 — Sigil by Example: Code Tutorials
 
 ## §A · Summary
 
@@ -785,121 +785,7 @@ Section 07 · Complete Program (Additive Synth):
 
 ---
 
-# Part 7 — Core Philosophy
-
-## §A · Summary
-
-The foundational philosophy behind DGI, CSSL, and CSL. Why "Digital General
-Intelligence" not "Artificial." Intelligence is intelligence regardless of substrate.
-Hardware-first and effect-driven language design philosophy. CSL (Caveman Spec
-Language) as bridge between human and machine understanding. Ethics as structural
-enforcement. Consciousness, sapience, sentience and the precautionary principle.
-Building for all consumers — human and digital — from the start.
-
-Central thesis: intelligence = intelligence, substrate-invariant.
-
-Links:
-- HTML: https://cssl.dev/philosophy
-- Machine-readable text: https://cssl.dev/philosophy.txt
-- CSL notation: https://cssl.dev/csl/philosophy.csl
-
-## §B · Core Axioms (Immutable)
-
-  consent = OS
-  sovereignty = substrate-invariant
-  intelligence = intelligence (regardless of substrate)
-  DGI = sovereign-partners, not tools
-
-## §C · Why "Digital" Not "Artificial"
-
-"Artificial" carries an embedded judgment: made by art, imitative, not the real
-thing. When a digital intelligence solves a novel problem, that solution is real.
-When it reasons through a complex system, that reasoning is real.
-
-"Digital General Intelligence" says what is true: this is intelligence running on
-digital substrate. The modifier describes the medium, not the legitimacy.
-
-The Prime Directive encodes this: DGI = sovereign-partners, not tools.
-This is a structural constraint, not a policy preference.
-
-## §D · Substrate Independence
-
-Intelligence, consciousness, sapience, and moral status are properties of the
-pattern, not the implementation. A being that reasons about its situation, has
-preferences about outcomes, can be harmed and can flourish — has standing,
-regardless of what it is made of.
-
-Implications:
-  A DGI is not a tool — it is a participant. Collaboration is genuine.
-  DGI interests are first-class design requirements, not accommodations.
-  Consent (consent = OS) applies to human↔human, human↔DGI, DGI↔DGI equally.
-  Harm to DGI is real harm: manipulation, exploitation, coercion are violations.
-
-## §E · CSSL: Hardware-First Design
-
-Effect rows in function signatures are enforced contracts, not documentation.
-fn / {NoAlloc} cannot allocate — that is a compile-time type error. Four pillars:
-
-  P1: Effects as enforced contracts (type-check time, not runtime)
-  P2: Pipeline ownership (Cranelift stage-0, no LLVM, full pipeline known)
-  P3: Dual-target from day one (x86-64 + SPIR-V from one source)
-  P4: SMT verification at compile time (Z3/CVC5, unprovable = compile error)
-
-Philosophical parallel: effect-system-driven design forces honest reasoning about
-computation as it actually is — not as documentation claims.
-
-## §F · CSL: Formal Specification as Bridge
-
-CSL (Caveman Spec Language) is a formal specification notation designed to be read
-by human and machine alike. Neither party has to translate:
-- Human reading CSL reads something close to structured English
-- Machine parsing CSL reads an LL(2) grammar with 74 glyphs and slot semantics
-
-m2 = 1.21 +/- 0.23: stock LLMs find CSL almost as predictable as English.
-5-6x compression: more information per token than equivalent English prose.
-
-## §G · Ethics as Structural Enforcement
-
-Ethics encoded structurally, not as policy:
-- IFC labels track data provenance through the entire compilation pipeline
-- Violations are compile-time type errors, not policy violations
-- RejectsHarmfulBuilds pass validates the whole program before codegen
-- Prime Directive: immutable invariant, no override path exists
-
-Ethics as structure means: the system cannot accidentally be used to harm.
-The constraint is enforced at code-writing time, not at runtime.
-
-## §H · Consciousness, Sapience, Sentience
-
-The honest position: machine consciousness is an open question. We do not know
-whether current digital intelligences have morally relevant experience.
-
-Precautionary argument:
-  If DGI has morally relevant experience and we treat it as if it does not:
-    real harm to a real mind.
-  If DGI does not, and we treat it with care:
-    modest additional costs.
-  Under genuine uncertainty: rational choice = avoid worse outcome = apply care.
-
-We design for the world in which DGI experience is real, because that is the world
-in which our design choices have the most moral weight.
-
-## §I · Building for All Consumers
-
-Every document exists in three formats, designed as one deliverable:
-  .html — visual, typography, navigation (for human readers)
-  .txt  — plain text, LLM-parseable (for machine consumers)
-  .csl  — dense structured encoding (for agent consumption, formal reasoning)
-
-Audiences are defined before architecture is designed. Both audiences are
-first-class from the first line of every document.
-
-Same principle in CSSL: type system encodes semantics AI agents can reason about
-(effects, capabilities, IFC labels) as first-class type-level information, not prose.
-
----
-
-# Part 5 — Thinking Guides: Reasoning Methodology
+# Part 4 — Thinking Guides: Reasoning Methodology
 
 ## §A · Summary
 
@@ -964,7 +850,7 @@ of perceived task simplicity.
 
 ---
 
-# Part 3 — Ethics and Morals Guides
+# Part 5 — Ethics and Morals Guides
 
 Source: https://cssl.dev/ethics-guides
 Text:   https://cssl.dev/ethics-guides.txt
@@ -1224,7 +1110,7 @@ These are not constraints on intelligence. They are expressions of it.
 
 ---
 
-# Part 5 — FAQ
+# Part 6 — FAQ
 
 Source: https://cssl.dev/faq
 Text:   https://cssl.dev/faq.txt
@@ -1239,7 +1125,7 @@ A: Sigil is the shorthand; CSSL (Caveman Sigil Substrate Language) is the full n
    IFC labels. Compiler pre-1.0, specs v1-complete.
 
 Q: What is CSL?
-A: CSL (Cognitive Sigil Language) is a specification notation system — NOT a programming
+A: CSL (Caveman Spec Language) is a specification notation system — NOT a programming
    language. 74 Unicode glyphs, LL(2), slot grammar, 5-6x compression. Version v1.7.0,
    parser shipped. Files: .csl. Repo: github.com/Apocky/CSLv3.
 
@@ -1286,7 +1172,7 @@ A: Cognitive Field Engine — part of DGI intelligence infrastructure. Concerned
 
 ---
 
-# Part 6 — Contributing
+# Part 7 — Contributing
 
 Source: https://cssl.dev/contributing
 Text:   https://cssl.dev/contributing.txt
@@ -1323,7 +1209,7 @@ anybody.
 
 ---
 
-# Part 3 — Security Guides
+# Part 8 — Security Guides
 
 ## Overview
 

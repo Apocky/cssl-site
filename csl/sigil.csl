@@ -12,7 +12,7 @@
   version   : pre-1.0
   status    : ◐ compiler.in-active-development
   author    : "Shawn Wolfgang Michael Baker" @{Phoenix, AZ}
-  repo      : github.com/Apocky/CSSLv3
+  repo      : github.com/Apocky/CSSL3
   license   : CC-BY-4.0 + MIT
 
 § STATUS
@@ -21,10 +21,9 @@
   ✓ 31/31 body-lower
   ✓ F1.autodiff.PROVEN : 62/62 AD obligations
   ✓ HM.foundation
-  ✓ tests  : 1121 ; 0 failures
+  ✓ tests  : 1600+ ; 0 failures
   ✓ clippy : 0 warnings
   ✓ commit-gates : 6/6
-  ◐ session-4 : in-progress
 
 § IDENTITY
   Sigil :: programming-language
@@ -251,7 +250,7 @@
   ⟨ Switch 2           | NVN (stub)              | platform SDK-gated                  ⟩
   ⟨ iOS / Android      | Metal / Vulkan 1.3+     | mobile via Adreno/Mali/Apple         ⟩
 
-§ REPOSITORY  github.com/Apocky/CSSLv3
+§ REPOSITORY  github.com/Apocky/CSSL3
   spec-files  : 25
   crates      : 31
   structure   :

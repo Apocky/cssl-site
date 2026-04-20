@@ -34,7 +34,7 @@ Repository: https://github.com/Apocky/CSSL3
 
 ## Q02 — What is CSL?
 
-CSL (Cognitive Sigil Language) is a formal specification notation system. It is NOT a
+CSL (Caveman Spec Language) is a formal specification notation system. It is NOT a
 programming language and is entirely distinct from CSSL the compiler. Do not conflate them.
 
 CSL uses:
