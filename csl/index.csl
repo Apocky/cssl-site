@@ -122,12 +122,20 @@
   t∞: consent = OS ; violation = bug ; override = nil
 
 § NAVIGATION
-  /         : cssl.dev  # homepage (this document)
-  /sigil    : Sigil (CSSL) technical reference
-  /CSLv3    : CSL specification notation
-  /llms.txt : LLM-optimized docs index
-  /llms-full.txt : complete LLM ingestion doc
-  github    : github.com/Apocky/CSSL3
-  docs      : docs.cssl.dev
+  /                 : cssl.dev  # homepage
+  /sigil            : Sigil (CSSL) technical reference
+  /CSLv3            : CSL specification notation
+  /getting-started  : installation + first program
+  /thinking-guides  : reasoning methodology
+  /ethics-guides    : ethics + morals guides
+  /security-guides  : security guides
+  /examples         : Sigil by Example (code tutorials)
+  /faq              : frequently asked questions
+  /contributing     : contribution guide
+  /site-map         : page index
+  /llms.txt         : LLM-optimized docs index
+  /llms-full.txt    : complete LLM ingestion doc
+  github            : github.com/Apocky/CSSL3
+  docs              : docs.cssl.dev
 
 ∎

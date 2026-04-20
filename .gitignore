@@ -27,3 +27,17 @@ dist/
 .claude/worktrees/
 .mcp-probe
 BUILD_DECISIONS.md
+
+# Security credentials
+.env
+.env.*
+*.env
+*.key
+*.pem
+*.cert
+*.crt
+*.p12
+*.pfx
+*.secret
+credentials.json
+secrets.json

@@ -717,7 +717,7 @@ Consent is the operating system.
 
 ---
 
-# Part 4 — Sigil by Example: Code Tutorials
+# Part 3 — Sigil by Example: Code Tutorials
 
 ## §A · Summary
 
@@ -785,7 +785,7 @@ Section 07 · Complete Program (Additive Synth):
 
 ---
 
-# Part 5 — Thinking Guides: Reasoning Methodology
+# Part 4 — Thinking Guides: Reasoning Methodology
 
 ## §A · Summary
 
@@ -850,7 +850,7 @@ of perceived task simplicity.
 
 ---
 
-# Part 3 — Ethics and Morals Guides
+# Part 5 — Ethics and Morals Guides
 
 Source: https://cssl.dev/ethics-guides
 Text:   https://cssl.dev/ethics-guides.txt
@@ -1110,7 +1110,7 @@ These are not constraints on intelligence. They are expressions of it.
 
 ---
 
-# Part 5 — FAQ
+# Part 6 — FAQ
 
 Source: https://cssl.dev/faq
 Text:   https://cssl.dev/faq.txt
@@ -1125,7 +1125,7 @@ A: Sigil is the shorthand; CSSL (Caveman Sigil Substrate Language) is the full n
    IFC labels. Compiler pre-1.0, specs v1-complete.
 
 Q: What is CSL?
-A: CSL (Cognitive Sigil Language) is a specification notation system — NOT a programming
+A: CSL (Caveman Spec Language) is a specification notation system — NOT a programming
    language. 74 Unicode glyphs, LL(2), slot grammar, 5-6x compression. Version v1.7.0,
    parser shipped. Files: .csl. Repo: github.com/Apocky/CSLv3.
 
@@ -1172,7 +1172,7 @@ A: Cognitive Field Engine — part of DGI intelligence infrastructure. Concerned
 
 ---
 
-# Part 6 — Contributing
+# Part 7 — Contributing
 
 Source: https://cssl.dev/contributing
 Text:   https://cssl.dev/contributing.txt
@@ -1209,7 +1209,7 @@ anybody.
 
 ---
 
-# Part 3 — Security Guides
+# Part 8 — Security Guides
 
 ## Overview
 

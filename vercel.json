@@ -42,7 +42,7 @@
       ]
     },
     {
-      "source": "/(getting-started\\.txt|getting-started\\.html|thinking-guides\\.txt|thinking-guides\\.html|ethics-guides\\.txt|ethics-guides\\.html|security-guides\\.txt|security-guides\\.html|examples\\.txt|examples\\.html|faq\\.txt|contributing\\.txt|site-map\\.html)",
+      "source": "/(getting-started\\.txt|getting-started\\.html|thinking-guides\\.txt|thinking-guides\\.html|ethics-guides\\.txt|ethics-guides\\.html|security-guides\\.txt|security-guides\\.html|examples\\.txt|examples\\.html|faq\\.txt|faq\\.html|contributing\\.txt|contributing\\.html|site-map\\.html)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
