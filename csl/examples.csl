@@ -1,0 +1,268 @@
+§ cssl.dev.examples                                                 ◐
+# CSL-encoded representation of cssl.dev/examples (Sigil by Example)
+# Source  : https://cssl.dev/examples
+# Version : CSSL pre-1.0
+# Date    : 2026-04-20
+# License : CC BY 4.0
+
+§ META
+  url      : https://cssl.dev/examples
+  txt-url  : https://cssl.dev/examples.txt
+  csl-url  : https://cssl.dev/csl/examples.csl
+  html-url : https://cssl.dev/examples
+  title    : "Sigil by Example — Learning CSSL Through Practical Code"
+  author   : "Shawn Wolfgang Michael Baker" @{Phoenix, AZ}
+  license  : CC-BY-4.0 + MIT
+
+§ IDENTITY
+  Sigil ≡ CSSL  :: "Caveman Sigil Substrate Language"  # same language
+  CSSL ¬= CSL   # N! conflate ∵ CSL = notation ; CSSL = language
+  surface       : Rust-hybrid  # examples use this surface
+  status        : ◐ compiler.pre-1.0 ; spec.complete@v1
+
+§ OVERVIEW
+  sections : 7
+  progression : basics → memory → effects → manifold → autodiff → quantum/DCU → complete
+  surface : Rust-hybrid ← ∀ examples
+  dual-surface-note : both surfaces → same HIR ; formatter.round-trips.losslessly
+  effect-row-syntax : / after fn-signature ← declares observable side-effects
+  pure-fn : omits / clause
+
+§ 01-BASICS
+
+  §01-A HELLO-WORLD
+    # module + IO effect + pure fn
+    module com.apocky.examples.hello
+    fn greet(name: str) → str                           # pure ; no effect-row
+      body: str::concat("hello, ", name)
+    fn main() → () / {IO}
+      body: print(greet("Sigil"))                       # IO required for print
+    demonstrates : [module, pure-fn, IO-effect, let, str-literal]
+
+  §01-B PRIMITIVE-TYPES
+    # primitives : i32 i64 u32 u64 f32 f64 bool str
+    # vectors    : vec2 vec3 vec4 mat4  ← compiler-built-ins ¬ structs
+    # refinement : f32'pos = {v:f32 | v > 0}
+    let count   : u32     = 42
+    let ratio   : f64     = 3.14159265358979
+    let ok      : bool    = true
+    let radius  : f32'pos = 0.5                         # compile-time pos-guard
+    let origin  : vec3    = vec3(0.0, 0.0, 0.0)
+    let point   : vec3    = vec3(1.0, 2.0, 3.0)
+    let dist    : f32     = length(point - origin)      # sqrt(14)
+    @layout(std430) struct Vertex {pos: vec3, normal: vec3, uv: vec2}
+    demonstrates : [primitives, f32'pos-refinement, vec3-built-in, @layout]
+
+  §01-C GENERICS
+    # ML-style parametric polymorphism + trait-style type-classes
+    # effect-row is itself polymorphic (μ = inferred tail)
+    trait Blend { fn lerp(self, other: Self, t: f32) → Self }
+    impl Blend for f32 { fn lerp(self, other, t) → f32 { self + (other-self)*t } }
+    impl Blend for vec3 { fn lerp ... }
+    fn blend_pair<T: Blend>(a: T, b: T, t: f32) → T  # effect-polymorphic
+    demonstrates : [traits, impl, generics, effect-tail-polymorphism]
+
+§ 02-MEMORY-CAPABILITIES
+  # Pony-6 caps: iso trn ref val box tag
+  ⟨ cap | meaning                          | typical-use                    ⟩
+  ⟨ iso | exclusively-owned linear-mutable | GPU-buffers, command-buffers   ⟩
+  ⟨ trn | write-unique → freeze → val      | build-phase → immutable-scene  ⟩
+  ⟨ ref | shared-mutable genref 8-byte u64 | entity-handles, world-refs     ⟩
+  ⟨ val | immutable-shared                 | frozen-scene, const-data       ⟩
+  ⟨ box | read-only view over iso/trn/val  | query-interfaces, readers      ⟩
+  ⟨ tag | opaque handle (no deref)         | Handle<T>, identity-only       ⟩
+
+  §02-A GPU-BUFFER-LIFECYCLE
+    fn alloc_vertex_buffer(capacity: u64) → iso GpuBuffer / {GPU, NoRecurse}
+      # iso = exclusively owned
+    fn upload_mesh(buf: iso GpuBuffer, verts: box [Vertex]) → val GpuBuffer / {GPU}
+      buf.write(verts)   # mutable write ; iso required
+      buf.freeze()       # iso → val : safe-to-share
+    fn bind_and_draw(buf: val GpuBuffer, shader: val ShaderPipeline) → ()
+      / {GPU, Deadline<16ms>}
+    demonstrates : [iso, val, box, {GPU}, {Deadline}, linear-consumption]
+
+  §02-B TRN-BUILD-FREEZE
+    fn build_scene() → val Scene / {Alloc}
+      let s: trn Scene = Scene::new()
+      let aabb = compute_aabb(s as box)  # box-aliasing OK during build
+      s.add_mesh(...) ; s.add_light(...)
+      s.freeze()                          # trn → val
+    demonstrates : [trn, box-alias-during-build, freeze, cap-promotion]
+
+  §02-C ENTITY-HANDLES
+    # Handle<T> = tag + generation packed into u64
+    # solves stale-entity-reference bug (Labyrinth of Apocalypse retrospective)
+    fn spawn_enemy(world: ref World, pos: vec3) → Handle<Enemy>
+      / {State<World>}
+      world.alloc(Enemy{pos, hp:100})
+    fn damage_enemy(world: ref World, handle: Handle<Enemy>, amount: u32) → Option<()>
+      / {State<World>}
+      let enemy = world.get<Enemy>(handle)?   # None if freed (gen-mismatch)
+      enemy.hp -= amount.min(enemy.hp)
+    demonstrates : [Handle<T>, tag-cap, ref, {State<S>}, ?-propagation]
+
+§ 03-EFFECT-SYSTEM
+  # 28+ built-in effects ; categories:
+  ⟨ Resource/Timing : {NoAlloc}{NoRecurse}{NoUnbounded}{Deadline<N>}{Realtime<p>} ⟩
+  ⟨ Resource/Timing : {Region<'r>}{Alloc}{Yield}{State<S>}{Exn<E>}{IO}            ⟩
+  ⟨ Determinism     : {DetRNG}{PureDet}{Reversible}                                ⟩
+  ⟨ Hardware        : {CPU}{GPU}{XMX}{RT}{SIMD256}{SIMD512}{NUMA<n>}{Cache<l>}    ⟩
+  ⟨ Hardware        : {Backend<api>}{Target<platform>}                             ⟩
+  ⟨ Power/Thermal   : {Power<W>}{Thermal<°C>}                                      ⟩
+  ⟨ IFC/Audit       : {Sensitive<dom>}{Audit<dom>}{Privilege<lvl>}                 ⟩
+  ⟨ IFC/Audit       : {Verify<method>}{Telemetry<scope>}                           ⟩
+
+  §03-A CUSTOM-EFFECT-LOGGER
+    effect Log { fn emit(level: LogLevel, msg: str) → () ; fn span(name: str) → SpanId }
+    fn load_asset(path: str) → Asset / {Log, IO}
+      Log::span("load_asset") ; Log::emit(...) ; read_file(path)? ; Asset::parse(data)
+    # handler: provides concrete Log implementation
+    fn main() → () / {IO}
+      handle load_asset("player.mesh") with {
+        Log::emit(level, msg) => { write_stdout(...) ; resume(()) }
+        Log::span(name)       => { resume(SpanId::new(name)) }
+      }
+    demonstrates : [effect-decl, effect-row-propagation, handle-with, resume]
+
+  §03-B NOALLOC-DEADLINE
+    # audio callback : NoAlloc + Deadline<1ms>
+    # compiler walks entire callee-tree ; rejects if any path reaches allocator
+    fn audio_tick(buf: iso AudioBuffer, freq: f32'pos, sr: f32'pos)
+      → iso AudioBuffer / {NoAlloc, Deadline<1ms>, DetRNG}
+    demonstrates : [{NoAlloc} CTE, {Deadline<N>}, {DetRNG}, iso-buf, refinement]
+
+  §03-C IFC-LABELS  F5
+    fn compute_score(player_id: u64, raw_score: i32) → i32 / {Sensitive<PlayerData>}
+    fn broadcast_score(player_id, raw_score) → () / {Privilege<GameServer>, IO}
+      let s          = compute_score(...)                 # tainted
+      let pub_score  = declassify<PlayerData, GameServer>(s)   # explicit privilege-gate
+      network::broadcast(pub_score)
+    demonstrates : [F5-IFC, {Sensitive<dom>}, {Privilege<lvl>}, declassify]
+
+§ 04-MANIFOLD-SDF
+  # SDFs = compiler-aware primitives ¬ library wrappers
+  # SDF'L<k≤1> = Lipschitz constant tracked at compile-time
+
+  §04-A SDF-ALGEBRA
+    @differentiable @lipschitz(k=1.0)
+    fn sphere_sdf(p: vec3, r: f32'pos) → f32  :  length(p) - r
+    @differentiable @lipschitz(k=1.0)
+    fn box_sdf(p: vec3, half: vec3) → f32     :  AABB formula
+    @differentiable
+    fn scene_sdf(p: vec3) → f32               :  min(sphere_sdf(p,0.5), box_sdf(...))
+    fn melted_scene(p: vec3) → f32            :  smin(d1, d2, k=0.1)
+    fn surface_normal(hit: vec3) → vec3       :  normalize(bwd_diff(scene_sdf)(hit).d_p)
+    demonstrates : [@differentiable, @lipschitz-tracking, SDF-union, smin, bwd_diff-normal]
+
+  §04-B IFS-CHAOS-GAME
+    # Iterated Function System: affine contractions → fractal attractor
+    struct IFSRule { scale: f32'pos, offset: vec2, rotate: f32 }
+    fn ifs_chaos_game(rules: box [IFSRule], iters: u32, seed: vec2, out: iso [vec2])
+      → iso [vec2] / {DetRNG, NoAlloc}
+    demonstrates : [IFS, {DetRNG}, {NoAlloc}, iso-out]
+
+§ 05-AUTODIFF  F1
+  # Source-to-source AD on structured MIR ¬ LLVM-Enzyme
+  # Slang.D interface: @differentiable fwd_diff bwd_diff IDifferentiable
+  # Jet<T,N>: higher-order AD up to N-th derivative
+
+  §05-A FORWARD-MODE
+    @differentiable fn sigmoid(x: f32) → f32
+    @differentiable fn activation(x, w, b: f32) → f32
+    fwd_diff(activation)(x=1.5, dx=1.0, w=2.0, b=-0.5)
+    result.val → sigma(2.5) ; result.d_x → ∂sigma/∂x @x=1.5
+    demonstrates : [fwd_diff, JVP, dual-number.val+d_x]
+
+  §05-B REVERSE-MODE
+    @differentiable fn mse_loss(pred, target: box [f32], n: u32) → f32
+    fn backprop_step(...) → f32 / {NoAlloc, State<[[f32]]>}
+      let grads = bwd_diff(loss_fn)(pred)
+      w[j][i] -= lr * grads.d_w[j][i]   # SGD update
+    demonstrates : [bwd_diff, VJP, gradient-struct.d_w/.d_b, SGD, {NoAlloc}]
+
+  §05-C JETS-HIGHER-ORDER
+    fn potential_energy(r: Jet<f32,2>) → Jet<f32,2>  # Lennard-Jones
+    fn force_and_curvature(r: f32'pos) → (f32, f32)
+      r_jet = Jet::seed(r, 1.0, 0.0)
+      v_jet = potential_energy(r_jet)
+      → (-v_jet.d[0], v_jet.d[1])        # force + curvature
+    demonstrates : [Jet<T,N>, Jet::seed, .d[k]-access]
+
+§ 06-QUANTUM-DCU
+  # PureDet = bit-exact cross-machine (stricter than DetRNG)
+  # NoAlloc + stack-only workspace ← real-time safe
+
+  §06-A KRYLOV-EVOLUTION
+    # |ψ'⟩ = exp(−iHt)|ψ⟩ ; approximated via Arnoldi iteration
+    struct SparseH { row_ptr, col_idx, vals: box [f32], dim: u32 }  # CSR
+    fn krylov_evolve(H: box SparseH, psi0: box [f32], t: f32'pos,
+                     k: u32, out: iso [f32])
+      → iso [f32] / {PureDet, NoAlloc, Deadline<1ms>}
+      V = alloc_stack([[f32;H.dim];k])     # Krylov basis
+      h = alloc_stack([[f32;k];k])         # Hessenberg matrix
+      # Arnoldi: modified Gram-Schmidt + sparse matvec
+      exp_h = pade_expm_real(h, t, k)
+      matvec_t(V, exp_h[0..k], out, k, H.dim)
+    demonstrates : [sparse-CSR, Arnoldi-MGS, Pade-expm, {PureDet}, {NoAlloc}]
+
+  §06-B KURAMOTO-SYNC
+    # d(phi_i)/dt = omega_i + (kappa/N)*sum_j sin(phi_j - phi_i)
+    struct DCUOscillator { phi: f32, omega: f32'pos, kappa: f32'pos }
+    fn kuramoto_step(agents: ref [...], idx: u32, dt: f32'pos) → ()
+      / {State<[DCUOscillator]>, PureDet}
+    fn order_parameter(agents: box [...]) → f32 / {PureDet}
+      # r = |sum exp(i*phi_j)| / N ; r≈1 = locked ; r≈0 = incoherent
+    fn run_until_sync(agents, dt, threshold, max_steps) → u32 (steps taken)
+      / {State<[DCUOscillator]>, PureDet}
+    demonstrates : [DCU-agent, Kuramoto-dynamics, order-parameter, {State<S>}, {PureDet}]
+
+§ 07-COMPLETE-PROGRAM
+  # Additive synth: 3-voice A4/E5/A5 chord ; all features in one
+
+  §07.FEATURES
+    F1 : @differentiable on vibrato_freq ← inverse-synthesis ready
+    F2 : Amplitude = f32 where v ∈ [0,1] ; Phase = f32 where v ∈ [0,2π)
+    F3 : {NoAlloc}+{Deadline<1ms>}+{DetRNG}+{AudioMetrics}+{Telemetry<AudioCPU>}
+    F6 : {Telemetry<AudioCPU>} ← signed-audit-ring
+    caps: iso buf + ref voices + box cfg
+
+  §07.TYPES
+    type Amplitude = f32 where v >= 0.0 && v <= 1.0
+    type Phase     = f32 where v >= 0.0 && v < 2.0*PI
+    struct SineVoice {freq: f32'pos, phase: Phase, amp: Amplitude,
+                      lfo_hz: f32'pos, lfo_dep: f32'pos, lfo_phi: Phase}
+    effect AudioMetrics { fn report_cpu_us(micros: u32) → () }
+
+  §07.VIBRATO
+    @differentiable
+    fn vibrato_freq(base: f32'pos, depth: f32'pos, phi: f32) → f32'pos
+      body: base * exp2(depth * sin(phi) / 12.0)
+    # ← differentiable for inverse synthesis (match target spectrum)
+
+  §07.FILL-BUFFER
+    fn fill_buffer(voices: ref [SineVoice], cfg: box AudioConfig, buf: iso AudioBuffer)
+      → iso AudioBuffer
+      / {NoAlloc, Deadline<1ms>, DetRNG, AudioMetrics, Telemetry<AudioCPU>}
+    # stack-alloc mix buffer ; per-voice: vibrato_freq + sin accumulate ; normalize
+
+  §07.MAIN
+    voices = [SineVoice(440.0,...), SineVoice(659.2,...), SineVoice(880.0,...)]
+    cfg    = AudioConfig{sample_rate:48000, frames:256}
+    handle fill_buffer(voices, cfg, buf) with {
+      AudioMetrics::report_cpu_us(us) => { print_u32(us) ; resume(()) }
+    }
+
+§ CROSS-REFERENCES
+  language-ref  : https://cssl.dev/sigil
+  csl-notation  : https://cssl.dev/CSLv3
+  repo          : github.com/Apocky/CSSL3
+  spec-F1       : specs/05_AUTODIFF.csl + specs/17_JETS.csl
+  spec-F2       : specs/03_TYPES.csl + specs/20_SMT.csl
+  spec-F3       : specs/04_EFFECTS.csl + specs/12_CAPABILITIES.csl
+  spec-F5       : specs/11_IFC.csl
+  spec-F6       : specs/22_TELEMETRY.csl + specs/23_TESTING.csl
+  spec-SDF      : specs/08_ENGINE.csl
+  spec-dual-surface : specs/16_DUAL_SURFACE.csl
+
+∎

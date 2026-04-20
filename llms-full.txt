@@ -601,7 +601,75 @@ Consent is the operating system.
 
 ---
 
-# Part 4 — Thinking Guides: Reasoning Methodology
+# Part 4 — Sigil by Example: Code Tutorials
+
+## §A · Summary
+
+Seven sections of annotated CSSL code examples progressing from basics through
+advanced features. Uses the Rust-hybrid surface syntax. All examples are consistent
+with the CSSL spec (v1-complete). Compiler is pre-1.0.
+
+Naming: Sigil = CSSL = same language. CSL = separate specification notation.
+
+Links:
+- HTML:   https://cssl.dev/examples
+- Text:   https://cssl.dev/examples.txt
+- CSL:    https://cssl.dev/csl/examples.csl
+
+## §B · Section Index
+
+Section 01 · Basics: module, let, primitives (i32 u32 f32 f64 bool str),
+  vectors (vec2 vec3 vec4), f32'pos refinement, @layout structs, generics, traits.
+
+Section 02 · Memory & Capabilities (Pony-6):
+  iso = exclusively owned, linear-mutable (GPU buffers, command buffers)
+  trn = write-unique, box aliases OK, seals to val via .freeze()
+  ref = shared-mutable via 8-byte generational ref
+  val = immutable-shared (frozen scene, const data)
+  box = read-only view over iso/trn/val
+  tag = opaque handle, identity-only (Handle<T>)
+  Example: GPU buffer lifecycle (alloc iso → upload → freeze to val)
+  Example: Entity handles (Handle<Enemy>, generational liveness check)
+
+Section 03 · Effect System:
+  28+ built-in effects across Resource/Timing, Determinism, Hardware, Power/Thermal, IFC/Audit.
+  Custom effect declaration: effect Log { fn emit(level, msg) fn span(name) }
+  Handlers: handle f() with { Effect::op(args) => { ...; resume(val) } }
+  {NoAlloc}: compile-time forbids heap allocation anywhere in call tree.
+  {Deadline<N>}: cost-model check + wallclock guard.
+  {Sensitive<dom>}/{Privilege<lvl>}: IFC labels, declassify operator.
+
+Section 04 · Manifold & SDF Geometry:
+  @differentiable @lipschitz(k=1.0) — Lipschitz constant tracked at compile time.
+  SDF algebra: min (union), smin (smooth blend), intersection.
+  surface_normal = normalize(bwd_diff(scene_sdf)(hit).d_p)
+  IFS (Iterated Function System): chaos game with {DetRNG, NoAlloc}.
+
+Section 05 · Autodiff (F1):
+  fwd_diff(f)(x, dx) → (f(x), f'(x)·dx) — JVP, forward-mode.
+  bwd_diff(f)(x) → gradient struct with .d_w/.d_x etc — VJP, reverse-mode.
+  Jet<T,N>: higher-order AD; Jet::seed(r, 1.0, 0.0); .d[k] access.
+  Source-to-source on structured MIR — no LLVM-Enzyme, no tape.
+
+Section 06 · Quantum-Inspired & DCU:
+  Krylov subspace: Arnoldi iteration + Pade expm for exp(-iHt)|psi>.
+  Sparse CSR Hamiltonian; k-step basis; {PureDet, NoAlloc, Deadline<1ms>}.
+  Kuramoto sync: d(phi_i)/dt = omega_i + (kappa/N)*sum_j sin(phi_j - phi_i).
+  Order parameter r = |sum exp(i*phi_j)| / N; r~1 = phase-locked.
+  run_until_sync: iterate until r > threshold or max_steps.
+
+Section 07 · Complete Program (Additive Synth):
+  3-voice A4/E5/A5 chord with vibrato LFO.
+  F1: @differentiable vibrato_freq (inverse synthesis ready).
+  F2: type Amplitude = f32 where v in [0,1]; type Phase = f32 where v in [0,2pi).
+  F3: {NoAlloc, Deadline<1ms>, DetRNG, AudioMetrics, Telemetry<AudioCPU>}.
+  F6: {Telemetry<AudioCPU>} signed-audit-ring.
+  Caps: iso AudioBuffer + ref [SineVoice] + box AudioConfig in one function.
+  Handler: AudioMetrics::report_cpu_us wired to stdout in main().
+
+---
+
+# Part 5 — Thinking Guides: Reasoning Methodology
 
 ## §A · Summary
 

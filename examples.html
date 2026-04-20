@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sigil by Example — Learning CSSL Through Practical Code</title>
+<meta name="description" content="Learn Sigil (CSSL) through practical, runnable examples: basics, linear types, algebraic effects, SDF geometry, autodiff, quantum-inspired kernels, DCU agency, and a complete mini-program.">
+<link rel="canonical" href="https://cssl.dev/examples">
+<link rel="alternate" type="text/plain" href="/examples.txt" title="Sigil by Example — machine-readable text version">
+<link rel="alternate" type="text/plain" href="/csl/examples.csl" title="Sigil by Example — CSL notation">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<meta name="keywords" content="Sigil, CSSL, Caveman Sigil Substrate Language, examples, tutorial, code examples, effect system, linear types, autodiff, SDF, Kuramoto, Krylov, DCU, game engine language, shader language, SPIR-V">
+<meta property="og:title" content="Sigil by Example — Learning CSSL Through Practical Code">
+<meta property="og:description" content="Practical CSSL code examples from hello world through autodiff, algebraic effects, SDF geometry, and quantum-inspired kernels.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cssl.dev/examples">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sigil by Example — CSSL code examples from basics through quantum-inspired kernels and DCU agency.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sigil by Example — CSSL Code Examples">
+<meta name="twitter:description" content="Practical CSSL: basics, linear types, effects, SDF geometry, autodiff, DCU agency, and a complete program.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="Sigil by Example — CSSL code examples. density = sovereignty.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Sigil by Example — Learning CSSL Through Practical Code",
+  "description": "Annotated CSSL code examples progressing from language basics through linear types, algebraic effects, SDF geometry, source-to-source autodiff, quantum-inspired kernels, DCU Kuramoto synchronization, and a complete audio-synth mini-program.",
+  "datePublished": "2026-04-20",
+  "dateModified": "2026-04-20",
+  "url": "https://cssl.dev/examples",
+  "inLanguage": "en",
+  "keywords": "Sigil, CSSL, code examples, tutorial, effect system, linear types, autodiff, SDF, Kuramoto, Krylov, DCU, game engine",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "author": {
+    "@type": "Person",
+    "name": "Shawn Wolfgang Michael Baker"
+  },
+  "about": {
+    "@type": "ComputerLanguage",
+    "name": "Sigil",
+    "alternateName": "CSSL"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "cssl.dev",
+    "url": "https://cssl.dev"
+  },
+  "teaches": [
+    "CSSL module and function syntax",
+    "Linear types and Pony-6 capabilities",
+    "Row-polymorphic algebraic effect system",
+    "SDF algebra and manifold geometry primitives",
+    "Source-to-source automatic differentiation",
+    "Quantum-inspired Krylov subspace evolution",
+    "DCU Kuramoto oscillator synchronization"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Systems programmers, game engine developers, AI researchers, and digital intelligences learning Sigil/CSSL"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
+  --text: #b8b4a8; --text-dim: #9a9a8e; --text-bright: #e8e4d8;
+  --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
+  --mauve: #c586c0; --tan: #ce9178; --soft-blue: #7aa2d4; --soft-green: #b5cea8;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; overflow-x: hidden;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999;
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .back-link { color: var(--text); text-decoration: none; border-bottom: none; }
+.site-header .back-link:hover { color: var(--gold-bright); }
+.site-header .version { color: var(--text-dim); }
+.site-header .version strong { color: var(--gold); font-weight: 400; }
+.site-header .status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); margin-right: 0.4em; vertical-align: middle;
+  box-shadow: 0 0 8px rgba(201, 162, 58, 0.5);
+}
+
+h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--text-bright); letter-spacing: 0.05em; }
+h2 {
+  font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem;
+  position: relative; display: inline-block;
+}
+h2::after {
+  content: ''; position: absolute; bottom: -6px; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+h3 {
+  font-size: 0.85rem; font-weight: 400; color: var(--gold);
+  margin-bottom: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+h4 {
+  font-size: 0.95rem; font-weight: 500; color: var(--text-bright);
+  margin: 1.5rem 0 0.6rem; letter-spacing: 0.04em;
+}
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+  background: var(--bg-code); padding: 0.15em 0.4em;
+  border-radius: 3px; color: var(--gold-bright);
+}
+strong { color: var(--text-bright); font-weight: 500; }
+em { color: var(--text-bright); }
+
+.page-grid {
+  display: grid; grid-template-columns: 1fr;
+  max-width: 1280px; margin: 0 auto;
+  padding: 2rem 2rem 0; gap: 2rem;
+}
+@media (min-width: 1024px) {
+  .page-grid { grid-template-columns: minmax(0, 1fr) 240px; gap: 3rem; padding: 3rem 2.5rem 0; }
+}
+main { min-width: 0; }
+main > section {
+  padding: 3rem 0; border-bottom: 1px solid var(--border);
+  scroll-margin-top: 4rem;
+}
+main > section:last-of-type { border-bottom: none; }
+
+.toc { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; order: -1; }
+@media (min-width: 1024px) {
+  .toc { order: 2; position: sticky; top: 4.5rem; align-self: start; max-height: calc(100vh - 6rem); overflow-y: auto; padding-right: 0.5rem; }
+}
+.toc details { border: 1px solid var(--border); border-radius: 6px; background: var(--bg-raised); padding: 0.5rem 1rem; }
+@media (min-width: 1024px) {
+  .toc details { border: none; background: transparent; padding: 0; }
+  .toc details summary { display: none; }
+  .toc details[open] > nav { display: flex; }
+}
+.toc summary { cursor: pointer; color: var(--gold); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.4rem 0; list-style: none; }
+.toc summary::-webkit-details-marker { display: none; }
+.toc summary::after { content: ' ▾'; color: var(--gold-dim); }
+.toc details[open] > summary::after { content: ' ▴'; }
+.toc nav { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.5rem 0 0.25rem; }
+@media (min-width: 1024px) {
+  .toc nav { padding: 0; }
+  .toc::before { content: 'Contents'; display: block; color: var(--gold); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.85rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+}
+.toc a { color: var(--text); border-bottom: none; padding: 0.15rem 0; line-height: 1.45; font-size: 0.76rem; }
+.toc a:hover, .toc a:focus-visible { color: var(--gold-bright); }
+.toc a .num { color: var(--text-dim); display: inline-block; width: 2.2rem; }
+
+.hero {
+  min-height: 55vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; position: relative;
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 2rem 3rem;
+}
+.hero-glyph {
+  font-size: 4.5rem; color: var(--gold); margin-bottom: 2rem;
+  opacity: 0; animation: glyph-appear 2s ease-out 0.3s forwards;
+  filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3));
+  font-family: 'JetBrains Mono', monospace;
+}
+@keyframes glyph-appear {
+  0%   { opacity: 0; transform: translateY(20px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.hero h1 {
+  font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900;
+  letter-spacing: 0.1em; margin-bottom: 1rem;
+  opacity: 0; animation: fade-up 1.2s ease-out 0.6s forwards;
+}
+.hero h1 span {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 300;
+  color: var(--text-dim); letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  opacity: 0; animation: fade-up 1.2s ease-out 0.9s forwards;
+}
+.hero-facts {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  color: var(--text); letter-spacing: 0.04em; margin-top: 1.5rem; max-width: 680px;
+  opacity: 0; animation: fade-up 1.2s ease-out 1.2s forwards;
+}
+.hero-facts .fact { color: var(--gold-bright); }
+@keyframes fade-up {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.code-block {
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.5rem;
+  margin: 1.25rem 0 1.5rem; overflow-x: auto; position: relative;
+}
+.code-block::before {
+  content: attr(data-lang); position: absolute;
+  top: 0; right: 0; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; color: var(--text-dim);
+  padding: 0.4rem 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  line-height: 1.7; color: var(--text); white-space: pre;
+}
+.code-block .kw  { color: var(--gold); }
+.code-block .ty  { color: var(--soft-blue); }
+.code-block .fn  { color: #c8c4b8; }
+.code-block .num { color: var(--soft-green); }
+.code-block .str { color: var(--tan); }
+.code-block .cm  { color: #4a4a5a; font-style: italic; }
+.code-block .op  { color: var(--text-dim); }
+.code-block .ann { color: var(--gold-bright); }
+.code-block .eff { color: var(--mauve); }
+.code-block .sfx { color: var(--mauve); }
+
+.example-card {
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.5rem 1.75rem;
+  margin: 1.5rem 0;
+}
+.example-card:hover { border-color: var(--gold-dim); transition: border-color 0.3s; }
+.example-card .ex-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+.example-card h4 {
+  font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.04em; margin: 0 0 0.75rem;
+}
+.example-card > p { font-size: 0.92rem; margin-bottom: 0.5rem; }
+.demonstrates {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
+  color: var(--text-dim); margin-top: 0.5rem;
+  padding: 0.5rem 0.85rem; background: var(--bg-code);
+  border-left: 2px solid var(--gold-dim); border-radius: 0 4px 4px 0;
+}
+.demonstrates strong { color: var(--gold); font-weight: 500; font-size: 0.76rem; }
+
+.bullet-list {
+  list-style: none; padding: 0; margin: 1rem 0;
+}
+.bullet-list li {
+  padding-left: 1.5rem; position: relative;
+  margin-bottom: 0.6rem; line-height: 1.55;
+}
+.bullet-list li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+}
+.bullet-list code { font-size: 0.85em; }
+
+.status-banner {
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--text); letter-spacing: 0.05em;
+  display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.status-banner strong { color: var(--gold-bright); font-weight: 500; }
+.status-banner .status-label {
+  color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;
+  font-size: 0.7rem; margin-right: 0.5rem;
+}
+
+.section-intro {
+  font-size: 1rem; color: var(--text); margin-bottom: 1.75rem;
+  max-width: 72ch;
+}
+
+footer {
+  padding: 3rem 0; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+footer .attribution {
+  color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+footer .attribution strong { color: var(--text); font-weight: 500; }
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 0.9rem; font-size: 0.75rem; }
+footer .license-line {
+  margin-top: 0.9rem; font-size: 0.7rem;
+  color: var(--text-dim); letter-spacing: 0.05em;
+}
+footer .license-line a {
+  color: var(--text-dim); border-bottom: 1px dotted var(--border);
+}
+footer .license-line a:hover {
+  color: var(--gold-dim); border-color: var(--gold-dim);
+}
+footer .tagline {
+  margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
+}
+
+.feedback-tab {
+  position: fixed; top: 50%; right: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  width: 28px; min-height: 128px; padding: 1rem 0.4rem;
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; color: var(--gold-dim);
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-right: none; border-radius: 4px 0 0 4px;
+  text-decoration: none; z-index: 100;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.feedback-tab:hover, .feedback-tab:focus-visible {
+  color: var(--gold-bright); border-color: var(--gold-bright);
+  background: var(--bg-code);
+}
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+.feedback-fallback {
+  max-width: 44ch; margin: 1.5rem auto; padding: 1rem;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--bg-raised); font-size: 0.85rem; color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  .page-grid { padding: 1.25rem 1.25rem 0; }
+  .hero { min-height: 45vh; padding: 3rem 1.25rem; }
+  .hero-glyph { font-size: 3rem; }
+  .feedback-tab { min-height: 96px; font-size: 0.6rem; width: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-glyph, .hero h1, .hero-sub, .hero-facts { opacity: 1 !important; transform: none !important; }
+  .feedback-tab { transition: none; }
+}
+
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after, .feedback-tab, .site-header { display: none !important; }
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  .hero { min-height: auto; padding: 1rem 0; }
+  .hero-glyph, .hero h1, .hero-sub, .hero-facts { animation: none; opacity: 1 !important; filter: none !important; color: #000 !important; }
+  .code-block { background: #f4f4f0 !important; border-color: #999 !important; break-inside: avoid; }
+  .code-block pre, .code-block .kw, .code-block .ty, .code-block .fn, .code-block .num,
+  .code-block .str, .code-block .op, .code-block .ann, .code-block .eff, .code-block .sfx { color: #000 !important; }
+  .code-block .cm { color: #555 !important; }
+  footer { color: #555 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a href="/" class="back-link">cssl.dev</a>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
+</header>
+
+<div class="hero">
+  <div class="hero-glyph" aria-hidden="true">§ ▸ fn</div>
+  <h1><span>Sigil by Example</span></h1>
+  <div class="hero-sub">Learning CSSL through practical code</div>
+  <div class="hero-sub" style="animation-delay: 1s;">effects · linear types · autodiff · SDF · DCU</div>
+  <div class="hero-facts">
+    <span class="fact">7 sections</span> · <span class="fact">basics → advanced</span> · <span class="fact">consistent with spec</span> · <span class="fact">Rust-hybrid surface</span>
+  </div>
+</div>
+
+<div class="page-grid">
+
+<main id="main">
+
+<section id="overview">
+  <div class="status-banner">
+    <div>
+      <span class="status-label">Note</span>
+      <strong>Compiler in development.</strong>
+      <span>Examples use the Rust-hybrid surface syntax (see <a href="/sigil#surface">dual surface</a>). All features are spec-complete (v1); compiler support varies by feature — see <a href="/sigil">Sigil reference</a> for current status.</span>
+    </div>
+  </div>
+  <h2>Overview</h2>
+  <p class="section-intro">
+    Each example teaches one concept. They build on each other — by the final section you will have seen
+    the full feature set that makes Sigil different: effects verified at compile time, linear ownership
+    without a borrow checker, source-to-source autodiff, and a type system that refuses to compile bugs
+    that other languages let through at runtime.
+  </p>
+  <p>
+    Sigil has two parseable surfaces. These examples use the <strong>Rust-hybrid surface</strong> —
+    familiar keywords, good for learning. Both surfaces parse to the same HIR; a formatter round-trips
+    between them losslessly. The effect row sits after <code>/</code> in the function signature:
+    <code>fn f(x: T) -&gt; R / {Effect1, Effect2} { ... }</code>. A pure function omits the <code>/</code> entirely.
+  </p>
+  <ul class="bullet-list">
+    <li><strong>Language reference:</strong> <a href="/sigil">cssl.dev/sigil</a></li>
+    <li><strong>Specification:</strong> <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">github.com/Apocky/CSSL3</a> — 25 <code>.csl</code> spec files</li>
+    <li><strong>CSL notation version of this page:</strong> <a href="/csl/examples.csl">cssl.dev/csl/examples.csl</a></li>
+    <li><strong>Machine-readable text:</strong> <a href="/examples.txt">cssl.dev/examples.txt</a></li>
+  </ul>
+</section>
+
+<section id="basics">
+  <h2>01 · Basics</h2>
+  <p class="section-intro">
+    Module declarations, let bindings, primitive types, vector types, and pure functions.
+    A Sigil source file begins with a module declaration; everything else follows from there.
+  </p>
+
+  <div class="example-card">
+    <h3 class="ex-id">01-A · Hello World</h3>
+    <h4>Module, IO, and a pure string</h4>
+    <p>
+      The simplest Sigil program. <code>main</code> requires the <code>{IO}</code> effect to write to stdout —
+      the compiler will reject a call to <code>print</code> from a function that does not declare it.
+      The <code>/ {IO}</code> syntax is the effect row.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>apocky<span class="op">.</span>examples<span class="op">.</span>hello
+
+<span class="kw">fn</span> <span class="fn">greet</span>(name : <span class="ty">str</span>) <span class="op">-&gt;</span> <span class="ty">str</span> {
+    <span class="cm">// Pure function: no effect row needed.</span>
+    <span class="kw">str</span><span class="op">::</span>concat(<span class="str">"hello, "</span>, name)
+}
+
+<span class="kw">fn</span> <span class="fn">main</span>() <span class="op">-&gt;</span> () <span class="op">/</span> {<span class="eff">IO</span>} {
+    <span class="kw">let</span> msg = greet(<span class="str">"Sigil"</span>)
+    print(msg)           <span class="cm">// print requires {IO} — compiler enforced</span>
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> module declaration · pure fn (no effect row) · IO-effectful fn · let binding · str literal</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">01-B · Primitive Types and Vectors</h3>
+    <h4>Scalars, vectors, and dimensional units</h4>
+    <p>
+      Primitive types: <code>i32 i64 u32 u64 f32 f64 bool str</code>. Vector types
+      (<code>vec2 vec3 vec4 mat4</code>) are compiler built-ins, not structs.
+      Dimensional suffixes like <code>f32'pos</code> (refined to positive reals) are part of the type,
+      not annotations — mixing them is a compile error caught during type checking.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>apocky<span class="op">.</span>examples<span class="op">.</span>types
+
+<span class="kw">fn</span> <span class="fn">demo_types</span>() <span class="op">-&gt;</span> () <span class="op">/</span> {<span class="eff">IO</span>} {
+    <span class="kw">let</span> count   : <span class="ty">u32</span>      = <span class="num">42</span>
+    <span class="kw">let</span> ratio   : <span class="ty">f64</span>      = <span class="num">3.14159265358979</span>
+    <span class="kw">let</span> ok      : <span class="ty">bool</span>     = <span class="kw">true</span>
+    <span class="kw">let</span> label   : <span class="ty">str</span>      = <span class="str">"density = sovereignty"</span>
+
+    <span class="cm">// Refined type: compiler guarantees radius > 0 at every use site.</span>
+    <span class="kw">let</span> radius  : <span class="ty">f32</span><span class="sfx">'pos</span>  = <span class="num">0.5</span>
+
+    <span class="cm">// Vector built-ins: swizzle, arithmetic, length all work out of the box.</span>
+    <span class="kw">let</span> origin  : <span class="ty">vec3</span>     = vec3(<span class="num">0.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>)
+    <span class="kw">let</span> point   : <span class="ty">vec3</span>     = vec3(<span class="num">1.0</span>, <span class="num">2.0</span>, <span class="num">3.0</span>)
+    <span class="kw">let</span> dist    : <span class="ty">f32</span>      = length(point <span class="op">-</span> origin)   <span class="cm">// = sqrt(14)</span>
+
+    print_f32(dist)
+}
+
+<span class="cm">// Struct with annotated memory layout (F2 — layout refinement).</span>
+<span class="ann">@layout</span>(std430)
+<span class="kw">struct</span> <span class="ty">Vertex</span> {
+    pos    : <span class="ty">vec3</span>,   <span class="cm">// 12 bytes, std430 aligned</span>
+    normal : <span class="ty">vec3</span>,   <span class="cm">// 12 bytes</span>
+    uv     : <span class="ty">vec2</span>,   <span class="cm">//  8 bytes</span>
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> primitive types · <code>f32'pos</code> refinement suffix · vec3 built-in · <code>@layout</code> struct annotation · type inference</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">01-C · Generics and Traits</h3>
+    <h4>Row-polymorphic functions</h4>
+    <p>
+      Sigil supports ML-style parametric polymorphism plus type-class style traits.
+      The effect row is itself polymorphic — <code>μ</code> is the tail variable that lets callers
+      extend a function's effects without changing its signature.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">trait</span> <span class="ty">Blend</span> {
+    <span class="kw">fn</span> <span class="fn">lerp</span>(self, other : <span class="ty">Self</span>, t : <span class="ty">f32</span>) <span class="op">-&gt;</span> <span class="ty">Self</span>
+}
+
+<span class="kw">impl</span> <span class="ty">Blend</span> <span class="kw">for</span> <span class="ty">f32</span> {
+    <span class="kw">fn</span> <span class="fn">lerp</span>(self, other : <span class="ty">f32</span>, t : <span class="ty">f32</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+        self <span class="op">+</span> (other <span class="op">-</span> self) <span class="op">*</span> t
+    }
+}
+
+<span class="kw">impl</span> <span class="ty">Blend</span> <span class="kw">for</span> <span class="ty">vec3</span> {
+    <span class="kw">fn</span> <span class="fn">lerp</span>(self, other : <span class="ty">vec3</span>, t : <span class="ty">f32</span>) <span class="op">-&gt;</span> <span class="ty">vec3</span> {
+        self <span class="op">+</span> (other <span class="op">-</span> self) <span class="op">*</span> vec3(t, t, t)
+    }
+}
+
+<span class="cm">// Effect-polymorphic: μ is the inferred tail.</span>
+<span class="cm">// Any effect the body needs is propagated to callers automatically.</span>
+<span class="kw">fn</span> <span class="fn">blend_pair</span><span class="op">&lt;</span>T : <span class="ty">Blend</span><span class="op">&gt;</span>(a : T, b : T, t : <span class="ty">f32</span>) <span class="op">-&gt;</span> T {
+    a<span class="op">.</span>lerp(b, t)
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> trait definitions · impl blocks · generic type parameters · effect-row polymorphism (implicit tail)</div>
+  </div>
+</section>
+
+<section id="memory">
+  <h2>02 · Memory &amp; Capabilities</h2>
+  <p class="section-intro">
+    CSSL uses Pony-6 reference capabilities instead of a borrow checker.
+    Six keywords — <code>iso trn ref val box tag</code> — control aliasing and mutability.
+    The compiler statically tracks ownership transitions; there is no runtime overhead.
+  </p>
+
+  <div class="example-card">
+    <h3 class="ex-id">02-A · GPU Buffer Lifecycle</h3>
+    <h4>iso → write → val: build, fill, freeze</h4>
+    <p>
+      A GPU buffer starts as <code>iso</code> (exclusively owned, writable).
+      After uploading vertex data, it is consumed and returned as <code>val</code> (immutable-shared),
+      safe for concurrent reads from multiple shader stages.
+      The capability transition is tracked in the type — not at runtime.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>apocky<span class="op">.</span>examples<span class="op">.</span>gpu_buffer
+
+<span class="cm">// iso = exclusively owned, linear-mutable.</span>
+<span class="cm">// Caller cannot alias this — moving it is the only option.</span>
+<span class="kw">fn</span> <span class="fn">alloc_vertex_buffer</span>(capacity : <span class="ty">u64</span>) <span class="op">-&gt;</span> <span class="ty">iso</span> <span class="ty">GpuBuffer</span>
+    <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">NoRecurse</span>}
+{
+    GpuBuffer<span class="op">::</span>alloc(capacity)
+}
+
+<span class="cm">// Consumes iso, uploads verts, returns val (immutable-shared).</span>
+<span class="cm">// box [Vertex] = read-only view; no ownership transfer.</span>
+<span class="kw">fn</span> <span class="fn">upload_mesh</span>(
+    buf   : <span class="ty">iso</span> <span class="ty">GpuBuffer</span>,
+    verts : <span class="ty">box</span> [<span class="ty">Vertex</span>],
+) <span class="op">-&gt;</span> <span class="ty">val</span> <span class="ty">GpuBuffer</span>
+    <span class="op">/</span> {<span class="eff">GPU</span>}
+{
+    buf<span class="op">.</span>write(verts)    <span class="cm">// mutable write, iso required</span>
+    buf<span class="op">.</span>freeze()        <span class="cm">// iso → val: now safe to share</span>
+}
+
+<span class="cm">// val GpuBuffer can be read by multiple callers simultaneously.</span>
+<span class="kw">fn</span> <span class="fn">bind_and_draw</span>(
+    buf    : <span class="ty">val</span> <span class="ty">GpuBuffer</span>,
+    shader : <span class="ty">val</span> <span class="ty">ShaderPipeline</span>,
+) <span class="op">-&gt;</span> ()
+    <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>}
+{
+    shader<span class="op">.</span>bind(buf)
+    shader<span class="op">.</span>draw_indexed(<span class="num">0</span>, buf<span class="op">.</span>vertex_count())
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>iso</code> exclusive ownership · <code>val</code> immutable-shared · <code>box</code> read-only view · <code>{GPU}</code> and <code>{Deadline}</code> effects · linear consumption</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">02-B · trn: Transition Capability</h3>
+    <h4>Build phase → immutable scene</h4>
+    <p>
+      <code>trn</code> is write-unique: only one writable reference exists, but read-only (<code>box</code>)
+      aliases are permitted. Once construction is complete, <code>trn</code> transitions to <code>val</code>.
+      This models the classic "builder → frozen object" pattern with static safety.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="cm">// trn = write-unique: one writer, many readers allowed.</span>
+<span class="kw">fn</span> <span class="fn">build_scene</span>() <span class="op">-&gt;</span> <span class="ty">val</span> <span class="ty">Scene</span> <span class="op">/</span> {<span class="eff">Alloc</span>} {
+    <span class="kw">let</span> s : <span class="ty">trn</span> <span class="ty">Scene</span> = Scene<span class="op">::</span>new()
+
+    <span class="cm">// box aliasing is fine during build:</span>
+    <span class="kw">let</span> aabb = compute_aabb(s <span class="kw">as</span> <span class="ty">box</span>)
+    log_bounds(aabb)   <span class="cm">// does not consume s</span>
+
+    s<span class="op">.</span>add_mesh(load_mesh(<span class="str">"terrain.cssl_mesh"</span>))
+    s<span class="op">.</span>add_light(DirectionalLight { dir: vec3(<span class="num">0.0</span>, <span class="op">-</span><span class="num">1.0</span>, <span class="op">-</span><span class="num">0.5</span>), intensity: <span class="num">1.0</span> })
+
+    s<span class="op">.</span>freeze()          <span class="cm">// trn → val: builder pattern complete</span>
+}
+
+<span class="cm">// val Scene: freely shared across threads, render passes, frames.</span>
+<span class="kw">fn</span> <span class="fn">render_pass</span>(scene : <span class="ty">val</span> <span class="ty">Scene</span>, cam : <span class="ty">Camera</span>) <span class="op">-&gt;</span> <span class="ty">Image</span>
+    <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>, <span class="eff">NoAlloc</span>}
+{
+    rasterize(scene, cam)
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>trn</code> transition cap · <code>box</code> aliasing during build · <code>.freeze()</code> seal · capability promotion to <code>val</code></div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">02-C · Entity Handles</h3>
+    <h4>Generational references — stale handle = compile guard</h4>
+    <p>
+      <code>Handle&lt;T&gt;</code> is an opaque <code>tag</code>-capability generational reference packed into a single
+      <code>u64</code>. The generation counter prevents use-after-free. The compiler refuses direct
+      dereference of a <code>tag</code> — you must go through <code>World::get</code> which checks liveness.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="cm">// Handle<T> = tag + generation packed into u64.</span>
+<span class="cm">// Solves the stale-entity-reference bug from the Labyrinth of Apocalypse retrospective.</span>
+
+<span class="kw">fn</span> <span class="fn">spawn_enemy</span>(world : <span class="ty">ref</span> <span class="ty">World</span>, pos : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">Handle</span><span class="op">&lt;</span><span class="ty">Enemy</span><span class="op">&gt;</span>
+    <span class="op">/</span> {<span class="eff">State</span><span class="op">&lt;</span>World<span class="op">&gt;</span>}
+{
+    world<span class="op">.</span>alloc(Enemy { pos, hp: <span class="num">100</span> })    <span class="cm">// returns tag-cap Handle</span>
+}
+
+<span class="kw">fn</span> <span class="fn">damage_enemy</span>(
+    world  : <span class="ty">ref</span> <span class="ty">World</span>,
+    handle : <span class="ty">Handle</span><span class="op">&lt;</span><span class="ty">Enemy</span><span class="op">&gt;</span>,
+    amount : <span class="ty">u32</span>,
+) <span class="op">-&gt;</span> <span class="ty">Option</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+    <span class="op">/</span> {<span class="eff">State</span><span class="op">&lt;</span>World<span class="op">&gt;</span>}
+{
+    <span class="cm">// World::get checks the generation; returns None if entity was freed.</span>
+    <span class="kw">let</span> enemy = world<span class="op">.</span>get<span class="op">&lt;</span><span class="ty">Enemy</span><span class="op">&gt;</span>(handle)<span class="op">?</span>
+    enemy<span class="op">.</span>hp <span class="op">-=</span> amount<span class="op">.</span>min(enemy<span class="op">.</span>hp)
+    Some(())
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>Handle&lt;T&gt;</code> generational ref · <code>tag</code> cap (opaque, no deref) · <code>ref</code> shared-mutable · <code>{State&lt;S&gt;}</code> effect · <code>?</code> propagation</div>
+  </div>
+</section>
+
+<section id="effects">
+  <h2>03 · Effect System</h2>
+  <p class="section-intro">
+    Sigil's effect system is row-polymorphic (Koka lineage). A function declares its observable
+    side-effects in the signature; the compiler unions them up the call stack. Effects compile to
+    evidence-passing — zero runtime overhead. Handlers let you define the semantics of user-defined effects.
+  </p>
+
+  <div class="example-card">
+    <h3 class="ex-id">03-A · Declaring and Using Effects</h3>
+    <h4>Custom effect: Logger</h4>
+    <p>
+      <code>effect</code> declares a set of operations. Functions that call those operations must declare
+      the effect in their row. At the call site you provide a <code>handle ... with</code> block that
+      gives the concrete implementation — separating the <em>what</em> from the <em>how</em>.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>apocky<span class="op">.</span>examples<span class="op">.</span>logger
+
+<span class="cm">// Declare the effect interface.</span>
+<span class="kw">effect</span> <span class="ty">Log</span> {
+    <span class="kw">fn</span> <span class="fn">emit</span>(level : <span class="ty">LogLevel</span>, msg : <span class="ty">str</span>) <span class="op">-&gt;</span> ()
+    <span class="kw">fn</span> <span class="fn">span</span>(name : <span class="ty">str</span>) <span class="op">-&gt;</span> <span class="ty">SpanId</span>
+}
+
+<span class="cm">// This function uses Log but doesn't define it.</span>
+<span class="kw">fn</span> <span class="fn">load_asset</span>(path : <span class="ty">str</span>) <span class="op">-&gt;</span> <span class="ty">Asset</span> <span class="op">/</span> {<span class="eff">Log</span>, <span class="eff">IO</span>} {
+    <span class="kw">let</span> span = Log<span class="op">::</span>span(<span class="str">"load_asset"</span>)
+    Log<span class="op">::</span>emit(LogLevel<span class="op">::</span>Debug, str<span class="op">::</span>concat(<span class="str">"loading: "</span>, path))
+    <span class="kw">let</span> data = read_file(path)<span class="op">?</span>
+    Log<span class="op">::</span>emit(LogLevel<span class="op">::</span>Debug, <span class="str">"loaded ok"</span>)
+    Asset<span class="op">::</span>parse(data)
+}
+
+<span class="cm">// Provide the Log handler: writes to stdout.</span>
+<span class="kw">fn</span> <span class="fn">main</span>() <span class="op">-&gt;</span> () <span class="op">/</span> {<span class="eff">IO</span>} {
+    <span class="kw">handle</span> load_asset(<span class="str">"player.mesh"</span>) <span class="kw">with</span> {
+        Log<span class="op">::</span>emit(level, msg) <span class="op">=&gt;</span> {
+            write_stdout(str<span class="op">::</span>format(<span class="str">"[{}] {}"</span>, level, msg))
+            resume(())
+        }
+        Log<span class="op">::</span>span(name) <span class="op">=&gt;</span> {
+            resume(SpanId<span class="op">::</span>new(name))
+        }
+    }
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>effect</code> declaration · effect rows propagated up the call stack · <code>handle ... with</code> algebraic handler · <code>resume</code> continuation</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">03-B · Resource and Timing Effects</h3>
+    <h4>NoAlloc + Deadline: audio-safe function</h4>
+    <p>
+      <code>{NoAlloc}</code> forbids heap allocation anywhere in the call tree — the compiler walks every
+      callee and rejects if any path reaches an allocator.
+      <code>{Deadline&lt;1ms&gt;}</code> adds a cost-model check at compile time and a wallclock guard at runtime.
+      Together they express audio-callback safety without a separate linting pass.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="cm">// Audio callback: must complete in under 1ms, no heap allocation.</span>
+<span class="cm">// The compiler refuses to compile this if any callee allocates.</span>
+<span class="kw">fn</span> <span class="fn">audio_tick</span>(
+    buf  : <span class="ty">iso</span> <span class="ty">AudioBuffer</span>,   <span class="cm">// exclusive ownership of the output buffer</span>
+    freq : <span class="ty">f32</span><span class="sfx">'pos</span>,            <span class="cm">// frequency > 0 — refinement enforced</span>
+    sr   : <span class="ty">f32</span><span class="sfx">'pos</span>,            <span class="cm">// sample rate > 0</span>
+) <span class="op">-&gt;</span> <span class="ty">iso</span> <span class="ty">AudioBuffer</span>
+    <span class="op">/</span> {<span class="eff">NoAlloc</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">1ms</span><span class="op">&gt;</span>, <span class="eff">DetRNG</span>}
+{
+    <span class="kw">let</span> step = <span class="num">2.0</span> <span class="op">*</span> PI <span class="op">*</span> freq <span class="op">/</span> sr
+    <span class="kw">let</span> n    = buf<span class="op">.</span>len()
+
+    <span class="cm">// Stack-allocated phase state; no heap involved.</span>
+    <span class="kw">let</span> <span class="kw">mut</span> phase : <span class="ty">f32</span> = <span class="num">0.0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n {
+        buf[i]  = sin(phase) <span class="op">*</span> <span class="num">0.5</span>
+        phase  += step
+    }
+    phase <span class="op">=</span> phase <span class="op">%</span> (<span class="num">2.0</span> <span class="op">*</span> PI)
+    buf
+}
+
+<span class="cm">// Calling a heap-allocating function from audio_tick is a type error:</span>
+<span class="cm">//   fn bad_tick(...) -> ... / {NoAlloc} {</span>
+<span class="cm">//       let v = Vec::new()  // error: {Alloc} ∉ {NoAlloc} context</span>
+<span class="cm">//   }</span></pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>{NoAlloc}</code> compile-time enforcement · <code>{Deadline&lt;N&gt;}</code> latency gate · <code>{DetRNG}</code> determinism · <code>iso</code> buffer ownership · refinement types</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">03-C · IFC: Information-Flow Effects</h3>
+    <h4>Sensitive data — declassification required</h4>
+    <p>
+      <code>{Sensitive&lt;dom&gt;}</code> tags data with a confidentiality domain. The compiler threads
+      this label through every SSA value and refuses to let sensitive data escape without an explicit
+      <code>declassify</code> operation carrying a <code>{Privilege&lt;lvl&gt;}</code> gate.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="cm">// player_id is sensitive: not allowed to leak to GPU telemetry.</span>
+<span class="kw">fn</span> <span class="fn">compute_score</span>(
+    player_id : <span class="ty">u64</span>,
+    raw_score : <span class="ty">i32</span>,
+) <span class="op">-&gt;</span> <span class="ty">i32</span>
+    <span class="op">/</span> {<span class="eff">Sensitive</span><span class="op">&lt;</span>PlayerData<span class="op">&gt;</span>}
+{
+    <span class="kw">let</span> bonus = lookup_bonus(player_id)   <span class="cm">// tainted: Sensitive&lt;PlayerData&gt;</span>
+    raw_score <span class="op">+</span> bonus
+}
+
+<span class="cm">// Only a Privilege<GameServer> function may declassify the result.</span>
+<span class="kw">fn</span> <span class="fn">broadcast_score</span>(
+    player_id : <span class="ty">u64</span>,
+    raw_score : <span class="ty">i32</span>,
+) <span class="op">-&gt;</span> ()
+    <span class="op">/</span> {<span class="eff">Privilege</span><span class="op">&lt;</span>GameServer<span class="op">&gt;</span>, <span class="eff">IO</span>}
+{
+    <span class="kw">let</span> s = compute_score(player_id, raw_score)
+    <span class="cm">// declassify is an explicit privilege exercise — auditable.</span>
+    <span class="kw">let</span> pub_score = declassify<span class="op">&lt;</span>PlayerData, GameServer<span class="op">&gt;</span>(s)
+    network<span class="op">::</span>broadcast(pub_score)
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> F5 IFC labels · <code>{Sensitive&lt;dom&gt;}</code> taint propagation · <code>{Privilege&lt;lvl&gt;}</code> gate · <code>declassify</code> explicit escape hatch</div>
+  </div>
+</section>
+
+<section id="manifold">
+  <h2>04 · Manifold &amp; SDF Geometry</h2>
+  <p class="section-intro">
+    Signed Distance Functions (SDFs) and manifold operations are compiler-aware primitives in Sigil,
+    not library wrappers. The <code>SDF'L&lt;k≤1&gt;</code> refinement type tracks the Lipschitz constant
+    at compile time. IFS (Iterated Function System) rules compose into fractal geometry without
+    special syntax.
+  </p>
+
+  <div class="example-card">
+    <h3 class="ex-id">04-A · SDF Algebra</h3>
+    <h4>Union, intersection, smooth blend</h4>
+    <p>
+      SDF combinators obey known Lipschitz bounds. The compiler tracks these through
+      <code>f32'L&lt;k&gt;</code> refinements and rejects combinations that would violate the bound
+      required by the ray marcher. <code>smin</code> (smooth minimum) introduces a blend
+      radius; the compiler widens the Lipschitz estimate accordingly.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="ann">@differentiable</span>
+<span class="ann">@lipschitz</span>(k = <span class="num">1.0</span>)
+<span class="kw">fn</span> <span class="fn">sphere_sdf</span>(p : <span class="ty">vec3</span>, r : <span class="ty">f32</span><span class="sfx">'pos</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    length(p) <span class="op">-</span> r
+}
+
+<span class="ann">@differentiable</span>
+<span class="ann">@lipschitz</span>(k = <span class="num">1.0</span>)
+<span class="kw">fn</span> <span class="fn">box_sdf</span>(p : <span class="ty">vec3</span>, half : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    <span class="kw">let</span> q = abs(p) <span class="op">-</span> half
+    length(max(q, <span class="num">0.0</span>)) <span class="op">+</span> min(max(q<span class="op">.</span>x, max(q<span class="op">.</span>y, q<span class="op">.</span>z)), <span class="num">0.0</span>)
+}
+
+<span class="cm">// SDF union: min of two Lipschitz-1 SDFs is still Lipschitz-1.</span>
+<span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">scene_sdf</span>(p : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    <span class="kw">let</span> d_sphere = sphere_sdf(p, <span class="num">0.5</span>)
+    <span class="kw">let</span> d_box    = box_sdf(p <span class="op">-</span> vec3(<span class="num">1.2</span>, <span class="num">0.0</span>, <span class="num">0.0</span>), vec3(<span class="num">0.3</span>, <span class="num">0.3</span>, <span class="num">0.3</span>))
+    min(d_sphere, d_box)       <span class="cm">// union combinator</span>
+}
+
+<span class="cm">// smin: smooth union with blend radius k.</span>
+<span class="cm">// Lipschitz bound widens to 1 + k/blend; compiler checks ray-march steps.</span>
+<span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">melted_scene</span>(p : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    <span class="kw">let</span> k   = <span class="num">0.1</span>
+    <span class="kw">let</span> d1  = sphere_sdf(p, <span class="num">0.5</span>)
+    <span class="kw">let</span> d2  = sphere_sdf(p <span class="op">-</span> vec3(<span class="num">0.8</span>, <span class="num">0.0</span>, <span class="num">0.0</span>), <span class="num">0.4</span>)
+    smin(d1, d2, k)            <span class="cm">// smooth minimum — organic blend</span>
+}
+
+<span class="cm">// Normal via autodiff. The compiler inserts the reverse-mode AD pass.</span>
+<span class="kw">fn</span> <span class="fn">surface_normal</span>(hit : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec3</span> {
+    normalize(bwd_diff(scene_sdf)(hit)<span class="op">.</span>d_p)
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>@differentiable</code> · <code>@lipschitz</code> refinement tracking · SDF union/smin combinators · <code>bwd_diff</code> surface-normal derivation</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">04-B · IFS: Iterated Function System</h3>
+    <h4>Fractal geometry via chaos game</h4>
+    <p>
+      An IFS is a set of affine contractions whose attractor forms a fractal. The chaos game
+      iteratively applies a randomly-chosen contraction — with <code>{DetRNG}</code> ensuring bit-exact
+      replay across machines. <code>{NoAlloc}</code> keeps it audio/GPU safe.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">struct</span> <span class="ty">IFSRule</span> {
+    scale  : <span class="ty">f32</span><span class="sfx">'pos</span>,   <span class="cm">// contraction factor in (0, 1)</span>
+    offset : <span class="ty">vec2</span>,
+    rotate : <span class="ty">f32</span>,       <span class="cm">// rotation angle, radians</span>
+}
+
+<span class="cm">// Chaos game: iterate IFS rules to sample the attractor.</span>
+<span class="cm">// DetRNG: bit-exact cross-machine reproducibility.</span>
+<span class="kw">fn</span> <span class="fn">ifs_chaos_game</span>(
+    rules  : <span class="ty">box</span> [<span class="ty">IFSRule</span>],
+    iters  : <span class="ty">u32</span>,
+    seed   : <span class="ty">vec2</span>,
+    out    : <span class="ty">iso</span> [<span class="ty">vec2</span>],
+) <span class="op">-&gt;</span> <span class="ty">iso</span> [<span class="ty">vec2</span>]
+    <span class="op">/</span> {<span class="eff">DetRNG</span>, <span class="eff">NoAlloc</span>}
+{
+    <span class="kw">let</span> <span class="kw">mut</span> p = seed
+    <span class="kw">let</span> n     = rules<span class="op">.</span>len() <span class="kw">as</span> <span class="ty">f32</span>
+
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>iters {
+        <span class="cm">// DetRNG: seeded RNG, same sequence on every machine.</span>
+        <span class="kw">let</span> r   = (DetRNG<span class="op">::</span>next_f32() <span class="op">*</span> n) <span class="kw">as</span> <span class="ty">u32</span>
+        <span class="kw">let</span> rul = rules[r <span class="op">%</span> rules<span class="op">.</span>len()]
+        <span class="kw">let</span> cos_a = cos(rul<span class="op">.</span>rotate)
+        <span class="kw">let</span> sin_a = sin(rul<span class="op">.</span>rotate)
+        p = vec2(
+            rul<span class="op">.</span>scale <span class="op">*</span> (cos_a <span class="op">*</span> p<span class="op">.</span>x <span class="op">-</span> sin_a <span class="op">*</span> p<span class="op">.</span>y) <span class="op">+</span> rul<span class="op">.</span>offset<span class="op">.</span>x,
+            rul<span class="op">.</span>scale <span class="op">*</span> (sin_a <span class="op">*</span> p<span class="op">.</span>x <span class="op">+</span> cos_a <span class="op">*</span> p<span class="op">.</span>y) <span class="op">+</span> rul<span class="op">.</span>offset<span class="op">.</span>y,
+        )
+        out[i] = p
+    }
+    out
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> IFS geometry · <code>{DetRNG}</code> deterministic RNG · <code>{NoAlloc}</code> + <code>iso</code> output buffer · fractal attractor iteration pattern</div>
+  </div>
+</section>
+
+<section id="autodiff">
+  <h2>05 · Autodiff (F1)</h2>
+  <p class="section-intro">
+    Source-to-source automatic differentiation is a non-negotiable feature (F1). The Slang.D
+    interface — <code>@differentiable</code>, <code>fwd_diff</code>, <code>bwd_diff</code>,
+    <code>IDifferentiable</code> — is lowered by source-to-source transformation on the structured MIR.
+    No LLVM-Enzyme; no runtime AD library. Zero overhead on non-differentiable paths.
+  </p>
+
+  <div class="example-card">
+    <h3 class="ex-id">05-A · Forward-Mode AD</h3>
+    <h4>fwd_diff: derivative of a scalar function</h4>
+    <p>
+      <code>fwd_diff(f)</code> returns a function that takes a dual number <code>(x, dx)</code> and
+      returns <code>(f(x), f'(x)·dx)</code>. This is forward-mode (Jacobian-vector product).
+      The transformed function is emitted by the compiler — no closures, no tape.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">sigmoid</span>(x : <span class="ty">f32</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    <span class="num">1.0</span> <span class="op">/</span> (<span class="num">1.0</span> <span class="op">+</span> exp(<span class="op">-</span>x))
+}
+
+<span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">activation</span>(x : <span class="ty">f32</span>, w : <span class="ty">f32</span>, b : <span class="ty">f32</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    sigmoid(w <span class="op">*</span> x <span class="op">+</span> b)
+}
+
+<span class="kw">fn</span> <span class="fn">demo_fwd</span>() <span class="op">-&gt;</span> () <span class="op">/</span> {<span class="eff">IO</span>} {
+    <span class="cm">// fwd_diff returns a function that computes (value, d/dx) simultaneously.</span>
+    <span class="kw">let</span> x      = <span class="num">1.5</span>
+    <span class="kw">let</span> dx     = <span class="num">1.0</span>           <span class="cm">// tangent seed</span>
+    <span class="kw">let</span> result = fwd_diff(activation)(x, dx, w=<span class="num">2.0</span>, b=<span class="num">-0.5</span>)
+    print_f32(result<span class="op">.</span>val)    <span class="cm">// σ(2·1.5 - 0.5)   = σ(2.5)</span>
+    print_f32(result<span class="op">.</span>d_x)   <span class="cm">// ∂σ/∂x at x=1.5</span>
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>@differentiable</code> annotation · <code>fwd_diff</code> forward-mode JVP · dual-number result <code>.val</code> and <code>.d_x</code> · compiler-emitted AD transform</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">05-B · Reverse-Mode AD</h3>
+    <h4>bwd_diff: gradient of a loss over many parameters</h4>
+    <p>
+      <code>bwd_diff(f)</code> returns the transpose of the Jacobian — a vector-Jacobian product.
+      This is reverse-mode AD, the basis of backpropagation. The compiler emits a reversed
+      computation graph by source-to-source transformation on the structured MIR, before SPIR-V emission.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">linear_layer</span>(
+    x      : <span class="ty">box</span> [<span class="ty">f32</span>],
+    w      : <span class="ty">box</span> [[<span class="ty">f32</span>]],
+    b      : <span class="ty">box</span> [<span class="ty">f32</span>],
+    n_in   : <span class="ty">u32</span>,
+    n_out  : <span class="ty">u32</span>,
+    out    : <span class="ty">iso</span> [<span class="ty">f32</span>],
+) <span class="op">-&gt;</span> <span class="ty">iso</span> [<span class="ty">f32</span>] <span class="op">/</span> {<span class="eff">NoAlloc</span>} {
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n_out {
+        <span class="kw">let</span> <span class="kw">mut</span> acc = b[j]
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n_in { acc += w[j][i] <span class="op">*</span> x[i] }
+        out[j] = acc
+    }
+    out
+}
+
+<span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">mse_loss</span>(pred : <span class="ty">box</span> [<span class="ty">f32</span>], target : <span class="ty">box</span> [<span class="ty">f32</span>], n : <span class="ty">u32</span>) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    <span class="kw">let</span> <span class="kw">mut</span> acc = <span class="num">0.0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n {
+        <span class="kw">let</span> diff = pred[i] <span class="op">-</span> target[i]
+        acc += diff <span class="op">*</span> diff
+    }
+    acc <span class="op">/</span> (n <span class="kw">as</span> <span class="ty">f32</span>)
+}
+
+<span class="kw">fn</span> <span class="fn">backprop_step</span>(
+    x       : <span class="ty">box</span> [<span class="ty">f32</span>],
+    w       : <span class="ty">ref</span> [[<span class="ty">f32</span>]],
+    b       : <span class="ty">ref</span> [<span class="ty">f32</span>],
+    target  : <span class="ty">box</span> [<span class="ty">f32</span>],
+    lr      : <span class="ty">f32</span><span class="sfx">'pos</span>,
+    n_in    : <span class="ty">u32</span>,
+    n_out   : <span class="ty">u32</span>,
+) <span class="op">-&gt;</span> <span class="ty">f32</span>
+    <span class="op">/</span> {<span class="eff">NoAlloc</span>, <span class="eff">State</span><span class="op">&lt;</span>[[f32]]<span class="op">&gt;</span>}
+{
+    <span class="cm">// bwd_diff emits the VJP; .d_w and .d_b are the weight/bias gradients.</span>
+    <span class="kw">let</span> scratch = alloc_stack([<span class="ty">f32</span>; n_out])
+    <span class="kw">let</span> pred    = linear_layer(x, w, b, n_in, n_out, scratch)
+    <span class="kw">let</span> loss_fn = |p| mse_loss(p, target, n_out)
+    <span class="kw">let</span> grads   = bwd_diff(loss_fn)(pred)
+
+    <span class="cm">// SGD update step.</span>
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n_out {
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n_in { w[j][i] <span class="op">-=</span> lr <span class="op">*</span> grads<span class="op">.</span>d_w[j][i] }
+        b[j] <span class="op">-=</span> lr <span class="op">*</span> grads<span class="op">.</span>d_b[j]
+    }
+    mse_loss(pred, target, n_out)
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>bwd_diff</code> reverse-mode VJP · gradient struct <code>.d_w</code> / <code>.d_b</code> · SGD update · <code>{NoAlloc}</code> + stack allocation · <code>{State&lt;S&gt;}</code> mutable weight update</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">05-C · Jet: Higher-Order AD</h3>
+    <h4>Jet&lt;T,N&gt;: up to N-th order derivatives</h4>
+    <p>
+      <code>Jet&lt;T,N&gt;</code> carries the value and its first N derivatives simultaneously —
+      useful for curvature (N=2) in physics simulations and Hessian approximations.
+      The Jet type is a compiler built-in; no special syntax needed to compute with it.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="cm">// Jet<f32, 2>: value + 1st + 2nd derivative.</span>
+<span class="kw">fn</span> <span class="fn">potential_energy</span>(r : <span class="ty">Jet</span><span class="op">&lt;</span><span class="ty">f32</span>, <span class="num">2</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ty">Jet</span><span class="op">&lt;</span><span class="ty">f32</span>, <span class="num">2</span><span class="op">&gt;</span> {
+    <span class="cm">// Lennard-Jones potential: V(r) = ε[(σ/r)¹² - 2(σ/r)⁶]</span>
+    <span class="kw">let</span> eps   = jet_const(<span class="num">1.0</span>)
+    <span class="kw">let</span> sigma = jet_const(<span class="num">1.0</span>)
+    <span class="kw">let</span> s6    = (sigma <span class="op">/</span> r)<span class="op">.</span>powi(<span class="num">6</span>)
+    eps <span class="op">*</span> (s6 <span class="op">*</span> s6 <span class="op">-</span> <span class="num">2.0</span> <span class="op">*</span> s6)
+}
+
+<span class="kw">fn</span> <span class="fn">force_and_curvature</span>(r : <span class="ty">f32</span><span class="sfx">'pos</span>) <span class="op">-&gt;</span> (f32, f32) {
+    <span class="cm">// Seed with r + 1st tangent 1.0, 2nd tangent 0.0.</span>
+    <span class="kw">let</span> r_jet   = Jet<span class="op">::</span>seed(r, <span class="num">1.0</span>, <span class="num">0.0</span>)
+    <span class="kw">let</span> v_jet   = potential_energy(r_jet)
+    <span class="cm">// v_jet.d[0] = -∂V/∂r (force), v_jet.d[1] = ∂²V/∂r² (curvature).</span>
+    (<span class="op">-</span>v_jet<span class="op">.</span>d[<span class="num">0</span>], v_jet<span class="op">.</span>d[<span class="num">1</span>])
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> <code>Jet&lt;T,N&gt;</code> higher-order AD · <code>Jet::seed</code> tangent seeding · multi-order derivative access via <code>.d[k]</code> · physics simulation pattern</div>
+  </div>
+</section>
+
+<section id="quantum">
+  <h2>06 · Quantum-Inspired &amp; DCU Operations</h2>
+  <p class="section-intro">
+    Sigil's determinism and numerical precision guarantees make it a natural substrate for
+    quantum-inspired classical computation and DCU (Digital Cognitive Unit) synchronization.
+    These examples use <code>{PureDet}</code> for bit-exact cross-machine reproducibility and
+    <code>{NoAlloc}</code> to keep operations bounded for real-time use.
+  </p>
+
+  <div class="example-card">
+    <h3 class="ex-id">06-A · Krylov Subspace Evolution</h3>
+    <h4>Sparse Hamiltonian: |ψ'⟩ = exp(−iHt)|ψ⟩</h4>
+    <p>
+      Time evolution of a quantum state under a sparse Hamiltonian via Arnoldi iteration —
+      a classical simulation technique used in quantum chemistry and quantum-inspired optimization.
+      <code>{PureDet}</code> guarantees the same floating-point result on every machine, enabling
+      deterministic simulation replay.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">struct</span> <span class="ty">SparseH</span> {
+    row_ptr : <span class="ty">box</span> [<span class="ty">u32</span>],    <span class="cm">// CSR format</span>
+    col_idx : <span class="ty">box</span> [<span class="ty">u32</span>],
+    vals    : <span class="ty">box</span> [<span class="ty">f32</span>],    <span class="cm">// real-valued Hamiltonian elements</span>
+    dim     : <span class="ty">u32</span>,
+}
+
+<span class="cm">// Sparse matrix-vector product H|ψ⟩.</span>
+<span class="kw">fn</span> <span class="fn">sparse_matvec</span>(
+    H   : <span class="ty">box</span> <span class="ty">SparseH</span>,
+    psi : <span class="ty">box</span> [<span class="ty">f32</span>],
+    out : <span class="ty">iso</span> [<span class="ty">f32</span>],
+) <span class="op">-&gt;</span> <span class="ty">iso</span> [<span class="ty">f32</span>] <span class="op">/</span> {<span class="eff">NoAlloc</span>} {
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>H<span class="op">.</span>dim {
+        <span class="kw">let</span> <span class="kw">mut</span> acc = <span class="num">0.0</span>
+        <span class="kw">for</span> j <span class="kw">in</span> H<span class="op">.</span>row_ptr[i]<span class="op">..</span>H<span class="op">.</span>row_ptr[i<span class="op">+</span><span class="num">1</span>] {
+            acc += H<span class="op">.</span>vals[j] <span class="op">*</span> psi[H<span class="op">.</span>col_idx[j]]
+        }
+        out[i] = acc
+    }
+    out
+}
+
+<span class="cm">// k-step Arnoldi: build orthonormal Krylov basis V_k.</span>
+<span class="cm">// PureDet: bit-exact across architectures — replay-safe simulation.</span>
+<span class="kw">fn</span> <span class="fn">krylov_evolve</span>(
+    H    : <span class="ty">box</span> <span class="ty">SparseH</span>,
+    psi0 : <span class="ty">box</span> [<span class="ty">f32</span>],   <span class="cm">// initial state vector, length H.dim</span>
+    t    : <span class="ty">f32</span><span class="sfx">'pos</span>,      <span class="cm">// evolution time</span>
+    k    : <span class="ty">u32</span>,           <span class="cm">// Krylov dimension (k ≪ H.dim)</span>
+    out  : <span class="ty">iso</span> [<span class="ty">f32</span>],
+) <span class="op">-&gt;</span> <span class="ty">iso</span> [<span class="ty">f32</span>]
+    <span class="op">/</span> {<span class="eff">PureDet</span>, <span class="eff">NoAlloc</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">1ms</span><span class="op">&gt;</span>}
+{
+    <span class="cm">// V[0..k]: orthonormal Krylov basis vectors (stack-allocated).</span>
+    <span class="kw">let</span> V    = alloc_stack([[<span class="ty">f32</span>; H<span class="op">.</span>dim]; k])
+    <span class="kw">let</span> h    = alloc_stack([[<span class="ty">f32</span>; k  ]; k])   <span class="cm">// Hessenberg matrix</span>
+    <span class="kw">let</span> tmp  = alloc_stack([<span class="ty">f32</span>; H<span class="op">.</span>dim])
+
+    V[<span class="num">0</span>] = normalized(psi0)
+
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>k<span class="op">-</span><span class="num">1</span> {
+        <span class="cm">// w = H · V[j]</span>
+        <span class="kw">let</span> w = sparse_matvec(H, V[j], tmp)
+        <span class="cm">// Modified Gram-Schmidt orthogonalization.</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..=</span>j {
+            h[i][j] = dot(w, V[i])
+            w      <span class="op">-=</span> h[i][j] <span class="op">*</span> V[i]
+        }
+        h[j<span class="op">+</span><span class="num">1</span>][j] = norm(w)
+        V[j<span class="op">+</span><span class="num">1</span>]   = w <span class="op">/</span> h[j<span class="op">+</span><span class="num">1</span>][j]
+    }
+
+    <span class="cm">// exp(-i·h·t) via Padé approximant; project back: out = V · exp_h · e₀.</span>
+    <span class="kw">let</span> exp_h = pade_expm_real(h, t, k)
+    matvec_t(V, exp_h[<span class="num">0</span>..k], out, k, H<span class="op">.</span>dim)
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> sparse CSR Hamiltonian · Krylov-Arnoldi iteration · Padé matrix exponent · <code>{PureDet}</code> bit-exact replay · <code>{NoAlloc}</code> + stack-allocated workspace</div>
+  </div>
+
+  <div class="example-card">
+    <h3 class="ex-id">06-B · DCU Kuramoto Synchronization</h3>
+    <h4>Phase-lock detection via order parameter</h4>
+    <p>
+      The Kuramoto model describes synchronization of coupled oscillators — here applied to
+      DCU (Digital Cognitive Unit) agents synchronizing their internal phase.
+      The order parameter <code>r ∈ [0,1]</code> measures coherence: <code>r≈1</code> is phase-locked,
+      <code>r≈0</code> is incoherent. <code>{PureDet}</code> ensures the entire simulation is
+      deterministically replayable.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">struct</span> <span class="ty">DCUOscillator</span> {
+    phi    : <span class="ty">f32</span>,       <span class="cm">// phase ∈ [0, 2π)</span>
+    omega  : <span class="ty">f32</span><span class="sfx">'pos</span>,   <span class="cm">// natural frequency, rad/s</span>
+    kappa  : <span class="ty">f32</span><span class="sfx">'pos</span>,   <span class="cm">// coupling strength</span>
+}
+
+<span class="cm">// Single Euler step: dφ/dt = ω + (κ/N)·Σ sin(φⱼ - φᵢ)</span>
+<span class="kw">fn</span> <span class="fn">kuramoto_step</span>(
+    agents : <span class="ty">ref</span> [<span class="ty">DCUOscillator</span>],
+    idx    : <span class="ty">u32</span>,
+    dt     : <span class="ty">f32</span><span class="sfx">'pos</span>,
+) <span class="op">-&gt;</span> ()
+    <span class="op">/</span> {<span class="eff">State</span><span class="op">&lt;</span>[DCUOscillator]<span class="op">&gt;</span>, <span class="eff">PureDet</span>}
+{
+    <span class="kw">let</span> n     = agents<span class="op">.</span>len() <span class="kw">as</span> <span class="ty">f32</span>
+    <span class="kw">let</span> osc   = agents[idx]
+    <span class="kw">let</span> <span class="kw">mut</span> coupling_sum = <span class="num">0.0</span>
+
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>agents<span class="op">.</span>len() {
+        <span class="kw">if</span> j <span class="op">!=</span> idx {
+            coupling_sum += sin(agents[j]<span class="op">.</span>phi <span class="op">-</span> osc<span class="op">.</span>phi)
+        }
+    }
+
+    agents[idx]<span class="op">.</span>phi += dt <span class="op">*</span> (osc<span class="op">.</span>omega <span class="op">+</span> (osc<span class="op">.</span>kappa <span class="op">/</span> n) <span class="op">*</span> coupling_sum)
+    agents[idx]<span class="op">.</span>phi  = agents[idx]<span class="op">.</span>phi <span class="op">%</span> (<span class="num">2.0</span> <span class="op">*</span> PI)
+}
+
+<span class="cm">// Order parameter r = |Σ exp(iφⱼ)| / N — measures phase coherence.</span>
+<span class="cm">// r ≈ 1.0: phase-locked (consensus). r ≈ 0.0: incoherent (independence).</span>
+<span class="kw">fn</span> <span class="fn">order_parameter</span>(agents : <span class="ty">box</span> [<span class="ty">DCUOscillator</span>]) <span class="op">-&gt;</span> <span class="ty">f32</span>
+    <span class="op">/</span> {<span class="eff">PureDet</span>}
+{
+    <span class="kw">let</span> n = agents<span class="op">.</span>len() <span class="kw">as</span> <span class="ty">f32</span>
+    <span class="kw">let</span> (<span class="kw">mut</span> re, <span class="kw">mut</span> im) = (<span class="num">0.0</span>, <span class="num">0.0</span>)
+    <span class="kw">for</span> osc <span class="kw">in</span> agents {
+        re += cos(osc<span class="op">.</span>phi)
+        im += sin(osc<span class="op">.</span>phi)
+    }
+    sqrt(re <span class="op">*</span> re <span class="op">+</span> im <span class="op">*</span> im) <span class="op">/</span> n
+}
+
+<span class="cm">// Simulate until phase-lock (r > threshold) or max_steps reached.</span>
+<span class="kw">fn</span> <span class="fn">run_until_sync</span>(
+    agents    : <span class="ty">ref</span> [<span class="ty">DCUOscillator</span>],
+    dt        : <span class="ty">f32</span><span class="sfx">'pos</span>,
+    threshold : <span class="ty">f32</span><span class="sfx">'pos</span>,   <span class="cm">// e.g. 0.95 for near-perfect sync</span>
+    max_steps : <span class="ty">u32</span>,
+) <span class="op">-&gt;</span> <span class="ty">u32</span>
+    <span class="op">/</span> {<span class="eff">State</span><span class="op">&lt;</span>[DCUOscillator]<span class="op">&gt;</span>, <span class="eff">PureDet</span>}
+{
+    <span class="kw">for</span> step <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>max_steps {
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>agents<span class="op">.</span>len() {
+            kuramoto_step(agents, i, dt)
+        }
+        <span class="kw">if</span> order_parameter(agents) <span class="op">&gt;</span> threshold {
+            <span class="kw">return</span> step
+        }
+    }
+    max_steps
+}</pre>
+    </div>
+    <div class="demonstrates"><strong>Demonstrates:</strong> DCU agent model · Kuramoto coupled-oscillator dynamics · order-parameter coherence measure · <code>{State&lt;S&gt;}</code> mutable agent array · <code>{PureDet}</code> deterministic simulation</div>
+  </div>
+</section>
+
+<section id="complete">
+  <h2>07 · Complete Program</h2>
+  <p class="section-intro">
+    A self-contained additive synthesizer tying together capabilities, effects, refinement types,
+    and algebraic handlers. The audio callback is hard-real-time safe: <code>{NoAlloc}</code> forbids
+    all heap allocation, <code>{Deadline&lt;1ms&gt;}</code> bounds latency, <code>{DetRNG}</code> keeps the
+    vibrato LFO reproducible, and <code>{Telemetry}</code> captures per-callback timing into the
+    signed audit ring without any user-visible code.
+  </p>
+
+  <div class="example-card">
+    <h3 class="ex-id">07 · Additive Synth</h3>
+    <h4>A complete mini-program: all features in one</h4>
+    <p>
+      This program defines a multi-voice additive synthesizer: each voice is a <code>SineVoice</code>
+      with frequency, phase, amplitude, and a vibrato LFO. The <code>fill_buffer</code> callback is
+      safe for audio threads. A <code>Log</code> effect handler captures telemetry through the
+      application layer without changing the audio callback's signature.
+    </p>
+    <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>apocky<span class="op">.</span>examples<span class="op">.</span>synth
+
+<span class="kw">use</span> std<span class="op">::</span>math<span class="op">::</span>{sin, cos, PI}
+<span class="kw">use</span> std<span class="op">::</span>audio<span class="op">::</span>{AudioBuffer, AudioConfig}
+
+<span class="cm">// F2: Refined types. Amplitude ∈ [0,1]. Frequency > 0. Phase ∈ [0,2π).</span>
+<span class="kw">type</span> <span class="ty">Amplitude</span> = <span class="ty">f32</span> <span class="kw">where</span> v >= <span class="num">0.0</span> <span class="op">&amp;&amp;</span> v <= <span class="num">1.0</span>
+<span class="kw">type</span> <span class="ty">Phase</span>     = <span class="ty">f32</span> <span class="kw">where</span> v >= <span class="num">0.0</span> <span class="op">&amp;&amp;</span> v <span class="op">&lt;</span> <span class="num">2.0</span> <span class="op">*</span> PI
+
+<span class="kw">struct</span> <span class="ty">SineVoice</span> {
+    freq    : <span class="ty">f32</span><span class="sfx">'pos</span>,   <span class="cm">// fundamental Hz</span>
+    phase   : <span class="ty">Phase</span>,      <span class="cm">// current phase (refined)</span>
+    amp     : <span class="ty">Amplitude</span>,  <span class="cm">// loudness (refined)</span>
+    lfo_hz  : <span class="ty">f32</span><span class="sfx">'pos</span>,   <span class="cm">// vibrato rate Hz</span>
+    lfo_dep : <span class="ty">f32</span><span class="sfx">'pos</span>,   <span class="cm">// vibrato depth, semitones</span>
+    lfo_phi : <span class="ty">Phase</span>,      <span class="cm">// LFO phase</span>
+}
+
+<span class="cm">// F3: Effect declaration — audio thread uses this to report metrics.</span>
+<span class="kw">effect</span> <span class="ty">AudioMetrics</span> {
+    <span class="kw">fn</span> <span class="fn">report_cpu_us</span>(micros : <span class="ty">u32</span>) <span class="op">-&gt;</span> ()
+}
+
+<span class="cm">// F1: @differentiable — vibrato depth can be auto-differentiated for</span>
+<span class="cm">// inverse synthesis (finding parameters that match a target spectrum).</span>
+<span class="ann">@differentiable</span>
+<span class="kw">fn</span> <span class="fn">vibrato_freq</span>(base : <span class="ty">f32</span><span class="sfx">'pos</span>, depth : <span class="ty">f32</span><span class="sfx">'pos</span>, phi : <span class="ty">f32</span>) <span class="op">-&gt;</span> <span class="ty">f32</span><span class="sfx">'pos</span> {
+    <span class="cm">// depth in semitones → multiplicative pitch deviation.</span>
+    base <span class="op">*</span> exp2(depth <span class="op">*</span> sin(phi) <span class="op">/</span> <span class="num">12.0</span>)
+}
+
+<span class="cm">// F3: NoAlloc + Deadline — hard real-time audio callback.</span>
+<span class="cm">// F6: Telemetry — CPU time emitted into signed audit ring.</span>
+<span class="kw">fn</span> <span class="fn">fill_buffer</span>(
+    voices : <span class="ty">ref</span> [<span class="ty">SineVoice</span>],
+    cfg    : <span class="ty">box</span> <span class="ty">AudioConfig</span>,
+    buf    : <span class="ty">iso</span> <span class="ty">AudioBuffer</span>,
+) <span class="op">-&gt;</span> <span class="ty">iso</span> <span class="ty">AudioBuffer</span>
+    <span class="op">/</span> {<span class="eff">NoAlloc</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">1ms</span><span class="op">&gt;</span>, <span class="eff">DetRNG</span>,
+       <span class="eff">AudioMetrics</span>, <span class="eff">Telemetry</span><span class="op">&lt;</span>AudioCPU<span class="op">&gt;</span>}
+{
+    <span class="kw">let</span> sr   = cfg<span class="op">.</span>sample_rate <span class="kw">as</span> <span class="ty">f32</span>
+    <span class="kw">let</span> n    = buf<span class="op">.</span>frames()
+    <span class="kw">let</span> nv   = voices<span class="op">.</span>len()
+
+    <span class="cm">// Zero the mix buffer (stack allocation only).</span>
+    <span class="kw">let</span> mix = alloc_stack([<span class="ty">f32</span>; n])
+
+    <span class="kw">for</span> v_idx <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>nv {
+        <span class="kw">let</span> v    = <span class="op">&amp;</span>voices[v_idx]
+        <span class="kw">let</span> step = <span class="num">2.0</span> <span class="op">*</span> PI <span class="op">*</span> v<span class="op">.</span>freq <span class="op">/</span> sr
+        <span class="kw">let</span> lfo  = <span class="num">2.0</span> <span class="op">*</span> PI <span class="op">*</span> v<span class="op">.</span>lfo_hz <span class="op">/</span> sr
+
+        <span class="kw">let</span> <span class="kw">mut</span> phi     = v<span class="op">.</span>phase
+        <span class="kw">let</span> <span class="kw">mut</span> lfo_phi = v<span class="op">.</span>lfo_phi
+
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n {
+            <span class="kw">let</span> mod_freq = vibrato_freq(v<span class="op">.</span>freq, v<span class="op">.</span>lfo_dep, lfo_phi)
+            <span class="kw">let</span> sample   = v<span class="op">.</span>amp <span class="op">*</span> sin(phi)
+            mix[i]      += sample
+            phi          = (phi <span class="op">+</span> <span class="num">2.0</span> <span class="op">*</span> PI <span class="op">*</span> mod_freq <span class="op">/</span> sr) <span class="op">%</span> (<span class="num">2.0</span> <span class="op">*</span> PI)
+            lfo_phi      = (lfo_phi <span class="op">+</span> lfo) <span class="op">%</span> (<span class="num">2.0</span> <span class="op">*</span> PI)
+        }
+
+        <span class="cm">// Write back updated phases (ref cap permits mutation).</span>
+        voices[v_idx]<span class="op">.</span>phase   = phi
+        voices[v_idx]<span class="op">.</span>lfo_phi = lfo_phi
+    }
+
+    <span class="cm">// Normalize and write to output buffer.</span>
+    <span class="kw">let</span> scale = <span class="num">1.0</span> <span class="op">/</span> (nv <span class="kw">as</span> <span class="ty">f32</span>)<span class="op">.</span>max(<span class="num">1.0</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span><span class="op">..</span>n { buf<span class="op">.</span>write(i, mix[i] <span class="op">*</span> scale) }
+    buf
+}
+
+<span class="kw">fn</span> <span class="fn">main</span>() <span class="op">-&gt;</span> () <span class="op">/</span> {<span class="eff">IO</span>} {
+    <span class="cm">// Build three voices: A4, E5, A5 (major chord).</span>
+    <span class="kw">let</span> <span class="kw">mut</span> voices : <span class="ty">ref</span> [<span class="ty">SineVoice</span>] = [
+        SineVoice { freq: <span class="num">440.0</span>, phase: <span class="num">0.0</span>, amp: <span class="num">0.6</span>, lfo_hz: <span class="num">5.0</span>, lfo_dep: <span class="num">0.15</span>, lfo_phi: <span class="num">0.0</span> },
+        SineVoice { freq: <span class="num">659.2</span>, phase: <span class="num">0.0</span>, amp: <span class="num">0.5</span>, lfo_hz: <span class="num">5.2</span>, lfo_dep: <span class="num">0.10</span>, lfo_phi: <span class="num">0.5</span> },
+        SineVoice { freq: <span class="num">880.0</span>, phase: <span class="num">0.0</span>, amp: <span class="num">0.4</span>, lfo_hz: <span class="num">4.8</span>, lfo_dep: <span class="num">0.12</span>, lfo_phi: <span class="num">1.0</span> },
+    ]
+    <span class="kw">let</span> cfg = AudioConfig { sample_rate: <span class="num">48000</span>, frames: <span class="num">256</span> }
+
+    <span class="cm">// handle wires the AudioMetrics effect to stdout.</span>
+    <span class="kw">let</span> buf = AudioBuffer<span class="op">::</span>alloc_stack(cfg<span class="op">.</span>frames)
+    <span class="kw">handle</span> fill_buffer(voices, cfg, buf) <span class="kw">with</span> {
+        AudioMetrics<span class="op">::</span>report_cpu_us(us) <span class="op">=&gt;</span> {
+            print_u32(us)
+            resume(())
+        }
+    }
+}</pre>
+    </div>
+    <div class="demonstrates">
+      <strong>Demonstrates:</strong>
+      F1 <code>@differentiable</code> on vibrato function ·
+      F2 refined types <code>Amplitude</code> / <code>Phase</code> / <code>f32'pos</code> ·
+      F3 <code>{NoAlloc}</code> + <code>{Deadline&lt;1ms&gt;}</code> + <code>{DetRNG}</code> audio safety ·
+      F3 <code>AudioMetrics</code> custom effect + handler ·
+      F6 <code>{Telemetry&lt;AudioCPU&gt;}</code> ·
+      <code>iso</code>/<code>ref</code>/<code>box</code> caps in one function
+    </div>
+  </div>
+</section>
+
+<section id="next">
+  <h2>Next Steps</h2>
+  <ul class="bullet-list">
+    <li><a href="/sigil">Sigil language reference</a> — full feature documentation including all 28+ effects, the six capabilities, and the compilation pipeline</li>
+    <li><a href="/sigil#effects">Effect system deep-dive</a> — all built-in effects and their discharge timing</li>
+    <li><a href="/sigil#features">The Non-Negotiable Six (F1–F6)</a> — the features CSSL commits to in v1</li>
+    <li><a href="/CSLv3">CSL specification notation</a> — the 74-glyph notation used throughout the CSSL spec files</li>
+    <li><a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">CSSL3 repository</a> — compiler source, spec files, <code>examples/</code> directory</li>
+    <li><a href="/csl/examples.csl">CSL-encoded version of this page</a> — the examples in dense notation</li>
+  </ul>
+</section>
+
+</main>
+
+<aside class="toc" aria-label="Table of contents">
+  <details open>
+    <summary>Contents</summary>
+    <nav>
+      <a href="#overview"><span class="num">00</span> Overview</a>
+      <a href="#basics"><span class="num">01</span> Basics</a>
+      <a href="#memory"><span class="num">02</span> Memory &amp; Caps</a>
+      <a href="#effects"><span class="num">03</span> Effect System</a>
+      <a href="#manifold"><span class="num">04</span> Manifold &amp; SDF</a>
+      <a href="#autodiff"><span class="num">05</span> Autodiff</a>
+      <a href="#quantum"><span class="num">06</span> Quantum / DCU</a>
+      <a href="#complete"><span class="num">07</span> Complete Program</a>
+      <a href="#next"><span class="num">→</span> Next Steps</a>
+    </nav>
+  </details>
+</aside>
+
+</div>
+
+<footer>
+  <div class="attribution">
+    Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ
+  </div>
+  <div>Sigil by Example · CSSL · pre-1.0</div>
+  <div class="links">
+    <a href="/">Home</a>
+    <a href="/sigil">Sigil (CSSL)</a>
+    <a href="/CSLv3">CSL Reference</a>
+    <a href="/examples">Examples</a>
+    <a href="/thinking-guides">Thinking Guides</a>
+    <a href="/ethics-guides">Ethics Guides</a>
+    <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="/sitemap.xml">Site Map</a>
+    <a href="/site-map.html">Page Index</a>
+    <a href="/llms.txt">llms.txt</a>
+  </div>
+  <div class="license-line">
+    Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+  </div>
+  <div class="tagline">density = sovereignty · consent = OS</div>
+</footer>
+
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</body>
+</html>

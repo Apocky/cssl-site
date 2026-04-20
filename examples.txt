@@ -1,0 +1,638 @@
+# Sigil by Example — Learning CSSL Through Practical Code
+# https://cssl.dev/examples
+# Machine-readable version. HTML: https://cssl.dev/examples
+# CSL notation: https://cssl.dev/csl/examples.csl
+# Date: 2026-04-20
+# License: CC BY 4.0
+
+Sigil (CSSL — Caveman Sigil Substrate Language) by example. Seven sections
+progressing from basics through advanced features. All examples use the
+Rust-hybrid surface syntax. Compiler is pre-1.0; features are spec-complete.
+
+Naming: Sigil = CSSL = same language. CSL = separate specification notation.
+Do not conflate CSSL (language) with CSL (notation).
+
+---
+
+## §01 · BASICS
+
+### 01-A · Hello World
+
+    module com.apocky.examples.hello
+
+    fn greet(name : str) -> str {
+        // Pure function: no effect row needed.
+        str::concat("hello, ", name)
+    }
+
+    fn main() -> () / {IO} {
+        let msg = greet("Sigil")
+        print(msg)    // print requires {IO} — compiler enforced
+    }
+
+DEMONSTRATES: module declaration · pure fn (no effect row) · IO-effectful fn
+· let binding · str literal
+
+### 01-B · Primitive Types and Vectors
+
+    module com.apocky.examples.types
+
+    fn demo_types() -> () / {IO} {
+        let count   : u32     = 42
+        let ratio   : f64     = 3.14159265358979
+        let ok      : bool    = true
+        let label   : str     = "density = sovereignty"
+
+        // Refined type: compiler guarantees radius > 0 at every use site.
+        let radius  : f32'pos = 0.5
+
+        // Vector built-ins: swizzle, arithmetic, length all work out of the box.
+        let origin  : vec3    = vec3(0.0, 0.0, 0.0)
+        let point   : vec3    = vec3(1.0, 2.0, 3.0)
+        let dist    : f32     = length(point - origin)  // = sqrt(14)
+
+        print_f32(dist)
+    }
+
+    // Struct with annotated memory layout (F2 — layout refinement).
+    @layout(std430)
+    struct Vertex {
+        pos    : vec3,  // 12 bytes, std430 aligned
+        normal : vec3,  // 12 bytes
+        uv     : vec2,  //  8 bytes
+    }
+
+DEMONSTRATES: primitive types · f32'pos refinement suffix · vec3 built-in
+· @layout struct annotation · type inference
+
+### 01-C · Generics and Traits
+
+    trait Blend {
+        fn lerp(self, other : Self, t : f32) -> Self
+    }
+
+    impl Blend for f32 {
+        fn lerp(self, other : f32, t : f32) -> f32 {
+            self + (other - self) * t
+        }
+    }
+
+    impl Blend for vec3 {
+        fn lerp(self, other : vec3, t : f32) -> vec3 {
+            self + (other - self) * vec3(t, t, t)
+        }
+    }
+
+    // Effect-polymorphic: μ is the inferred tail.
+    fn blend_pair<T : Blend>(a : T, b : T, t : f32) -> T {
+        a.lerp(b, t)
+    }
+
+DEMONSTRATES: trait definitions · impl blocks · generic type parameters
+· effect-row polymorphism (implicit tail)
+
+---
+
+## §02 · MEMORY & CAPABILITIES
+
+Six capabilities: iso trn ref val box tag
+
+- iso = exclusively owned, linear-mutable
+- trn = write-unique (one writer, many box readers)
+- ref = shared-mutable via generational 8-byte ref
+- val = immutable-shared
+- box = read-only view over iso/trn/val
+- tag = opaque handle (no deref), identity-only
+
+### 02-A · GPU Buffer Lifecycle
+
+    module com.apocky.examples.gpu_buffer
+
+    fn alloc_vertex_buffer(capacity : u64) -> iso GpuBuffer
+        / {GPU, NoRecurse}
+    {
+        GpuBuffer::alloc(capacity)
+    }
+
+    fn upload_mesh(
+        buf   : iso GpuBuffer,
+        verts : box [Vertex],
+    ) -> val GpuBuffer
+        / {GPU}
+    {
+        buf.write(verts)   // mutable write, iso required
+        buf.freeze()       // iso -> val: now safe to share
+    }
+
+    fn bind_and_draw(
+        buf    : val GpuBuffer,
+        shader : val ShaderPipeline,
+    ) -> ()
+        / {GPU, Deadline<16ms>}
+    {
+        shader.bind(buf)
+        shader.draw_indexed(0, buf.vertex_count())
+    }
+
+DEMONSTRATES: iso exclusive ownership · val immutable-shared · box read-only
+view · {GPU} and {Deadline} effects · linear consumption
+
+### 02-B · trn: Build Phase → Immutable Scene
+
+    fn build_scene() -> val Scene / {Alloc} {
+        let s : trn Scene = Scene::new()
+        let aabb = compute_aabb(s as box)
+        log_bounds(aabb)
+        s.add_mesh(load_mesh("terrain.cssl_mesh"))
+        s.add_light(DirectionalLight { dir: vec3(0.0, -1.0, -0.5), intensity: 1.0 })
+        s.freeze()   // trn -> val
+    }
+
+    fn render_pass(scene : val Scene, cam : Camera) -> Image
+        / {GPU, Deadline<16ms>, NoAlloc}
+    {
+        rasterize(scene, cam)
+    }
+
+DEMONSTRATES: trn transition cap · box aliasing during build · .freeze() seal
+· capability promotion to val
+
+### 02-C · Entity Handles
+
+    fn spawn_enemy(world : ref World, pos : vec3) -> Handle<Enemy>
+        / {State<World>}
+    {
+        world.alloc(Enemy { pos, hp: 100 })
+    }
+
+    fn damage_enemy(
+        world  : ref World,
+        handle : Handle<Enemy>,
+        amount : u32,
+    ) -> Option<()>
+        / {State<World>}
+    {
+        let enemy = world.get<Enemy>(handle)?
+        enemy.hp -= amount.min(enemy.hp)
+        Some(())
+    }
+
+DEMONSTRATES: Handle<T> generational ref · tag cap · ref shared-mutable
+· {State<S>} effect · ? propagation
+
+---
+
+## §03 · EFFECT SYSTEM
+
+28+ built-in effects. Categories:
+  Resource/Timing: {NoAlloc}{NoRecurse}{NoUnbounded}{Deadline<N>}{Realtime<p>}
+                   {Region<'r>}{Alloc}{Yield}{State<S>}{Exn<E>}{IO}
+  Determinism:     {DetRNG}{PureDet}{Reversible}
+  Hardware:        {CPU}{GPU}{XMX}{RT}{SIMD256}{SIMD512}{NUMA<n>}{Cache<l>}
+                   {Backend<api>}{Target<platform>}
+  Power/Thermal:   {Power<W>}{Thermal<°C>}
+  IFC/Audit:       {Sensitive<dom>}{Audit<dom>}{Privilege<lvl>}
+                   {Verify<method>}{Telemetry<scope>}
+
+### 03-A · Declaring and Using Effects
+
+    module com.apocky.examples.logger
+
+    effect Log {
+        fn emit(level : LogLevel, msg : str) -> ()
+        fn span(name : str) -> SpanId
+    }
+
+    fn load_asset(path : str) -> Asset / {Log, IO} {
+        let span = Log::span("load_asset")
+        Log::emit(LogLevel::Debug, str::concat("loading: ", path))
+        let data = read_file(path)?
+        Log::emit(LogLevel::Debug, "loaded ok")
+        Asset::parse(data)
+    }
+
+    fn main() -> () / {IO} {
+        handle load_asset("player.mesh") with {
+            Log::emit(level, msg) => {
+                write_stdout(str::format("[{}] {}", level, msg))
+                resume(())
+            }
+            Log::span(name) => {
+                resume(SpanId::new(name))
+            }
+        }
+    }
+
+DEMONSTRATES: effect declaration · effect rows propagated up call stack
+· handle...with algebraic handler · resume continuation
+
+### 03-B · NoAlloc + Deadline
+
+    fn audio_tick(
+        buf  : iso AudioBuffer,
+        freq : f32'pos,
+        sr   : f32'pos,
+    ) -> iso AudioBuffer
+        / {NoAlloc, Deadline<1ms>, DetRNG}
+    {
+        let step = 2.0 * PI * freq / sr
+        let n    = buf.len()
+        let mut phase : f32 = 0.0
+        for i in 0..n {
+            buf[i]  = sin(phase) * 0.5
+            phase  += step
+        }
+        phase = phase % (2.0 * PI)
+        buf
+    }
+
+DEMONSTRATES: {NoAlloc} compile-time enforcement · {Deadline<N>} latency gate
+· {DetRNG} determinism · iso buffer ownership · refinement types
+
+### 03-C · IFC Labels
+
+    fn compute_score(player_id : u64, raw_score : i32) -> i32
+        / {Sensitive<PlayerData>}
+    {
+        let bonus = lookup_bonus(player_id)
+        raw_score + bonus
+    }
+
+    fn broadcast_score(player_id : u64, raw_score : i32) -> ()
+        / {Privilege<GameServer>, IO}
+    {
+        let s = compute_score(player_id, raw_score)
+        let pub_score = declassify<PlayerData, GameServer>(s)
+        network::broadcast(pub_score)
+    }
+
+DEMONSTRATES: F5 IFC labels · {Sensitive<dom>} taint propagation
+· {Privilege<lvl>} gate · declassify explicit escape hatch
+
+---
+
+## §04 · MANIFOLD & SDF GEOMETRY
+
+### 04-A · SDF Algebra
+
+    @differentiable
+    @lipschitz(k = 1.0)
+    fn sphere_sdf(p : vec3, r : f32'pos) -> f32 {
+        length(p) - r
+    }
+
+    @differentiable
+    @lipschitz(k = 1.0)
+    fn box_sdf(p : vec3, half : vec3) -> f32 {
+        let q = abs(p) - half
+        length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0)
+    }
+
+    @differentiable
+    fn scene_sdf(p : vec3) -> f32 {
+        let d_sphere = sphere_sdf(p, 0.5)
+        let d_box    = box_sdf(p - vec3(1.2, 0.0, 0.0), vec3(0.3, 0.3, 0.3))
+        min(d_sphere, d_box)
+    }
+
+    @differentiable
+    fn melted_scene(p : vec3) -> f32 {
+        let k  = 0.1
+        let d1 = sphere_sdf(p, 0.5)
+        let d2 = sphere_sdf(p - vec3(0.8, 0.0, 0.0), 0.4)
+        smin(d1, d2, k)
+    }
+
+    fn surface_normal(hit : vec3) -> vec3 {
+        normalize(bwd_diff(scene_sdf)(hit).d_p)
+    }
+
+DEMONSTRATES: @differentiable · @lipschitz tracking · SDF union/smin
+· bwd_diff surface-normal derivation
+
+### 04-B · IFS Chaos Game
+
+    struct IFSRule {
+        scale  : f32'pos,
+        offset : vec2,
+        rotate : f32,
+    }
+
+    fn ifs_chaos_game(
+        rules  : box [IFSRule],
+        iters  : u32,
+        seed   : vec2,
+        out    : iso [vec2],
+    ) -> iso [vec2]
+        / {DetRNG, NoAlloc}
+    {
+        let mut p = seed
+        let n     = rules.len() as f32
+        for i in 0..iters {
+            let r   = (DetRNG::next_f32() * n) as u32
+            let rul = rules[r % rules.len()]
+            let cos_a = cos(rul.rotate)
+            let sin_a = sin(rul.rotate)
+            p = vec2(
+                rul.scale * (cos_a * p.x - sin_a * p.y) + rul.offset.x,
+                rul.scale * (sin_a * p.x + cos_a * p.y) + rul.offset.y,
+            )
+            out[i] = p
+        }
+        out
+    }
+
+DEMONSTRATES: IFS geometry · {DetRNG} · {NoAlloc} + iso output buffer
+
+---
+
+## §05 · AUTODIFF (F1)
+
+Source-to-source AD. Slang.D interface.
+- @differentiable: marks a function for AD
+- fwd_diff(f): forward-mode JVP — returns (value, d/dx * dx)
+- bwd_diff(f): reverse-mode VJP — returns gradient struct
+- Jet<T,N>: higher-order AD up to N-th derivative
+
+### 05-A · Forward-Mode AD
+
+    @differentiable
+    fn sigmoid(x : f32) -> f32 {
+        1.0 / (1.0 + exp(-x))
+    }
+
+    @differentiable
+    fn activation(x : f32, w : f32, b : f32) -> f32 {
+        sigmoid(w * x + b)
+    }
+
+    fn demo_fwd() -> () / {IO} {
+        let x      = 1.5
+        let dx     = 1.0
+        let result = fwd_diff(activation)(x, dx, w=2.0, b=-0.5)
+        print_f32(result.val)   // sigma(2*1.5 - 0.5) = sigma(2.5)
+        print_f32(result.d_x)  // d(sigma)/d(x) at x=1.5
+    }
+
+DEMONSTRATES: @differentiable · fwd_diff forward-mode JVP
+· dual-number result .val and .d_x · compiler-emitted AD transform
+
+### 05-B · Reverse-Mode AD
+
+    @differentiable
+    fn mse_loss(pred : box [f32], target : box [f32], n : u32) -> f32 {
+        let mut acc = 0.0
+        for i in 0..n {
+            let diff = pred[i] - target[i]
+            acc += diff * diff
+        }
+        acc / (n as f32)
+    }
+
+    fn backprop_step(
+        x : box [f32], w : ref [[f32]], b : ref [f32],
+        target : box [f32], lr : f32'pos, n_in : u32, n_out : u32,
+    ) -> f32
+        / {NoAlloc, State<[[f32]]>}
+    {
+        let scratch = alloc_stack([f32; n_out])
+        let pred    = linear_layer(x, w, b, n_in, n_out, scratch)
+        let loss_fn = |p| mse_loss(p, target, n_out)
+        let grads   = bwd_diff(loss_fn)(pred)
+        for j in 0..n_out {
+            for i in 0..n_in { w[j][i] -= lr * grads.d_w[j][i] }
+            b[j] -= lr * grads.d_b[j]
+        }
+        mse_loss(pred, target, n_out)
+    }
+
+DEMONSTRATES: bwd_diff reverse-mode VJP · gradient struct .d_w/.d_b
+· SGD update · {NoAlloc} + stack allocation
+
+### 05-C · Jet: Higher-Order AD
+
+    fn potential_energy(r : Jet<f32, 2>) -> Jet<f32, 2> {
+        // Lennard-Jones: V(r) = eps[(sigma/r)^12 - 2*(sigma/r)^6]
+        let eps   = jet_const(1.0)
+        let sigma = jet_const(1.0)
+        let s6    = (sigma / r).powi(6)
+        eps * (s6 * s6 - 2.0 * s6)
+    }
+
+    fn force_and_curvature(r : f32'pos) -> (f32, f32) {
+        let r_jet = Jet::seed(r, 1.0, 0.0)
+        let v_jet = potential_energy(r_jet)
+        (-v_jet.d[0], v_jet.d[1])
+    }
+
+DEMONSTRATES: Jet<T,N> higher-order AD · Jet::seed tangent seeding
+· multi-order derivative access .d[k]
+
+---
+
+## §06 · QUANTUM-INSPIRED & DCU OPERATIONS
+
+### 06-A · Krylov Subspace Evolution
+
+Sparse Hamiltonian H, state psi, evolution time t, Krylov dimension k.
+Arnoldi iteration builds orthonormal basis; Pade matrix exponent gives
+exp(-i*H*t)|psi>.
+
+    struct SparseH {
+        row_ptr : box [u32],  // CSR format
+        col_idx : box [u32],
+        vals    : box [f32],  // real-valued Hamiltonian elements
+        dim     : u32,
+    }
+
+    fn krylov_evolve(
+        H    : box SparseH,
+        psi0 : box [f32],   // initial state vector
+        t    : f32'pos,
+        k    : u32,         // Krylov dimension (k << H.dim)
+        out  : iso [f32],
+    ) -> iso [f32]
+        / {PureDet, NoAlloc, Deadline<1ms>}
+    {
+        let V   = alloc_stack([[f32; H.dim]; k])
+        let h   = alloc_stack([[f32; k  ]; k])
+        let tmp = alloc_stack([f32; H.dim])
+        V[0] = normalized(psi0)
+        for j in 0..k-1 {
+            let w = sparse_matvec(H, V[j], tmp)
+            for i in 0..=j {
+                h[i][j] = dot(w, V[i])
+                w       -= h[i][j] * V[i]
+            }
+            h[j+1][j] = norm(w)
+            V[j+1]    = w / h[j+1][j]
+        }
+        let exp_h = pade_expm_real(h, t, k)
+        matvec_t(V, exp_h[0..k], out, k, H.dim)
+    }
+
+DEMONSTRATES: sparse CSR Hamiltonian · Krylov-Arnoldi iteration
+· Pade matrix exponent · {PureDet} bit-exact replay
+· {NoAlloc} + stack-allocated workspace
+
+### 06-B · DCU Kuramoto Synchronization
+
+Kuramoto model: d(phi_i)/dt = omega_i + (kappa/N)*sum_j sin(phi_j - phi_i)
+Order parameter r = |sum exp(i*phi_j)| / N
+r ~ 1.0: phase-locked (consensus). r ~ 0.0: incoherent (independent).
+
+    struct DCUOscillator {
+        phi   : f32,      // phase in [0, 2pi)
+        omega : f32'pos,  // natural frequency rad/s
+        kappa : f32'pos,  // coupling strength
+    }
+
+    fn kuramoto_step(
+        agents : ref [DCUOscillator],
+        idx    : u32,
+        dt     : f32'pos,
+    ) -> ()
+        / {State<[DCUOscillator]>, PureDet}
+    {
+        let n            = agents.len() as f32
+        let osc          = agents[idx]
+        let mut coupling = 0.0
+        for j in 0..agents.len() {
+            if j != idx { coupling += sin(agents[j].phi - osc.phi) }
+        }
+        agents[idx].phi += dt * (osc.omega + (osc.kappa / n) * coupling)
+        agents[idx].phi  = agents[idx].phi % (2.0 * PI)
+    }
+
+    fn order_parameter(agents : box [DCUOscillator]) -> f32
+        / {PureDet}
+    {
+        let n            = agents.len() as f32
+        let (mut re, mut im) = (0.0, 0.0)
+        for osc in agents {
+            re += cos(osc.phi)
+            im += sin(osc.phi)
+        }
+        sqrt(re * re + im * im) / n
+    }
+
+    fn run_until_sync(
+        agents    : ref [DCUOscillator],
+        dt        : f32'pos,
+        threshold : f32'pos,
+        max_steps : u32,
+    ) -> u32
+        / {State<[DCUOscillator]>, PureDet}
+    {
+        for step in 0..max_steps {
+            for i in 0..agents.len() { kuramoto_step(agents, i, dt) }
+            if order_parameter(agents) > threshold { return step }
+        }
+        max_steps
+    }
+
+DEMONSTRATES: DCU agent model · Kuramoto dynamics · order-parameter coherence
+· {State<S>} mutable agent array · {PureDet} deterministic simulation
+
+---
+
+## §07 · COMPLETE PROGRAM — ADDITIVE SYNTH
+
+Multi-voice additive synthesizer. Ties together all features:
+- F1: @differentiable on vibrato function
+- F2: Refined types Amplitude/Phase/f32'pos
+- F3: {NoAlloc}+{Deadline<1ms>}+{DetRNG} audio safety
+- F3: AudioMetrics custom effect + handler
+- F6: {Telemetry<AudioCPU>}
+- Caps: iso/ref/box in one function
+
+    module com.apocky.examples.synth
+
+    use std::math::{sin, cos, PI}
+    use std::audio::{AudioBuffer, AudioConfig}
+
+    type Amplitude = f32 where v >= 0.0 && v <= 1.0
+    type Phase     = f32 where v >= 0.0 && v < 2.0 * PI
+
+    struct SineVoice {
+        freq    : f32'pos,
+        phase   : Phase,
+        amp     : Amplitude,
+        lfo_hz  : f32'pos,
+        lfo_dep : f32'pos,
+        lfo_phi : Phase,
+    }
+
+    effect AudioMetrics {
+        fn report_cpu_us(micros : u32) -> ()
+    }
+
+    @differentiable
+    fn vibrato_freq(base : f32'pos, depth : f32'pos, phi : f32) -> f32'pos {
+        base * exp2(depth * sin(phi) / 12.0)
+    }
+
+    fn fill_buffer(
+        voices : ref [SineVoice],
+        cfg    : box AudioConfig,
+        buf    : iso AudioBuffer,
+    ) -> iso AudioBuffer
+        / {NoAlloc, Deadline<1ms>, DetRNG, AudioMetrics, Telemetry<AudioCPU>}
+    {
+        let sr  = cfg.sample_rate as f32
+        let n   = buf.frames()
+        let nv  = voices.len()
+        let mix = alloc_stack([f32; n])
+        for v_idx in 0..nv {
+            let v    = &voices[v_idx]
+            let step = 2.0 * PI * v.freq / sr
+            let lfo  = 2.0 * PI * v.lfo_hz / sr
+            let mut phi     = v.phase
+            let mut lfo_phi = v.lfo_phi
+            for i in 0..n {
+                let mod_freq = vibrato_freq(v.freq, v.lfo_dep, lfo_phi)
+                let sample   = v.amp * sin(phi)
+                mix[i]      += sample
+                phi          = (phi + 2.0 * PI * mod_freq / sr) % (2.0 * PI)
+                lfo_phi      = (lfo_phi + lfo) % (2.0 * PI)
+            }
+            voices[v_idx].phase   = phi
+            voices[v_idx].lfo_phi = lfo_phi
+        }
+        let scale = 1.0 / (nv as f32).max(1.0)
+        for i in 0..n { buf.write(i, mix[i] * scale) }
+        buf
+    }
+
+    fn main() -> () / {IO} {
+        let mut voices : ref [SineVoice] = [
+            SineVoice { freq: 440.0, phase: 0.0, amp: 0.6,
+                        lfo_hz: 5.0, lfo_dep: 0.15, lfo_phi: 0.0 },
+            SineVoice { freq: 659.2, phase: 0.0, amp: 0.5,
+                        lfo_hz: 5.2, lfo_dep: 0.10, lfo_phi: 0.5 },
+            SineVoice { freq: 880.0, phase: 0.0, amp: 0.4,
+                        lfo_hz: 4.8, lfo_dep: 0.12, lfo_phi: 1.0 },
+        ]
+        let cfg = AudioConfig { sample_rate: 48000, frames: 256 }
+        let buf = AudioBuffer::alloc_stack(cfg.frames)
+        handle fill_buffer(voices, cfg, buf) with {
+            AudioMetrics::report_cpu_us(us) => {
+                print_u32(us)
+                resume(())
+            }
+        }
+    }
+
+---
+
+## LINKS
+
+- HTML page:         https://cssl.dev/examples
+- CSL notation:      https://cssl.dev/csl/examples.csl
+- Language ref:      https://cssl.dev/sigil
+- CSL notation ref:  https://cssl.dev/CSLv3
+- Repository:        https://github.com/Apocky/CSSL3
+- llms.txt:          https://cssl.dev/llms.txt
+
+License: CC BY 4.0
+Attribution: "Sigil by Example — Shawn Wolfgang Michael Baker, CC BY 4.0 (https://cssl.dev/examples)"

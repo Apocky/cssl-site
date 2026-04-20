@@ -54,6 +54,17 @@ quality gates checklist, and anti-patterns. For human and digital intelligences 
 - [thinking-guides.txt](https://cssl.dev/thinking-guides.txt): Machine-readable plain text — LLM/agent parseable
 - [thinking-guides.csl](https://cssl.dev/csl/thinking-guides.csl): CSL notation — dense structured encoding
 
+## Sigil by Example — Code Tutorials
+
+Seven sections of annotated CSSL code examples: basics, linear types (Pony-6
+capabilities), algebraic effects with handlers, SDF geometry and IFS, source-to-source
+autodiff (fwd_diff/bwd_diff/Jet), quantum-inspired Krylov evolution, DCU Kuramoto
+synchronization, and a complete audio-synth mini-program tying all features together.
+
+- [Sigil by Example HTML](https://cssl.dev/examples): Human-readable — 7 sections with syntax-highlighted code
+- [examples.txt](https://cssl.dev/examples.txt): Machine-readable plain text — all code examples, LLM/agent parseable
+- [examples.csl](https://cssl.dev/csl/examples.csl): CSL notation — dense structured encoding
+
 ## Ethics and Morals Guides
 
 Foundational ethical principles, moral reasoning methodology, data ethics, cognitive ethics,
