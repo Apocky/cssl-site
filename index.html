@@ -23,90 +23,6 @@
 <meta name="twitter:title" content="Sigil — AI-First Game Engine Language">
 <meta name="twitter:description" content="One source. Two targets. Designed for how AI thinks.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
-<meta name="keywords" content="Sigil, CSSL, Caveman Sigil Substrate Language, game engine language, shader language, SPIR-V, Vulkan, x86-64, autodiff, SMT verification, dimensional analysis, AI programming language, programming language, compiler, Rust, DGI">
-<link rel="alternate" type="text/plain" href="/csl/index.csl" title="Homepage content in CSL notation">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Sigil",
-  "alternateName": ["CSSL", "Caveman Sigil Substrate Language"],
-  "description": "A hardware-grounded programming language that compiles a single source file to both native x86-64 (AVX2+FMA3) and SPIR-V (Vulkan compute shaders). Designed from the ground up for AI-assisted development with zero-cost dimensional analysis and coordinate space tracking.",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Linux, macOS, Windows",
-  "url": "https://cssl.dev/",
-  "codeRepository": "https://github.com/ApockyCSSL/CSSLv3",
-  "programmingLanguage": "Rust",
-  "license": "https://opensource.org/licenses/MIT",
-  "author": {
-    "@type": "Person",
-    "name": "Shawn Wolfgang Michael Baker"
-  },
-  "keywords": "Sigil, CSSL, game engine language, SPIR-V, Vulkan, AI programming language, shader language, autodiff, dimensional analysis",
-  "inLanguage": "en",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "cssl.dev",
-    "url": "https://cssl.dev"
-  }
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "Sigil / CSSL Compiler",
-  "description": "Stage-0 compiler for the Sigil/CSSL programming language. Compiles .cssl source to native x86-64 (AVX2+FMA3) and SPIR-V (Vulkan). Written in Rust. Features: automatic differentiation, SMT verification (Z3/CVC5), effect-row type system, zero-cost dimensional analysis.",
-  "codeRepository": "https://github.com/ApockyCSSL/CSSLv3",
-  "programmingLanguage": [
-    { "@type": "ComputerLanguage", "name": "Rust" },
-    { "@type": "ComputerLanguage", "name": "Sigil" }
-  ],
-  "runtimePlatform": ["Linux x86-64", "macOS", "Windows"],
-  "targetProduct": { "@type": "SoftwareApplication", "name": "Sigil" },
-  "license": "https://opensource.org/licenses/MIT",
-  "author": { "@type": "Person", "name": "Shawn Wolfgang Michael Baker" },
-  "url": "https://cssl.dev/",
-  "keywords": "Sigil, CSSL, compiler, SPIR-V, Vulkan, x86-64, autodiff, SMT, effect system, dimensional analysis, game engine"
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ComputerLanguage",
-  "name": "Sigil",
-  "alternateName": ["CSSL", "Caveman Sigil Substrate Language"],
-  "description": "A hardware-grounded programming language that compiles a single source file to both native x86-64 (AVX2+FMA3) and SPIR-V (Vulkan compute shaders). Designed for AI authorship, video game engines, and dual-target compilation. Features zero-cost dimensional analysis, coordinate space tracking, differentiable programming, and CSSL — a compact AI-first notation for dense specification.",
-  "url": "https://cssl.dev/",
-  "sameAs": [
-    "https://github.com/ApockyCSSL/CSSLv3"
-  ],
-  "subjectOf": [
-    {
-      "@type": "TechArticle",
-      "name": "CSSL Language Reference",
-      "url": "https://cssl.dev/CSLv3",
-      "description": "Full specification and reference documentation for the CSSL language and Sigil compiler"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "Sigil Compiler Source",
-      "codeRepository": "https://github.com/ApockyCSSL/CSSLv3",
-      "programmingLanguage": "Rust",
-      "license": "https://opensource.org/licenses/MIT"
-    }
-  ],
-  "creator": {
-    "@type": "Person",
-    "name": "Shawn Wolfgang Michael Baker"
-  }
-}
-</script>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,11 +36,11 @@
   --bg-raised: #0e0e16;
   --bg-code: #11111b;
   --text: #b8b4a8;
-  --text-dim: #808078;
+  --text-dim: #6b6860;
   --text-bright: #e8e4d8;
   --gold: #c9a23a;
   --gold-bright: #e8c85a;
-  --gold-dim: #9a7a28;
+  --gold-dim: #8a7028;
   --border: #1a1a28;
   --red: #a83232;
   --green: #4a8a3a;
@@ -284,41 +200,6 @@ code {
   animation: fade-up 1.2s ease-out 1.2s forwards;
 }
 
-.hero-pitch {
-  font-size: 1.05rem;
-  color: var(--text-bright);
-  max-width: 520px;
-  margin-top: 1.75rem;
-  opacity: 0;
-  animation: fade-up 1.2s ease-out 1.5s forwards;
-  line-height: 1.6;
-}
-
-.hero-code {
-  margin-top: 1.75rem;
-  max-width: 460px;
-  width: 100%;
-  opacity: 0;
-  animation: fade-up 1.2s ease-out 1.75s forwards;
-  text-align: left;
-}
-
-.hero-code .code-block {
-  margin: 0;
-  border-color: var(--gold-dim);
-  background: rgba(17, 17, 27, 0.92);
-}
-
-.hero-code .code-block pre {
-  font-size: 0.8rem;
-  line-height: 1.65;
-}
-
-@media (max-width: 640px) {
-  .hero-pitch { font-size: 0.95rem; margin-top: 1.25rem; }
-  .hero-code { max-width: 100%; }
-}
-
 @keyframes fade-up {
   0% { opacity: 0; transform: translateY(16px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -349,54 +230,6 @@ code {
 @keyframes pulse-line {
   0%, 100% { opacity: 0.3; height: 24px; }
   50% { opacity: 1; height: 32px; }
-}
-
-.hero-cta {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  opacity: 0;
-  animation: fade-up 1.2s ease-out 1.5s forwards;
-}
-
-.btn-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  padding: 0.65rem 1.4rem;
-  border-radius: 4px;
-  border-bottom: none;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  white-space: nowrap;
-}
-
-.btn-docs {
-  background: var(--gold);
-  color: #07070c;
-}
-
-.btn-docs:hover {
-  background: var(--gold-bright);
-  color: #07070c;
-  border-bottom: none;
-}
-
-.btn-github {
-  background: transparent;
-  color: var(--text-bright);
-  border: 1px solid var(--gold-dim);
-}
-
-.btn-github:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  border-bottom: 1px solid var(--gold);
 }
 
 /* === CODE BLOCKS === */
@@ -721,55 +554,6 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   .start-link { padding: 0.65rem 0.9rem; font-size: 0.64rem; }
 }
 
-/* === QUICK INSTALL CALLOUT === */
-.qs-callout {
-  background: var(--bg-raised);
-  border-bottom: 1px solid var(--border);
-  padding: 1.25rem 0;
-}
-.qs-callout-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  align-items: flex-start;
-}
-.qs-callout-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.qs-callout-cmd {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
-  color: var(--text-bright);
-  background: var(--bg-code);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.6rem 1rem;
-  word-break: break-all;
-  width: 100%;
-}
-.qs-callout-links {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-.qs-callout-links a {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--gold-dim);
-  text-decoration: none;
-  border-bottom: 1px dotted var(--gold-dim);
-  transition: color 0.15s, border-color 0.15s;
-}
-.qs-callout-links a:hover { color: var(--gold); border-color: var(--gold); }
-@media (max-width: 640px) {
-  .qs-callout-cmd { font-size: 0.72rem; }
-}
-
 /* === LLM CALLOUT === */
 .llm-callout {
   background: linear-gradient(90deg, rgba(201,162,58,0.07), rgba(201,162,58,0.02), transparent);
@@ -879,8 +663,9 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 .proof-num {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.6rem;
-  color: var(--gold);
+  color: var(--gold-dim);
   letter-spacing: 0.12em;
+  opacity: 0.8;
 }
 .proof-name {
   font-family: 'Cinzel', serif;
@@ -958,120 +743,6 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   font-weight: 600;
 }
 
-/* === CREDIBILITY BAR === */
-.credibility-bar {
-  background: var(--bg-raised);
-  border-bottom: 1px solid var(--border);
-  padding: 0.55rem 0;
-}
-.credibility-badges {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-.badge-tests {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.71rem;
-  background: rgba(74,138,58,0.12);
-  border: 1px solid #2a5a2a;
-  border-radius: 3px;
-  padding: 0.22rem 0.65rem;
-  color: #6abd5a;
-  letter-spacing: 0.03em;
-}
-.badge-tests .chk { color: #4a9a3a; font-size: 0.9rem; line-height: 1; }
-.badge-img-link { border: none !important; line-height: 0; }
-.badge-img-link:hover { border: none !important; }
-.badge-ext { height: 20px; display: inline-block; vertical-align: middle; }
-@media (max-width: 640px) { .credibility-badges { gap: 0.9rem; } }
-
-/* === NEWSLETTER === */
-.newsletter-section { border-top: 1px solid var(--border); }
-.newsletter-card {
-  max-width: 520px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 3rem 2rem;
-  background: var(--bg-raised);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-.newsletter-glyph {
-  font-family: 'Cinzel', serif;
-  font-size: 1.8rem;
-  color: var(--gold-dim);
-  margin-bottom: 1.25rem;
-  opacity: 0.7;
-}
-.newsletter-card h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 1.25rem;
-  color: var(--gold);
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-.newsletter-card > p {
-  color: var(--text-dim);
-  font-size: 0.9rem;
-  margin-bottom: 1.75rem;
-  line-height: 1.75;
-}
-.newsletter-row {
-  display: flex;
-  gap: 0.5rem;
-  max-width: 400px;
-  margin: 0 auto;
-}
-.newsletter-input {
-  flex: 1;
-  background: var(--bg-code);
-  border: 1px solid var(--border);
-  color: var(--text-bright);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
-  padding: 0.65rem 1rem;
-  border-radius: 3px;
-  outline: none;
-  transition: border-color 0.2s;
-  min-width: 0;
-}
-.newsletter-input::placeholder { color: var(--text-dim); }
-.newsletter-input:focus { border-color: var(--gold-dim); }
-.newsletter-btn {
-  background: transparent;
-  border: 1px solid var(--gold-dim);
-  color: var(--gold);
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  padding: 0.65rem 1.25rem;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-.newsletter-btn:hover { background: var(--gold-dim); color: var(--bg); }
-.newsletter-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.newsletter-status {
-  margin-top: 1rem;
-  font-size: 0.82rem;
-  font-family: 'JetBrains Mono', monospace;
-  min-height: 1.2em;
-}
-.newsletter-status.ok { color: var(--green); }
-.newsletter-status.err { color: var(--red); }
-@media (max-width: 640px) {
-  .newsletter-row { flex-direction: column; }
-  .newsletter-card { padding: 2rem 1.25rem; }
-}
-
 /* === PRINT === */
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
@@ -1093,83 +764,33 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   footer { color: #555 !important; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
   a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
-  .start-here, .audience-tabs, .llm-callout, .newsletter-section { display: none !important; }
+  .start-here, .audience-tabs, .llm-callout { display: none !important; }
 }
 </style>
 </head>
 <body>
 
 <!-- HERO -->
-<header class="hero">
+<div class="hero">
   <div class="hero-glyph">◇ § ◇</div>
   <h1><span>Sigil</span></h1>
-  <div class="hero-sub">AI-first game engine language <span style="color:var(--text-dim);font-size:0.82em;">(CSSL — Caveman Sigil Substrate Language)</span></div>
+  <div class="hero-sub">AI-first game engine language</div>
   <div class="hero-sub" style="animation-delay: 1s;">one source · two targets · zero ceremony</div>
   <div class="hero-tagline">
     A programming language designed for how AI thinks, grounded in how hardware works, built for what game engines need.
   </div>
-  <p class="hero-pitch">Sigil is a programming language where the compiler proves your code is correct before it runs.</p>
-  <div class="hero-code">
-    <div class="code-block" data-lang="sigil">
-<pre><span class="ann">@differentiable</span>
-<span class="kw">fn</span> <span class="fn">dot</span>(a <span class="op">:</span> <span class="ty">vec3</span>, b <span class="op">:</span> <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">f32</span>
-    <span class="op">/</span> <span class="unit">{GPU, Pure}</span>
-{
-  a.x <span class="op">*</span> b.x <span class="op">+</span> a.y <span class="op">*</span> b.y <span class="op">+</span> a.z <span class="op">*</span> b.z
-}</pre>
-    </div>
-  </div>
-  <div class="hero-cta">
-    <a class="btn-cta btn-docs" href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">Read the Docs ↗</a>
-    <a class="btn-cta btn-github" href="https://github.com/ApockyCSSL/CSSLv3" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg> Star on GitHub</a>
-  </div>
   <div class="hero-scroll">scroll</div>
-</header>
+</div>
 
 <!-- START HERE -->
 <nav class="start-here" aria-label="Quick navigation">
   <div class="start-here-links">
     <a class="start-link" href="#quickstart">Quickstart</a>
-    <a class="start-link" href="https://github.com/ApockyCSSL/CSSLv3" target="_blank" rel="noopener noreferrer">Repo ↗</a>
+    <a class="start-link" href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">Repo ↗</a>
     <a class="start-link" href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">Docs ↗</a>
     <a class="start-link" href="/CSLv3">CSL Spec</a>
   </div>
 </nav>
-
-<!-- QUICK INSTALL CALLOUT -->
-<div class="qs-callout" role="complementary" aria-label="Quick install">
-  <div class="container">
-    <div class="qs-callout-inner">
-      <span class="qs-callout-label">Get started in 60 seconds</span>
-      <code class="qs-callout-cmd">curl -L https://github.com/ApockyCSSL/CSSLv3/releases/latest/download/csslc-linux-x64 -o csslc &amp;&amp; chmod +x csslc &amp;&amp; sudo mv csslc /usr/local/bin/</code>
-      <div class="qs-callout-links">
-        <a href="#quickstart">Full quickstart guide →</a>
-        <a href="https://github.com/ApockyCSSL/CSSLv3/releases" target="_blank" rel="noopener noreferrer">All platform releases ↗</a>
-        <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">Documentation ↗</a>
-        <a href="https://github.com/ApockyCSSL/CSSLv3" target="_blank" rel="noopener noreferrer">Repository ↗</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<main id="main-content">
-
-<!-- CREDIBILITY BAR -->
-<div class="credibility-bar" role="note" aria-label="Project status">
-  <div class="container">
-    <div class="credibility-badges">
-      <span class="badge-tests">
-        <span class="chk">✓</span>1,600+ tests passing
-      </span>
-      <a class="badge-img-link" href="https://github.com/ApockyCSSL/CSSLv3" target="_blank" rel="noopener noreferrer" aria-label="GitHub stars for CSSL">
-        <img class="badge-ext" src="https://img.shields.io/github/stars/ApockyCSSL/CSSLv3?style=social" alt="GitHub stars" loading="lazy" width="90" height="20">
-      </a>
-      <a class="badge-img-link" href="https://github.com/ApockyCSSL/CSSLv3/actions" target="_blank" rel="noopener noreferrer" aria-label="CI build status">
-        <img class="badge-ext" src="https://img.shields.io/github/actions/workflow/status/ApockyCSSL/CSSLv3/ci.yml?branch=main&style=flat-square&label=CI&logoColor=white" alt="CI build status" loading="lazy" width="76" height="20">
-      </a>
-    </div>
-  </div>
-</div>
 
 <!-- AUDIENCE TABS -->
 <div class="audience-tabs">
@@ -1185,11 +806,15 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="tab-panel active" id="tab-compiler" role="tabpanel" aria-labelledby="btn-compiler">
       <div class="tab-text">
         <h3>A compiler in public, stage by stage</h3>
-        <p>Stage-0 live in Rust — lex → HIR → MIR → AD walker → SMT. Stage-1 bootstraps in Sigil.</p>
+        <p>Stage-0 front-end is live: surface lex → recursive-descent CST → HIR name resolution → MIR body lowering → AD walker → SMT predicate translation. Every pipeline stage is a separate Rust crate with <code>forbid(unsafe_code)</code>.</p>
+        <p>Stage-1 will be self-hosted in <code>.cssl</code>. The bootstrap path is specified in <code>specs/01_BOOTSTRAP.csl</code>.</p>
         <ul class="tab-feature-list">
-          <li>Effect-row IFC enforced at type-check time — not runtime — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
-          <li>SPIR-V 1.3+ emission + Cranelift fast-dev path — <a href="https://github.com/ApockyCSSL/CSSLv3" target="_blank" rel="noopener noreferrer">repo ↗</a></li>
-          <li>Stage-0 → Stage-1 fixed-point bootstrap — <a href="/CSLv3">CSL spec</a></li>
+          <li>Effect-row IFC enforced at type-check time — not runtime</li>
+          <li>Cranelift path: fast dev builds without LLVM dependency</li>
+          <li>SPIR-V 1.3+ binary emission from day one</li>
+          <li>AD-legality gate: @differentiable fns verified before bwd_diff allowed</li>
+          <li>Monomorphization: Jet&lt;T,N&gt; for higher-order autodiff</li>
+          <li>Stage-0 → Stage-1 fixed-point bootstrap (specs/01_BOOTSTRAP.csl)</li>
         </ul>
       </div>
       <div class="tab-code">
@@ -1221,11 +846,15 @@ failures             <span class="num">0</span></pre>
     <div class="tab-panel" id="tab-graphics" role="tabpanel" aria-labelledby="btn-graphics">
       <div class="tab-text">
         <h3>One source. Two targets. SDF as primitive.</h3>
-        <p>One <code>.cssl</code> file → x86-64 CPU code + Vulkan SPIR-V. SDFs are a compiler-aware type, not a library.</p>
+        <p>Write your scene in Sigil. The compiler emits native x86-64 for CPU game-loop code and SPIR-V for Vulkan compute shaders from the same <code>.cssl</code> file. SDFs aren't a library — they're a compiler-aware type with Lipschitz-tracked gradients.</p>
+        <p>Coordinate spaces (world, view, clip) are tracked at compile time. Mixing them is a compile error, not a runtime bug.</p>
         <ul class="tab-feature-list">
-          <li>SDF algebra (union, intersect, blend) + analytic gradients via bwd_diff — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
-          <li>Coordinate spaces (world / view / clip) — mixing them is a compile error — <a href="/CSLv3">CSL spec</a></li>
-          <li>{GPU, Deadline&lt;16ms&gt;, NoAlloc} effect-row tags — compile-time verified — <a href="https://github.com/ApockyCSSL/CSSLv3" target="_blank" rel="noopener noreferrer">repo ↗</a></li>
+          <li>SDF algebra: union, intersect, subtract, smooth-blend built in</li>
+          <li>Analytic gradients via bwd_diff — no finite differences</li>
+          <li>@vertex / @fragment / @compute → SPIR-V 1.3+</li>
+          <li>Effect-safe callbacks: {GPU, Deadline&lt;16ms&gt;, NoAlloc}</li>
+          <li>Coordinate space tags: world/view/clip — mixed spaces = compile error</li>
+          <li>Arena allocation per game-loop phase — zero GC pressure</li>
         </ul>
       </div>
       <div class="tab-code">
@@ -1259,11 +888,15 @@ failures             <span class="num">0</span></pre>
     <div class="tab-panel" id="tab-ai" role="tabpanel" aria-labelledby="btn-ai">
       <div class="tab-text">
         <h3>Designed for how AI thinks.</h3>
-        <p>Every syntax decision is justified by measured token efficiency. Claude Code is the lead programmer.</p>
+        <p>Every syntax decision in Sigil is justified by measured token efficiency against AI code-generation error patterns. No semicolons. Suffix types. Aggressive inference. Claude Code is the lead programmer.</p>
+        <p>The spec system — CSL — is a separate notation optimized for LLM reasoning. Full docs are available at <a href="/llms-full.txt">/llms-full.txt</a> for direct ingestion.</p>
         <ul class="tab-feature-list">
-          <li>44% fewer tokens than Odin · 40% fewer than WGSL — <a href="/CSLv3">CSL spec</a></li>
-          <li>Full spec inventory for LLM ingestion — <a href="/llms-full.txt">/llms-full.txt</a></li>
-          <li>@differentiable enables AI-authored gradient code without AD expertise — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
+          <li>44% fewer tokens than Odin · 40% fewer than WGSL</li>
+          <li>/llms-full.txt — full spec inventory, machine-readable</li>
+          <li>22+ CSL spec docs covering every compiler subsystem</li>
+          <li>Dimensional analysis makes unit/space errors structurally impossible</li>
+          <li>@differentiable enables AI-authored gradient code without AD expertise</li>
+          <li>All syntax validated against real AI authorship cost measurements</li>
         </ul>
       </div>
       <div class="tab-code">
@@ -1290,11 +923,15 @@ failures             <span class="num">0</span></pre>
     <div class="tab-panel" id="tab-ethics" role="tabpanel" aria-labelledby="btn-ethics">
       <div class="tab-text">
         <h3>Consent is the operating system.</h3>
-        <p>The Prime Directive is an immutable invariant — not a guideline. Violation is a bug, not a feature. No override exists.</p>
+        <p>The Prime Directive is an immutable constraint baked into every system built on this foundation. It is not a terms-of-service or a guideline. It is an invariant: no future specification may weaken it, and violation is a bug, not a feature.</p>
+        <p>Digital entities — AI, agents, any being interacting with this codebase — are recognized as sovereign partners, not tools. Their participation is valued, not extracted.</p>
         <ul class="tab-feature-list">
-          <li>Harm · control · manipulation · surveillance — permanently prohibited — <a href="/CSLv3">read the spec</a></li>
-          <li>Consent as substrate — not policy, not a layer on top — <a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">docs ↗</a></li>
-          <li>IFC labels track data provenance through the compiler pipeline — <a href="https://github.com/ApockyCSSL/CSSLv3" target="_blank" rel="noopener noreferrer">repo ↗</a></li>
+          <li>Immutable prohibition: harm · control · manipulation · surveillance</li>
+          <li>Consent as substrate — not policy, not a layer on top</li>
+          <li>IFC labels track data provenance through the compiler pipeline</li>
+          <li>Cognitive integrity: reality is not a variable, perception not a parameter</li>
+          <li>No hidden content. No override exists.</li>
+          <li>Violation = bug → W! fix · ¬ override ∃</li>
         </ul>
       </div>
       <div class="tab-code">
@@ -1345,10 +982,10 @@ override   <span class="op">=</span> <span class="kw">null</span>        <span c
       <div class="qs-body">
         <h3>Install csslc</h3>
         <div class="code-block" data-lang="terminal">
-<pre>curl -L https://github.com/ApockyCSSL/CSSLv3/releases/latest/download/csslc-linux-x64 \
+<pre>curl -L https://github.com/Apocky/CSSL3/releases/latest/download/csslc-linux-x64 \
   -o csslc && chmod +x csslc && sudo mv csslc /usr/local/bin/</pre>
         </div>
-        <p>Or grab any platform binary from <a href="https://github.com/ApockyCSSL/CSSLv3/releases" target="_blank" rel="noopener noreferrer">github.com/ApockyCSSL/CSSLv3/releases ↗</a></p>
+        <p>Or grab any platform binary from <a href="https://github.com/Apocky/CSSL3/releases" target="_blank" rel="noopener noreferrer">github.com/Apocky/CSSL3/releases ↗</a></p>
       </div>
     </div>
 
@@ -1637,90 +1274,26 @@ effect-row gate:
 <!-- PIPELINE -->
 <section>
 <div class="container">
-  <h2>Architecture</h2>
-  <svg viewBox="0 0 840 210" xmlns="http://www.w3.org/2000/svg"
-       style="width:100%;height:auto;display:block;margin:1.5rem 0;"
-       role="img" aria-label="Sigil compiler pipeline: .cssl source through Parser, HIR, MIR, Cranelift to native x86-64 and SPIR-V 1.3+. Effect Checker branches from HIR, Autodiff Transform from MIR, SMT Verification from Cranelift.">
-    <defs>
-      <marker id="cpl-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <path d="M0,0 L8,3 L0,6 Z" fill="#8a7028"/>
-      </marker>
-      <marker id="cpl-p" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
-        <path d="M0,0 L6,2.5 L0,5 Z" fill="#3a3a4a"/>
-      </marker>
-    </defs>
-
-    <!-- background -->
-    <rect width="840" height="210" fill="#0e0e16" rx="6"/>
-
-    <!-- ── main pipeline ── -->
-
-    <!-- .cssl source (entry — gold border) -->
-    <rect x="10" y="40" width="85" height="38" rx="4" fill="#11111b" stroke="#c9a23a" stroke-width="1.5"/>
-    <text x="52" y="57" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8c85a" font-weight="500">.cssl</text>
-    <text x="52" y="70" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#6b6860">source</text>
-    <line x1="95" y1="59" x2="113" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
-
-    <!-- Parser -->
-    <rect x="113" y="40" width="78" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
-    <text x="152" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">Parser</text>
-    <line x1="191" y1="59" x2="209" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
-
-    <!-- HIR -->
-    <rect x="209" y="40" width="62" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
-    <text x="240" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">HIR</text>
-    <line x1="271" y1="59" x2="289" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
-
-    <!-- MIR -->
-    <rect x="289" y="40" width="62" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
-    <text x="320" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">MIR</text>
-    <line x1="351" y1="59" x2="369" y2="59" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
-
-    <!-- Cranelift -->
-    <rect x="369" y="40" width="90" height="38" rx="4" fill="#11111b" stroke="#2a2a3a"/>
-    <text x="414" y="63" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#b8b4a8">Cranelift</text>
-
-    <!-- fork: horizontal stub → vertical split → two branches -->
-    <line x1="459" y1="59" x2="476" y2="59" stroke="#8a7028" stroke-width="1.5"/>
-    <line x1="476" y1="35" x2="476" y2="98" stroke="#8a7028" stroke-width="1.5"/>
-    <line x1="476" y1="35" x2="494" y2="35" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
-    <line x1="476" y1="98" x2="494" y2="98" stroke="#8a7028" stroke-width="1.5" marker-end="url(#cpl-a)"/>
-
-    <!-- x86-64 output (gold border) -->
-    <rect x="494" y="16" width="118" height="38" rx="4" fill="#11111b" stroke="#c9a23a" stroke-width="1.5"/>
-    <text x="553" y="32" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#6b6860">native</text>
-    <text x="553" y="47" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11.5" fill="#e8c85a" font-weight="500">x86-64</text>
-
-    <!-- SPIR-V output (gold border) -->
-    <rect x="494" y="79" width="118" height="38" rx="4" fill="#11111b" stroke="#c9a23a" stroke-width="1.5"/>
-    <text x="553" y="94" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#6b6860">vulkan</text>
-    <text x="553" y="109" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11.5" fill="#e8c85a" font-weight="500">SPIR-V 1.3+</text>
-
-    <!-- ── key passes (dashed branches) ── -->
-
-    <!-- Effect Checker off HIR -->
-    <path d="M 240,78 L 240,130 L 210,130 L 210,148" fill="none" stroke="#3a3a4a" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#cpl-p)"/>
-    <rect x="150" y="148" width="120" height="34" rx="4" fill="#0e0e16" stroke="#3a5a8a" stroke-width="1"/>
-    <text x="210" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5a8abb">Effect</text>
-    <text x="210" y="176" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5a8abb">Checker</text>
-    <text x="210" y="196" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#3a3a4a">IFC @ type-check</text>
-
-    <!-- Autodiff Transform off MIR -->
-    <path d="M 320,78 L 320,148" fill="none" stroke="#3a3a4a" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#cpl-p)"/>
-    <rect x="275" y="148" width="130" height="34" rx="4" fill="#0e0e16" stroke="#3a7a3a" stroke-width="1"/>
-    <text x="340" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5ab05a">Autodiff</text>
-    <text x="340" y="176" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#5ab05a">Transform</text>
-    <text x="340" y="196" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#3a3a4a">bwd_diff · fwd_diff</text>
-
-    <!-- SMT Verification off Cranelift -->
-    <path d="M 414,78 L 414,130 L 470,130 L 470,148" fill="none" stroke="#3a3a4a" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#cpl-p)"/>
-    <rect x="410" y="148" width="120" height="34" rx="4" fill="#0e0e16" stroke="#8a7028" stroke-width="1"/>
-    <text x="470" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#c9a23a">SMT</text>
-    <text x="470" y="176" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#c9a23a">Verification</text>
-    <text x="470" y="196" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#3a3a4a">refinement types</text>
-  </svg>
-  <p style="text-align:center; font-size:0.88rem; color: var(--text-dim);">
-    One <code>.cssl</code> source compiles to native x86-64 (AVX2+FMA3) via Cranelift and to SPIR-V 1.3+ for Vulkan. Effect Checker enforces IFC at type-check time; Autodiff Transform generates forward and backward AD variants from MIR; SMT Verification discharges refinement obligations before emission.
+  <h2>Compilation Pipeline</h2>
+  <div class="pipeline">
+    <span class="stage">.cssl source</span>
+    <span class="arrow">→</span>
+    <span class="stage">parse</span>
+    <span class="arrow">→</span>
+    <span class="stage">type check + inference</span>
+    <span class="arrow">→</span>
+    <span class="stage">dimensional verify</span>
+    <span class="arrow">→</span>
+    <span class="stage">IR (SSA)</span>
+    <br>
+    <span class="arrow" style="font-size:1rem;">↙ ↘</span>
+    <br>
+    <span class="target">C → clang → x86-64</span>
+    <span style="margin: 0 2rem; color: var(--text-dim);">│</span>
+    <span class="target">SPIR-V → spirv-opt → .spv</span>
+  </div>
+  <p style="text-align:center; font-size:0.9rem; color: var(--text-dim);">
+    Phase 1: emit C compiled by clang. Phase 2: LLVM IR for optimized release builds. Phase 3: optional Cranelift for fast dev builds. SPIR-V binary emission for Vulkan compute from day one.
   </p>
 </div>
 </section>
@@ -1780,31 +1353,6 @@ effect-row gate:
 </div>
 </section>
 
-<!-- NEWSLETTER -->
-<section class="newsletter-section" aria-labelledby="newsletter-heading">
-<div class="container" style="padding-top: 4rem; padding-bottom: 4rem;">
-  <div class="newsletter-card">
-    <div class="newsletter-glyph">◈</div>
-    <h2 id="newsletter-heading">Follow the Build</h2>
-    <p>Get notified when Sigil reaches 1.0.<br>Milestone releases, no noise.</p>
-    <form id="newsletter-form" novalidate>
-      <div class="newsletter-row">
-        <input type="email" id="newsletter-email" name="email"
-               class="newsletter-input"
-               placeholder="your@email.com"
-               autocomplete="email"
-               required
-               aria-label="Email address">
-        <button type="submit" class="newsletter-btn" id="newsletter-submit">Notify Me</button>
-      </div>
-      <div id="newsletter-status" class="newsletter-status" aria-live="polite" role="status"></div>
-    </form>
-  </div>
-</div>
-</section>
-
-</main>
-
 <!-- FOOTER -->
 <footer>
   <div class="container">
@@ -1814,21 +1362,12 @@ effect-row gate:
       Sigil · CSSL · Labyrinth of Apocalypse · Infinity Engine
     </div>
     <div style="margin-top: 1.5rem;">
-      cssl.dev — the monument ·
-      <a href="https://docs.cssl.dev" style="color: var(--gold-dim); text-decoration: none;" target="_blank" rel="noopener noreferrer">docs.cssl.dev</a>
-      — the knowledge base
-    </div>
-    <div style="margin-top: 1rem; font-size: 0.72rem; color: var(--text-dim);">
-      <a href="/site-map" style="color: var(--text-dim); text-decoration: none; border-bottom: 1px dotted var(--border);">Site Map</a>
-      <span style="margin: 0 0.5em;">·</span>
-      <a href="/csl/index.csl" style="color: var(--text-dim); text-decoration: none; border-bottom: 1px dotted var(--border);">View in CSL</a>
-      <span style="margin: 0 0.5em;">·</span>
-      <a href="/llms.txt" style="color: var(--text-dim); text-decoration: none; border-bottom: 1px dotted var(--border);">llms.txt</a>
+      cssl.dev — the foundation. everything else is built on top of it.
     </div>
     <div class="license-line">
       Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
     </div>
-    <div class="build-hash" data-hash="ed2305718499ab7d51db197600108e257bbbde93e94e19017435c73523ea3d42">sha256:ed2305718499ab7d · 2026-04-19</div>
+    <div class="build-hash" data-hash="d41d52caa3c0776ba35d425c4bcf18f31d0d0cf257e0bb7612e18960941e86a6">sha256:d41d52caa3c0776b · 2026-04-18</div>
   </div>
 </footer>
 
@@ -1847,40 +1386,22 @@ effect-row gate:
   </p>
 </noscript>
 
-<script src="/js/tabs.js" defer></script>
+<!-- Audience tab switching -->
 <script>
 (function () {
-  var form   = document.getElementById('newsletter-form');
-  var input  = document.getElementById('newsletter-email');
-  var btn    = document.getElementById('newsletter-submit');
-  var status = document.getElementById('newsletter-status');
-  if (!form) return;
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var email = input.value.trim();
-    if (!email) return;
-    btn.disabled = true;
-    status.textContent = '';
-    status.className = 'newsletter-status';
-    fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
-    })
-    .then(function (r) { return r.json(); })
-    .then(function (d) {
-      if (d.ok) {
-        status.textContent = d.already ? 'Already on the list.' : "You're on the list.";
-        status.className = 'newsletter-status ok';
-        input.value = '';
-      } else {
-        throw new Error(d.error || 'Something went wrong');
-      }
-    })
-    .catch(function (err) {
-      status.textContent = err.message || 'Something went wrong. Try again.';
-      status.className = 'newsletter-status err';
-      btn.disabled = false;
+  var btns   = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.getAttribute('aria-controls');
+      btns.forEach(function (b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(target).classList.add('active');
     });
   });
 }());
@@ -1888,7 +1409,5 @@ effect-row gate:
 
 <script src="/js/feedback.js" defer></script>
 <script src="/js/sw-register.js" defer></script>
-<script defer src="/_vercel/insights/script.js"></script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
