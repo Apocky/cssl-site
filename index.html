@@ -7,6 +7,7 @@
 <meta name="description" content="Sigil: A hardware-grounded programming language designed for AI authorship, video game engines, and dual-target compilation to native x86-64 + SPIR-V.">
 <meta name="author" content="Shawn Wolfgang Michael Baker">
 <link rel="canonical" href="https://cssl.dev/">
+<link rel="alternate" type="text/plain" href="/csl/index.csl" title="cssl.dev — CSL notation">
 <meta name="theme-color" content="#07070c">
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="Sigil — AI-First Game Engine Language">
@@ -227,6 +228,22 @@ code {
   border-radius: 3px;
   color: var(--gold-bright);
 }
+
+/* === SITE HEADER === */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .site-brand { color: var(--gold); font-weight: 600; }
+.site-header .site-nav { display: flex; gap: 1.5rem; }
+.site-header .site-nav a { color: var(--text); text-decoration: none; border-bottom: none; transition: color 0.2s; }
+.site-header .site-nav a:hover { color: var(--gold-bright); }
+@media (max-width: 600px) { .site-header { padding: 0.75rem 1rem; } .site-header .site-nav { gap: 0.8rem; font-size: 0.7rem; } }
+@media print { .site-header { display: none !important; } }
 
 /* === HERO === */
 .hero {
@@ -1059,6 +1076,16 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <body>
 
 <a href="#main-content" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <span class="site-brand">§ cssl.dev</span>
+  <nav class="site-nav" aria-label="Site navigation">
+    <a href="/sigil">Sigil</a>
+    <a href="/CSLv3">CSL</a>
+    <a href="/thinking-guides">Thinking Guides</a>
+    <a href="/ethics-guides">Ethics Guides</a>
+  </nav>
+</header>
 
 <!-- HERO -->
 <header class="hero">
