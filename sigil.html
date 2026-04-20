@@ -32,7 +32,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
-  --text: #b8b4a8; --text-dim: #6b6860; --text-bright: #e8e4d8;
+  --text: #b8b4a8; --text-dim: #9a9a8e; --text-bright: #e8e4d8;
   --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
   --border: #1a1a28;
   --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
@@ -436,7 +436,7 @@ footer .tagline {
   <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
 </header>
 
-<div class="hero" role="banner">
+<div class="hero">
   <div class="hero-glyph" aria-hidden="true">◇ § ◇</div>
   <h1><span>Sigil</span></h1>
   <div class="hero-sub">CSSL · Caveman Sigil Substrate Language</div>
@@ -635,7 +635,7 @@ footer .tagline {
         </tbody>
       </table>
     </div>
-    <h4>Discharge timing</h4>
+    <h3>Discharge timing</h3>
     <p>Effects fall into three discharge buckets — how the compiler verifies them.</p>
     <ul class="bullet-list">
       <li><strong>Compile-time only:</strong> <code>{NoAlloc}</code>, <code>{NoRecurse}</code>, <code>{NoUnbounded}</code>, <code>{DetRNG}</code>, <code>{PureDet}</code>, <code>{Reversible}</code>, <code>{CPU/GPU/XMX/RT}</code>, <code>{SIMD*}</code>, <code>{NUMA/Cache}</code>, <code>{Backend/Target}</code>, <code>{Region}</code>, <code>{Sensitive/Privilege}</code>.</li>
@@ -699,7 +699,7 @@ footer .tagline {
         </ul>
       </div>
     </div>
-    <h4>Backend surface</h4>
+    <h3>Backend surface</h3>
     <div class="table-wrap">
       <table>
         <caption>Backend capability matrix</caption>
@@ -907,9 +907,9 @@ footer .tagline {
     <h2>Repository &amp; Specs</h2>
     <p>Specification is v1-complete. Compiler is in <code>compiler-rs/</code> across 31 workspace crates. Everything is in one repository.</p>
     <div class="feature-grid">
-      <a class="feature" href="https://github.com/Apocky/CSSLv3" style="border-bottom: 1px solid var(--border);">
+      <a class="feature" href="https://github.com/ApockyCSSL/CSSLv3" style="border-bottom: 1px solid var(--border);">
         <div class="feature-id">REPOSITORY</div>
-        <h3>github.com/Apocky/CSSLv3</h3>
+        <h3>github.com/ApockyCSSL/CSSLv3</h3>
         <p>25 spec files, 31 compiler crates, examples, DECISIONS.md, session handoffs. Rust-toolchain pinned.</p>
       </a>
       <div class="feature">
@@ -1007,12 +1007,14 @@ footer .tagline {
     </div>
     <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
     <div class="links">
+      <a href="/">Home</a>
       <a href="/CSLv3">CSL reference</a>
-      <a href="https://github.com/Apocky/CSSLv3">GitHub</a>
+      <a href="https://github.com/ApockyCSSL/CSSLv3">GitHub</a>
+      <a href="/sitemap.xml">Site Map</a>
       <a href="/llms.txt">llms.txt</a>
     </div>
     <div class="license-line">
-      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
     </div>
     <div class="tagline">density = sovereignty · consent = OS</div>
   </div>

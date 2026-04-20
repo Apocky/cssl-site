@@ -150,6 +150,14 @@ body::after {
   z-index: 9999;
 }
 
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
 /* === LAYOUT === */
 .container {
   max-width: 900px;
@@ -1049,6 +1057,8 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 </head>
 <body>
 
+<a href="#main-content" class="skip-link">Skip to content</a>
+
 <!-- HERO -->
 <header class="hero">
   <div class="hero-glyph">◇ § ◇</div>
@@ -1080,6 +1090,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <nav class="start-here" aria-label="Quick navigation">
   <div class="start-here-links">
     <a class="start-link" href="#quickstart">Quickstart</a>
+    <a class="start-link" href="/sigil">Sigil</a>
     <a class="start-link" href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">Repo ↗</a>
     <a class="start-link" href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">Docs ↗</a>
     <a class="start-link" href="/CSLv3">CSL Spec</a>
@@ -1752,8 +1763,14 @@ effect-row gate:
       <a href="https://docs.cssl.dev" style="color: var(--gold-dim); text-decoration: none;" target="_blank" rel="noopener noreferrer">docs.cssl.dev</a>
       — the knowledge base
     </div>
+    <div class="links" style="margin-top: 1.25rem;">
+      <a href="/sigil">Sigil</a>
+      <a href="/CSLv3">CSL Reference</a>
+      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/sitemap.xml">Site Map</a>
+    </div>
     <div class="license-line">
-      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
     </div>
     <div class="build-hash" data-hash="ed2305718499ab7d51db197600108e257bbbde93e94e19017435c73523ea3d42">sha256:ed2305718499ab7d · 2026-04-19</div>
   </div>
