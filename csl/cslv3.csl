@@ -8,7 +8,7 @@
   74-glyph LL(2)-parseable ; BPE-optimized(∀ glyph ≤ 2 BPE-tokens)
   measured : 5-6× compression∃ spec-content ; ~2.5× on reasoning
   status : stable v1.7.0 · released 2026-04-18
-  repo : https://github.com/ApockyCSSL/CSLv3
+  repo : https://github.com/Apocky/CSLv3
 
 §D glyphs [master-inventory · tiered-by-learning-priority]
   tier-1 (core-logic): § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵ N! M? Q?

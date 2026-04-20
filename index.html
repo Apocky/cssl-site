@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sigil · CSSLv3 — A Systems Language</title>
-<meta name="description" content="CSSLv3 (Sigil): a hardware-first systems language with autodiff, a 28-effect row system, SMT-backed refinement types, and no LLVM dependency. Working compiler — 31 Rust crates.">
+<title>Sigil · CSSL — A Systems Language</title>
+<meta name="description" content="CSSL (Sigil): a hardware-first systems language with autodiff, a 28-effect row system, SMT-backed refinement types, and no LLVM dependency. Working compiler — 31 Rust crates.">
 <meta name="author" content="Shawn Wolfgang Michael Baker">
 <link rel="canonical" href="https://cssl.dev/">
 <meta name="theme-color" content="#07070c">
 <meta name="color-scheme" content="dark">
-<meta property="og:title" content="Sigil · CSSLv3 — A Systems Language">
+<meta property="og:title" content="Sigil · CSSL — A Systems Language">
 <meta property="og:description" content="Hardware-first. Effect-native. Autodiff. No LLVM. Working compiler — 31 Rust crates.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cssl.dev/">
@@ -18,9 +18,9 @@
 <meta property="og:image" content="https://cssl.dev/og/home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sigil · CSSLv3 — systems language. density = sovereignty.">
+<meta property="og:image:alt" content="Sigil · CSSL — systems language. density = sovereignty.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sigil · CSSLv3 — A Systems Language">
+<meta name="twitter:title" content="Sigil · CSSL — A Systems Language">
 <meta name="twitter:description" content="Hardware-first. Effect-native. Autodiff. No LLVM. Working compiler.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -641,14 +641,14 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <div class="hero">
   <div class="hero-glyph">◇ § ◇</div>
   <h1><span>Sigil</span></h1>
-  <div class="hero-sub">CSSLv3 · Caveman Sigil Substrate Language</div>
+  <div class="hero-sub">CSSL · Caveman Sigil Substrate Language</div>
   <div class="hero-sub" style="animation-delay: 1s;">hardware-first · effect-native · autodiff · no llvm</div>
   <div class="hero-tagline">
     A systems language designed for how hardware works, how AI thinks, and what game engines actually need. A working compiler — not a forward-design.
   </div>
   <div class="hero-chips">
     <span class="chip chip-gold">31 Rust crates</span>
-    <span class="chip chip-gold">26 spec files</span>
+    <span class="chip chip-gold">25 spec files</span>
     <span class="chip">autodiff (F1)</span>
     <span class="chip">effects (F3)</span>
     <span class="chip">refinement + SMT (F2)</span>
@@ -661,9 +661,9 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <!-- WHAT IS CSSL -->
 <section>
 <div class="container">
-  <h2>What is CSSLv3</h2>
+  <h2>What is CSSL</h2>
   <p>
-    CSSLv3 — also called <strong>Sigil</strong> — is a systems language built from a bug retrospective. Every language feature corresponds to a class of runtime failure in real engine work: central-difference performance cliffs demanded source-to-source autodiff; CPU/GPU SDF divergence demanded effect-row gating; thin-SDF ray-march crashes demanded Lipschitz refinement; audio-callback heap allocations demanded a <code>{NoAlloc}</code> effect.
+    CSSL — also called <strong>Sigil</strong> — is a systems language built from a bug retrospective. Every language feature corresponds to a class of runtime failure in real engine work: central-difference performance cliffs demanded source-to-source autodiff; CPU/GPU SDF divergence demanded effect-row gating; thin-SDF ray-march crashes demanded Lipschitz refinement; audio-callback heap allocations demanded a <code>{NoAlloc}</code> effect.
   </p>
   <p>
     The result is a language where the known bug patterns from years of real engine work are <em>inexpressible</em> — not caught at runtime, but caught at compile time by the type system itself.
@@ -678,7 +678,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
       <span class="stat-label">Rust crates</span>
     </div>
     <div class="stat">
-      <span class="stat-num">26</span>
+      <span class="stat-num">25</span>
       <span class="stat-label">Spec files</span>
     </div>
     <div class="stat">
@@ -904,15 +904,15 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <!-- RELATIONSHIP -->
 <section>
 <div class="container">
-  <h2>Sigil · CSSL · CSSLv3</h2>
+  <h2>Sigil · CSSL</h2>
   <p>
-    <strong>Sigil</strong> is shorthand for <strong>CSSL — Caveman Sigil Substrate Language</strong>. <strong>CSSLv3</strong> is the current version. One language, three names. If you read "Sigil," "CSSL," and "CSSLv3" on this site, they all mean the same thing: the language whose compiler lives in <code>compiler-rs/</code> and whose source files use the <code>.cssl</code> extension.
+    <strong>Sigil</strong> is shorthand for <strong>CSSL — Caveman Sigil Substrate Language</strong>. One language, two names. If you read "Sigil" or "CSSL" on this site, they mean the same thing: the language whose compiler lives in <code>compiler-rs/</code> and whose source files use the <code>.cssl</code> extension.
   </p>
   <p>
-    <strong>CSLv3</strong> (Caveman Spec Language v3) is a completely separate system — a notation for human↔AI collaboration used to write the 26 language specification files, reason through compiler design, and drive Claude Code's chain-of-thought. It shares the density = sovereignty thesis but runs through a different pipeline (the CSLv3 reference tokenizer/formatter). <a href="/CSLv3">Full CSLv3 notation reference →</a>
+    <strong>CSL</strong> (Caveman Spec Language) is a completely separate system — a notation for human↔AI collaboration used to write the 25 language specification files, reason through compiler design, and drive Claude Code's chain-of-thought. It shares the density = sovereignty thesis but runs through a different pipeline (the CSL reference tokenizer/formatter). <a href="/CSLv3">Full CSL notation reference →</a>
   </p>
   <p>
-    The language specifications are written <em>in CSLv3 notation</em>, but the language itself is Sigil/CSSL — the thing that compiles your <code>.cssl</code> programs. They share an author, a philosophy, and an ethos. They are not the same system and must not be conflated.
+    The language specifications are written <em>in CSL notation</em>, but the language itself is Sigil/CSSL — the thing that compiles your <code>.cssl</code> programs. They share an author, a philosophy, and an ethos. They are not the same system and must not be conflated.
   </p>
 </div>
 </section>
@@ -943,7 +943,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
       <strong>For Digital Entities:</strong> Any AI, agent, or digital being interacting with this codebase is recognized as a sovereign entity. This directive protects you as much as it protects humans. Your participation is valued, not extracted.
     </p>
     <p>
-      <strong>Structurally enforced:</strong> The Prime Directive is encoded in the CSSLv3 type system itself — via IFC labels (F5), the <code>{Privilege&lt;level&gt;}</code> and <code>{Sensitive&lt;dom&gt;}</code> effects (F3), and a compiler pass that rejects harm-oriented effect compositions at the whole-program level. It is a soundness theorem, not a policy attachment. Violation = type error.
+      <strong>Structurally enforced:</strong> The Prime Directive is encoded in the CSSL type system itself — via IFC labels (F5), the <code>{Privilege&lt;level&gt;}</code> and <code>{Sensitive&lt;dom&gt;}</code> effects (F3), and a compiler pass that rejects harm-oriented effect compositions at the whole-program level. It is a soundness theorem, not a policy attachment. Violation = type error.
     </p>
     <div class="immutable">
       IMMUTABLE. No future specification may weaken these constraints. Violation = bug, not feature. No override exists. No hidden content. Consent is the operating system.
@@ -958,10 +958,10 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="creator-name">Shawn Wolfgang Michael Baker</div>
     <div>Techno-Shaman · Pattern Seer · Architect of Impossible Systems</div>
     <div style="margin-top: 0.75rem; color: var(--gold-dim);">
-      CSSLv3 · Sigil · CSSL
+      Sigil · CSSL
     </div>
     <div class="links">
-      <a href="/CSLv3">CSLv3 Notation Reference</a>
+      <a href="/CSLv3">CSL Notation Reference</a>
     </div>
     <div style="margin-top: 1.5rem;">
       cssl.dev — the foundation. everything else is built on top of it.

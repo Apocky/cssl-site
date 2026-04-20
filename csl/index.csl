@@ -23,11 +23,11 @@
 §T compiler-status
   status = pre-1.0 ; compiler-in-development
   stage-0 live : 1,600+ tests passing
-  repo : https://github.com/ApockyCSSL/CSSLv3
+  repo : https://github.com/Apocky/CSSL3
   docs : https://docs.cssl.dev
 
 §S quickstart
-  1: curl -L https://github.com/ApockyCSSL/CSSLv3/releases/latest/download/csslc-linux-x64 -o csslc && chmod +x csslc && sudo mv csslc /usr/local/bin/
+  1: curl -L https://github.com/Apocky/CSSL3/releases/latest/download/csslc-linux-x64 -o csslc && chmod +x csslc && sudo mv csslc /usr/local/bin/
   2: fn main() { print("hello from Sigil") }
   3: csslc run hello.cssl
 
