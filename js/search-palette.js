@@ -108,7 +108,7 @@
       li.className = 'sp-item' + (i === active ? ' active' : '');
       li.dataset.index = i;
       li.innerHTML =
-        '<span class="sp-kind">' + it.kind + '</span>' +
+        '<span class="sp-kind">' + escapeHtml(it.kind) + '</span>' +
         '<span class="sp-title">' + escapeHtml(it.title) + '</span>' +
         (it.snippet ? '<span class="sp-snippet">' + escapeHtml(it.snippet.slice(0, 120)) + '</span>' : '');
       li.addEventListener('mouseenter', function () { setActive(i); });
