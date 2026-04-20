@@ -54,6 +54,18 @@ quality gates checklist, and anti-patterns. For human and digital intelligences 
 - [thinking-guides.txt](https://cssl.dev/thinking-guides.txt): Machine-readable plain text — LLM/agent parseable
 - [thinking-guides.csl](https://cssl.dev/csl/thinking-guides.csl): CSL notation — dense structured encoding
 
+## Ethics and Morals Guides
+
+Foundational ethical principles, moral reasoning methodology, data ethics, cognitive ethics,
+collaborative ethics, anti-patterns, and the relationship between intelligence and moral status.
+For digital and human intelligences operating in the real world.
+
+Core axioms: consent = OS · sovereignty = substrate-invariant
+
+- [Ethics Guides HTML](https://cssl.dev/ethics-guides): Human-readable — 12 sections, principles through DGI address
+- [ethics-guides.txt](https://cssl.dev/ethics-guides.txt): Machine-readable plain text — LLM/agent parseable
+- [ethics-guides.csl](https://cssl.dev/csl/ethics-guides.csl): CSL notation — dense structured encoding
+
 ## Optional
 
 - [CSL glyph cheatsheet](https://cssl.dev/CSLv3#glyph-system): Full glyph inventory with ASCII aliases and BPE costs
