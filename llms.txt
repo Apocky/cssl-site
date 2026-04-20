@@ -5,6 +5,7 @@
 ## Sigil / CSSL — Language
 
 - [Sigil home](https://cssl.dev/): Language overview, key features, quickstart, and live compiler output samples
+- [Sigil language page](https://cssl.dev/sigil): Full Sigil/CSSL language reference — effects, capabilities, hardware targets, type system, compilation pipeline, bug-pattern map
 - [Documentation](https://docs.cssl.dev): Full Sigil/CSSL docs — annotated specs, learning paths, API reference, CSL notation guide
 - [Repository](https://github.com/Apocky/CSSL3): Compiler source (Rust, stage-0 live), 1,600+ tests, releases, CI
 - [llms-full.txt](https://cssl.dev/llms-full.txt): Complete LLM-indexable reference — Sigil/CSSL language + CSL notation
