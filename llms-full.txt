@@ -163,7 +163,7 @@ with the failing constraint and context.
 ## §F · GPU Effects and SPIR-V Emission
 
 Sigil emits SPIR-V 1.3+ for Vulkan compute and graphics. The same source file
-compiles to both CPU (x86-64 via Cranelift) and GPU.
+compiles to both CPU (x86-64 via Cranelift at stage-0) and GPU.
 
 Entry points are annotated:
 
@@ -236,7 +236,7 @@ invariant. The compiler tracks it; you cannot accidentally break SDF properties.
       → MIR lowering (SSA + structured regions)
       → AD walker (emits fwd/bwd MIR variants)
       → SMT translation (Z3/CVC5 dispatch)
-      → Codegen: Cranelift (dev + release) | SPIR-V emitter
+      → Codegen: Cranelift (stage-0) | bespoke x86-64 emitter (stage-1+) | SPIR-V emitter
 
 All stages are unit-tested independently. The 1,600+ test suite covers:
 - Parser correctness (round-trip)

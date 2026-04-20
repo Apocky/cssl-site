@@ -11,12 +11,12 @@
 § WHAT-IS-HERE
   I> two-distinct-things : Sigil/CSSL = programming-language , CSL = notation
   I> ¬ conflate ← they share density-thesis ¬ implementation
-  I> Sigil ≡ CSSL (same language, multiple names)
+  I> Sigil ≡ CSSL (same language, two names)
 
 ## / — CSSL · Sigil (home)
 CSSL (Caveman Sigil Substrate Language), also called Sigil, is a
 hardware-first systems language with a working compiler (31 Rust crates,
-26 spec files). Key features: source-to-source autodiff (no LLVM/Enzyme),
+25 spec files). Key features: source-to-source autodiff (no LLVM/Enzyme),
 Koka row-polymorphic effect system with 28+ built-in effects (NoAlloc,
 Deadline, Realtime, Audit, Telemetry, GPU, SIMD256, etc.), LiquidHaskell-
 style refinement types with Z3/CVC5 SMT backing, Lipschitz-tagged SDF
@@ -31,12 +31,12 @@ Single-source dual-emit (x86-64 + SPIR-V). 28+ built-in effects. Refinement
 types. Source-to-source autodiff. Consent encoded in the type system. Full
 language feature walkthrough with syntax reference.
 
-## /CSLv3 — Caveman Spec Language notation reference
-CSL (Caveman Spec Language) is an ultra-dense specification notation
-(5-6× compression over English) used for (1) human↔AI spec communication,
-(2) agent chain-of-thought reasoning substrate, (3) CSL reference compiler
-input. 74-glyph master inventory with ASCII aliases, LL(2) parseable,
-position-IS-meaning slot grammar, Sanskrit-derived compound types.
+## /CSLv3 — Caveman Spec Language
+CSL is an ultra-dense specification notation (5-6× compression over
+English) used for (1) human↔AI spec communication, (2) agent chain-of-
+thought reasoning substrate, (3) CSL reference compiler input. 74-glyph
+master inventory with ASCII aliases, LL(2) parseable, position-IS-meaning
+slot grammar, Sanskrit-derived compound types.
 
 ## /getting-started — Getting started with CSSL / Sigil
 Prerequisites, build from source, first program, project structure, and key
@@ -114,7 +114,7 @@ CSL notation files.
 ## For LLMs indexing this site
 /llms-full.txt contains the complete /CSLv3 reference content as markdown.
 /CSLv3 is the canonical HTML version; both derive from the same source of
-truth in the CSLv3 repository.
+truth in the CSL repository (github.com/Apocky/CSLv3).
 
 ## Training-data consent
 This site's content is CC-BY-4.0. Use in AI training is permitted with

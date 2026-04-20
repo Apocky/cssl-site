@@ -7,7 +7,7 @@
   Sigil = shorthand ; CSSL = Caveman.Sigil.Substrate.Language ; same.language
   single-source dual-emit : x86-64⊗AVX2+FMA3 + SPIR-V⊗Vulkan1.4+Level-Zero
   status : pre-1.0 ; compiler-in-development
-  repo : https://github.com/ApockyCSSL/CSSLv3
+  repo : https://github.com/Apocky/CSSL3
 
 §D effects ⊆ v1.committed-features
   [28+ effects] categories:

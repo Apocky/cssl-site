@@ -65,7 +65,7 @@ Content (prose, specs, documentation): CC BY 4.0 (`LICENSE-CONTENT`).
 ## Source of truth
 
 The `/CSLv3` reference derives from the CSLv3 repository
-(`github.com/ApockyCSSL/CSLv3`), specifically the `specs/` tree and
+(`github.com/Apocky/CSLv3`), specifically the `specs/` tree and
 `CSLv3_ONBOARDING.md`. Changes to notation or spec content should land in
 the upstream repo first, then flow into this site.
 
