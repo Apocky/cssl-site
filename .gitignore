@@ -22,3 +22,8 @@ package-lock.json
 # Build artefacts (if added later)
 dist/
 .cache/
+
+# Claude Code worktrees
+.claude/worktrees/
+.mcp-probe
+BUILD_DECISIONS.md
