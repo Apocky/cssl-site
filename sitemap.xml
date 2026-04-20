@@ -19,76 +19,10 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cssl.dev/getting-started</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/thinking-guides</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/ethics-guides</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/security-guides</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/security-guides.csl</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/examples</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/faq</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/contributing</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/philosophy</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/philosophy.txt</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/philosophy.csl</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://cssl.dev/site-map</loc>
     <lastmod>2026-04-19</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://cssl.dev/llms.txt</loc>
@@ -117,90 +51,6 @@
   <url>
     <loc>https://cssl.dev/csl/cslv3.csl</loc>
     <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/spec.csl</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/getting-started.txt</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/getting-started.csl</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/thinking-guides.txt</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/thinking-guides.csl</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/ethics-guides.txt</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/ethics-guides.csl</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/security-guides.txt</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/examples.txt</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/examples.csl</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/faq.txt</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/contributing.txt</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/faq.csl</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://cssl.dev/csl/contributing.csl</loc>
-    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>

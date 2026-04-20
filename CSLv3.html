@@ -3,28 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CSLv3 — specification notation · v1.7.0</title>
-<meta name="description" content="CSLv3: a 74-glyph specification notation. 5-6× compression over English on spec content, ~2.5× on reasoning. LL(2) parser, slot grammar, Sanskrit-derived compounds. v1.7.0 ships 18-fixture m₂ perplexity harness and LoRA generalization test.">
+<title>CSL — specification notation · v1.7.0</title>
+<meta name="description" content="CSL: a 74-glyph specification notation. 5-6× compression over English on spec content, ~2.5× on reasoning. LL(2) parser, slot grammar, Sanskrit-derived compounds. v1.7.0 ships 18-fixture m₂ perplexity harness and LoRA generalization test.">
 <link rel="canonical" href="https://cssl.dev/CSLv3">
 <meta name="theme-color" content="#07070c">
 <meta name="color-scheme" content="dark">
 <meta property="og:site_name" content="cssl.dev">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="CSLv3 — specification notation · v1.7.0">
+<meta property="og:title" content="CSL — specification notation · v1.7.0">
 <meta property="og:description" content="74 glyphs. LL(2) parseable. Measured 5-6× compression on spec content. v1.7.0 generalization test confirms signal on held-out fold.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://cssl.dev/CSLv3">
 <meta property="og:image" content="https://cssl.dev/og/CSLv3.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="CSLv3 — specification notation.">
+<meta property="og:image:alt" content="CSL — specification notation.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CSLv3 · v1.7.0">
+<meta name="twitter:title" content="CSL · v1.7.0">
 <meta name="twitter:description" content="74-glyph specification notation. LL(2) · 5-6× compression measured.">
 <meta name="twitter:image" content="https://cssl.dev/og/CSLv3.png">
 <meta name="author" content="Shawn Wolfgang Michael Baker">
 <meta name="keywords" content="CSL, Caveman Spec Language, specification notation, density notation, AI notation, DGI, glyph system, Sanskrit compounds, slot grammar, LL(2), compression, Sigil, CSSL, cssl.dev">
 <link rel="manifest" href="/manifest.webmanifest">
+<link rel="alternate" type="text/plain" href="/csl/cslv3.csl" title="CSL reference in CSL notation (self-describing)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -38,7 +39,7 @@
   "inLanguage": "en",
   "keywords": "CSL, Caveman Spec Language, specification notation, AI, DGI, compression, LL(2), APL, Ithkuil, Sanskrit, Peirce, Lojban, density, Sigil, CSSL",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "codeRepository": "https://github.com/Apocky/CSLv3",
+  "codeRepository": "https://github.com/ApockyCSSL/CSLv3",
   "author": { "@type": "Person", "name": "Shawn Wolfgang Michael Baker" },
   "about": { "@type": "Thing", "name": "Specification notation for AI-authored systems and DGI reasoning" },
   "publisher": { "@type": "Organization", "name": "cssl.dev", "url": "https://cssl.dev" }
@@ -310,12 +311,12 @@ footer .tagline { margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
 
 <header class="site-header">
   <a href="/" class="back-link">cssl.dev</a>
-  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSLv3 <strong>v1.7.0</strong> · released 2026-04-18</span>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSL <strong>v1.7.0</strong> · released 2026-04-18</span>
 </header>
 
 <div class="hero" role="banner">
   <div class="hero-glyph" aria-hidden="true">◇ § ◇</div>
-  <h1><span>CSLv3</span></h1>
+  <h1><span>CSL</span></h1>
   <div class="hero-sub">specification notation · LL(2) parser · 74-glyph inventory</div>
   <div class="hero-facts">
     <span class="fact">5-6× compression</span> on spec content · <span class="fact">~2.5×</span> on chain-of-thought · <span class="fact">measured</span> via the <code>m₂</code> perplexity harness against reference LLMs
@@ -333,7 +334,7 @@ footer .tagline { margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
     <details open>
       <summary>Contents</summary>
       <nav>
-        <a href="#what-is"><span class="num">§1</span>What CSLv3 is</a>
+        <a href="#what-is"><span class="num">§1</span>What CSL is</a>
         <a href="#results"><span class="num">§2</span>Empirical results</a>
         <a href="#compound-types"><span class="num">§3</span>Compound types</a>
         <a href="#glyph-system"><span class="num">§4</span>Glyph inventory</a>
@@ -366,25 +367,25 @@ footer .tagline { margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
   </section>
 
   <section id="what-is">
-    <h2>§1 · What CSLv3 is</h2>
+    <h2>§1 · What CSL is</h2>
     <p>
-      <strong>CSLv3</strong> (Caveman Spec Language v3) is a specification notation. It encodes specs, structured reasoning, and — in its executable subset — programs, using a 74-glyph inventory with mandatory ASCII aliases, a positional slot grammar, and Sanskrit-derived compound operators. The grammar is <strong>LL(2)</strong>: a parser needs two tokens of lookahead, no backtracking.
+      <strong>CSL</strong> (Caveman Spec Language v3) is a specification notation. It encodes specs, structured reasoning, and — in its executable subset — programs, using a 74-glyph inventory with mandatory ASCII aliases, a positional slot grammar, and Sanskrit-derived compound operators. The grammar is <strong>LL(2)</strong>: a parser needs two tokens of lookahead, no backtracking.
     </p>
     <p>
       The central move is to strip natural-language ceremony — articles, auxiliaries, hedging, passive voice — and recompose what remains through operators that carry the grammatical relationship. A 10,000-word English system spec compresses to roughly 2,000–2,500 tokens while preserving every implementation-relevant detail. In a 128K context window, that converts to ≈640K–768K tokens of effective spec capacity.
     </p>
     <p>
-      CSLv3 is used in three settings: (1) human↔AI spec writing, where the same document drives both human comprehension and LLM reasoning; (2) chain-of-thought substrate, where <code>&lt;think&gt;</code> blocks follow a fixed <code>§P / §D / §T / §S / §C</code> skeleton; (3) input to a reference compiler whose executable subset treats the spec <em>as</em> the code. The parser, typecheck, IR, SMT discharge, LSP, and multi-target codegen all ship in v1.0.
+      CSL is used in three settings: (1) human↔AI spec writing, where the same document drives both human comprehension and LLM reasoning; (2) chain-of-thought substrate, where <code>&lt;think&gt;</code> blocks follow a fixed <code>§P / §D / §T / §S / §C</code> skeleton; (3) input to a reference compiler whose executable subset treats the spec <em>as</em> the code. The parser, typecheck, IR, SMT discharge, LSP, and multi-target codegen all ship in v1.0.
     </p>
     <p>
-      <strong>Not to be confused with CSSL.</strong> The site root (<a href="/">cssl.dev</a>) documents <a href="/sigil">Sigil</a>, which is the shorthand for CSSL (Caveman <em>Sigil</em> Substrate Language) — a systems programming language compiling to x86-64 + SPIR-V. Sigil is a compiler; CSLv3 is a notation. They share the density thesis but are separate projects.
+      <strong>Not to be confused with CSSL.</strong> The site root (<a href="/">cssl.dev</a>) documents <a href="/sigil">Sigil</a>, which is the shorthand for CSSL (Caveman <em>Sigil</em> Substrate Language) — a systems programming language compiling to x86-64 + SPIR-V. Sigil is a compiler; CSL is a notation. They share the density thesis but are separate projects.
     </p>
   </section>
 
   <section id="results">
     <h2>§2 · Empirical results</h2>
     <p>
-      Compression is a verifiable claim, not a rhetorical one. The <code>m₂</code> perplexity harness (introduced in v1.1.0, extended through v1.7.0) measures token-level negative log-likelihood of a CSLv3 document versus its English paraphrase under multiple reference language models. Density-is-measurable is the working hypothesis; these numbers are the current state of the test.
+      Compression is a verifiable claim, not a rhetorical one. The <code>m₂</code> perplexity harness (introduced in v1.1.0, extended through v1.7.0) measures token-level negative log-likelihood of a CSL document versus its English paraphrase under multiple reference language models. Density-is-measurable is the working hypothesis; these numbers are the current state of the test.
     </p>
 
     <div class="metric-grid">
@@ -592,11 +593,11 @@ footer .tagline { margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
 
     <h3>Worked expansion</h3>
     <p>Minimum statement:</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre>player.hp u16</pre>
     </div>
     <p>Fully slot-expanded:</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="gly">✓</span>                    <span class="cm"># evidence: confirmed (default)</span>
 <span class="op">:</span>                    <span class="cm"># modal: assertion (default)</span>
 player<span class="op">.</span>hp           <span class="cm"># subject: hp of player</span>
@@ -606,7 +607,7 @@ player<span class="op">.</span>hp           <span class="cm"># subject: hp of pl
 # scope: global (default)</span></pre>
     </div>
     <p>Fully-slotted — every default overridden:</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="gly">△</span> <span class="gly">W!</span> <span class="kw">§</span>render<span class="op">.</span>pipeline <span class="op">::</span> forward<span class="op">-</span>pass <span class="inv">⌈</span>latency <span class="op">&lt;</span> <span class="num">16ms</span><span class="inv">⌉</span> <span class="op">@</span>frame</pre>
     </div>
     <p style="font-size: 0.9rem;">
@@ -636,7 +637,7 @@ BASE<span class="opt">[.aspect]</span><span class="opt">[.mod]</span><span class
         </tbody>
       </table>
     </div>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre>spawn<span class="sfx">.iter</span><span class="sfx">.may</span><span class="sfx">.loc</span>
 <span class="cm"># "may repeatedly spawn, locally"</span>
 
@@ -674,7 +675,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Example</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">&lt;think&gt;</span>
 <span class="kw">§ P</span>
   voxel engine stutter @ chunk boundary
@@ -700,7 +701,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
 <span class="kw">&lt;/think&gt;</span></pre>
     </div>
     <p style="font-size: 0.88rem; color: var(--text-dim);">
-      Same chain in English: ~45 tokens. In CSLv3: ~18. ≈2.5× compression on reasoning — less than the 5-6× on specs because chain-of-thought has less structural regularity, but still substantial.
+      Same chain in English: ~45 tokens. In CSL: ~18. ≈2.5× compression on reasoning — less than the 5-6× on specs because chain-of-thought has less structural regularity, but still substantial.
     </p>
   </section>
 
@@ -709,7 +710,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     <p>Layered from practical primitives to dependent types. Lower tiers for daily use; higher tiers surface only where the problem demands them.</p>
 
     <h3>Tier 1 — primitives</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="ty">u8</span>  <span class="ty">u16</span>  <span class="ty">u32</span>  <span class="ty">u64</span>      <span class="cm"># unsigned integers</span>
 <span class="ty">i8</span>  <span class="ty">i16</span>  <span class="ty">i32</span>  <span class="ty">i64</span>      <span class="cm"># signed integers</span>
 <span class="ty">f32</span> <span class="ty">f64</span>                   <span class="cm"># IEEE 754 floats</span>
@@ -720,7 +721,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Tier 2 — compounds</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre>[<span class="ty">T</span>; <span class="num">N</span>]         <span class="cm"># fixed-length array</span>
 [<span class="ty">T</span>; _]         <span class="cm"># dynamic array / slice</span>
 <span class="ty">T</span> | <span class="ty">U</span>         <span class="cm"># union / sum</span>
@@ -733,7 +734,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Tier 3 — algebraic</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">def</span> <span class="ty">DamageType</span><span class="sfx">'t</span> = <span class="kw">enum</span>[
   physical  { slash, pierce, blunt }
   elemental { fire, ice, lightning, earth, water, wind }
@@ -742,7 +743,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Tier 4 — dependent &amp; refinement (aspirational)</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">Π</span><span class="op">⟨</span>n: <span class="ty">ɴ</span><span class="op">⟩</span> <span class="op">→</span> <span class="ty">ᴠ</span><span class="op">⟨</span><span class="ty">f32</span>; n<span class="op">⟩</span>     <span class="cm"># pi-type: length depends on input</span>
 <span class="kw">Σ</span><span class="op">⟨</span>n: <span class="ty">ɴ</span>, v: <span class="ty">ᴠ</span><span class="op">⟨</span><span class="ty">f32</span>; n<span class="op">⟩⟩</span>    <span class="cm"># sigma-type</span>
 
@@ -763,7 +764,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
           <tr>
             <th scope="col">Content type</th>
             <th scope="col" class="num-cell">English (tokens)</th>
-            <th scope="col" class="num-cell">CSLv3 (tokens)</th>
+            <th scope="col" class="num-cell">CSL (tokens)</th>
             <th scope="col" class="num-cell">Ratio</th>
           </tr>
         </thead>
@@ -810,7 +811,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
           </tr>
         </thead>
         <tbody>
-          <tr class="highlight"><td>CSLv3</td><td class="num-cell">0.633</td><td class="num-cell">0.632</td></tr>
+          <tr class="highlight"><td>CSL</td><td class="num-cell">0.633</td><td class="num-cell">0.632</td></tr>
           <tr><td>APL</td><td class="num-cell">0.168</td><td class="num-cell">0.176</td></tr>
           <tr><td>Lojban</td><td class="num-cell">0.379</td><td class="num-cell">0.379</td></tr>
           <tr><td>English prose</td><td class="num-cell">1.000</td><td class="num-cell">1.000</td></tr>
@@ -818,7 +819,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
       </table>
     </div>
     <div class="caveat">
-      <strong>Caveat — LLM familiarity ≠ density.</strong> APL is dramatically denser than CSLv3 on raw character count, but LLMs score it with higher per-token perplexity because they've seen far less of it in training. The same bias inflates Lojban perplexity. CSLv3 sits deliberately in the middle: dense enough to compress 5–6× over prose on spec content, but built from primitives (ASCII aliases, dot-compounds, suffix morphemes) that modern tokenizers handle well. These numbers measure different things in different coordinate frames — do not read them as a ranking.
+      <strong>Caveat — LLM familiarity ≠ density.</strong> APL is dramatically denser than CSL on raw character count, but LLMs score it with higher per-token perplexity because they've seen far less of it in training. The same bias inflates Lojban perplexity. CSL sits deliberately in the middle: dense enough to compress 5–6× over prose on spec content, but built from primitives (ASCII aliases, dot-compounds, suffix morphemes) that modern tokenizers handle well. These numbers measure different things in different coordinate frames — do not read them as a ranking.
     </div>
 
     <h3 style="margin-top: 2rem;">Side-by-side showcase</h3>
@@ -828,8 +829,8 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
 
   <section id="spec-template">
     <h2>§10 · Spec template</h2>
-    <p>Every CSLv3 spec has the same canonical shape. Six headers are the minimum an implementer needs to act.</p>
-    <div class="code-block" data-lang="cslv3">
+    <p>Every CSL spec has the same canonical shape. Six headers are the minimum an implementer needs to act.</p>
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">§</span> <span class="fn">&lt;NAME&gt;</span>.spec
 
 <span class="kw">§ GOAL</span>
@@ -869,7 +870,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
   <section id="worked-example">
     <h2>§11 · Worked example — HTTP request handler</h2>
     <p>Domain-neutral, written to the template above. From <code>specs/06_SPEC.csl</code>.</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">§</span> http<span class="op">.</span>handler<span class="op">.</span>spec                    <span class="gly">◐</span>
 
 <span class="kw">§ GOAL</span>
@@ -937,7 +938,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
 <span class="kw">∎</span></pre>
     </div>
     <p style="font-size: 0.88rem; color: var(--text-dim);">
-      English equivalent: ~800 words. CSLv3: ~50 lines, ~220 tokens. ≈4× compression on this spec.
+      English equivalent: ~800 words. CSL: ~50 lines, ~220 tokens. ≈4× compression on this spec.
     </p>
   </section>
 
@@ -965,7 +966,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
           </tr>
           <tr>
             <td><strong>Peirce Existential Graphs</strong> <span style="color:var(--text-dim);">(1896–1914)</span></td>
-            <td>Spatial relations carry logical meaning. Enclosure = negation; adjacency = conjunction. CSLv3 linearizes: indent = scope, same-indent = AND.</td>
+            <td>Spatial relations carry logical meaning. Enclosure = negation; adjacency = conjunction. CSL linearizes: indent = scope, same-indent = AND.</td>
           </tr>
           <tr>
             <td><strong>Egyptian Determinatives</strong></td>
@@ -977,7 +978,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
           </tr>
           <tr>
             <td><strong>Lojban</strong></td>
-            <td>Unambiguous grammar — every statement has exactly one parse. CSLv3 targets LL(2).</td>
+            <td>Unambiguous grammar — every statement has exactly one parse. CSL targets LL(2).</td>
           </tr>
         </tbody>
       </table>
@@ -1005,8 +1006,8 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
       16 specification files + session handoffs + the reference compiler. The <code>.csl</code> files are the authoritative source of truth for every claim on this page.
     </p>
     <div class="specs-grid">
-      <a class="spec-item" href="https://github.com/Apocky/CSLv3">
-        <span class="spec-name">→ github.com/Apocky/CSLv3</span>
+      <a class="spec-item" href="https://github.com/ApockyCSSL/CSLv3">
+        <span class="spec-name">→ github.com/ApockyCSSL/CSLv3</span>
         <span class="spec-desc">Repository · LL(2) parser · type-check · IR · SMT · LSP v3.17 · 5 emit targets · eval harness · 16 specs.</span>
       </a>
       <div class="spec-item">
@@ -1120,12 +1121,14 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
 
 <footer>
   <div class="attribution">Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ</div>
-  <div>CSLv3 v1.7.0 · released 2026-04-18 · living document</div>
+  <div>CSL v1.7.0 · released 2026-04-18 · living document</div>
   <div class="links">
-    <a href="/sigil">Sigil (CSSLv3)</a>
-    <a href="https://github.com/Apocky/CSLv3">GitHub</a>
+    <a href="/sigil">Sigil (CSSL)</a>
+    <a href="https://github.com/ApockyCSSL/CSLv3">GitHub</a>
     <a href="/llms-full.txt">llms-full.txt</a>
     <a href="/LICENSE-CONTENT">license</a>
+    <a href="/csl/cslv3.csl">View in CSL</a>
+    <a href="/site-map">Site Map</a>
   </div>
   <div class="tagline">density = sovereignty · consent = OS</div>
   <div style="margin-top: 1rem; font-size: 0.7rem; color: var(--text-dim);">

@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sigil · CSSL — AI-authored systems language</title>
-<meta name="description" content="Sigil (CSSL): single-source dual-emit systems language. Row-polymorphic effects, refinement types, autodiff, capabilities. Vulkan 1.4 + Level-Zero targets.">
+<meta name="description" content="Sigil (CSSL): a single-source dual-emit systems language for game engines. Row-polymorphic effects, refinement types, source-to-source autodiff, Pony-6 capabilities, MLIR-IR, Vulkan 1.4 + Level-Zero targets. Status: compiler in active development.">
 <link rel="canonical" href="https://cssl.dev/sigil">
-<link rel="alternate" type="text/plain" href="/csl/sigil.csl" title="Sigil / CSSL — CSL notation">
 <meta name="theme-color" content="#07070c">
 <meta name="color-scheme" content="dark">
 <meta name="robots" content="index, follow">
@@ -24,38 +23,39 @@
 <meta name="twitter:title" content="Sigil · CSSL">
 <meta name="twitter:description" content="Single-source dual-emit systems language. Effects, refinement types, autodiff, caps.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
-<meta name="twitter:image:alt" content="Sigil · CSSL — AI-authored systems language">
-<meta name="author" content="Shawn Wolfgang Michael Baker">
-<meta name="keywords" content="Sigil, CSSL, Caveman Sigil Substrate Language, systems language, game engine language, shader language, SPIR-V, Vulkan, x86-64, autodiff, refinement types, effect system, MLIR, Pony capabilities, DGI, AI programming language, compiler">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="alternate" type="text/plain" href="/csl/sigil.csl" title="Sigil/CSSL reference in CSL notation">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Sigil (CSSL)",
-  "alternateName": "Caveman Sigil Substrate Language",
-  "description": "Single-source dual-emit systems language for game engines. Row-polymorphic effects, refinement types, source-to-source autodiff, Pony-6 capabilities, MLIR IR. Compiles to x86-64 + SPIR-V.",
-  "url": "https://cssl.dev/sigil",
-  "dateModified": "2026-04-19",
+  "name": "Sigil",
+  "alternateName": ["CSSL", "Caveman Sigil Substrate Language"],
+  "description": "A single-source dual-emit systems language for game engines. Row-polymorphic effects, refinement types, source-to-source autodiff, Pony-6 capabilities, MLIR-IR, Vulkan 1.4 + Level-Zero targets. Pre-1.0; compiler in active development.",
   "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Windows, Linux, macOS",
-  "inLanguage": "en",
-  "license": "https://creativecommons.org/licenses/by/4.0/",
-  "author": { "@type": "Person", "name": "Shawn Wolfgang Michael Baker" },
-  "publisher": { "@type": "Organization", "name": "cssl.dev", "url": "https://cssl.dev" },
-  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://cssl.dev/sigil" },
-  "image": "https://cssl.dev/og/home.png"
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://cssl.dev/sigil",
+  "codeRepository": "https://github.com/ApockyCSSL/CSSLv3",
+  "programmingLanguage": "Rust",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Person",
+    "name": "Shawn Wolfgang Michael Baker"
+  },
+  "keywords": "Sigil, CSSL, systems language, game engine, SPIR-V, Vulkan, x86-64, autodiff, effects, refinement types, AI programming",
+  "softwareVersion": "pre-1.0",
+  "releaseNotes": "Stage-0 compiler live in Rust. Stage-1 bootstrap in Sigil planned."
 }
 </script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
-  --text: #b8b4a8; --text-dim: #9a9a8e; --text-bright: #e8e4d8;
+  --text: #b8b4a8; --text-dim: #6b6860; --text-bright: #e8e4d8;
   --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
   --border: #1a1a28;
   --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
@@ -457,10 +457,9 @@ footer .tagline {
 <header class="site-header">
   <a href="/" class="back-link">cssl.dev</a>
   <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
-  <a href="/csl/sigil.csl" class="version" style="color:var(--gold-dim);font-size:0.72rem;letter-spacing:0.08em;" title="View this page encoded in CSL notation">§ view in CSL</a>
 </header>
 
-<div class="hero">
+<div class="hero" role="banner">
   <div class="hero-glyph" aria-hidden="true">◇ § ◇</div>
   <h1><span>Sigil</span></h1>
   <div class="hero-sub">CSSL · Caveman Sigil Substrate Language</div>
@@ -478,7 +477,7 @@ footer .tagline {
       <div>
         <span class="status-label">Status</span>
         <strong>Compiler in active development.</strong>
-        <span>Stage-0 scaffold stood up; parser + AST + HIR + 31/31 body-lower + F1 autodiff PROVEN (62/62) + HM foundation. Comprehensive test suite, 0 clippy warnings, 6/6 commit gates. Active development.</span>
+        <span>Stage-0 scaffold stood up; parser + AST + HIR + 31/31 body-lower + F1 autodiff PROVEN (62/62) + HM foundation. 1121 tests, 0 clippy warnings, 6/6 commit gates. Session 4 in progress.</span>
       </div>
     </div>
   </div>
@@ -659,7 +658,7 @@ footer .tagline {
         </tbody>
       </table>
     </div>
-    <h3>Discharge timing</h3>
+    <h4>Discharge timing</h4>
     <p>Effects fall into three discharge buckets — how the compiler verifies them.</p>
     <ul class="bullet-list">
       <li><strong>Compile-time only:</strong> <code>{NoAlloc}</code>, <code>{NoRecurse}</code>, <code>{NoUnbounded}</code>, <code>{DetRNG}</code>, <code>{PureDet}</code>, <code>{Reversible}</code>, <code>{CPU/GPU/XMX/RT}</code>, <code>{SIMD*}</code>, <code>{NUMA/Cache}</code>, <code>{Backend/Target}</code>, <code>{Region}</code>, <code>{Sensitive/Privilege}</code>.</li>
@@ -723,7 +722,7 @@ footer .tagline {
         </ul>
       </div>
     </div>
-    <h3>Backend surface</h3>
+    <h4>Backend surface</h4>
     <div class="table-wrap">
       <table>
         <caption>Backend capability matrix</caption>
@@ -931,9 +930,9 @@ footer .tagline {
     <h2>Repository &amp; Specs</h2>
     <p>Specification is v1-complete. Compiler is in <code>compiler-rs/</code> across 31 workspace crates. Everything is in one repository.</p>
     <div class="feature-grid">
-      <a class="feature" href="https://github.com/Apocky/CSSL3" style="border-bottom: 1px solid var(--border);">
+      <a class="feature" href="https://github.com/ApockyCSSL/CSSLv3" style="border-bottom: 1px solid var(--border);">
         <div class="feature-id">REPOSITORY</div>
-        <h3>github.com/Apocky/CSSL3</h3>
+        <h3>github.com/ApockyCSSL/CSSLv3</h3>
         <p>25 spec files, 31 compiler crates, examples, DECISIONS.md, session handoffs. Rust-toolchain pinned.</p>
       </a>
       <div class="feature">
@@ -954,7 +953,7 @@ footer .tagline {
       <div class="feature">
         <div class="feature-id">CI GATES</div>
         <h3>6/6 per commit</h3>
-        <p>fmt · clippy · test · doc · spec-xref · reproducibility. Comprehensive test suite, 0 clippy warnings, 0 unresolved xrefs.</p>
+        <p>fmt · clippy · test · doc · spec-xref · reproducibility. 1121 tests, 0 clippy warnings, 0 unresolved xrefs as of Session 4.</p>
       </div>
       <div class="feature">
         <div class="feature-id">RESEARCH</div>
@@ -981,7 +980,7 @@ footer .tagline {
           <tr><td><strong>Kind</strong></td><td>programming language</td><td>specification notation</td></tr>
           <tr><td><strong>Output</strong></td><td>native binaries + SPIR-V</td><td>structured specs, CoT substrate, reference compiler input</td></tr>
           <tr><td><strong>Primary file ext.</strong></td><td><code>.cssl</code></td><td><code>.csl</code></td></tr>
-          <tr><td><strong>Status</strong></td><td>compiler in development</td><td>v1.7.0 released; parser shipped</td></tr>
+          <tr><td><strong>Status</strong></td><td>compiler in development</td><td>v1.6 released; parser shipped</td></tr>
           <tr><td><strong>Shared</strong></td><td colspan="2">the "Caveman" density thesis · density = sovereignty · consent = OS</td></tr>
         </tbody>
       </table>
@@ -1031,23 +1030,14 @@ footer .tagline {
     </div>
     <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
     <div class="links">
-      <a href="/">Home</a>
-      <a href="/getting-started">Getting Started</a>
       <a href="/CSLv3">CSL reference</a>
-      <a href="/examples">Examples</a>
-      <a href="/thinking-guides">Thinking Guides</a>
-      <a href="/ethics-guides">Ethics Guides</a>
-      <a href="/security-guides">Security Guides</a>
-      <a href="/philosophy">Philosophy</a>
-      <a href="/faq">FAQ</a>
-      <a href="/contributing">Contributing</a>
-      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="/sitemap.xml">Site Map</a>
-      <a href="/site-map.html">Page Index</a>
+      <a href="https://github.com/ApockyCSSL/CSSLv3">GitHub</a>
       <a href="/llms.txt">llms.txt</a>
+      <a href="/csl/sigil.csl">View in CSL</a>
+      <a href="/site-map">Site Map</a>
     </div>
     <div class="license-line">
-      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
     </div>
     <div class="tagline">density = sovereignty · consent = OS</div>
   </div>
@@ -1068,7 +1058,5 @@ footer .tagline {
 
 <script src="/js/feedback.js" defer></script>
 <script src="/js/sw-register.js" defer></script>
-<script defer src="/_vercel/insights/script.js"></script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>

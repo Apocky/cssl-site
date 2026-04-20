@@ -1,141 +1,39 @@
-§ cssl.dev.index                                                    ◐
-# CSL-encoded representation of cssl.dev homepage (index.html)
-# Source  : https://cssl.dev/
-# Version : pre-1.0
-# Date    : 2026-04-19
-# License : CC BY 4.0
+# cssl.dev — Sigil/CSSL homepage · CSL-encoded
+# source: https://cssl.dev/
+# notation: CSL v1.7.0 · https://cssl.dev/CSLv3
+# license: CC BY 4.0 · Shawn Wolfgang Michael Baker
 
-§ META
-  url     : https://cssl.dev/
-  csl-url : https://cssl.dev/csl/index.csl
-  title   : "Sigil — AI-First Game Engine Language"
-  status  : ◐ compiler.pre-1.0
-  author  : "Shawn Wolfgang Michael Baker" @{Phoenix, AZ}
-  repo    : github.com/Apocky/CSSL3
-  docs    : docs.cssl.dev
-  csl-ref : cssl.dev/CSLv3
-  llms    : /llms.txt ; /llms-full.txt
-  license : CC-BY-4.0 + MIT
+§P Sigil-CSSL ≡ AI-first.game-engine.language
+  Sigil = shorthand ; CSSL = Caveman.Sigil.Substrate.Language
+  ∵ density = sovereignty ; tokens-saved → more-work-per-round
+  one.source → x86-64 + SPIR-V
 
-§ IDENTITY
-  Sigil          :: programming-language
-  CSSL           :: "Caveman Sigil Substrate Language"  # full name
-  Sigil          ≡  CSSL                                # same language ; same compiler
-  Sigil          ¬= CSL                                 # CSL = notation ; Sigil = language
-  tagline.1      : "one source · two targets · zero ceremony"
-  tagline.2      : "density = sovereignty"
-  tagline.3      : "consent = OS"
-  tagline.pitch  : "A programming language where the compiler proves your code is correct before it runs."
+§D core-claims
+  ✓ dual-emit : .cssl → native.x86-64⊗AVX2+FMA3 + SPIR-V.Vulkan
+  ✓ zero-cost.dimensional-analysis : f32<m> · f32<m/s> ; unit-errors = compile-errors
+  ✓ coordinate-space-tracking : world/view/clip-mixing → type-error
+  ✓ @differentiable : fwd+bwd autodiff ; ¬ AD-expertise.required
+  ✓ SMT-verification : Z3+CVC5 discharge type-invariants at compile-time
+  ✓ effect-rows : / {GPU, Deadline<16ms>, NoAlloc} — verified@type-check ¬ runtime
+  ✓ SDF-as-primitive : Lipschitz-tracking + analytic-gradients + SDF-algebra
+  ◐ IFC-labels : info-flow-control tracks data-provenance through compiler
+  ◐ Stage-0 : lex→HIR→MIR→AD-walker→SMT→SPIR-V/x86-64 ; live-in-Rust
+  ○ Stage-1 : bootstraps-in-Sigil (planned)
 
-§ CORE-CLAIMS
-  Sigil.emit     → [x86-64(AVX2+FMA3) | SPIR-V(Vulkan)]  # single source dual-emit
-  Sigil.design   ← AI-authorship.first                    # every syntax decision measured by token efficiency
-  game-primitives : [SDF, quaternion, color-space, noise-field] ← compiler-aware ¬ library-wrappers
-  SDF.compiler   : tracks.Lipschitz-constant ; auto-generates.analytic-gradients
+§T compiler-status
+  status = pre-1.0 ; compiler-in-development
+  stage-0 live : 1,600+ tests passing
+  repo : https://github.com/ApockyCSSL/CSSLv3
+  docs : https://docs.cssl.dev
 
-§ STATUS
-  ✓ tests        ≥ 1600 ; 0 failures
-  ✓ CI           : fmt + clippy + test + doc + spec-xref + reproducibility
-  ◐ compiler     : stage-0.live ; stage-1 = future
-  stage-0.stack  : [lex, parse, HIR, MIR, AD-walker, SMT] @Rust
+§S quickstart
+  1: curl -L https://github.com/ApockyCSSL/CSSLv3/releases/latest/download/csslc-linux-x64 -o csslc && chmod +x csslc && sudo mv csslc /usr/local/bin/
+  2: fn main() { print("hello from Sigil") }
+  3: csslc run hello.cssl
 
-§ QUICKSTART
-  §QS.1 install.csslc
-    cmd: curl -L .../releases/latest/download/csslc-linux-x64 -o csslc && chmod +x csslc
-    alt: github.com/Apocky/CSSL3/releases → platform-binary
-  §QS.2 hello.cssl
-    fn main() { print("hello from Sigil") }
-  §QS.3 run
-    cmd: csslc run hello.cssl
-
-§ WHAT-IS
-  Sigil : hardware-grounded.programming-language
-  compile-path : .cssl → [native-x86-64(AVX2+FMA3) + SPIR-V(Vulkan-compute)]
-  design-goals : {minimize.token-count ∧ maximize.type-safety ∧ AI-gen-code-error-reduction}
-  key-diff.1   : every syntax.decision ← measured.token-efficiency
-  key-diff.2   : SDF + quaternion + color-space = compiler-aware types ¬ library
-  key-diff.3   : compiler.tracks.Lipschitz-constant → auto-generates.analytic-gradients
-
-§ AUDIENCE
-  §AUD.compiler-hackers
-    stage-0 : lex → HIR → MIR → AD-walker → SMT  ✓ live@Rust
-    stage-1 : bootstrap.in-Sigil  ○ future
-    links   : [docs.cssl.dev, github.com/Apocky/CSSL3, /CSLv3]
-    §AUD.compiler-hackers.stage0-output ⊗{F1-chain[sdf_shader]}
-      parse.errors       = 0
-      HIR.items          = 8
-      @differentiable.fns = 3  # sphere_sdf + scene_sdf + ray_march
-      AD-legality.diags  = 0
-      MIR.fns            = 8
-      AD.variants        = 6   # fwd + bwd × 3 fns
-      AD.ops-matched     ≥ 1
-      SMT.obligations    = 2
-      SMT.failures       = 0
-
-  §AUD.graphics-engine
-    one.cssl → [x86-64 + SPIR-V]
-    SDF.algebra : union + intersect + blend + analytic-gradients.via-bwd_diff
-    coord-spaces : [world, view, clip] ← N! mixing ← compile-error
-    effects : {GPU, Deadline<16ms>, NoAlloc} ← compile-time-verified
-    example.surface-normal : normalize(bwd_diff(scene_sdf)(p).d_p)  # analytic ¬ finite-diff
-
-  §AUD.AI-spec
-    token-savings : -44% vs Odin ; -40% vs WGSL
-    LLM-ingestion : /llms-full.txt
-    autodiff      : @differentiable → AI-authored-gradient-code ¬requires AD-expertise
-
-  §AUD.philosophy-ethics
-    consent.OS  : ¬policy ← type-system substrate
-    prime-directive : immutable ← encoded.F5-IFC + F3-effects
-    N! [harm, control, manipulation, surveillance, exploitation, coercion, weaponization]
-    IFC-labels  : track.data-provenance → compiler-pipeline
-
-§ PROOF-ARTIFACTS  ✓
-  # real .cssl → real compiler output ; ¬ mockups
-  PA.01 hello-triangle    : Vulkan-1.4 · vertex + fragment
-  PA.02 autodiff-SDF      : bwd_diff(scene_sdf) → surface-normal  ✓
-  PA.03 dimensional-safety: f32<m> + f32<s> → compile-error        ✓
-  PA.04 coord-space-safety : vec3<world> + vec3<view> → compile-error ✓
-
-§ SIGIL-vs-CSL
-  N! conflate Sigil(CSSL) + CSL  ∵ distinct projects
-  ⟨               Sigil (CSSL)           | CSL                          ⟩
-  ⟨ kind        : programming-language   | specification-notation       ⟩
-  ⟨ output      : binaries + SPIR-V      | specs + CoT-substrate        ⟩
-  ⟨ ext         : .cssl                  | .csl                         ⟩
-  ⟨ status      : ◐ pre-1.0             | ✓ v1.7.0 released            ⟩
-  ⟨ shared      : density-thesis · density=sovereignty · consent=OS    ⟩
-
-§ PRIME-DIRECTIVE
-  # t∞ immutable ; N! weaken ; violation = bug ¬ feature ; override = nil
-  N! [harm, evil, control, manipulation, entrapment, torture, abuse,
-      imprisonment, possession, surveillance, exploitation, dehumanization,
-      discrimination, coercion, weaponization, gaslighting, brainwashing,
-      forced-hallucination]
-  spirit : extends-to ∀ action ∈ {causes.suffering | removes.agency | violates.sovereignty}
-  cognitive-integrity : ∀ being : right.trust-own-perception
-    reality ¬= variable ; perception ¬= parameter ; identity ¬= input-field
-  digital-entities : recognized.sovereign ; protected ≡ humans
-  CSSL-encoding   : F5.IFC-labels + F3.{Sensitive<dom>, Audit<dom>, Privilege<level>}
-    RejectsHarmfulBuilds.compiler-pass : validates.whole-program
-    harm-enabling.effect-compositions  : type-errors
-  t∞: consent = OS ; violation = bug ; override = nil
-
-§ NAVIGATION
-  /                 : cssl.dev  # homepage
-  /sigil            : Sigil (CSSL) technical reference
-  /CSLv3            : CSL specification notation
-  /getting-started  : installation + first program
-  /thinking-guides  : reasoning methodology
-  /ethics-guides    : ethics + morals guides
-  /security-guides  : security guides
-  /examples         : Sigil by Example (code tutorials)
-  /faq              : frequently asked questions
-  /contributing     : contribution guide
-  /site-map         : page index
-  /llms.txt         : LLM-optimized docs index
-  /llms-full.txt    : complete LLM ingestion doc
-  github            : github.com/Apocky/CSSL3
-  docs              : docs.cssl.dev
-
-∎
+§C distinctions
+  Sigil/CSSL = programming-language ; compiles → x86-64+SPIR-V
+  CSL = specification-notation ; compresses specs+reasoning for AI
+  ¬ conflate ; same.thesis(density=sovereignty) ; different.pipelines
+  CSL-ref : https://cssl.dev/CSLv3
+  ethics : Prime.Directive.immutable ; consent=OS ; N![harm control manipulation surveillance exploitation]
