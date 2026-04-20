@@ -1,7 +1,7 @@
 {
   "name": "cssl.dev — CSLv3 & Sigil",
   "short_name": "cssl.dev",
-  "description": "CSLv3 density notation + Sigil AI-first language. Designed for how AI thinks.",
+  "description": "CSL density notation + Sigil AI-first language + Thinking Guides. Designed for how AI thinks.",
   "start_url": "/CSLv3",
   "scope": "/",
   "display": "standalone",
