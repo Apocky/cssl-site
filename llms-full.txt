@@ -163,7 +163,7 @@ with the failing constraint and context.
 ## §F · GPU Effects and SPIR-V Emission
 
 Sigil emits SPIR-V 1.3+ for Vulkan compute and graphics. The same source file
-compiles to both CPU (x86-64 via Cranelift fast-dev or LLVM prod) and GPU.
+compiles to both CPU (x86-64 via Cranelift) and GPU.
 
 Entry points are annotated:
 
@@ -194,7 +194,7 @@ invariant. The compiler tracks it; you cannot accidentally break SDF properties.
 **Compiler CLI (`csslc`):**
 
     csslc run hello.cssl              # compile + run (dev mode, Cranelift)
-    csslc build hello.cssl            # compile to binary (release mode, LLVM)
+    csslc build hello.cssl            # compile to binary (release mode, Cranelift)
     csslc check hello.cssl            # type-check + SMT only; no codegen
     csslc emit-spv hello.cssl         # emit SPIR-V only
     csslc emit-x64 hello.cssl         # emit x86-64 assembly
@@ -236,7 +236,7 @@ invariant. The compiler tracks it; you cannot accidentally break SDF properties.
       → MIR lowering (SSA + structured regions)
       → AD walker (emits fwd/bwd MIR variants)
       → SMT translation (Z3/CVC5 dispatch)
-      → Codegen: Cranelift (fast-dev) | LLVM (release) | SPIR-V emitter
+      → Codegen: Cranelift (dev + release) | SPIR-V emitter
 
 All stages are unit-tested independently. The 1,600+ test suite covers:
 - Parser correctness (round-trip)
