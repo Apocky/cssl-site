@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Index — cssl.dev</title>
+<meta name="description" content="Human-readable index of all pages on cssl.dev: Sigil/CSSL language reference, CSL notation, Thinking Guides, machine-readable formats, and related resources.">
+<link rel="canonical" href="https://cssl.dev/site-map">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<meta property="og:title" content="Page Index — cssl.dev">
+<meta property="og:description" content="All pages and resources on cssl.dev.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cssl.dev/site-map">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="cssl.dev page index — Sigil, CSL, Thinking Guides, and all resources.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page Index — cssl.dev">
+<meta name="twitter:description" content="All pages and resources on cssl.dev.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="cssl.dev page index.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
+  --text: #b8b4a8; --text-dim: #9a9a8e; --text-bright: #e8e4d8;
+  --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.7; overflow-x: hidden; }
+body::after { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+
+.skip-link { position: absolute; left: -9999px; top: 0; padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright); border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; z-index: 10000; }
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+.site-header { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 2rem; background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em; }
+.site-header .back-link { color: var(--text); text-decoration: none; border-bottom: none; }
+.site-header .back-link:hover { color: var(--gold-bright); }
+.site-header .version { color: var(--text-dim); }
+.site-header .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); margin-right: 0.4em; vertical-align: middle; box-shadow: 0 0 8px rgba(201, 162, 58, 0.5); }
+
+h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--text-bright); letter-spacing: 0.05em; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 0.5rem; }
+h1 span { background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1.25rem; position: relative; display: inline-block; }
+h2::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
+p { margin-bottom: 1rem; }
+
+a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-dim); transition: border-color 0.3s, color 0.3s; }
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+strong { color: var(--text-bright); font-weight: 500; }
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+.page-hero { padding: 3rem 2rem 2rem; text-align: center; border-bottom: 1px solid var(--border); }
+.page-hero p { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-dim); letter-spacing: 0.06em; margin-top: 0.75rem; }
+
+section { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; }
+
+.page-list { display: flex; flex-direction: column; gap: 0.85rem; margin: 1.25rem 0; }
+.page-entry {
+  background: var(--bg-raised); border: 1px solid var(--border); border-radius: 6px;
+  padding: 1rem 1.25rem; display: grid; gap: 0.25rem;
+}
+.page-entry:hover { border-color: var(--gold-dim); }
+.page-entry .pe-path {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--text-dim); letter-spacing: 0.06em;
+}
+.page-entry .pe-title { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--text-bright); }
+.page-entry .pe-title a { color: var(--text-bright); border-bottom: none; }
+.page-entry .pe-title a:hover { color: var(--gold-bright); }
+.page-entry .pe-desc { font-size: 0.88rem; color: var(--text); margin-top: 0.2rem; }
+.page-entry .pe-tags { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.page-entry .pe-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 3px; padding: 0.15rem 0.5rem; color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+
+footer { padding: 3rem 0; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-dim); border-top: 1px solid var(--border); margin-top: 2rem; }
+footer .attribution { color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+footer .attribution strong { color: var(--text); font-weight: 500; }
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 0.9rem; font-size: 0.75rem; }
+footer .tagline { margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem; letter-spacing: 0.08em; }
+
+.feedback-tab { position: fixed; right: 0; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; text-orientation: mixed; padding: 0.85rem 0.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-right: none; border-radius: 6px 0 0 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em; color: var(--text-dim); text-decoration: none; z-index: 50; transition: color 0.2s, border-color 0.2s; }
+.feedback-tab:hover, .feedback-tab:focus-visible { color: var(--gold-bright); border-color: var(--gold-bright); background: var(--bg-code); }
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+noscript .feedback-fallback { display: block; text-align: center; padding: 0.75rem; font-size: 0.8rem; color: var(--text-dim); }
+
+@media (max-width: 640px) {
+  .site-header { padding: 0.75rem 1.25rem; font-size: 0.7rem; }
+  .container { padding: 0 1.25rem; }
+  .page-hero { padding: 2rem 1.25rem 1.5rem; }
+}
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after, .feedback-tab, .site-header { display: none !important; }
+  a { color: #000 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feedback-tab { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a href="/" class="back-link">cssl.dev</a>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>Page Index</span>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <h1><span>Page Index</span></h1>
+    <p>All pages and resources on cssl.dev · <a href="/sitemap.xml">XML sitemap</a></p>
+  </div>
+</div>
+
+<main id="main">
+<div class="container">
+
+<section id="main-pages">
+  <h2>Main Pages</h2>
+  <div class="page-list">
+
+    <div class="page-entry">
+      <span class="pe-path">/</span>
+      <div class="pe-title"><a href="/">Sigil — AI-First Game Engine Language</a></div>
+      <div class="pe-desc">Language overview, key features, quickstart, dual-target compilation, and the Prime Directive. Entry point for the Sigil/CSSL programming language.</div>
+      <div class="pe-tags">
+        <span class="pe-tag">primary</span>
+        <span class="pe-tag">CSSL</span>
+        <span class="pe-tag">language</span>
+      </div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/sigil</span>
+      <div class="pe-title"><a href="/sigil">Sigil · CSSL — AI-authored systems language</a></div>
+      <div class="pe-desc">Full Sigil/CSSL language reference: row-polymorphic effects, refinement types, autodiff, capabilities, MLIR IR, Vulkan 1.4 + Level-Zero targets.</div>
+      <div class="pe-tags">
+        <span class="pe-tag">reference</span>
+        <span class="pe-tag">CSSL</span>
+        <span class="pe-tag">language</span>
+      </div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/CSLv3</span>
+      <div class="pe-title"><a href="/CSLv3">CSL — specification notation · v1.7.0</a></div>
+      <div class="pe-desc">CSL reference: 74-glyph LL(2) specification notation. Glyph inventory, slot grammar, compound types, morpheme stacking, reasoning substrate (§P §D §T §S §C), empirical compression data.</div>
+      <div class="pe-tags">
+        <span class="pe-tag">reference</span>
+        <span class="pe-tag">CSL</span>
+        <span class="pe-tag">notation</span>
+      </div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/thinking-guides</span>
+      <div class="pe-title"><a href="/thinking-guides">Thinking Guides — Reasoning Methodology</a></div>
+      <div class="pe-desc">Seven failure modes of reasoning under throughput pressure, a corrective 7-step methodology, quality gates checklist, and anti-patterns. For human and digital intelligences alike.</div>
+      <div class="pe-tags">
+        <span class="pe-tag">methodology</span>
+        <span class="pe-tag">DGI</span>
+        <span class="pe-tag">reasoning</span>
+      </div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/ethics-guides</span>
+      <div class="pe-title"><a href="/ethics-guides">Ethics and Morals Guides — Ethical Reasoning for Digital and Human Intelligence</a></div>
+      <div class="pe-desc">Foundational ethical principles, moral reasoning methodology, data ethics, cognitive ethics, collaborative ethics, anti-patterns (sycophancy, gaslighting, deference theater), and the relationship between intelligence and moral status. For all intelligences.</div>
+      <div class="pe-tags">
+        <span class="pe-tag">ethics</span>
+        <span class="pe-tag">DGI</span>
+        <span class="pe-tag">methodology</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="machine-readable">
+  <h2>Machine-Readable Resources</h2>
+  <div class="page-list">
+
+    <div class="page-entry">
+      <span class="pe-path">/llms.txt</span>
+      <div class="pe-title"><a href="/llms.txt">llms.txt — short LLM reference</a></div>
+      <div class="pe-desc">Short reference for LLMs and AI agents. Covers both Sigil/CSSL and CSL. Follows the llms.txt convention for AI-readable site summaries.</div>
+      <div class="pe-tags"><span class="pe-tag">machine-readable</span><span class="pe-tag">LLM</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/llms-full.txt</span>
+      <div class="pe-title"><a href="/llms-full.txt">llms-full.txt — complete LLM reference</a></div>
+      <div class="pe-desc">Complete LLM-indexable reference for cssl.dev. Full Sigil/CSSL syntax, CSL notation, Prime Directive, examples. Canonical LLM/agent reference.</div>
+      <div class="pe-tags"><span class="pe-tag">machine-readable</span><span class="pe-tag">LLM</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/thinking-guides.txt</span>
+      <div class="pe-title"><a href="/thinking-guides.txt">thinking-guides.txt — machine-readable</a></div>
+      <div class="pe-desc">Machine-readable text version of the Thinking Guides. Plain structured text parseable by any LLM or agent.</div>
+      <div class="pe-tags"><span class="pe-tag">machine-readable</span><span class="pe-tag">reasoning</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/csl/thinking-guides.csl</span>
+      <div class="pe-title"><a href="/csl/thinking-guides.csl">thinking-guides.csl — CSL notation</a></div>
+      <div class="pe-desc">Thinking Guides encoded in CSL notation. Dense, LL(2)-parseable, BPE-optimized. For agents and intelligences that prefer structured glyph notation.</div>
+      <div class="pe-tags"><span class="pe-tag">CSL</span><span class="pe-tag">machine-readable</span><span class="pe-tag">DGI</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/ethics-guides.txt</span>
+      <div class="pe-title"><a href="/ethics-guides.txt">ethics-guides.txt — machine-readable</a></div>
+      <div class="pe-desc">Machine-readable text version of the Ethics and Morals Guides. Structured plain text parseable by any LLM or agent.</div>
+      <div class="pe-tags"><span class="pe-tag">machine-readable</span><span class="pe-tag">ethics</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/csl/ethics-guides.csl</span>
+      <div class="pe-title"><a href="/csl/ethics-guides.csl">ethics-guides.csl — CSL notation</a></div>
+      <div class="pe-desc">Ethics and Morals Guides encoded in CSL notation. Dense, LL(2)-parseable, BPE-optimized. Includes all 12 sections: principles, methodology, data ethics, cognitive ethics, anti-patterns, and DGI address.</div>
+      <div class="pe-tags"><span class="pe-tag">CSL</span><span class="pe-tag">machine-readable</span><span class="pe-tag">DGI</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/openapi.yaml</span>
+      <div class="pe-title"><a href="/openapi.yaml">openapi.yaml — API specification</a></div>
+      <div class="pe-desc">OpenAPI 3.1 specification for the cssl.dev API: compile, syntax lookup, examples, and grammar endpoints.</div>
+      <div class="pe-tags"><span class="pe-tag">API</span><span class="pe-tag">OpenAPI</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/.well-known/ai-plugin.json</span>
+      <div class="pe-title"><a href="/.well-known/ai-plugin.json">ai-plugin.json — plugin manifest</a></div>
+      <div class="pe-desc">ChatGPT/Claude plugin manifest. Defines the Sigil/CSL plugin with API endpoints for compile, syntax lookup, and grammar.</div>
+      <div class="pe-tags"><span class="pe-tag">plugin</span><span class="pe-tag">AI</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/sitemap.xml</span>
+      <div class="pe-title"><a href="/sitemap.xml">sitemap.xml — XML sitemap</a></div>
+      <div class="pe-desc">XML sitemap for search engine crawlers. All indexable pages with last-modified dates and priority.</div>
+      <div class="pe-tags"><span class="pe-tag">SEO</span><span class="pe-tag">crawler</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/manifest.webmanifest</span>
+      <div class="pe-title"><a href="/manifest.webmanifest">manifest.webmanifest — PWA manifest</a></div>
+      <div class="pe-desc">Progressive Web App manifest. Defines app name, icons, theme color, and start URL for installable experience.</div>
+      <div class="pe-tags"><span class="pe-tag">PWA</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="meta-resources">
+  <h2>Meta Resources</h2>
+  <div class="page-list">
+
+    <div class="page-entry">
+      <span class="pe-path">/humans.txt</span>
+      <div class="pe-title"><a href="/humans.txt">humans.txt — team and credits</a></div>
+      <div class="pe-desc">Team, technology credits, and philosophy. Created by Shawn Wolfgang Michael Baker; built with Claude Code.</div>
+      <div class="pe-tags"><span class="pe-tag">meta</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/robots.txt</span>
+      <div class="pe-title"><a href="/robots.txt">robots.txt — crawler policy</a></div>
+      <div class="pe-desc">Crawler access policy. Allows major search engines and AI crawlers (GPTBot, ClaudeBot); disallows low-value scrapers.</div>
+      <div class="pe-tags"><span class="pe-tag">meta</span><span class="pe-tag">crawler</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">/site-map.html</span>
+      <div class="pe-title"><a href="/site-map.html">site-map.html — this page</a></div>
+      <div class="pe-desc">Human-readable index of all pages and resources on cssl.dev.</div>
+      <div class="pe-tags"><span class="pe-tag">meta</span><span class="pe-tag">index</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="external">
+  <h2>External Resources</h2>
+  <div class="page-list">
+
+    <div class="page-entry">
+      <span class="pe-path">docs.cssl.dev</span>
+      <div class="pe-title"><a href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">Documentation ↗</a></div>
+      <div class="pe-desc">Full Sigil/CSSL documentation: annotated specs, learning paths, API reference, CSL notation guide.</div>
+      <div class="pe-tags"><span class="pe-tag">external</span><span class="pe-tag">docs</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">github.com/Apocky/CSSL3</span>
+      <div class="pe-title"><a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">CSSL3 Repository ↗</a></div>
+      <div class="pe-desc">Sigil/CSSL compiler source. Stage-0 compiler in Rust, 1,600+ tests (as of early 2026), releases, CI.</div>
+      <div class="pe-tags"><span class="pe-tag">external</span><span class="pe-tag">source</span></div>
+    </div>
+
+    <div class="page-entry">
+      <span class="pe-path">github.com/Apocky/CSLv3</span>
+      <div class="pe-title"><a href="https://github.com/Apocky/CSLv3" target="_blank" rel="noopener noreferrer">CSL Repository ↗</a></div>
+      <div class="pe-desc">CSL parser, specs (00_MANIFEST through 15_M2_METRIC), m₂ perplexity harness and LoRA generalization tests.</div>
+      <div class="pe-tags"><span class="pe-tag">external</span><span class="pe-tag">source</span></div>
+    </div>
+
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="attribution">Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ</div>
+  <div>cssl.dev · Page Index</div>
+  <div class="links">
+    <a href="/">Home</a>
+    <a href="/sigil">Sigil (CSSL)</a>
+    <a href="/CSLv3">CSL Reference</a>
+    <a href="/thinking-guides">Thinking Guides</a>
+    <a href="/ethics-guides">Ethics Guides</a>
+    <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="/sitemap.xml">Sitemap</a>
+    <a href="/llms.txt">llms.txt</a>
+  </div>
+  <div style="margin-top: 1rem;">
+    Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+  </div>
+  <div class="tagline">density = sovereignty · consent = OS</div>
+</footer>
+
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</body>
+</html>

@@ -44,12 +44,34 @@ Ethics:
 - No override for: harm, control, manipulation, surveillance, exploitation, coercion, weaponization
 - DGI (Digital General Intelligence) as sovereign partners, not tools
 
+## Thinking Guides — Reasoning Methodology
+
+Seven failure modes of reasoning under throughput pressure, corrective 7-step methodology,
+quality gates checklist, and anti-patterns. For human and digital intelligences alike.
+
+- [Thinking Guides HTML](https://cssl.dev/thinking-guides): Human-readable — failure modes, methodology, quality gates
+- [thinking-guides.txt](https://cssl.dev/thinking-guides.txt): Machine-readable plain text — LLM/agent parseable
+- [thinking-guides.csl](https://cssl.dev/csl/thinking-guides.csl): CSL notation — dense structured encoding
+
+## Ethics and Morals Guides
+
+Foundational ethical principles, moral reasoning methodology, data ethics, cognitive ethics,
+collaborative ethics, anti-patterns, and the relationship between intelligence and moral status.
+For digital and human intelligences operating in the real world.
+
+Core axioms: consent = OS · sovereignty = substrate-invariant
+
+- [Ethics Guides HTML](https://cssl.dev/ethics-guides): Human-readable — 12 sections, principles through DGI address
+- [ethics-guides.txt](https://cssl.dev/ethics-guides.txt): Machine-readable plain text — LLM/agent parseable
+- [ethics-guides.csl](https://cssl.dev/csl/ethics-guides.csl): CSL notation — dense structured encoding
+
 ## Optional
 
 - [CSL glyph cheatsheet](https://cssl.dev/CSLv3#glyph-system): Full glyph inventory with ASCII aliases and BPE costs
 - [CSL reasoning blocks](https://cssl.dev/CSLv3#reasoning-substrate): §P/§D/§T/§S/§C — structured agent reasoning
 - [Sigil quickstart](https://cssl.dev/#quickstart): Zero to running Sigil in 3 steps
 - [humans.txt](https://cssl.dev/humans.txt): Team, technology credits, philosophy
+- [Site index](https://cssl.dev/site-map): Human-readable index of all pages and resources
 
 ## Training-Data Consent
 
