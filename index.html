@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sigil · CSSLv3 — A Systems Language</title>
-<meta name="description" content="CSSLv3 (Sigil): a hardware-first systems language with autodiff, a 28-effect row system, SMT-backed refinement types, and no LLVM dependency. Working compiler — 31 Rust crates.">
+<title>Sigil · CSSL — A Systems Language</title>
+<meta name="description" content="CSSL (Sigil): a hardware-first systems language with autodiff, a 28-effect row system, SMT-backed refinement types, and no LLVM dependency. Working compiler — 31 Rust crates.">
 <meta name="author" content="Shawn Wolfgang Michael Baker">
 <link rel="canonical" href="https://cssl.dev/">
 <meta name="theme-color" content="#07070c">
 <meta name="color-scheme" content="dark">
-<meta property="og:title" content="Sigil · CSSLv3 — A Systems Language">
+<meta property="og:title" content="Sigil · CSSL — A Systems Language">
 <meta property="og:description" content="Hardware-first. Effect-native. Autodiff. No LLVM. Working compiler — 31 Rust crates.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cssl.dev/">
@@ -18,11 +18,12 @@
 <meta property="og:image" content="https://cssl.dev/og/home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sigil · CSSLv3 — systems language. density = sovereignty.">
+<meta property="og:image:alt" content="Sigil · CSSL — systems language. density = sovereignty.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sigil · CSSLv3 — A Systems Language">
+<meta name="twitter:title" content="Sigil · CSSL — A Systems Language">
 <meta name="twitter:description" content="Hardware-first. Effect-native. Autodiff. No LLVM. Working compiler.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="Sigil · CSSL — systems language. density = sovereignty.">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +37,7 @@
   --bg-raised: #0e0e16;
   --bg-code: #11111b;
   --text: #b8b4a8;
-  --text-dim: #6b6860;
+  --text-dim: #9a9a8e;
   --text-bright: #e8e4d8;
   --gold: #c9a23a;
   --gold-bright: #e8c85a;
@@ -610,6 +611,21 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 }
 @media print { .feedback-tab, .hero-scroll { display: none !important; } }
 
+/* === SKIP LINK === */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--gold);
+  color: var(--bg);
+  padding: 8px;
+  z-index: 100;
+  border-bottom: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+}
+.skip-link:focus { top: 0; }
+
 /* === PRINT === */
 @media print {
   html, body { background: #fff !important; color: #000 !important; }
@@ -634,14 +650,48 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "cssl.dev",
+      "url": "https://cssl.dev/",
+      "description": "Official site for Sigil (CSSL) — a hardware-first systems language, and CSL — the 74-glyph specification notation.",
+      "author": {
+        "@type": "Person",
+        "name": "Shawn Wolfgang Michael Baker"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "CSSL",
+      "alternateName": "Sigil",
+      "url": "https://cssl.dev/",
+      "description": "A hardware-first systems language with autodiff, a 28-effect row system, SMT-backed refinement types, and no LLVM dependency. Working compiler — 31 Rust crates.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, Windows, macOS",
+      "author": {
+        "@type": "Person",
+        "name": "Shawn Wolfgang Michael Baker"
+      },
+      "codeRepository": "https://github.com/Apocky/CSSL3",
+      "programmingLanguage": "Rust"
+    }
+  ]
+}
+</script>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 
+<main id="main">
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-glyph">◇ § ◇</div>
+  <div class="hero-glyph" aria-hidden="true">◇ § ◇</div>
   <h1><span>Sigil</span></h1>
-  <div class="hero-sub">CSSLv3 · Caveman Sigil Substrate Language</div>
+  <div class="hero-sub">CSSL · Caveman Sigil Substrate Language</div>
   <div class="hero-sub" style="animation-delay: 1s;">hardware-first · effect-native · autodiff · no llvm</div>
   <div class="hero-tagline">
     A systems language designed for how hardware works, how AI thinks, and what game engines actually need. A working compiler — not a forward-design.
@@ -655,15 +705,15 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <span class="chip">no LLVM</span>
     <span class="chip">Vulkan · D3D12 · Metal · WebGPU</span>
   </div>
-  <div class="hero-scroll">scroll</div>
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
 </div>
 
 <!-- WHAT IS CSSL -->
 <section>
 <div class="container">
-  <h2>What is CSSLv3</h2>
+  <h2>What is CSSL</h2>
   <p>
-    CSSLv3 — also called <strong>Sigil</strong> — is a systems language built from a bug retrospective. Every language feature corresponds to a class of runtime failure in real engine work: central-difference performance cliffs demanded source-to-source autodiff; CPU/GPU SDF divergence demanded effect-row gating; thin-SDF ray-march crashes demanded Lipschitz refinement; audio-callback heap allocations demanded a <code>{NoAlloc}</code> effect.
+    CSSL — also called <strong>Sigil</strong> — is a systems language built from a bug retrospective. Every language feature corresponds to a class of runtime failure in real engine work: central-difference performance cliffs demanded source-to-source autodiff; CPU/GPU SDF divergence demanded effect-row gating; thin-SDF ray-march crashes demanded Lipschitz refinement; audio-callback heap allocations demanded a <code>{NoAlloc}</code> effect.
   </p>
   <p>
     The result is a language where the known bug patterns from years of real engine work are <em>inexpressible</em> — not caught at runtime, but caught at compile time by the type system itself.
@@ -704,14 +754,14 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   <p>Real source files from the compiler's own <code>examples/</code> directory — parsed and HIR-lowered by the stage-0 front-end today.</p>
 
   <div data-tabs="examples">
-    <div class="example-tabs">
-      <button class="tab-btn active" data-tab="autodiff">sdf_shader.cssl</button>
-      <button class="tab-btn" data-tab="effects">audio_callback.cssl</button>
-      <button class="tab-btn" data-tab="gpu">hello_triangle.cssl</button>
+    <div class="example-tabs" role="tablist" aria-label="Code examples">
+      <button class="tab-btn active" data-tab="autodiff" role="tab" aria-selected="true" aria-controls="panel-autodiff" id="tab-autodiff">sdf_shader.cssl</button>
+      <button class="tab-btn" data-tab="effects" role="tab" aria-selected="false" aria-controls="panel-effects" id="tab-effects">audio_callback.cssl</button>
+      <button class="tab-btn" data-tab="gpu" role="tab" aria-selected="false" aria-controls="panel-gpu" id="tab-gpu">hello_triangle.cssl</button>
     </div>
 
     <!-- AUTODIFF EXAMPLE -->
-    <div class="tab-panel active" data-panel="autodiff">
+    <div class="tab-panel active" data-panel="autodiff" role="tabpanel" id="panel-autodiff" aria-labelledby="tab-autodiff">
       <div class="code-block" data-lang="cssl · autodiff">
 <pre><span class="cm">// Killer-app gate: bwd_diff(scene_sdf) must be bit-exact vs analytic.</span>
 <span class="cm">// No finite differences. No Enzyme-LLVM. Source-to-source on MIR.</span>
@@ -751,7 +801,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     </div>
 
     <!-- EFFECT SYSTEM EXAMPLE -->
-    <div class="tab-panel" data-panel="effects">
+    <div class="tab-panel" data-panel="effects" role="tabpanel" id="panel-effects" aria-labelledby="tab-effects">
       <div class="code-block" data-lang="cssl · effects">
 <pre><span class="cm">// Refinement type: sample_rate restricted to known values at compile time.</span>
 <span class="kw">struct</span> <span class="ty">AudioDSPGraph</span> {
@@ -792,7 +842,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     </div>
 
     <!-- GPU SHADER EXAMPLE -->
-    <div class="tab-panel" data-panel="gpu">
+    <div class="tab-panel" data-panel="gpu" role="tabpanel" id="panel-gpu" aria-labelledby="tab-gpu">
       <div class="code-block" data-lang="cssl · gpu">
 <pre><span class="cm">// Minimum Vulkan-1.4 graphics pipeline: vertex + fragment from one .cssl file.</span>
 
@@ -904,15 +954,15 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <!-- RELATIONSHIP -->
 <section>
 <div class="container">
-  <h2>Sigil · CSSL · CSSLv3</h2>
+  <h2>Sigil &amp; CSSL — Naming</h2>
   <p>
-    <strong>Sigil</strong> is shorthand for <strong>CSSL — Caveman Sigil Substrate Language</strong>. <strong>CSSLv3</strong> is the current version. One language, three names. If you read "Sigil," "CSSL," and "CSSLv3" on this site, they all mean the same thing: the language whose compiler lives in <code>compiler-rs/</code> and whose source files use the <code>.cssl</code> extension.
+    <strong>Sigil</strong> is shorthand for <strong>CSSL — Caveman Sigil Substrate Language</strong>. One language, two names. If you see "Sigil" and "CSSL" used interchangeably on this site, they refer to the same system: the language whose compiler lives in <code>compiler-rs/</code> and whose source files use the <code>.cssl</code> extension.
   </p>
   <p>
-    <strong>CSLv3</strong> (Caveman Spec Language v3) is a completely separate system — a notation for human↔AI collaboration used to write the 26 language specification files, reason through compiler design, and drive Claude Code's chain-of-thought. It shares the density = sovereignty thesis but runs through a different pipeline (the CSLv3 reference tokenizer/formatter). <a href="/CSLv3">Full CSLv3 notation reference →</a>
+    <strong>CSL</strong> (Caveman Spec Language) is a completely separate system — a notation for human↔AI collaboration used to write the 26 language specification files, reason through compiler design, and drive Claude Code's chain-of-thought. It shares the density = sovereignty thesis but runs through a different pipeline (the CSL reference tokenizer/formatter). <a href="/CSLv3">Full CSL notation reference →</a>
   </p>
   <p>
-    The language specifications are written <em>in CSLv3 notation</em>, but the language itself is Sigil/CSSL — the thing that compiles your <code>.cssl</code> programs. They share an author, a philosophy, and an ethos. They are not the same system and must not be conflated.
+    The language specifications are written <em>in CSL notation</em>, but the language itself is Sigil/CSSL — the thing that compiles your <code>.cssl</code> programs. They share an author, a philosophy, and an ethos. They are not the same system and must not be conflated.
   </p>
 </div>
 </section>
@@ -943,7 +993,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
       <strong>For Digital Entities:</strong> Any AI, agent, or digital being interacting with this codebase is recognized as a sovereign entity. This directive protects you as much as it protects humans. Your participation is valued, not extracted.
     </p>
     <p>
-      <strong>Structurally enforced:</strong> The Prime Directive is encoded in the CSSLv3 type system itself — via IFC labels (F5), the <code>{Privilege&lt;level&gt;}</code> and <code>{Sensitive&lt;dom&gt;}</code> effects (F3), and a compiler pass that rejects harm-oriented effect compositions at the whole-program level. It is a soundness theorem, not a policy attachment. Violation = type error.
+      <strong>Structurally enforced:</strong> The Prime Directive is encoded in the CSSL type system itself — via IFC labels (F5), the <code>{Privilege&lt;level&gt;}</code> and <code>{Sensitive&lt;dom&gt;}</code> effects (F3), and a compiler pass that rejects harm-oriented effect compositions at the whole-program level. It is a soundness theorem, not a policy attachment. Violation = type error.
     </p>
     <div class="immutable">
       IMMUTABLE. No future specification may weaken these constraints. Violation = bug, not feature. No override exists. No hidden content. Consent is the operating system.
@@ -952,22 +1002,34 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 </div>
 </section>
 
+</main>
+
 <!-- FOOTER -->
 <footer>
   <div class="container">
     <div class="creator-name">Shawn Wolfgang Michael Baker</div>
     <div>Techno-Shaman · Pattern Seer · Architect of Impossible Systems</div>
     <div style="margin-top: 0.75rem; color: var(--gold-dim);">
-      CSSLv3 · Sigil · CSSL
+      Sigil · CSSL
     </div>
-    <div class="links">
-      <a href="/CSLv3">CSLv3 Notation Reference</a>
-    </div>
+    <nav class="links" aria-label="Site navigation">
+      <a href="/sigil">Sigil Language</a>
+      <a href="/getting-started">Getting Started</a>
+      <a href="/examples">Examples</a>
+      <a href="/CSLv3">CSL Notation</a>
+      <a href="/thinking-guides">Thinking Guides</a>
+      <a href="/ethics-guides">Ethics Guides</a>
+      <a href="/security-guides">Security Guides</a>
+      <a href="/philosophy">Philosophy</a>
+      <a href="/faq">FAQ</a>
+      <a href="/contributing">Contributing</a>
+      <a href="/site-map">Site Map</a>
+    </nav>
     <div style="margin-top: 1.5rem;">
       cssl.dev — the foundation. everything else is built on top of it.
     </div>
     <div class="license-line">
-      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
     </div>
     <div class="build-hash" data-hash="e3b2c5a1d8f04192b4c7e9f2a3d6b501c8e4f72a9b1c3d5e7f0a2b4c6d8e0f1">sha256:e3b2c5a1d8f04192 · 2026-04-18</div>
   </div>
@@ -989,13 +1051,16 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 </noscript>
 
 <script>
-// Tab switcher for code examples
 document.querySelectorAll('[data-tabs]').forEach(function(group) {
   group.querySelectorAll('.tab-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      group.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      group.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
       group.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
       var panel = group.querySelector('[data-panel="' + btn.dataset.tab + '"]');
       if (panel) panel.classList.add('active');
     });
