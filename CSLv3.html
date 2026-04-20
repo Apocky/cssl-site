@@ -25,6 +25,7 @@
 <meta name="author" content="Shawn Wolfgang Michael Baker">
 <meta name="keywords" content="CSL, Caveman Spec Language, specification notation, density notation, AI notation, DGI, glyph system, Sanskrit compounds, slot grammar, LL(2), compression, Sigil, CSSL, cssl.dev">
 <link rel="manifest" href="/manifest.webmanifest">
+<link rel="alternate" type="text/plain" href="/csl/cslv3.csl" title="CSL reference in CSL notation (self-describing)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -38,7 +39,7 @@
   "inLanguage": "en",
   "keywords": "CSL, Caveman Spec Language, specification notation, AI, DGI, compression, LL(2), APL, Ithkuil, Sanskrit, Peirce, Lojban, density, Sigil, CSSL",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "codeRepository": "https://github.com/Apocky/CSLv3",
+  "codeRepository": "https://github.com/ApockyCSSL/CSLv3",
   "author": { "@type": "Person", "name": "Shawn Wolfgang Michael Baker" },
   "about": { "@type": "Thing", "name": "Specification notation for AI-authored systems and DGI reasoning" },
   "publisher": { "@type": "Organization", "name": "cssl.dev", "url": "https://cssl.dev" }
@@ -592,11 +593,11 @@ footer .tagline { margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
 
     <h3>Worked expansion</h3>
     <p>Minimum statement:</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre>player.hp u16</pre>
     </div>
     <p>Fully slot-expanded:</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="gly">✓</span>                    <span class="cm"># evidence: confirmed (default)</span>
 <span class="op">:</span>                    <span class="cm"># modal: assertion (default)</span>
 player<span class="op">.</span>hp           <span class="cm"># subject: hp of player</span>
@@ -606,7 +607,7 @@ player<span class="op">.</span>hp           <span class="cm"># subject: hp of pl
 # scope: global (default)</span></pre>
     </div>
     <p>Fully-slotted — every default overridden:</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="gly">△</span> <span class="gly">W!</span> <span class="kw">§</span>render<span class="op">.</span>pipeline <span class="op">::</span> forward<span class="op">-</span>pass <span class="inv">⌈</span>latency <span class="op">&lt;</span> <span class="num">16ms</span><span class="inv">⌉</span> <span class="op">@</span>frame</pre>
     </div>
     <p style="font-size: 0.9rem;">
@@ -636,7 +637,7 @@ BASE<span class="opt">[.aspect]</span><span class="opt">[.mod]</span><span class
         </tbody>
       </table>
     </div>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre>spawn<span class="sfx">.iter</span><span class="sfx">.may</span><span class="sfx">.loc</span>
 <span class="cm"># "may repeatedly spawn, locally"</span>
 
@@ -674,7 +675,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Example</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">&lt;think&gt;</span>
 <span class="kw">§ P</span>
   voxel engine stutter @ chunk boundary
@@ -709,7 +710,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     <p>Layered from practical primitives to dependent types. Lower tiers for daily use; higher tiers surface only where the problem demands them.</p>
 
     <h3>Tier 1 — primitives</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="ty">u8</span>  <span class="ty">u16</span>  <span class="ty">u32</span>  <span class="ty">u64</span>      <span class="cm"># unsigned integers</span>
 <span class="ty">i8</span>  <span class="ty">i16</span>  <span class="ty">i32</span>  <span class="ty">i64</span>      <span class="cm"># signed integers</span>
 <span class="ty">f32</span> <span class="ty">f64</span>                   <span class="cm"># IEEE 754 floats</span>
@@ -720,7 +721,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Tier 2 — compounds</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre>[<span class="ty">T</span>; <span class="num">N</span>]         <span class="cm"># fixed-length array</span>
 [<span class="ty">T</span>; _]         <span class="cm"># dynamic array / slice</span>
 <span class="ty">T</span> | <span class="ty">U</span>         <span class="cm"># union / sum</span>
@@ -733,7 +734,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Tier 3 — algebraic</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">def</span> <span class="ty">DamageType</span><span class="sfx">'t</span> = <span class="kw">enum</span>[
   physical  { slash, pierce, blunt }
   elemental { fire, ice, lightning, earth, water, wind }
@@ -742,7 +743,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
     </div>
 
     <h3>Tier 4 — dependent &amp; refinement (aspirational)</h3>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">Π</span><span class="op">⟨</span>n: <span class="ty">ɴ</span><span class="op">⟩</span> <span class="op">→</span> <span class="ty">ᴠ</span><span class="op">⟨</span><span class="ty">f32</span>; n<span class="op">⟩</span>     <span class="cm"># pi-type: length depends on input</span>
 <span class="kw">Σ</span><span class="op">⟨</span>n: <span class="ty">ɴ</span>, v: <span class="ty">ᴠ</span><span class="op">⟨</span><span class="ty">f32</span>; n<span class="op">⟩⟩</span>    <span class="cm"># sigma-type</span>
 
@@ -829,7 +830,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
   <section id="spec-template">
     <h2>§10 · Spec template</h2>
     <p>Every CSL spec has the same canonical shape. Six headers are the minimum an implementer needs to act.</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">§</span> <span class="fn">&lt;NAME&gt;</span>.spec
 
 <span class="kw">§ GOAL</span>
@@ -869,7 +870,7 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
   <section id="worked-example">
     <h2>§11 · Worked example — HTTP request handler</h2>
     <p>Domain-neutral, written to the template above. From <code>specs/06_SPEC.csl</code>.</p>
-    <div class="code-block" data-lang="cslv3">
+    <div class="code-block" data-lang="csl">
 <pre><span class="kw">§</span> http<span class="op">.</span>handler<span class="op">.</span>spec                    <span class="gly">◐</span>
 
 <span class="kw">§ GOAL</span>
@@ -1005,8 +1006,8 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
       16 specification files + session handoffs + the reference compiler. The <code>.csl</code> files are the authoritative source of truth for every claim on this page.
     </p>
     <div class="specs-grid">
-      <a class="spec-item" href="https://github.com/Apocky/CSLv3">
-        <span class="spec-name">→ github.com/Apocky/CSLv3</span>
+      <a class="spec-item" href="https://github.com/ApockyCSSL/CSLv3">
+        <span class="spec-name">→ github.com/ApockyCSSL/CSLv3</span>
         <span class="spec-desc">Repository · LL(2) parser · type-check · IR · SMT · LSP v3.17 · 5 emit targets · eval harness · 16 specs.</span>
       </a>
       <div class="spec-item">
@@ -1123,9 +1124,11 @@ spawn<span class="sfx">.iter</span><span class="sfx">.prog</span><span class="sf
   <div>CSL v1.7.0 · released 2026-04-18 · living document</div>
   <div class="links">
     <a href="/sigil">Sigil (CSSL)</a>
-    <a href="https://github.com/Apocky/CSLv3">GitHub</a>
+    <a href="https://github.com/ApockyCSSL/CSLv3">GitHub</a>
     <a href="/llms-full.txt">llms-full.txt</a>
     <a href="/LICENSE-CONTENT">license</a>
+    <a href="/csl/cslv3.csl">View in CSL</a>
+    <a href="/site-map">Site Map</a>
   </div>
   <div class="tagline">density = sovereignty · consent = OS</div>
   <div style="margin-top: 1rem; font-size: 0.7rem; color: var(--text-dim);">

@@ -5,14 +5,18 @@
 ## Sigil / CSSL — Language
 
 - [Sigil home](https://cssl.dev/): Language overview, key features, quickstart, and live compiler output samples
+- [Sigil detail page](https://cssl.dev/sigil): Full Sigil/CSSL language reference — effects, refinement types, autodiff, hardware targets, compiler stages
 - [Documentation](https://docs.cssl.dev): Full Sigil/CSSL docs — annotated specs, learning paths, API reference, CSL notation guide
-- [Repository](https://github.com/Apocky/CSSL3): Compiler source (Rust, stage-0 live), 1,600+ tests, releases, CI
+- [Repository](https://github.com/ApockyCSSL/CSSLv3): Compiler source (Rust, stage-0 live), 1,600+ tests, releases, CI
 - [llms-full.txt](https://cssl.dev/llms-full.txt): Complete LLM-indexable reference — Sigil/CSSL language + CSL notation
+- [CSL-encoded: home](https://cssl.dev/csl/index.csl): Homepage content in CSL notation
+- [CSL-encoded: sigil](https://cssl.dev/csl/sigil.csl): Sigil language reference in CSL notation
 
 ## CSL — Specification Notation
 
 - [CSL reference](https://cssl.dev/CSLv3): 74-glyph LL(2) notation — full glyph tables, slot grammar, compound types, morpheme stacking, worked examples
-- [CSL repository](https://github.com/Apocky/CSLv3): Parser, specs (specs/00_MANIFEST.csl → specs/15_M2_METRIC.csl), m₂ evaluations
+- [CSL repository](https://github.com/ApockyCSSL/CSLv3): Parser, specs (specs/00_MANIFEST.csl → specs/15_M2_METRIC.csl), m₂ evaluations
+- [CSL-encoded: notation](https://cssl.dev/csl/cslv3.csl): CSL reference in CSL notation (self-describing)
 
 ## Key Concepts
 
@@ -50,6 +54,8 @@ Ethics:
 - [CSL reasoning blocks](https://cssl.dev/CSLv3#reasoning-substrate): §P/§D/§T/§S/§C — structured agent reasoning
 - [Sigil quickstart](https://cssl.dev/#quickstart): Zero to running Sigil in 3 steps
 - [humans.txt](https://cssl.dev/humans.txt): Team, technology credits, philosophy
+- [LICENSE-CONTENT](https://cssl.dev/LICENSE-CONTENT): Content license (CC BY 4.0) and code license (MIT)
+- [sitemap.xml](https://cssl.dev/sitemap.xml): XML sitemap of all pages
 
 ## Training-Data Consent
 

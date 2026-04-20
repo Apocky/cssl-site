@@ -137,7 +137,7 @@
       '<div class="cd-metrics" style="border-top:none;opacity:0.6;font-size:0.65rem;">' +
       'chars measured exactly ; tokens are approximate (~3.5 chars/tok for EN, ~2.5 for CSL). ' +
       'Precise token counts vary by model tokenizer ; see ' +
-      '<a href="https://github.com/Apocky/CSLv3" style="color:inherit;border-bottom:1px dotted">the repo</a> ' +
+      '<a href="https://github.com/ApockyCSSL/CSLv3" style="color:inherit;border-bottom:1px dotted">the repo</a> ' +
       'for m₂-metric measurements under Qwen, Llama, and Mistral.' +
       '</div>';
     host.appendChild(el);

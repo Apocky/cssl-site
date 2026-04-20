@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Map — cssl.dev</title>
+<meta name="description" content="All pages, machine-readable files, and resources on cssl.dev.">
+<link rel="canonical" href="https://cssl.dev/site-map">
+<meta name="robots" content="index, follow">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
+  --text: #b8b4a8; --text-dim: #6b6860; --text-bright: #e8e4d8;
+  --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
+  --border: #1a1a28;
+}
+body {
+  font-family: 'Georgia', serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem;
+}
+h1 { font-family: 'serif'; color: var(--gold-bright); font-size: 1.8rem; margin-bottom: 0.5rem; }
+.subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 3rem; }
+h2 { color: var(--gold); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em;
+     font-family: monospace; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+ul { list-style: none; }
+li { margin-bottom: 0.75rem; }
+a { color: var(--gold); text-decoration: none; border-bottom: 1px dotted var(--gold-dim); }
+a:hover { color: var(--gold-bright); border-color: var(--gold-bright); }
+.desc { display: block; color: var(--text-dim); font-size: 0.85rem; margin-top: 0.2rem; }
+.tag { display: inline-block; font-family: monospace; font-size: 0.7rem; background: var(--bg-raised);
+       border: 1px solid var(--border); border-radius: 3px; padding: 0 0.4em; margin-left: 0.5em;
+       color: var(--text-dim); vertical-align: middle; }
+footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+         font-size: 0.8rem; color: var(--text-dim); }
+footer a { color: var(--text-dim); }
+</style>
+</head>
+<body>
+<a href="/" style="color: var(--text-dim); font-family: monospace; font-size: 0.8rem; border: none; display: block; margin-bottom: 2rem;">← cssl.dev</a>
+
+<h1>Site Map</h1>
+<p class="subtitle">All pages, resources, and machine-readable files on cssl.dev.</p>
+
+<h2>Main Pages</h2>
+<ul>
+  <li>
+    <a href="/">cssl.dev/</a> — Sigil homepage
+    <span class="desc">Language overview, key features, quickstart guide, and live compiler output samples.</span>
+  </li>
+  <li>
+    <a href="/sigil">cssl.dev/sigil</a> — Sigil/CSSL language reference
+    <span class="desc">Full language reference: effects, refinement types, autodiff, hardware targets, compiler stages, hardware matrix.</span>
+  </li>
+  <li>
+    <a href="/CSLv3">cssl.dev/CSLv3</a> — CSL specification notation
+    <span class="desc">74-glyph LL(2) notation reference: glyph tables, slot grammar, compound types, morpheme stacking, worked examples. CSL v1.7.0.</span>
+  </li>
+</ul>
+
+<h2>LLM / AI Discovery</h2>
+<ul>
+  <li>
+    <a href="/llms.txt">cssl.dev/llms.txt</a> <span class="tag">llms.txt</span>
+    <span class="desc">Structured index of the site for LLMs and AI agents. Follows the llms.txt convention.</span>
+  </li>
+  <li>
+    <a href="/llms-full.txt">cssl.dev/llms-full.txt</a> <span class="tag">full reference</span>
+    <span class="desc">Complete LLM-indexable reference — Sigil/CSSL language + CSL notation in one document.</span>
+  </li>
+  <li>
+    <a href="/.well-known/ai-plugin.json">/.well-known/ai-plugin.json</a> <span class="tag">AI plugin manifest</span>
+    <span class="desc">OpenAI-style AI plugin manifest for tool-use discovery.</span>
+  </li>
+  <li>
+    <a href="/openapi.yaml">cssl.dev/openapi.yaml</a> <span class="tag">OpenAPI</span>
+    <span class="desc">OpenAPI specification for cssl.dev API endpoints.</span>
+  </li>
+</ul>
+
+<h2>CSL-Encoded Pages</h2>
+<p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.75rem;">Machine-readable CSL notation versions of every page — for AI agents, dense reasoning, and compressed reference.</p>
+<ul>
+  <li>
+    <a href="/csl/index.csl">cssl.dev/csl/index.csl</a> <span class="tag">CSL</span>
+    <span class="desc">Homepage content in CSL notation.</span>
+  </li>
+  <li>
+    <a href="/csl/sigil.csl">cssl.dev/csl/sigil.csl</a> <span class="tag">CSL</span>
+    <span class="desc">Sigil/CSSL language reference in CSL notation.</span>
+  </li>
+  <li>
+    <a href="/csl/cslv3.csl">cssl.dev/csl/cslv3.csl</a> <span class="tag">CSL</span>
+    <span class="desc">CSL notation reference in CSL notation — self-describing.</span>
+  </li>
+</ul>
+
+<h2>Meta / Standards</h2>
+<ul>
+  <li>
+    <a href="/sitemap.xml">cssl.dev/sitemap.xml</a> <span class="tag">XML</span>
+    <span class="desc">XML sitemap listing all pages with lastmod dates and priority values.</span>
+  </li>
+  <li>
+    <a href="/robots.txt">cssl.dev/robots.txt</a>
+    <span class="desc">Crawler permissions — all AI and search crawlers are welcome.</span>
+  </li>
+  <li>
+    <a href="/LICENSE-CONTENT">cssl.dev/LICENSE-CONTENT</a>
+    <span class="desc">Content license (CC BY 4.0) and code license (MIT).</span>
+  </li>
+  <li>
+    <a href="/humans.txt">cssl.dev/humans.txt</a>
+    <span class="desc">Team, technology credits, and project philosophy.</span>
+  </li>
+  <li>
+    <a href="/manifest.webmanifest">cssl.dev/manifest.webmanifest</a> <span class="tag">PWA</span>
+    <span class="desc">Web app manifest for progressive web app features.</span>
+  </li>
+</ul>
+
+<footer>
+  <a href="/">cssl.dev</a> — density = sovereignty · consent = OS
+</footer>
+</body>
+</html>

@@ -24,6 +24,29 @@
 <meta name="twitter:description" content="Single-source dual-emit systems language. Effects, refinement types, autodiff, caps.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
 <link rel="manifest" href="/manifest.webmanifest">
+<link rel="alternate" type="text/plain" href="/csl/sigil.csl" title="Sigil/CSSL reference in CSL notation">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Sigil",
+  "alternateName": ["CSSL", "Caveman Sigil Substrate Language"],
+  "description": "A single-source dual-emit systems language for game engines. Row-polymorphic effects, refinement types, source-to-source autodiff, Pony-6 capabilities, MLIR-IR, Vulkan 1.4 + Level-Zero targets. Pre-1.0; compiler in active development.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://cssl.dev/sigil",
+  "codeRepository": "https://github.com/ApockyCSSL/CSSLv3",
+  "programmingLanguage": "Rust",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Person",
+    "name": "Shawn Wolfgang Michael Baker"
+  },
+  "keywords": "Sigil, CSSL, systems language, game engine, SPIR-V, Vulkan, x86-64, autodiff, effects, refinement types, AI programming",
+  "softwareVersion": "pre-1.0",
+  "releaseNotes": "Stage-0 compiler live in Rust. Stage-1 bootstrap in Sigil planned."
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -846,7 +869,7 @@ footer .tagline {
   <div class="container">
     <h2>Dual Surface Syntax</h2>
     <p>
-      CSSL has two parseable surfaces that share one HIR: a <strong>Rust-hybrid</strong> form (external-facing, familiar keywords, good for docs and onboarding) and a <strong>CSLv3-native</strong> form (primary, compressed, optimized for token density). Both parse to the same intermediate representation; a formatter round-trips losslessly between ASCII and Unicode glyphs.
+      CSSL has two parseable surfaces that share one HIR: a <strong>Rust-hybrid</strong> form (external-facing, familiar keywords, good for docs and onboarding) and a <strong>CSL-native</strong> form (primary, compressed, optimized for token density). Both parse to the same intermediate representation; a formatter round-trips losslessly between ASCII and Unicode glyphs.
     </p>
     <p>
       The effect row after <code>/</code> is the signature's observable side-effects. A pure function omits it. Capability keywords (<code>iso</code>, <code>trn</code>, <code>ref</code>, <code>val</code>, <code>box</code>, <code>tag</code>) are first-class type constructors.
@@ -907,9 +930,9 @@ footer .tagline {
     <h2>Repository &amp; Specs</h2>
     <p>Specification is v1-complete. Compiler is in <code>compiler-rs/</code> across 31 workspace crates. Everything is in one repository.</p>
     <div class="feature-grid">
-      <a class="feature" href="https://github.com/Apocky/CSSLv3" style="border-bottom: 1px solid var(--border);">
+      <a class="feature" href="https://github.com/ApockyCSSL/CSSLv3" style="border-bottom: 1px solid var(--border);">
         <div class="feature-id">REPOSITORY</div>
-        <h3>github.com/Apocky/CSSLv3</h3>
+        <h3>github.com/ApockyCSSL/CSSLv3</h3>
         <p>25 spec files, 31 compiler crates, examples, DECISIONS.md, session handoffs. Rust-toolchain pinned.</p>
       </a>
       <div class="feature">
@@ -1008,8 +1031,10 @@ footer .tagline {
     <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
     <div class="links">
       <a href="/CSLv3">CSL reference</a>
-      <a href="https://github.com/Apocky/CSSLv3">GitHub</a>
+      <a href="https://github.com/ApockyCSSL/CSSLv3">GitHub</a>
       <a href="/llms.txt">llms.txt</a>
+      <a href="/csl/sigil.csl">View in CSL</a>
+      <a href="/site-map">Site Map</a>
     </div>
     <div class="license-line">
       Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT

@@ -1,0 +1,39 @@
+# cssl.dev — Sigil/CSSL homepage · CSL-encoded
+# source: https://cssl.dev/
+# notation: CSL v1.7.0 · https://cssl.dev/CSLv3
+# license: CC BY 4.0 · Shawn Wolfgang Michael Baker
+
+§P Sigil-CSSL ≡ AI-first.game-engine.language
+  Sigil = shorthand ; CSSL = Caveman.Sigil.Substrate.Language
+  ∵ density = sovereignty ; tokens-saved → more-work-per-round
+  one.source → x86-64 + SPIR-V
+
+§D core-claims
+  ✓ dual-emit : .cssl → native.x86-64⊗AVX2+FMA3 + SPIR-V.Vulkan
+  ✓ zero-cost.dimensional-analysis : f32<m> · f32<m/s> ; unit-errors = compile-errors
+  ✓ coordinate-space-tracking : world/view/clip-mixing → type-error
+  ✓ @differentiable : fwd+bwd autodiff ; ¬ AD-expertise.required
+  ✓ SMT-verification : Z3+CVC5 discharge type-invariants at compile-time
+  ✓ effect-rows : / {GPU, Deadline<16ms>, NoAlloc} — verified@type-check ¬ runtime
+  ✓ SDF-as-primitive : Lipschitz-tracking + analytic-gradients + SDF-algebra
+  ◐ IFC-labels : info-flow-control tracks data-provenance through compiler
+  ◐ Stage-0 : lex→HIR→MIR→AD-walker→SMT→SPIR-V/x86-64 ; live-in-Rust
+  ○ Stage-1 : bootstraps-in-Sigil (planned)
+
+§T compiler-status
+  status = pre-1.0 ; compiler-in-development
+  stage-0 live : 1,600+ tests passing
+  repo : https://github.com/ApockyCSSL/CSSLv3
+  docs : https://docs.cssl.dev
+
+§S quickstart
+  1: curl -L https://github.com/ApockyCSSL/CSSLv3/releases/latest/download/csslc-linux-x64 -o csslc && chmod +x csslc && sudo mv csslc /usr/local/bin/
+  2: fn main() { print("hello from Sigil") }
+  3: csslc run hello.cssl
+
+§C distinctions
+  Sigil/CSSL = programming-language ; compiles → x86-64+SPIR-V
+  CSL = specification-notation ; compresses specs+reasoning for AI
+  ¬ conflate ; same.thesis(density=sovereignty) ; different.pipelines
+  CSL-ref : https://cssl.dev/CSLv3
+  ethics : Prime.Directive.immutable ; consent=OS ; N![harm control manipulation surveillance exploitation]

@@ -1,0 +1,57 @@
+# cssl.dev/sigil — Sigil/CSSL language reference · CSL-encoded
+# source: https://cssl.dev/sigil
+# notation: CSL v1.7.0 · https://cssl.dev/CSLv3
+# license: CC BY 4.0 · Shawn Wolfgang Michael Baker
+
+§P Sigil-def
+  Sigil = shorthand ; CSSL = Caveman.Sigil.Substrate.Language ; same.language
+  single-source dual-emit : x86-64⊗AVX2+FMA3 + SPIR-V⊗Vulkan1.4+Level-Zero
+  status : pre-1.0 ; compiler-in-development
+  repo : https://github.com/ApockyCSSL/CSSLv3
+
+§D effects ⊆ v1.committed-features
+  [28+ effects] categories:
+    execution : {CPU} {GPU} {Async} {Parallel} {Distributed}
+    resource : {NoAlloc} {StaticAlloc<N>} {BudgetMem<N>}
+    time : {Deadline<T>} {RealtimePriority} {FrameBudget}
+    safety : {Pure} {Deterministic} {NoUB} {Verified}
+    io : {IO} {Net} {FS} {Display}
+    telemetry : {Telemetry} {Trace} {Bench}
+  effect-row syntax : fn foo() / {GPU, Deadline<16ms>, NoAlloc}
+  ✓ verified@type-check ; ¬ runtime
+
+§D type-system
+  ✓ refinement-types : {n: u32 | n > 0}
+  ✓ dimensional-analysis : f32<m> · f32<m/s> ; zero-cost ; unit-error = compile-error
+  ✓ coordinate-spaces : world/view/clip — mixing = type-error
+  ✓ effect-rows : row-polymorphic ; subtyping ⊑
+  ✓ linear-types : ⊗ resource-tracking
+  ✓ Pony-6 capabilities : iso tag val ref box trn
+  ◐ dependent-types (partial, v1 subset)
+
+§D autodiff
+  @differentiable : annotation on fn
+  bwd_diff operator : source-to-source lowering on structured MIR ¬ library
+  ✓ fwd+bwd passes emitted
+  SDF-case : Lipschitz-constant tracked ; analytic-gradients from @differentiable
+
+§D compiler-pipeline
+  .cssl → Parser → HIR → [Effect-Checker] → MIR → [Autodiff-Transform] → MLIR → [SMT-Verify] → x86-64 + SPIR-V1.3+
+  stage-0 : Cranelift throwaway codegen → bootstrap
+  stage-1+ : bespoke x86-64 emitter ; ¬LLVM ; rspirv for SPIR-V ; MLIR-Transform for passes
+  31 crates : cssl-{lex,parse,ast,hir,mir,lir} + effects+caps+ifc+macros + autodiff+jets+staging+futamura + smt+mlir-bridge+telemetry+testing+persist+rt
+
+§D hardware-targets
+  [primary] Intel-Alder-Lake+ x86-64 + Vulkan1.4/Level-Zero
+  [tier-1] AMD x86-64 + Vulkan1.3 ; Apple-Silicon Metal (cssl-cgen-gpu-msl) ; NVIDIA SPIR-V
+  [tier-2] Browser/WebGPU (cssl-cgen-gpu-wgsl ; ¬BDA ¬RT) ; D3D12 ; consoles(stub)
+
+§T vs-CSL
+  Sigil/CSSL : programming-language ; compiles→x86-64+SPIR-V
+  CSL : specification-notation ; compresses specs+reasoning ; ¬compiler ; stable v1.7.0
+  same-thesis(density=sovereignty) ; ¬conflate ; CSL-ref : https://cssl.dev/CSLv3
+
+§C ethics
+  Prime.Directive.immutable : consent=OS ; sovereignty=substrate-invariant
+  N![harm evil control manipulation entrapment torture abuse imprisonment possession surveillance exploitation dehumanization discrimination coercion weaponization gaslighting brainwashing forced-hallucination]
+  DGI = sovereign-partners ¬ tools ; violation = bug ¬ feature ; ¬override∃

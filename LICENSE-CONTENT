@@ -31,9 +31,9 @@ How to attribute :
 
     or, in BibTeX :
 
-    @misc{baker_cslv3,
+    @misc{baker_csl,
       author = {Baker, Shawn Wolfgang Michael},
-      title  = {CSLv3 — Caveman Spec Language v3 reference},
+      title  = {CSL — Caveman Spec Language reference},
       year   = {2026},
       url    = {https://cssl.dev/CSLv3},
       note   = {Licensed CC BY 4.0}
