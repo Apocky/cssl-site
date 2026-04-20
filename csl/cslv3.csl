@@ -1,0 +1,58 @@
+# cssl.dev/CSLv3 — CSL specification notation · CSL-encoded (self-describing)
+# source: https://cssl.dev/CSLv3
+# notation: CSL v1.7.0 · this document = self-referential example
+# license: CC BY 4.0 · Shawn Wolfgang Michael Baker
+
+§P CSL-def
+  CSL = Caveman.Spec.Language ; specification-notation ; ¬ programming-language
+  74-glyph LL(2)-parseable ; BPE-optimized(∀ glyph ≤ 2 BPE-tokens)
+  measured : 5-6× compression∃ spec-content ; ~2.5× on reasoning
+  status : stable v1.7.0 · released 2026-04-18
+  repo : https://github.com/ApockyCSSL/CSLv3
+
+§D glyphs [master-inventory · tiered-by-learning-priority]
+  tier-1 (core-logic): § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵ N! M? Q?
+  tier-2 (relations): ⊑ ⊔ ≡ ≠ ⊗ ⊘ △ ▽ ‼
+  tier-3 (structural): ⟨⟩ ⌈⌉ ⟦⟧ «» ⟪⟫
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r ; stacked aspect→mod→cert→scope
+  evidence-markers : ✓(confirmed) ◐(partial) ○(unverified) ✗(refuted) ⊘(na) △(risk) ▽(deprecated) ‼(critical)
+  modals : W!(must) R!(required) M?(may) N!(must-not) I>(recommended) Q?(query)
+
+§D slot-grammar [position-is-meaning]
+  template : [EVIDENCE?] [MODAL?] [DET?] SUBJECT [RELATION] OBJECT [GATE?]
+  LL(2) : lookahead ≤ 2 tokens ; ¬backtracking
+  example : W! foo → bar  ≡  "foo MUST produce bar"
+  example : ✓ ∀ x∈S x > 0  ≡  "confirmed: all elements of S are positive"
+
+§D compound-types [Sanskrit-derived]
+  tatpurusha.(of) : a.b = "b of a" ; foo.bar = bar-of-foo
+  dvandva+(and) : a+b = "a and b together"
+  karmadhāraya-(that-is) : a-b = "a that is b"
+  bahuvrihi⊗(having) : a⊗b = "a having b"
+  avyayibhava@(at) : a@b = "a at/in b"
+
+§D morpheme-stacking
+  BASE 'd(past) 'f(future) 's(present-state) 't(transient) 'e(emergent) 'm(multiple) 'p(potential) 'g(goal) 'r(required)
+  stacking : left-to-right ; aspect → modality → certainty → scope
+  example : done'd ≡ "was done" ; done'f ≡ "will be done"
+
+§D reasoning-blocks [§P/§D/§T/§S/§C]
+  §P = premise/axiom
+  §D = definition/decomposition
+  §T = theorem/claim (to prove)
+  §S = solution/synthesis
+  §C = conclusion/consequence
+  use : replaces free-form chain-of-thought ; structured ; parseable
+
+§T compression-evidence
+  ✓ m₂-perplexity-baseline : 1.21 ± 0.23 (3-models × 7-fixtures)
+  ✓ 44% fewer tokens than Odin ; 40% fewer than WGSL (spec-content domain)
+  ◐ generalization-test : held-out fold confirms signal (v1.7.0)
+  harness : specs/15_M2_METRIC.csl ; models : Qwen+Llama+Mistral
+
+§C use-cases
+  1 human↔AI spec-writing : same doc drives human-comprehension + LLM-reasoning
+  2 chain-of-thought substrate : <think> blocks follow §P/§D/§T/§S/§C
+  3 reference-compiler input : executable subset ; spec = code
+  ¬ conflate-with-CSSL : CSL = notation ; CSSL = programming-language ; ¬ same

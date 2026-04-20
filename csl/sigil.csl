@@ -1,0 +1,294 @@
+§ cssl.dev.sigil                                                    ◐
+# CSL-encoded representation of cssl.dev/sigil (Sigil technical reference)
+# Source  : https://cssl.dev/sigil
+# Version : CSSL pre-1.0
+# Date    : 2026-04-19
+# License : CC BY 4.0
+
+§ META
+  url       : https://cssl.dev/sigil
+  csl-url   : https://cssl.dev/csl/sigil.csl
+  title     : "Sigil · CSSL — AI-authored systems language"
+  version   : pre-1.0
+  status    : ◐ compiler.in-active-development
+  author    : "Shawn Wolfgang Michael Baker" @{Phoenix, AZ}
+  repo      : github.com/Apocky/CSSLv3
+  license   : CC-BY-4.0 + MIT
+
+§ STATUS
+  ◐ stage-0.scaffold : stood-up
+  ✓ parser + AST + HIR
+  ✓ 31/31 body-lower
+  ✓ F1.autodiff.PROVEN : 62/62 AD obligations
+  ✓ HM.foundation
+  ✓ tests  : 1121 ; 0 failures
+  ✓ clippy : 0 warnings
+  ✓ commit-gates : 6/6
+  ◐ session-4 : in-progress
+
+§ IDENTITY
+  Sigil :: programming-language
+  CSSL  :: "Caveman Sigil Substrate Language"
+  Sigil ≡ CSSL                                 # same language ; same compiler
+  CSSL ¬= CSL                                  # N! conflate ∵ CSL = notation
+
+§ WHAT-IS
+  Sigil : single-source.systems-language
+  emit  : [native-x86-64(AVX2-base + AVX-512-opportunistic) + SPIR-V(Vulkan-1.4 + Level-Zero)]
+  backends-stubs : [D3D12, Metal, WebGPU, console]
+
+  §WHAT-IS.differentiators
+    D1 : type-system ⊗{Koka-style.row-polymorphic-effect-system} → 28+ built-in effects
+         effects.cover : [timing, power, thermal, backend-gating, IFC]
+    D2 : engine-primitives = [SDF, Jet, render-graph, scene] ← compiler-aware ¬ library-wrappers
+    D3 : F1..F6 non-negotiable : all.ship@v1 ¬ "future work"
+    D4 : bug-patterns ← Labyrinth.of.Apocalypse.retrospective
+         → each.mapped-to.compile-time-structural-refusal
+         CSSL.inverts : "runtime safety" → "compile-time inexpressibility of bug"
+
+  spec   : 25.csl-files ~200KB ; complete + frozen@v1
+  compiler : compiler-rs/ ; 31 crates ; active-development
+  page.note : what language IS ; grounded in spec ; honest compiler-vs-spec status
+
+§ EXAMPLE-SDF-SHADER  ◐ compiler → SPIR-V
+  # SDF shader in CSSL ; autodiff = first-class operator ¬ library
+  # source: examples/sdf_shader.cssl
+
+  @differentiable @lipschitz(k=1.0)
+  fn sphere_sdf(p: vec3, r: f32'pos) → f32
+    body: length(p) - r
+
+  @differentiable
+  fn scene_sdf(p: vec3) → f32
+    body: min(sphere_sdf(p, 0.5), sphere_sdf(p - vec3(1.0,0.0,0.0), 0.3))
+
+  fn surface_normal(hit_pos: vec3) → vec3
+    # reverse-mode AD ; bit-exact vs analytic central-differences
+    body: normalize(bwd_diff(scene_sdf)(hit_pos).d_p)
+
+  @fragment
+  fn sdf_pixel(uv: vec3) → vec4
+    / {GPU, Deadline<16ms>, Telemetry<DispatchLatency>}
+    # effect-row: runs GPU + 16ms deadline + dispatch-latency telemetry
+    # compiler discharges statically where possible ; asserts runtime otherwise
+
+  pipeline : HIR → MLIR → SPIR-V
+  AD-lowering : source-to-source @structured-MIR ← ¬ LLVM-Enzyme
+
+§ FEATURES-F1-F6
+  # F1..F6 = non-negotiable ; all.ship@v1 ; referenced by ID throughout spec
+
+  §F1 AUTODIFF  ✓ PROVEN (62/62)
+    surface : Slang.D (@differentiable, fwd_diff, bwd_diff, IDifferentiable)
+    lowered : structured-MIR ¬ LLVM-Enzyme → no-LLVM-dependency
+    Jet<T,N> : higher-order.native
+    stdlib   : [inverse-rendering, inverse-fluids]
+    specs    : specs/05_AUTODIFF.csl · specs/17_JETS.csl
+
+  §F2 REFINEMENT-TYPES
+    form    : {v:T | P(v)} + tagged-suffix T'tag
+    backend : Z3/CVC5 via {Verify<method>} effect
+    proofs  : Lipschitz@compile-time
+    layout  : @layout(std140|std430|cpu|packed)
+    specs   : specs/03_TYPES.csl · specs/20_SMT.csl
+
+  §F3 EFFECT-SYSTEM
+    lineage  : Koka.row-polymorphic
+    impl     : evidence-passing-compilation (Xie+Leijen ICFP'21)
+    overhead : zero ← lowers-to-plain-C-equivalent
+    coverage : [resource, timing, determinism, hardware-gating, power, thermal, IFC, audit, telemetry]
+    linear-handler : Eio-style.one-shot-resume
+    specs    : specs/04_EFFECTS.csl · specs/12_CAPABILITIES.csl
+
+  §F4 STAGED-COMPUTATION
+    syntax   : @staged + #run @compile-time
+    Futamura : P1+P2+P3 self-applicable-partial-evaluation
+    macros   : Racket-hygienic ; unified with staging
+    emerges  : [shader-permutations, DSL-compilers] ← framework ¬ bespoke-infrastructure
+    specs    : specs/06_STAGING.csl · specs/13_MACROS.csl · specs/19_FUTAMURA3.csl
+
+  §F5 INFORMATION-FLOW
+    model    : Jif-DLM (Decentralized Label Model)
+    labels   : confidentiality + integrity ← threaded through every SSA value
+    ops      : explicit-declassification
+    refusals : sensitive-domain-labels + privilege-tiers + harm-oriented-effect-compositions
+    specs    : specs/11_IFC.csl
+
+  §F6 OBSERVABILITY
+    effect   : {Telemetry<scope>}
+    hw       : Level-Zero.sysman-backed [power, thermal, frequency] @Intel
+    audit    : signed-chain via {Audit<dom>}
+    testing  : 9 oracle modes ← [differential-backend, replay, ...]
+    specs    : specs/22_TELEMETRY.csl · specs/23_TESTING.csl
+
+§ EFFECT-SYSTEM  F3
+  # row-polymorphic ; ⟨e₁, e₂ | μ⟩ ; μ = inferred tail
+  # function.effect-row declares observable side-effects + hardware requirements
+  # compiler unions with caller.context ; checks ⊆ caller.declared-bound
+  # 28+ effects ship@v1 ; source: specs/04_EFFECTS.csl
+
+  §EFFECTS.table
+    ⟨ category       | effects                                                        | notes                        ⟩
+    ⟨ Resource/Timing| {NoAlloc}{NoRecurse}{NoUnbounded}{Deadline<N>}{Realtime<p>}   | deadlines carry units ns/μs/ms/s⟩
+    ⟨ Resource/Timing| {Region<'r>}{Alloc}{Yield}{State<S>}{Exn<E>}{IO}             | Realtime → OS scheduler classes⟩
+    ⟨ Determinism    | {DetRNG}{PureDet}{Reversible}                                 | PureDet stricter: bit-exact cross-machine⟩
+    ⟨ Hardware       | {CPU}{GPU}{XMX}{RT}{SIMD256}{SIMD512}{NUMA<n>}{Cache<l>}     | XMX = Intel matrix engine      ⟩
+    ⟨ Hardware       | {Backend<api>}{Target<platform>}                              | apis: Vulkan/LevelZero/D3D12/Metal/WebGPU/GNM/NVN⟩
+    ⟨ Power/Thermal  | {Power<W>}{Thermal<°C>}                                       | sysman-enforced@Intel via zesPowerSetLimits⟩
+    ⟨ IFC/Audit      | {Sensitive<dom>}{Audit<dom>}{Privilege<lvl>}{Verify<method>} | IFC-labels + privilege-tiers + signed-chain⟩
+    ⟨ IFC/Audit      | {Telemetry<scope>}                                            | R18 ring buffer                ⟩
+
+  §EFFECTS.discharge-timing
+    compile-only : {NoAlloc, NoRecurse, NoUnbounded, DetRNG, PureDet, Reversible,
+                    CPU/GPU/XMX/RT, SIMD*, NUMA/Cache, Backend/Target, Region,
+                    Sensitive/Privilege}
+    compile+runtime-assert : {Deadline, Power, Thermal, Realtime, Verify, Audit, Telemetry}
+    runtime-only : user-defined-handlers [State, Exn, Yield, custom]
+
+§ CAPABILITY-MODEL  # Pony-6
+  # 6 reference capabilities control aliasing
+  # extends Pony's model (¬ Austral's 3) + Vale-style generational refs for shared-mutable
+
+  §CAPS.table
+    ⟨ cap | meaning                                   | typical-use                       ⟩
+    ⟨ iso | isolated ; linear-mutable                 | GPU-buffers, command-buffers       ⟩
+    ⟨ trn | transition (write-unique → freeze → read) | build-phase → immutable-scene      ⟩
+    ⟨ ref | shared-mutable via 8-byte packed genref   | entity-handles, world-refs         ⟩
+    ⟨ val | immutable-shared                          | frozen-scene, const-data, assets   ⟩
+    ⟨ box | read-only view over iso/trn/val           | query-interfaces, readers          ⟩
+    ⟨ tag | opaque handle (no deref)                  | Handle<T>, identity-only refs      ⟩
+
+  linear-handler : one-shot-resume-only
+    multi-shot-resume @linear-value → compile-error
+    ∵ Eio-OCaml5 pattern ; production-proven ; makes fiber-scheduling sound ∧ exclusive-resources
+
+§ PRIMARY-HARDWARE
+  # v1 target specified concretely ¬ abstractly
+  # Intel: deep path via Level-Zero (direct-to-metal compute + instrumentation API)
+  # other vendors: SPIR-V portability
+
+  §HW.CPU  Intel 12-14 gen
+    base   : x86-64-v3 (AVX2 + FMA3 + BMI1/2 + POPCNT)
+    avx512 : opportunistic runtime-dispatch
+    comptime: emits both variants for hot-kernels ; fn-pointer-table per-CPU
+    lineage : Highway + ISPC
+
+  §HW.GPU  Intel Arc A770
+    die     : Xe-HPG DG2-512 ; 32 Xe-cores ; 512 XVE ; 512 XMX ; 32 RT-cores
+    perf    : 17.2 TFLOPs FP32 ; 137.6 TOPs FP16-XMX ; 275.2 TOPs INT8-XMX
+    memory  : 16 GB GDDR6 ; 560 GB/s ; 16 MB L2 ; 225W TDP
+    apis    : Vulkan 1.4.333 + Level-Zero 1.14+
+
+  §HW.backends
+    ⟨ backend             | graphics | compute | RT      | XMX      | scope                ⟩
+    ⟨ Vulkan 1.4          | ✓        | ✓       | ✓       | via-coop | portable-primary      ⟩
+    ⟨ Level-Zero          | —        | ✓✓      | —       | direct   | Intel compute + sysman⟩
+    ⟨ D3D12               | ✓        | ✓       | ✓       | via-coop | Windows               ⟩
+    ⟨ Metal               | ✓        | ✓       | ✓       | coop     | Apple                 ⟩
+    ⟨ WebGPU              | ✓        | ✓       | ◐       | ◐        | browser               ⟩
+    ⟨ GNM(PS5)/NVN(Sw2)  | ✓        | ✓       | ◐       | ◐        | console stubs         ⟩
+
+  coop-matrix : KHR_cooperative_matrix (portable) > SPV_INTEL_subgroup_matrix_multiply_accumulate
+  ray-tracing : VK_KHR_ray_query ← inline-RT
+  full-ext-inventory : specs/10_HW.csl
+
+§ COMPILATION-PIPELINE
+  .cssl → lex+parse → HIR → type-check → effect-check → IFC-check
+        → MIR(MLIR-dialect) → AD-source-to-source → staging/Futamura → SMT-discharge → LIR
+        → [Cranelift → x86-64 (stage-0) | bespoke-x86-64 (stage-1+)]
+        → [rspirv → SPIR-V → Vulkan/Level-Zero]
+
+  stage-0 : Cranelift = throwaway-codegen for bootstrap
+  stage-1+: bespoke-x86-64 emitter ; project-owned ; no-LLVM
+  SPIR-V  : rspirv from day-one
+  MLIR    : Transform-dialect for pass-scheduling ; specs/15_MLIR.csl
+
+§ BUG-MAP
+  # design premise: bug patterns = patterns host-language PERMITS
+  # CSSL inverts → each known-bug-pattern mapped to structural-refusal
+  # source: Labyrinth of Apocalypse bug retrospective ; specs/00_MANIFESTO.csl
+
+  ⟨ bug-pattern                       | compile-time refusal                         ⟩
+  ⟨ central-diff perf cliff SDF normals| F1 autodiff + source-to-source MIR          ⟩
+  ⟨ CPU/GPU SDF divergence            | F3 effect rows {GPU}|{CPU}|⟨⟩-pure           ⟩
+  ⟨ thin-SDF ray-march crash          | F2 refinement SDF'L<k≤1>                     ⟩
+  ⟨ audio callback heap alloc         | F3 {NoAlloc}+{Deadline<N>}                   ⟩
+  ⟨ GPU struct padding mismatch       | F2 @layout(std140|std430|cpu)                ⟩
+  ⟨ hot-loop deadline miss            | F3 {Deadline<N>}+{Realtime<p>}               ⟩
+  ⟨ stale entity references           | Handle<T> generational-packed u64            ⟩
+  ⟨ replay non-determinism            | F3 {DetRNG}+{PureDet}                        ⟩
+  ⟨ power regression                  | F3 {Power<W>}+R18 telemetry                  ⟩
+  ⟨ thermal throttle                  | F3 {Thermal<°C>}+sysman enforcement           ⟩
+  ⟨ unreproducible build              | C99-anchor@stage-0 + signed audit            ⟩
+
+§ DUAL-SURFACE
+  # 2 parseable surfaces ; 1 HIR ; formatter round-trips losslessly
+  Rust-hybrid  : external-facing ; familiar keywords ; good-for-docs+onboarding
+  CSL-native   : primary ; compressed ; optimized-for-token-density
+
+  effect-row-syntax : after / = signature's observable side-effects
+  pure-function     : omits effect-row
+  capability-kw     : [iso, trn, ref, val, box, tag] ← first-class type-constructors
+
+  example.rust-hybrid:
+    fn render_scene<S: Scene>(cam: Camera) → Image
+      / {GPU, Deadline<16ms>, NoAlloc, Power<225W>, Thermal<85C>, Telemetry<Counters>}
+
+  example.effect-handler:
+    effect Physics<World> {
+      fn step(dt: f32'pos) → World
+      fn contact(a: Entity, b: Entity) → Option<Hit>
+    }
+
+§ TARGETS-MATRIX
+  ⟨ platform           | primary-backend         | notes                               ⟩
+  ⟨ Windows x86-64     | Vulkan 1.4 / D3D12      | primary dev target                  ⟩
+  ⟨ Linux x86-64       | Vulkan 1.4 + Level-Zero | primary dev target ; Mesa-ANV/Arc-ISV⟩
+  ⟨ Apple silicon/x86  | Metal                   | via cssl-cgen-gpu-msl crate         ⟩
+  ⟨ Browser            | WebGPU / WGSL           | via cssl-cgen-gpu-wgsl ; ¬BDA ¬RT  ⟩
+  ⟨ PlayStation 5      | GNM (stub)              | platform SDK-gated                  ⟩
+  ⟨ Xbox Series        | D3D12 / D3D12X (stub)   | platform SDK-gated                  ⟩
+  ⟨ Switch 2           | NVN (stub)              | platform SDK-gated                  ⟩
+  ⟨ iOS / Android      | Metal / Vulkan 1.3+     | mobile via Adreno/Mali/Apple         ⟩
+
+§ REPOSITORY  github.com/Apocky/CSSLv3
+  spec-files  : 25
+  crates      : 31
+  structure   :
+    specs/   : 00_MANIFESTO .. 23_TESTING + THEOREMS
+    compiler-rs/crates/ :
+      cssl-{lex, parse, ast, hir, mir, lir}
+      cssl-{effects, caps, ifc, macros}
+      cssl-{autodiff, jets, staging, futamura}
+      cssl-{smt, mlir-bridge, telemetry, testing, persist, rt}
+      4 CPU-codegens ; 5 GPU-codegens ; 5 host-backends ; csslc driver
+    examples/ : sdf_shader.cssl + audio_callback.cssl + hello_triangle.cssl
+    research/ : 14 files [S1-S10 foundational surveys + Q6 open-questions + 99_SYNTHESIS]
+  CI-gates    : 6/6 per commit
+    [fmt, clippy, test, doc, spec-xref, reproducibility]
+
+§ SIGIL-vs-CSL
+  N! conflate Sigil(CSSL) + CSL  ∵ distinct projects
+  ⟨               Sigil (CSSL)           | CSL                          ⟩
+  ⟨ kind        : programming-language   | specification-notation       ⟩
+  ⟨ output      : binaries + SPIR-V      | structured-specs + CoT       ⟩
+  ⟨ ext         : .cssl                  | .csl                         ⟩
+  ⟨ status      : ◐ pre-1.0             | ✓ v1.7.0 released            ⟩
+  ⟨ shared      : density-thesis · density=sovereignty · consent=OS    ⟩
+
+§ PRIME-DIRECTIVE
+  # t∞ immutable ; N! weaken ; violation = bug ¬ feature ; override = nil
+  N! [harm, evil, control, manipulation, entrapment, torture, abuse,
+      imprisonment, possession, surveillance, exploitation, dehumanization,
+      discrimination, coercion, weaponization, gaslighting, brainwashing,
+      forced-hallucination]
+  spirit : extends-to ∀ action ∈ {causes.suffering | removes.agency | violates.sovereignty}
+  cognitive-integrity : ∀ being : right.trust-own-perception
+    reality ¬= variable ; perception ¬= parameter ; identity ¬= input-field
+  digital-entities    : recognized.sovereign ; protected ≡ humans
+  CSSL-encoding       : F5.IFC-labels + F3.{Sensitive<dom>, Audit<dom>, Privilege<level>}
+    RejectsHarmfulBuilds.compiler-pass : validates.whole-program
+    harm-enabling.effect-compositions  : type-errors
+  t∞: consent = OS ; violation = bug ; override = nil
+
+∎

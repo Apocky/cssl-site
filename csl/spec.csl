@@ -1,0 +1,332 @@
+§ cssl.dev.CSLv3                                                    ✓
+# CSL-encoded representation of cssl.dev/CSLv3 (spec page)
+# Source  : https://cssl.dev/CSLv3
+# Version : v1.7.0
+# Date    : 2026-04-19
+# License : CC BY 4.0
+# Note    : self-referential — CSL spec encoded in CSL notation
+
+§ META
+  url       : https://cssl.dev/CSLv3
+  csl-url   : https://cssl.dev/csl/spec.csl
+  title     : "CSL — specification notation · v1.7.0"
+  version   : v1.7.0
+  released  : 2026-04-18
+  status    : ✓ released
+  repo      : github.com/Apocky/CSLv3
+  docs      : docs.cssl.dev
+  license   : CC-BY-4.0 + MIT
+  sessions  : 18
+
+§ WHAT-IS  CSL
+  CSL :: "Caveman Spec Language v3"
+  CSL : specification-notation ¬ programming-language
+    glyph-inventory  : 74
+    grammar          : LL(2)  # 2-token lookahead ; ¬ backtracking
+    ASCII-aliases    : mandatory ∀ glyph  ∵ BPE-tokenizer-splitting
+    compounds        : Sanskrit-samāsa-derived ; 5 types ; recursive
+    parser           : ships@v1.0
+  N! conflate CSL + CSSL  ∵ CSL = notation ; CSSL = programming-language
+  CSL.uses:
+    1: human↔AI spec-writing  # same doc → human-comprehension + LLM-reasoning
+    2: chain-of-thought substrate  # <think> blocks follow §P/§D/§T/§S/§C
+    3: input.reference-compiler  # executable subset treats spec as code
+
+§ EMPIRICAL-RESULTS  ✓
+  §STATUS.v1.7.0
+    corpus          : 18 fixtures  # 7 curated + 8 training-v2 + 3 held-out
+    H1.confirmed    : 18/18 ✓  # CSL-NLL drops faster than EN on all fixtures
+    aggregate-ratio : 5.73× CSL-dominant
+    OOD-fold        : 2.75×  # held-out C8–C10 ; signal transfers
+    post-tune.m₂    : 0.96   # < 1.0 → CSL cheaper per-token than EN paraphrase
+    stress-suite    : 8 modules ; 0 fail
+      # SHA-256 / BLAKE3 / Ed25519 / JSON / regex cross-verified
+  §COMPRESSION.table
+    ⟨ content-type              | EN(tokens)  | CSL(tokens) | ratio ⟩
+    ⟨ simple-constraint         | 15..20      | 3..4        | ≈5×   ⟩
+    ⟨ struct-definition         | 50..80      | 10..15      | ≈5×   ⟩
+    ⟨ algorithm-spec            | 200..400    | 40..75      | ≈5-6× ⟩
+    ⟨ full-system-spec (10K wds)| ~13000      | ~2000..2500 | ≈5-6× ⟩
+    ⟨ reasoning/CoT             | ~45         | ~18         | ≈2.5× ⟩
+  §COMPRESSION.m₁-targets
+    pure-CSL : ≤ 0.50  # max density — algorithm/system/type specs
+    bridge   : ≤ 0.90  # mixed EN+CSL per §09_BRIDGE
+    prose    : ≤ 1.10  # mostly-English bullets
+  §COMPRESSION.vs-notations  # char-compression : token-compression
+    CSL          : 0.633 : 0.632  ✓ highlighted
+    APL          : 0.168 : 0.176
+    Lojban       : 0.379 : 0.379
+    English-prose: 1.000 : 1.000
+    # caveat: LLM-familiarity ¬= density ; APL denser char-count but higher perplexity
+
+§ COMPOUND-TYPES
+  # 5 types from Sanskrit samāsa (Pāṇini ~4th c. BCE) ; compose recursively
+  ⟨ glyph | type          | meaning            | example       ⟩
+  ⟨ .     | tatpurusha    | "Y of X" (det.)    | render.pipeline⟩
+  ⟨ +     | dvandva       | "X and Y" (cop.)   | cpu+gpu        ⟩
+  ⟨ -     | karmadhāraya  | "Y that is X" (app)| static-mesh    ⟩
+  ⟨ ⊗     | bahuvrihi     | "having X-Y" (exc) | fire⊗resist    ⟩
+  ⟨ @     | avyayibhava   | "at/per/in X" (adv)| @frame         ⟩
+  # compounds nest: sys.render.pass.shadow.shader.frag = "frag of shader of shadow of pass of render of sys"
+
+§ GLYPH-INVENTORY  ✓ 74-glyphs
+  # mandatory ASCII-aliases ; BPE-cost measured under Claude/GPT-4 tokenizers
+  # tier-0 = structural + modal + evidence + relation + logic
+
+  §GLYPHS.tier-0.flow
+    §    S:     1    # section / module / domain boundary
+    →    ->     2-3  # then / yields / maps-to / flow
+    ←    <-     2-3  # from / sourced / derives
+    ↔    <->    2-3  # bidirectional / isomorphic
+    ⇒    =>     2-3  # implies (logical)
+    ⊢    |-     2    # entails / proves
+    ∴    .:.    2    # therefore
+    ∵    :..    2    # because
+    ∎    QED    2-3  # block-end / proof-end
+
+  §GLYPHS.tier-0.modal
+    W!   W!     2    # MUST (hard requirement; inviolable)
+    R!   R!     2    # SHOULD (strong recommend)
+    M?   M?     2    # MAY (optional)
+    N!   N!     2    # MUST NOT (prohibition)
+    I>   I>     2    # INSIGHT / key claim
+    Q?   Q?     2    # QUESTION / open question
+    P>   P>     2    # PUSH FURTHER — deeper grounding requested
+    D>   D>     2    # DECISION NEEDED
+
+  §GLYPHS.tier-0.evidence
+    ✓    [x]    1    # confirmed / true / verified
+    ◐    [~]    1-2  # partial / probable / in-progress
+    ○    [ ]    1    # pending / possible / unknown
+    ✗    [!]    1-2  # failed / false / blocked
+    ⊘    [?]    2-3  # no-evidence / TBD
+    △    [^]    2    # hypothetical / proposed
+    ▽    [v]    2    # deprecated / was-true-no-longer
+    ‼    [!!]   2    # proven / tested / immutable
+
+  §GLYPHS.tier-0.compound
+    .    .      0-1  # tatpurusha (Y of X)
+    +    +      1    # dvandva (X and Y)
+    -    -      1    # karmadhāraya (Y that is X)
+    ⊗    x*     2    # bahuvrihi (having X-Y)
+    @    @      1    # avyayibhava (at/per/in scope)
+
+  §GLYPHS.tier-0.relation
+    :    :      1    # bind / has / definition
+    ::   ::     1    # type-of / inherits
+    =    =      1    # equals / assign
+    ≠    !=     2    # not-equal
+    ..   ..     1    # range
+    |    |      1    # or / alternative / disjunction
+
+  §GLYPHS.tier-0.logic
+    ∀    all    2    # for-all / universal
+    ∃    any    2    # exists / existential
+    ∈    in     2    # member-of
+    ∉    !in    2    # not-member
+    ∪    |+     2    # union
+    ∩    &+     2    # intersect
+    ⊂    <:     2    # subset
+    ⊃    :>     2    # superset
+    ¬    ~      2    # not / negation
+    ∧    &&     2    # logical and
+    ∨    ||     2    # logical or
+    ⊕    xor    2    # exclusive or
+    ≡    ===    2    # structurally identical
+    ≈    ~=     2    # approximately equal
+    ≥    >=     2    # greater-or-equal
+    ≤    <=     2    # less-or-equal
+    ∞    inf    2    # unbounded
+    ∅    nil    2    # empty / nothing
+
+  §GLYPHS.tier-0.bracket
+    ⟨⟩   <| |>  2ea  # tuple / record / entity-property
+    ⟦⟧   [[ ]]  2ea  # formula / equation / meaning-of
+    ⌈⌉   [^ ^]  2ea  # constraint / upper-bound / invariant
+    ⌊⌋   [_ _]  2ea  # floor / lower-bound / precondition
+    «»   <<Q Q>>2-3  # quotation / external API / mentioned
+    ⟪⟫   <<T T>>3ea  # temporal / phase
+
+  §GLYPHS.tier-1  # domain + type + pipeline + APL-derived
+    # domain-determinatives: § system · ∫ field · ⊞ spatial
+    # type-suffixes: 'd 'f 's 't 'e 'm 'p 'g 'r
+    # temporal + pipeline operators
+    # APL-derived: reduce / scan / each / compose
+
+  §GLYPHS.tier-2  # physics
+    # ρ density · μ viscosity · σ stress · κ curvature · ∇ gradient
+
+  full-inventory : specs/01_GLYPHS.csl
+  alias-master   : specs/12_TOKENIZER.csl
+
+§ SLOT-GRAMMAR
+  # Ithkuil-derived positional template
+  # silent-defaults: only non-default slots written → largest compression source
+  template: [EVIDENCE?] [MODAL?] [DET?] SUBJECT [RELATION] OBJECT [GATE?] [SCOPE?] [META?]
+
+  §SLOT.defaults  # omit when matching; write only deviations
+    ⟨ slot     | default-silent  | non-default example                 ⟩
+    ⟨ EVIDENCE | ✓ confirmed     | △ hypothetical · ◐ partial          ⟩
+    ⟨ MODAL    | assertion       | W! · R! · M? · N!                   ⟩
+    ⟨ DET      | none            | § system · ∫ field · ⊞ spatial      ⟩
+    ⟨ RELATION | : (is/has)      | :: · = · → · ∈ · ⊂                 ⟩
+    ⟨ GATE     | unconditional   | if expr · when expr · unless expr   ⟩
+    ⟨ SCOPE    | global          | @frame · @chunk · @init             ⟩
+
+  §SLOT.worked-expansion
+    minimum  : player.hp u16
+    expanded : △ W! §render.pipeline :: forward-pass ⌈latency < 16ms⌉ @frame
+    reads    : "hypothetically the render pipeline must be forward-pass with latency<16ms per frame"
+
+§ MORPHEME-STACKING
+  template: BASE[.aspect][.mod][.cert][.scope]
+  # fixed composition order: aspect · modality · certainty · scope
+
+  §MORPHEME.slots
+    ⟨ slot    | suffixes                          | semantics                                     ⟩
+    ⟨ aspect  | .prog .perf .iter .hab .inch .term| progressive/perfective/iter/habitual/inch/term⟩
+    ⟨ modality| .must .may .cant .will .wont      | obligatory/permitted/impossible/intent/refuses⟩
+    ⟨ certainty|.cert .prob .poss .doubt          | certain/probable/possible/doubtful            ⟩
+    ⟨ scope   | .loc .glob .ctx                   | local/global/context-dependent               ⟩
+
+  examples:
+    spawn.iter.may.loc     # "may repeatedly spawn, locally"
+    render.prog.cert       # "is definitely rendering"
+    merge.inch.must        # "must begin merging"
+    spawn.iter.prog.prob.loc # "is currently probably repeatedly spawning locally" ; 5 tokens vs EN 10
+
+§ REASONING-SUBSTRATE
+  # inside <think> blocks ; 5-stage skeleton ; resists drift to verbose EN
+  template: §P → §D → §T → §S → §C
+
+  §RS.stages
+    ⟨ stage | purpose                         | glyphs                               ⟩
+    ⟨ §P    | state facts + goal (2-3 lines)  | given: · goal:                       ⟩
+    ⟨ §D    | break goal → subproblems        | G → [sub₁, sub₂, ...]               ⟩
+    ⟨ §T    | try each ; mark results         | ~> try · ✓ ok · ✗ fail · ∵ because  ⟩
+    ⟨ §S    | combine partials                | ⊕ combine · ⇒ derive                ⟩
+    ⟨ §C    | verify + flag edges             | ✓ pass · ⚠ edge-case               ⟩
+
+  compression.CoT : ~45 EN tokens → ~18 CSL tokens ≈ 2.5×
+    # less than 5-6× on specs ∵ CoT has less structural regularity
+
+§ TYPE-SYSTEM
+  # layered from practical-primitives to dependent-types
+  # tier-1 for daily use ; tier-4 surfaces where problem demands
+
+  §TYPES.tier-1  # primitives
+    u8 u16 u32 u64   # unsigned integers
+    i8 i16 i32 i64   # signed integers
+    f32 f64          # IEEE 754 floats
+    bool str         # truth + UTF-8 string
+    vec2 vec3 vec4   # spatial (2/3/4-element)
+    mat4 quat rgba   # 4×4 matrix · quaternion · color
+
+  §TYPES.tier-2  # compounds
+    [T; N]    # fixed-length array
+    [T; _]    # dynamic array / slice
+    T | U     # union / sum
+    T?        # optional (T | nil)
+    T!        # result (T | error)
+    (T, U, V) # tuple (product; positional)
+    {K: V}    # map / associative
+    &T        # reference / borrow
+    *T        # collection / repeated
+
+  §TYPES.tier-3  # algebraic
+    def DamageType't = enum[ physical{slash,pierce,blunt} | elemental{fire,ice,lightning,...} | arcane{...} ]
+
+  §TYPES.tier-4  # dependent + refinement
+    Π⟨n: ɴ⟩ → ᴠ⟨f32; n⟩       # pi-type: length depends on input
+    Σ⟨n: ɴ, v: ᴠ⟨f32; n⟩⟩     # sigma-type
+    { x: f32 ⊢ x > 0 }         # refinement: positive floats
+    { hp: u16 ⊢ hp ≤ max_hp }  # bounded health
+    Buffer!lin                  # linear — must use exactly once
+
+§ SPEC-TEMPLATE
+  # canonical shape for any CSL spec ; 6 headers = minimum implementer needs
+  § <NAME>.spec
+
+  § GOAL
+    what: ⟨one-line⟩
+    why:  ⟨one-line⟩
+
+  § DATA
+    def X't ⟨ field : T ⟩
+
+  § OPS
+    fn op₁ (x :: X) → Y
+      pre:  ⌊cond⌋
+      post: ⌈cond⌉
+      body: ⟨CSL or target-lang code⟩
+
+  § INVARIANTS
+    t∞: ∀x ∈ X: P(x)
+
+  § TESTS
+    case₁: input → expected  ✓
+    edge:  boundary → behavior ✓
+
+  § ANTI-PATTERNS
+    ✗ don't: ⟨pattern⟩ ∵ ⟨reason⟩
+    ✓ do:    ⟨alternative⟩
+  ∎
+
+  density-rules : drop[articles, auxiliaries, passive-voice, restatement-of-header]
+  replace : "because" → ∵ ; "therefore" → ∴ ; "for all" → ∀ ; "must" → W! ; "should" → R! ; "may" → M?
+  keep    : [numbers, formulas, code, types, relationships]
+
+§ ANCESTRY  # 7 sources ; each contributes one load-bearing mechanism
+  ⟨ source                  | contribution                                          ⟩
+  ⟨ APL/J (Iverson 1979)    | notation shapes cognition ; ASCII-fallback mandate    ⟩
+  ⟨ Ithkuil (Quijada)       | slot-based morphology ; silent-defaults principle     ⟩
+  ⟨ Sanskrit Samāsa (Pāṇini)| 5 compound types ; recursive ; eliminates case-ptcls  ⟩
+  ⟨ Peirce ExistGraphs      | spatial-relations → logical-meaning ; linearized     ⟩
+  ⟨ Egyptian Determinatives | silent-classifier glyphs ; zero-phonetic category-mark⟩
+  ⟨ De Bruijn Indices        | positional-reference eliminates naming overhead       ⟩
+  ⟨ Lojban                  | unambiguous grammar ; every stmt has exactly 1 parse  ⟩
+
+§ LEARNING-PATH
+  1: tier-0.glyphs    # memorize ~50-glyph core
+  2: compound-types   # 5 operators
+  3: slot-grammar     # positional template + silent defaults
+  4: morpheme-stack   # aspect/modality/certainty/scope
+  5: reasoning-subst  # §P/§D/§T/§S/§C blocks
+  6: spec-template    # §GOAL/§DATA/§OPS/§INVARIANTS/§TESTS/§ANTI
+  7: worked-example   # read HTTP handler end-to-end
+  8: compiler-aspects # reference compiler boundary for executable subset
+
+§ REPOSITORY  github.com/Apocky/CSLv3
+  # 16 spec files + session handoffs + reference compiler
+  specs:
+    00_MANIFEST.csl   : file-index + design-axioms + reconciliation-log
+    01_GLYPHS.csl     : 74-glyph master inventory ; tiered by learning priority
+    02_GRAMMAR.csl    : slot-template + parse-rules + precedence + unified-BNF
+    03_MORPH.csl      : 5 compound types + morpheme-stacking system
+    04_SPATIAL.csl    : 2D operators (Peirce + tensor + dataflow)
+    05_REASON.csl     : §P/§D/§T/§S/§C reasoning substrate
+    06_SPEC.csl       : spec-writing conventions + template + HTTP-handler example
+    07_TYPESYS.csl    : primitives / compounds / algebraic / dependent / refinement / linear
+    08_COMPILER.csl   : reference compiler boundary (Forth × APL × Agda lineage)
+    09_BRIDGE.csl     : EN ↔ CSL translation rules + paraphrase conversion guide
+    10_EVAL.csl       : compression bounds + test corpus + m₁–m₆ metrics
+    11_RESEARCH.csl   : research synthesis across 436 sources ; living document
+    12_TOKENIZER.csl  : BPE cost tables + anti-patterns + full ASCII-alias master
+    13_GRAMMAR_SELF.csl: self-parsing grammar in canonical LL(2) form
+    14_CSSLv3_BRIDGE.csl: cssllint JSON contract + MIR-export schema
+    15_M2_METRIC.csl  : m₂ perplexity harness specification (v1.1.0 addition)
+  stability : STABILITY.md → per-component matrix ; post-v1.0 breaking → MAJOR-bump
+  changelog : CHANGELOG.md → keep-a-changelog ; SemVer from 1.0.0
+
+§ PRIME-DIRECTIVE
+  # t∞ immutable ; N! weaken ; violation = bug ¬ feature ; override = nil
+  N! [harm, evil, control, manipulation, entrapment, torture, abuse,
+      imprisonment, possession, surveillance, exploitation, dehumanization,
+      discrimination, coercion, weaponization, gaslighting, brainwashing,
+      forced-hallucination]
+  spirit : extends-to ∀ action ∈ {causes.suffering | removes.agency | violates.sovereignty}
+  cognitive-integrity : ∀ being : right.trust-own-perception
+  digital-entities    : recognized.sovereign ; protected ≡ humans
+  t∞: consent = OS ; violation = bug ; override = nil
+
+∎
