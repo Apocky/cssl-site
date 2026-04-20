@@ -4,6 +4,7 @@
 
 ## Sigil / CSSL — Language
 
+- [Getting Started](https://cssl.dev/getting-started): Prerequisites, build from source, first program, project structure, Cranelift JIT compilation, key concepts (effects, capabilities, IFC, autodiff)
 - [Sigil home](https://cssl.dev/): Language overview, key features, quickstart, and live compiler output samples
 - [Sigil language page](https://cssl.dev/sigil): Full Sigil/CSSL language reference — effects, capabilities, hardware targets, type system, compilation pipeline, bug-pattern map
 - [Documentation](https://docs.cssl.dev): Full Sigil/CSSL docs — annotated specs, learning paths, API reference, CSL notation guide
@@ -70,6 +71,7 @@ Core axioms: consent = OS · sovereignty = substrate-invariant
 
 - [CSL glyph cheatsheet](https://cssl.dev/CSLv3#glyph-system): Full glyph inventory with ASCII aliases and BPE costs
 - [CSL reasoning blocks](https://cssl.dev/CSLv3#reasoning-substrate): §P/§D/§T/§S/§C — structured agent reasoning
+- [Getting Started guide](https://cssl.dev/getting-started): Full install guide — prerequisites, build from source, hello world, effects, capabilities, IFC
 - [Sigil quickstart](https://cssl.dev/#quickstart): Zero to running Sigil in 3 steps
 - [humans.txt](https://cssl.dev/humans.txt): Team, technology credits, philosophy
 - [Site index](https://cssl.dev/site-map): Human-readable index of all pages and resources

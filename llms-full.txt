@@ -11,11 +11,127 @@ This document is the LLM-indexable reference derived from cssl.dev. Content is
 canonical at the HTML pages; this file may lag by one deploy cycle.
 
 Links:
+- Getting Started: https://cssl.dev/getting-started
 - Sigil home: https://cssl.dev/
 - CSL reference: https://cssl.dev/CSLv3
 - Documentation: https://docs.cssl.dev
 - Sigil repository: https://github.com/Apocky/CSSL3
 - CSL repository: https://github.com/Apocky/CSLv3
+
+---
+
+## Getting Started with CSSL (Sigil)
+
+URL: https://cssl.dev/getting-started
+Machine-readable txt: https://cssl.dev/getting-started.txt
+CSL notation: https://cssl.dev/csl/getting-started.csl
+
+CSSL is pre-1.0 and actively developed. Stage-0 compiler is live.
+Primary installation path is building from source.
+
+### Prerequisites
+
+- Rust toolchain (nightly, pinned via rust-toolchain.toml)
+- Git (2.x+)
+- C linker (gcc/clang on Linux; MSVC/MinGW on Windows)
+- Vulkan SDK (only needed for GPU/SPIR-V work)
+
+Install Rust: https://rustup.rs
+
+### Build from source
+
+    git clone https://github.com/Apocky/CSSL3
+    cd CSSL3
+    cargo build --release
+
+Add to PATH (Linux/macOS):
+
+    export PATH="$PATH:$(pwd)/target/release"
+
+Verify:
+
+    csslc --version
+    cargo test --release
+
+### Binary releases (alternative)
+
+Pre-built binaries available at:
+https://github.com/Apocky/CSSL3/releases
+
+May lag behind HEAD. Building from source recommended for pre-1.0.
+
+### First program
+
+Create hello.cssl:
+
+    module com.example.hello
+
+    fn main() {
+        print("Hello from Sigil!")
+    }
+
+Run with JIT (Cranelift backend, no LLVM):
+
+    csslc run hello.cssl
+
+Build native binary:
+
+    csslc build hello.cssl
+
+Compile to SPIR-V (Vulkan):
+
+    csslc build --emit spir-v hello.cssl
+
+### Effect rows
+
+Effects are declared after the return type with /. The compiler
+verifies effect rows at type-check time:
+
+    fn scale_gain(sample : f32, gain : f32) -> f32
+        / {CPU, NoAlloc, PureDet}
+    {
+        sample * gain
+    }
+
+{NoAlloc}: compiler refuses any heap allocation in the body.
+{PureDet}: bit-exact determinism across machines.
+{CPU}: targets native x86-64 code path.
+
+Omitting the effect row means effects are inferred from the body.
+
+### Compilation pipeline
+
+    .cssl → lex/parse → HIR → IFC check → MIR → SMT → LIR
+    → Cranelift → x86-64  (stage-0, no LLVM)
+    → rspirv → SPIR-V → Vulkan / Level-Zero
+
+Cranelift is the stage-0 code generator (bootstrapping only).
+Stage-1 will replace it with a bespoke x86-64 emitter.
+No LLVM anywhere. SPIR-V via rspirv from day one.
+
+### Key concepts summary
+
+Effects (F3): 28+ built-in effects in 5 categories:
+  Resource: {NoAlloc} {NoRecurse} {Deadline<N>} {IO} {State<S>}
+  Determinism: {DetRNG} {PureDet} {Reversible}
+  Hardware: {CPU} {GPU} {XMX} {SIMD256} {Backend<api>}
+  Power: {Power<W>} {Thermal<C>}
+  IFC: {Sensitive<dom>} {Audit<dom>} {Privilege<lvl>} {Verify<m>}
+
+Capabilities (Pony-6):
+  iso (isolated/linear), trn (transition), ref (shared-mutable),
+  val (immutable-shared), box (read-only view), tag (opaque handle)
+
+IFC (F5): Jif-DLM labels on every SSA value.
+  {Sensitive<dom>}, {Audit<dom>}, {Privilege<lvl>}
+  Harm-enabling effect compositions → compile-time type errors.
+
+Refinement types (F2): f32'pos, f32'L<k>, {v:T | P(v)}
+  Discharged by Z3/CVC5 at compile time.
+
+Autodiff (F1): @differentiable + fwd_diff/bwd_diff
+  Source-to-source on MIR. No runtime tracing. No LLVM-Enzyme.
+  Jet<T,N> for higher-order derivatives.
 
 ---
 

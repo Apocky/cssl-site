@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started with CSSL · Sigil — build, run, explore</title>
+<meta name="description" content="Getting started with CSSL (Sigil): prerequisites, building from source, your first program, project structure, compilation with Cranelift, and key language concepts.">
+<link rel="canonical" href="https://cssl.dev/getting-started">
+<link rel="alternate" type="text/plain" href="/getting-started.txt" title="Getting Started with CSSL — machine-readable text version">
+<link rel="alternate" type="text/plain" href="/csl/getting-started.csl" title="Getting Started with CSSL — CSL notation">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<meta name="keywords" content="CSSL, Sigil, getting started, installation, quickstart, Cranelift, build from source, hello world, effect system, Pony capabilities, IFC, game engine language, systems language">
+<meta property="og:title" content="Getting Started with CSSL · Sigil">
+<meta property="og:description" content="Prerequisites, build from source, first program, project structure, and key concepts for CSSL (Sigil). Pre-1.0 — experiment and build with the compiler.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cssl.dev/getting-started">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Getting Started with CSSL (Sigil) — build, run, and experiment with the AI-first game engine language.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Getting Started with CSSL · Sigil">
+<meta name="twitter:description" content="Build from source, write your first program, understand effects and capabilities. Pre-1.0 guide.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="Getting Started with CSSL — AI-first game engine language. Prerequisites, install, first program.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Getting Started with CSSL (Sigil)",
+  "description": "Step-by-step guide to building the CSSL compiler from source, writing your first Sigil program, and understanding core language concepts: effects, capabilities, and information flow control.",
+  "url": "https://cssl.dev/getting-started",
+  "datePublished": "2026-04-20",
+  "dateModified": "2026-04-20",
+  "inLanguage": "en",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "author": {
+    "@type": "Person",
+    "name": "Shawn Wolfgang Michael Baker"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "cssl.dev",
+    "url": "https://cssl.dev"
+  },
+  "supply": [
+    { "@type": "HowToSupply", "name": "Rust toolchain (nightly, pinned)" },
+    { "@type": "HowToSupply", "name": "Git" },
+    { "@type": "HowToSupply", "name": "Vulkan SDK (for GPU compilation)" }
+  ],
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Clone and build the CSSL compiler",
+      "text": "Clone the CSSL3 repository and build with cargo build --release.",
+      "url": "https://cssl.dev/getting-started#installation"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Write your first CSSL program",
+      "text": "Create a .cssl file with a module declaration and a main function.",
+      "url": "https://cssl.dev/getting-started#first-program"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Compile and run",
+      "text": "Use csslc run to JIT-compile and execute via the Cranelift backend.",
+      "url": "https://cssl.dev/getting-started#compilation"
+    }
+  ],
+  "tool": [
+    { "@type": "HowToTool", "name": "csslc — CSSL compiler driver" },
+    { "@type": "HowToTool", "name": "cargo — Rust build system" }
+  ],
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "Sigil (CSSL)",
+    "url": "https://cssl.dev/sigil"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
+  --text: #b8b4a8; --text-dim: #9a9a8e; --text-bright: #e8e4d8;
+  --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
+  --mauve: #c586c0; --tan: #ce9178; --soft-blue: #7aa2d4; --soft-green: #b5cea8;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; overflow-x: hidden;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .back-link { color: var(--text); text-decoration: none; border-bottom: none; }
+.site-header .back-link:hover { color: var(--gold-bright); }
+.site-header .version { color: var(--text-dim); }
+.site-header .version strong { color: var(--gold); font-weight: 400; }
+.site-header .status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); margin-right: 0.4em; vertical-align: middle;
+  box-shadow: 0 0 8px rgba(201, 162, 58, 0.5);
+}
+
+h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--text-bright); letter-spacing: 0.05em; }
+h2 {
+  font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem;
+  position: relative; display: inline-block;
+}
+h2::after {
+  content: ''; position: absolute; bottom: -6px; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+h3 {
+  font-size: 0.85rem; font-weight: 400; color: var(--gold);
+  margin-bottom: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+h4 {
+  font-size: 0.95rem; font-weight: 500; color: var(--text-bright);
+  margin: 1.5rem 0 0.6rem; letter-spacing: 0.04em;
+}
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+  background: var(--bg-code); padding: 0.15em 0.4em;
+  border-radius: 3px; color: var(--gold-bright);
+}
+strong { color: var(--text-bright); font-weight: 500; }
+em { color: var(--text-bright); }
+
+.page-grid {
+  display: grid; grid-template-columns: 1fr;
+  max-width: 1280px; margin: 0 auto;
+  padding: 2rem 2rem 0; gap: 2rem;
+}
+@media (min-width: 1024px) {
+  .page-grid { grid-template-columns: minmax(0, 1fr) 240px; gap: 3rem; padding: 3rem 2.5rem 0; }
+}
+main { min-width: 0; }
+main > section { padding: 3rem 0; border-bottom: 1px solid var(--border); scroll-margin-top: 4rem; }
+main > section:last-of-type { border-bottom: none; }
+
+.toc { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; order: -1; }
+@media (min-width: 1024px) {
+  .toc { order: 2; position: sticky; top: 4.5rem; align-self: start; max-height: calc(100vh - 6rem); overflow-y: auto; padding-right: 0.5rem; }
+}
+.toc details { border: 1px solid var(--border); border-radius: 6px; background: var(--bg-raised); padding: 0.5rem 1rem; }
+@media (min-width: 1024px) {
+  .toc details { border: none; background: transparent; padding: 0; }
+  .toc details summary { display: none; }
+  .toc details[open] > nav { display: flex; }
+}
+.toc summary { cursor: pointer; color: var(--gold); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.4rem 0; list-style: none; }
+.toc summary::-webkit-details-marker { display: none; }
+.toc summary::after { content: ' ▾'; color: var(--gold-dim); }
+.toc details[open] > summary::after { content: ' ▴'; }
+.toc nav { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.5rem 0 0.25rem; }
+@media (min-width: 1024px) {
+  .toc nav { padding: 0; }
+  .toc::before { content: 'Contents'; display: block; color: var(--gold); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.85rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+}
+.toc a { color: var(--text); border-bottom: none; padding: 0.15rem 0; line-height: 1.45; font-size: 0.76rem; }
+.toc a:hover, .toc a:focus-visible { color: var(--gold-bright); }
+.toc a .num { color: var(--text-dim); display: inline-block; width: 2rem; }
+
+.hero {
+  min-height: 60vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; position: relative;
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 2rem 3rem;
+}
+.hero-glyph {
+  font-size: 4rem; color: var(--gold); margin-bottom: 2rem;
+  opacity: 0; animation: glyph-appear 2s ease-out 0.3s forwards;
+  filter: drop-shadow(0 0 30px rgba(201, 162, 58, 0.3));
+  font-family: 'JetBrains Mono', monospace;
+}
+@keyframes glyph-appear {
+  0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  letter-spacing: 0.1em; margin-bottom: 1rem;
+  opacity: 0; animation: fade-up 1.2s ease-out 0.6s forwards;
+}
+.hero h1 span {
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 300;
+  color: var(--text-dim); letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  opacity: 0; animation: fade-up 1.2s ease-out 0.9s forwards;
+}
+.hero-facts {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  color: var(--text); letter-spacing: 0.04em; margin-top: 1.5rem; max-width: 640px;
+  opacity: 0; animation: fade-up 1.2s ease-out 1.2s forwards;
+}
+.hero-facts .fact { color: var(--gold-bright); }
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.status-banner {
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-radius: 4px; padding: 0.85rem 1.25rem; margin-bottom: 2rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--text); letter-spacing: 0.05em;
+  display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;
+}
+.status-banner strong { color: var(--gold-bright); font-weight: 500; }
+.status-banner .status-label {
+  color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;
+  font-size: 0.7rem; margin-right: 0.5rem; flex-shrink: 0;
+}
+
+.code-block {
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 4px; overflow-x: auto; margin: 1rem 0 1.5rem;
+  position: relative;
+}
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute; top: 0.5rem; right: 0.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;
+}
+.code-block pre {
+  padding: 1.25rem 1rem; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; line-height: 1.7; color: var(--text);
+  overflow-x: auto; tab-size: 2;
+}
+.code-block .kw  { color: var(--gold); }
+.code-block .ty  { color: var(--soft-blue); }
+.code-block .fn  { color: #c8c4b8; }
+.code-block .num { color: var(--soft-green); }
+.code-block .str { color: var(--tan); }
+.code-block .cm  { color: #4a4a5a; font-style: italic; }
+.code-block .op  { color: var(--text-dim); }
+.code-block .ann { color: var(--gold-bright); }
+.code-block .eff { color: var(--mauve); }
+.code-block .path { color: var(--text-dim); }
+.code-block .ok  { color: var(--soft-green); }
+.code-block .err { color: var(--red); }
+
+.step-list { display: flex; flex-direction: column; gap: 1.5rem; margin: 1.5rem 0; }
+.step-item {
+  display: flex; gap: 1.25rem;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.25rem 1.5rem;
+  transition: border-color 0.2s;
+}
+.step-item:hover { border-color: var(--gold-dim); }
+.step-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 1.5rem;
+  color: var(--gold); font-weight: 400; min-width: 2rem; flex-shrink: 0;
+  opacity: 0.6; line-height: 1.2;
+}
+.step-body { flex: 1; min-width: 0; }
+.step-body h3 { text-transform: uppercase; }
+.step-body h4 { font-family: 'Cinzel', serif; font-size: 0.88rem; font-weight: 600; color: var(--text-bright); margin: 0 0 0.5rem; letter-spacing: 0.04em; }
+.step-body p { font-size: 0.92rem; margin-bottom: 0.5rem; }
+.step-body p:last-child { margin-bottom: 0; }
+
+.req-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem; margin: 1.25rem 0;
+}
+.req-card {
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1rem 1.25rem;
+}
+.req-card .req-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.4rem; display: block;
+}
+.req-card .req-name {
+  font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 0.3rem; display: block;
+}
+.req-card p { font-size: 0.85rem; color: var(--text-dim); margin: 0; line-height: 1.55; }
+
+.concept-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem; margin: 1.5rem 0;
+}
+.concept-card {
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.25rem 1.5rem;
+  transition: border-color 0.2s;
+}
+.concept-card:hover { border-color: var(--gold-dim); }
+.concept-card .concept-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--gold-dim); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.5rem; display: block;
+}
+.concept-card h3 {
+  font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600;
+  color: var(--text-bright); margin-bottom: 0.6rem;
+  text-transform: none; letter-spacing: 0.04em;
+}
+.concept-card p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; margin: 0; }
+
+.info-box {
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-radius: 6px; padding: 1.25rem 1.5rem; margin: 1.25rem 0;
+}
+.info-box .info-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.5rem; display: block;
+}
+.info-box p { font-size: 0.9rem; margin: 0; }
+
+.warn-box {
+  background: var(--bg-raised); border: 1px solid rgba(168, 50, 50, 0.5);
+  border-left: 3px solid var(--red); border-radius: 0 6px 6px 0;
+  padding: 1rem 1.25rem; margin: 1.25rem 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.warn-box .warn-label { color: var(--red); font-weight: 500; margin-bottom: 0.35rem; display: block; }
+
+.bullet-list { list-style: none; padding: 0; margin: 0.75rem 0 1.2rem; }
+.bullet-list li {
+  padding-left: 1.5rem; position: relative;
+  margin-bottom: 0.5rem; line-height: 1.6;
+}
+.bullet-list li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+}
+
+.machine-links {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0;
+}
+.machine-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 4px; padding: 0.4rem 0.85rem;
+  color: var(--gold); border-bottom: 1px solid var(--border);
+  transition: border-color 0.2s, color 0.2s;
+}
+.machine-link:hover, .machine-link:focus-visible { color: var(--gold-bright); border-color: var(--gold-bright); }
+
+.next-steps-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem; margin: 1.5rem 0;
+}
+.next-card {
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.25rem 1.5rem;
+  transition: border-color 0.2s;
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.next-card:hover { border-color: var(--gold-dim); }
+.next-card .next-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;
+}
+.next-card a {
+  font-family: 'Cinzel', serif; font-size: 0.92rem; font-weight: 600;
+  color: var(--gold); border-bottom: none; letter-spacing: 0.04em;
+}
+.next-card a:hover { color: var(--gold-bright); }
+.next-card p { font-size: 0.85rem; color: var(--text-dim); margin: 0; line-height: 1.55; }
+
+.dir-tree {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.25rem 1rem;
+  line-height: 1.9; color: var(--text); margin: 1rem 0 1.5rem;
+  overflow-x: auto;
+}
+.dir-tree .dt-dir { color: var(--gold-bright); }
+.dir-tree .dt-file { color: var(--text); }
+.dir-tree .dt-ext { color: var(--mauve); }
+.dir-tree .dt-comment { color: #4a4a5a; font-style: italic; }
+
+footer {
+  padding: 3rem 0; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--text-dim); border-top: 1px solid var(--border); margin-top: 2rem;
+}
+footer .attribution { color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+footer .attribution strong { color: var(--text); font-weight: 500; }
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 0.9rem; font-size: 0.75rem; }
+footer .tagline { margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem; letter-spacing: 0.08em; }
+
+.feedback-tab {
+  position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  padding: 0.85rem 0.5rem; background: var(--bg-raised);
+  border: 1px solid var(--border); border-right: none; border-radius: 6px 0 0 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em;
+  color: var(--text-dim); text-decoration: none;
+  z-index: 50; transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.feedback-tab:hover, .feedback-tab:focus-visible { color: var(--gold-bright); border-color: var(--gold-bright); background: var(--bg-code); }
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+.feedback-fallback { display: none; }
+noscript .feedback-fallback { display: block; text-align: center; padding: 0.75rem; font-size: 0.8rem; color: var(--text-dim); }
+
+@media (max-width: 640px) {
+  .site-header { padding: 0.75rem 1.25rem; font-size: 0.7rem; }
+  .page-grid { padding: 1.5rem 1.25rem 0; }
+  .hero { min-height: 50vh; padding: 3rem 1.5rem 2.5rem; }
+  .hero h1 { font-size: 2rem; }
+  .step-item { flex-direction: column; gap: 0.75rem; }
+  .step-num { font-size: 1.1rem; }
+}
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after { display: none !important; }
+  .feedback-tab, .site-header { display: none !important; }
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  .hero { min-height: auto; padding: 1rem 0; }
+  section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
+  .code-block { background: #f4f4f0 !important; border-color: #999 !important; break-inside: avoid; }
+  .code-block pre, .code-block .kw, .code-block .ty, .code-block .fn,
+  .code-block .num, .code-block .str, .code-block .op, .code-block .ann,
+  .code-block .eff, .code-block .ok { color: #000 !important; }
+  .code-block .cm, .code-block .err { color: #600 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-glyph, .hero h1, .hero-sub, .hero-facts { animation: none !important; opacity: 1 !important; }
+  .step-item, .concept-card, .next-card { transition: none !important; }
+  .feedback-tab { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a href="/" class="back-link">cssl.dev</a>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
+</header>
+
+<div class="hero">
+  <div class="hero-glyph" aria-hidden="true">▶ § ▶</div>
+  <h1><span>Getting Started</span></h1>
+  <div class="hero-sub">CSSL · Sigil · Caveman Sigil Substrate Language</div>
+  <div class="hero-sub" style="animation-delay: 1s;">build · run · experiment · explore</div>
+  <div class="hero-facts">
+    <span class="fact">pre-1.0</span> ·
+    <span class="fact">build from source</span> ·
+    <span class="fact">Cranelift JIT</span> ·
+    <span class="fact">x86-64 + SPIR-V</span>
+  </div>
+</div>
+
+<div class="page-grid">
+
+<main id="main">
+
+<section id="status">
+  <h2>§0 — Pre-release Status</h2>
+  <div class="status-banner" role="note" aria-label="Pre-release status">
+    <span class="status-label">Status</span>
+    <div>
+      <strong>CSSL is pre-1.0 and actively developed.</strong>
+      Stage-0 compiler is live: parser, AST, HIR, MIR, F1 autodiff (62/62 gates), HM type inference foundation, 1,600+ tests passing, 0 clippy warnings, 6/6 CI gates per commit.
+      This guide walks you through building the compiler from source and experimenting with the language as it develops.
+    </div>
+  </div>
+  <p>
+    CSSL — <em>Caveman Sigil Substrate Language</em>, also called <strong>Sigil</strong> — is a
+    single-source systems language that compiles to native <strong>x86-64</strong>
+    (AVX2 base, AVX-512 opportunistic) and <strong>SPIR-V</strong> (Vulkan 1.4 + Level-Zero).
+    It is not yet a shipped production toolchain. What it <em>is</em> is a live, tested,
+    rapidly advancing compiler with a complete v1 specification.
+  </p>
+  <p>
+    This guide is honest about what is implemented versus what is specified. Where
+    a feature exists in the specification but has not landed in the stage-0 compiler yet,
+    it is noted. The specification (25 <code>.csl</code> files) is complete and stable for v1.
+  </p>
+  <p>Machine-readable versions of this guide:</p>
+  <div class="machine-links">
+    <a class="machine-link" href="/getting-started.txt">getting-started.txt</a>
+    <a class="machine-link" href="/csl/getting-started.csl">getting-started.csl</a>
+  </div>
+</section>
+
+<section id="prerequisites">
+  <h2>§1 — Prerequisites</h2>
+  <p>You need three things to build and run the CSSL compiler. GPU work adds a fourth.</p>
+
+  <div class="req-grid">
+
+    <div class="req-card">
+      <span class="req-label">Required</span>
+      <span class="req-name">Rust toolchain</span>
+      <p>Nightly channel, version pinned via <code>rust-toolchain.toml</code> in the repository. The build system will automatically download the pinned toolchain via <code>rustup</code> if you have rustup installed.</p>
+    </div>
+
+    <div class="req-card">
+      <span class="req-label">Required</span>
+      <span class="req-name">Git</span>
+      <p>To clone the repository. Any recent Git version works (2.x+).</p>
+    </div>
+
+    <div class="req-card">
+      <span class="req-label">Required</span>
+      <span class="req-name">C linker</span>
+      <p>On Linux: <code>gcc</code> or <code>clang</code>. On Windows: MSVC build tools (or MinGW). Cargo uses this to link the final binaries.</p>
+    </div>
+
+    <div class="req-card">
+      <span class="req-label">GPU work only</span>
+      <span class="req-name">Vulkan SDK</span>
+      <p>LunarG Vulkan SDK for your platform. Includes <code>glslc</code>, validation layers, and <code>spirv-tools</code>. Required only if you are targeting SPIR-V output or running GPU compute.</p>
+    </div>
+
+  </div>
+
+  <h3>Supported platforms</h3>
+  <p>
+    Primary dev targets are <strong>Linux x86-64</strong> and <strong>Windows x86-64</strong>.
+    macOS is supported via the Metal backend stub, but primary development and testing
+    happens on Linux and Windows. The Cranelift stage-0 backend targets x86-64.
+  </p>
+
+  <div class="info-box">
+    <span class="info-label">Install Rust</span>
+    <p>If you do not have Rust: visit <a href="https://rustup.rs" target="_blank" rel="noopener noreferrer">rustup.rs</a> and follow the instructions for your platform. The repository's <code>rust-toolchain.toml</code> will select the correct nightly channel automatically.</p>
+  </div>
+</section>
+
+<section id="installation">
+  <h2>§2 — Installation</h2>
+  <p>
+    CSSL is pre-1.0. The primary installation path is <strong>building from source</strong>.
+    This gives you the live development build with all 1,600+ tests runnable locally.
+  </p>
+
+  <h3>Build from source (recommended)</h3>
+  <div class="step-list">
+
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Clone the repository</h4>
+        <div class="code-block" data-lang="terminal">
+<pre>git clone https://github.com/Apocky/CSSL3
+cd CSSL3</pre>
+        </div>
+        <p>The repository contains 25 specification files in <code>specs/</code>, 31 compiler crates in <code>compiler-rs/</code>, and examples in <code>examples/</code>.</p>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Build the compiler</h4>
+        <div class="code-block" data-lang="terminal">
+<pre>cargo build --release</pre>
+        </div>
+        <p>This builds the full workspace, including <code>csslc</code> (the compiler driver). The <code>rust-toolchain.toml</code> in the repo root pins the exact nightly version — <code>rustup</code> will download it automatically if needed. First build takes several minutes.</p>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Add <code>csslc</code> to your PATH</h4>
+        <div class="code-block" data-lang="terminal">
+<pre><span class="cm"># Linux / macOS</span>
+export PATH="$PATH:$(pwd)/target/release"
+
+<span class="cm"># Windows (PowerShell)</span>
+$env:PATH += ";$(Get-Location)\target\release"</pre>
+        </div>
+        <p>Or invoke directly: <code>./target/release/csslc</code></p>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Verify the build</h4>
+        <div class="code-block" data-lang="terminal">
+<pre>csslc --version</pre>
+        </div>
+        <p>You should see the compiler version string. Run the test suite to verify everything passes:</p>
+        <div class="code-block" data-lang="terminal">
+<pre>cargo test --release</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>Binary releases (alternative)</h3>
+  <p>
+    Pre-built binaries are available on the
+    <a href="https://github.com/Apocky/CSSL3/releases" target="_blank" rel="noopener noreferrer">GitHub releases page</a>
+    for Linux and Windows x86-64. Because this is pre-1.0 software, builds may
+    lag behind the tip of the development branch.
+  </p>
+  <div class="code-block" data-lang="terminal">
+<pre><span class="cm"># Linux — download and install system-wide</span>
+curl -L https://github.com/Apocky/CSSL3/releases/latest/download/csslc-linux-x64 \
+  -o csslc
+chmod +x csslc
+sudo mv csslc /usr/local/bin/</pre>
+  </div>
+
+  <div class="warn-box" role="note">
+    <span class="warn-label">Pre-release note</span>
+    The compiler is under active development. CLI interface, output format,
+    and supported features may change between releases. Building from source
+    at HEAD gives you the most current behavior.
+  </div>
+</section>
+
+<section id="first-program">
+  <h2>§3 — Your First Program</h2>
+  <p>
+    CSSL source files use the <code>.cssl</code> extension. Every file that is the
+    entry point of a program or module begins with a <code>module</code> declaration.
+    Functions are introduced with <code>fn</code>. There are no semicolons; expressions
+    are the body.
+  </p>
+
+  <h3>Hello World</h3>
+  <p>Create a file named <code>hello.cssl</code>:</p>
+  <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>example<span class="op">.</span>hello
+
+<span class="kw">fn</span> <span class="fn">main</span>() {
+    print(<span class="str">"Hello from Sigil!"</span>)
+}</pre>
+  </div>
+
+  <p>Run it:</p>
+  <div class="code-block" data-lang="terminal">
+<pre>csslc run hello.cssl</pre>
+  </div>
+
+  <div class="code-block" data-lang="output">
+<pre><span class="ok">Hello from Sigil!</span></pre>
+  </div>
+
+  <p>
+    The <code>csslc run</code> command compiles and immediately executes via the
+    <strong>Cranelift JIT backend</strong> — the stage-0 native code generator.
+    No intermediate files are written to disk for <code>run</code>; they are kept
+    in memory and executed directly.
+  </p>
+
+  <h3>A function with an effect row</h3>
+  <p>
+    Effects are declared after the return type with a <code>/</code> separator.
+    This function is pure on the CPU with no heap allocation — the compiler
+    verifies this at compile time:
+  </p>
+  <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>example<span class="op">.</span>effects
+
+<span class="cm">// A pure CPU function — no allocation, no I/O, deterministic.</span>
+<span class="kw">fn</span> <span class="fn">scale_gain</span>(sample : <span class="ty">f32</span>, gain : <span class="ty">f32</span>) <span class="op">-&gt;</span> <span class="ty">f32</span>
+    <span class="op">/</span> {<span class="eff">CPU</span>, <span class="eff">NoAlloc</span>, <span class="eff">PureDet</span>}
+{
+    sample <span class="op">*</span> gain
+}
+
+<span class="kw">fn</span> <span class="fn">main</span>() {
+    <span class="kw">let</span> out = scale_gain(<span class="num">0.5</span>, <span class="num">0.8</span>)
+    print(out)
+}</pre>
+  </div>
+
+  <p>
+    The effect row <code>/ {CPU, NoAlloc, PureDet}</code> is part of the function's type.
+    If the function body were to call an allocating function, the compiler would reject it.
+    Omitting the effect row means the compiler infers effects from the body.
+  </p>
+
+  <h3>Building a native binary</h3>
+  <p>To compile to a standalone native binary instead of JIT-running:</p>
+  <div class="code-block" data-lang="terminal">
+<pre>csslc build hello.cssl           <span class="cm"># native x86-64 binary</span>
+csslc build --emit spir-v hello.cssl  <span class="cm"># SPIR-V module for Vulkan</span>
+./hello                          <span class="cm"># run the compiled binary</span></pre>
+  </div>
+</section>
+
+<section id="project-structure">
+  <h2>§4 — Project Structure</h2>
+  <p>
+    A CSSL project is a collection of <code>.cssl</code> source files. Each file begins
+    with a <code>module</code> declaration that names the module within a reverse-DNS
+    namespace (following the convention in the compiler's own specification).
+  </p>
+
+  <h3>Single-file programs</h3>
+  <p>
+    Any <code>.cssl</code> file with a <code>fn main()</code> is a runnable program.
+    No manifest file is required for single-file work:
+  </p>
+  <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>example<span class="op">.</span>my_program
+
+<span class="kw">use</span> std<span class="op">::</span>math<span class="op">::</span>{vec3, normalize, dot}
+
+<span class="kw">fn</span> <span class="fn">main</span>() {
+    <span class="kw">let</span> a = vec3(<span class="num">1.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>)
+    <span class="kw">let</span> b = vec3(<span class="num">0.0</span>, <span class="num">1.0</span>, <span class="num">0.0</span>)
+    <span class="kw">let</span> d = dot(normalize(a), normalize(b))
+    print(d)  <span class="cm">// 0.0</span>
+}</pre>
+  </div>
+
+  <h3>Multi-file projects</h3>
+  <p>
+    For larger projects, organize code across multiple <code>.cssl</code> files within
+    the same namespace. Each file is a module. A recommended layout:
+  </p>
+  <div class="dir-tree" role="img" aria-label="Recommended CSSL project directory structure">
+<span class="dt-dir">my-engine/</span>
+  <span class="dt-file">mod</span><span class="dt-ext">.cssl</span>         <span class="dt-comment"># module root — re-exports public API</span>
+  <span class="dt-file">render</span><span class="dt-ext">.cssl</span>      <span class="dt-comment"># rendering pipeline, SDF engine</span>
+  <span class="dt-file">physics</span><span class="dt-ext">.cssl</span>     <span class="dt-comment"># physics subsystem</span>
+  <span class="dt-file">audio</span><span class="dt-ext">.cssl</span>       <span class="dt-comment"># audio callbacks with NoAlloc effect</span>
+  <span class="dt-file">shaders/</span>
+    <span class="dt-file">sdf_pixel</span><span class="dt-ext">.cssl</span>  <span class="dt-comment"># GPU fragment shaders</span>
+    <span class="dt-file">compute</span><span class="dt-ext">.cssl</span>    <span class="dt-comment"># GPU compute kernels</span>
+  </div>
+
+  <p>
+    The <code>mod.cssl</code> at the project root is the module entry point, similar
+    in role to <code>lib.rs</code> in Rust or <code>index.ts</code> in TypeScript.
+    It declares the module name and re-exports the public interface:
+  </p>
+  <div class="code-block" data-lang="mod.cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>example<span class="op">.</span>my_engine
+
+<span class="kw">pub use</span> render<span class="op">::</span>RenderGraph
+<span class="kw">pub use</span> audio<span class="op">::</span>AudioCallback
+<span class="kw">pub use</span> physics<span class="op">::</span>PhysicsWorld</pre>
+  </div>
+
+  <h3>Dual-surface syntax</h3>
+  <p>
+    CSSL has two syntactic surfaces that share one HIR (High-level IR):
+    the <strong>Rust-hybrid surface</strong> (shown throughout this guide, familiar keywords,
+    good for docs and onboarding) and the <strong>CSL-native surface</strong>
+    (compressed, glyph-based, optimized for token density). Both parse to the same
+    representation; a formatter round-trips losslessly between them.
+    The examples in this guide use the Rust-hybrid surface.
+  </p>
+</section>
+
+<section id="compilation">
+  <h2>§5 — Compilation &amp; Running</h2>
+  <p>
+    The <code>csslc</code> driver is the single entry point for all compilation tasks.
+    Stage-0 uses <strong>Cranelift</strong> as the code generator for x86-64 output
+    (not LLVM — CSSL has no LLVM dependency anywhere in the pipeline). SPIR-V is
+    emitted via <code>rspirv</code> from day one.
+  </p>
+
+  <h3>Common commands</h3>
+  <div class="code-block" data-lang="terminal">
+<pre><span class="cm"># JIT compile and run immediately (Cranelift backend)</span>
+csslc run hello.cssl
+
+<span class="cm"># Compile to native binary</span>
+csslc build hello.cssl
+
+<span class="cm"># Compile to SPIR-V (for Vulkan / Level-Zero)</span>
+csslc build --emit spir-v hello.cssl
+
+<span class="cm"># Show compiler diagnostics and effect-row verification</span>
+csslc check hello.cssl
+
+<span class="cm"># Print the HIR for debugging</span>
+csslc dump --hir hello.cssl</pre>
+  </div>
+
+  <h3>The compilation pipeline</h3>
+  <p>
+    CSSL source goes through the following stages. Each stage in the stage-0
+    compiler is implemented; later stages are where features progressively land:
+  </p>
+  <div class="code-block" data-lang="pipeline">
+<pre><span class="path">.cssl source</span>
+  → lex · parse
+  → HIR          <span class="cm">// High-level IR · type-checked · effect-checked</span>
+  → IFC check    <span class="cm">// Information flow labels</span>
+  → MIR          <span class="cm">// MLIR dialect · AD source-to-source here</span>
+  → SMT discharge  <span class="cm">// Z3/CVC5 for refinement type obligations</span>
+  → LIR
+  ↙               ↘
+<span class="ok">Cranelift → x86-64</span>   <span class="ok">rspirv → SPIR-V → Vulkan / Level-Zero</span></pre>
+  </div>
+
+  <div class="info-box">
+    <span class="info-label">About the Cranelift backend</span>
+    <p>
+      Cranelift is the stage-0 code generator — a deliberate throwaway bootstrapping choice.
+      It generates correct x86-64 code quickly, which lets the compiler be developed and
+      tested before the stage-1 bespoke x86-64 emitter is built. When stage-1 lands, it
+      replaces Cranelift. You will not notice the difference from a user perspective.
+      <strong>No LLVM. No MLIR dependency at runtime. No Enzyme.</strong>
+    </p>
+  </div>
+
+  <h3>Effect verification output</h3>
+  <p>
+    When the compiler verifies effect rows, it reports which obligations were discharged
+    at compile time and which are wrapped in runtime assertions:
+  </p>
+  <div class="code-block" data-lang="csslc check output">
+<pre><span class="cm">// audio_callback.cssl  ✓ accepted</span>
+effect-row:
+  <span class="eff">CPU</span>            <span class="ok">✓</span> compile-time
+  <span class="eff">NoAlloc</span>        <span class="ok">✓</span> 0 heap ops
+  <span class="eff">NoUnbounded</span>    <span class="ok">✓</span> loop bound: n/8
+  <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">1ms</span><span class="op">&gt;</span>  <span class="ok">✓</span> SMT-provable
+  <span class="eff">PureDet</span>        <span class="ok">✓</span> bit-exact cross-machine
+
+refinement obligations: <span class="num">1</span>
+  sample_rate ∈ {<span class="num">44100</span>, <span class="num">48000</span>, <span class="num">96000</span>, <span class="num">192000</span>}
+  → SMT query  <span class="ok">✓ discharged</span></pre>
+  </div>
+</section>
+
+<section id="key-concepts">
+  <h2>§6 — Key Concepts</h2>
+  <p>
+    CSSL is built around five interlocking ideas. Each is a first-class part of the
+    type system — not a library, not a runtime policy, and not opt-in.
+    What follows is an orientation; full details are in the
+    <a href="/sigil">Sigil language reference</a>.
+  </p>
+
+  <div class="concept-grid">
+
+    <div class="concept-card">
+      <span class="concept-id">F3 · Effect System</span>
+      <h3>Effects</h3>
+      <p>
+        Row-polymorphic effect signatures after <code>/</code> in the function type.
+        The compiler tracks what a function observes and refuses to accept functions
+        that violate their declared row. 28+ built-in effects covering resource
+        allocation, timing, hardware, power, thermal, and information flow.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <span class="concept-id">Pony-6 · Capabilities</span>
+      <h3>Linear types &amp; capabilities</h3>
+      <p>
+        Six reference capabilities control aliasing and mutation:
+        <code>iso</code> (isolated), <code>trn</code> (transition),
+        <code>ref</code> (shared-mutable via generational ref),
+        <code>val</code> (immutable-shared), <code>box</code> (read-only view),
+        <code>tag</code> (opaque handle). Linear values may only be resumed once
+        inside handlers — the compiler enforces this.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <span class="concept-id">F5 · IFC</span>
+      <h3>Information Flow Control</h3>
+      <p>
+        Decentralized Label Model (Jif-DLM): every SSA value carries
+        confidentiality and integrity labels threaded by the compiler.
+        The <code>{Sensitive&lt;dom&gt;}</code> effect marks sensitive domains.
+        Explicit declassification operators are required to move data from
+        sensitive to public context. Harm-enabling effect compositions are type errors.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <span class="concept-id">F2 · Refinement Types</span>
+      <h3>Refinement types</h3>
+      <p>
+        LiquidHaskell-style predicates: <code>{v : f32 | v &gt;= 0.0}</code> or
+        the shorthand tagged suffix <code>f32'pos</code>. Discharged by Z3/CVC5
+        through the <code>{Verify&lt;method&gt;}</code> effect at compile time.
+        Lipschitz proofs, layout refinements (<code>@layout(std140|std430)</code>),
+        and SDF shape invariants are all refinement types.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <span class="concept-id">F1 · Autodiff</span>
+      <h3>Source-to-source differentiation</h3>
+      <p>
+        Mark a function <code>@differentiable</code>. Use <code>fwd_diff(fn)(args)</code>
+        for forward mode or <code>bwd_diff(fn)(args).d_x</code> for reverse mode.
+        Lowered by source-to-source transformation on MIR — no LLVM-Enzyme, no
+        runtime tracing. Analytic gradients for SDF normals, inverse rendering,
+        and inverse physics are first-class.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <span class="concept-id">F1 · Jets</span>
+      <h3>Jet&lt;T, N&gt; — higher-order AD</h3>
+      <p>
+        <code>Jet&lt;T, N&gt;</code> is the dual-number type for forward-mode AD
+        in function composition. Useful for higher-order derivatives and
+        physically-based rendering algorithms that need gradient chains.
+        Defined in <code>specs/17_JETS.csl</code>.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>A taste: effects + autodiff together</h3>
+  <p>
+    This example shows both an effect row and autodiff in a single function.
+    The SDF normal is computed analytically — no finite differences:
+  </p>
+  <div class="code-block" data-lang=".cssl">
+<pre><span class="kw">module</span> com<span class="op">.</span>example<span class="op">.</span>sdf_intro
+
+<span class="kw">use</span> std<span class="op">::</span>math<span class="op">::</span>{vec3, length, normalize}
+
+<span class="cm">// Lipschitz-1 sphere SDF — differentiable, layout-safe.</span>
+<span class="ann">@differentiable</span>
+<span class="ann">@lipschitz</span>(k = <span class="num">1.0</span>)
+<span class="kw">fn</span> <span class="fn">sphere_sdf</span>(p : <span class="ty">vec3</span>, r : <span class="ty">f32</span>'pos) <span class="op">-&gt;</span> <span class="ty">f32</span> {
+    length(p) <span class="op">-</span> r
+}
+
+<span class="cm">// Analytic surface normal via reverse-mode AD.</span>
+<span class="cm">// GPU, must finish in 16ms, no heap allocs.</span>
+<span class="ann">@fragment</span>
+<span class="kw">fn</span> <span class="fn">surface_normal</span>(hit_pos : <span class="ty">vec3</span>) <span class="op">-&gt;</span> <span class="ty">vec3</span>
+    <span class="op">/</span> {<span class="eff">GPU</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">16ms</span><span class="op">&gt;</span>, <span class="eff">NoAlloc</span>}
+{
+    <span class="kw">let</span> grad = bwd_diff(sphere_sdf)(hit_pos, <span class="num">0.5</span>)<span class="op">.</span>d_p
+    normalize(grad)
+}
+<span class="cm">// bwd_diff is a compiler-level operator — no runtime overhead,
+// no tracing, no LLVM-Enzyme. Lowered at MIR before codegen.</span></pre>
+  </div>
+</section>
+
+<section id="next-steps">
+  <h2>§7 — Next Steps</h2>
+  <p>
+    You have the compiler built and a mental model of the language. Here is where to go next.
+  </p>
+
+  <div class="next-steps-grid">
+
+    <div class="next-card">
+      <span class="next-label">Language Reference</span>
+      <a href="/sigil">Sigil / CSSL</a>
+      <p>Complete language reference — all 28+ effects, capability matrix, hardware targets, the full compilation pipeline, and the bug-pattern→compiler-feature mapping from the <em>Labyrinth of Apocalypse</em> retrospective.</p>
+    </div>
+
+    <div class="next-card">
+      <span class="next-label">Code Examples</span>
+      <a href="https://github.com/Apocky/CSSL3/tree/main/examples" target="_blank" rel="noopener noreferrer">examples/ in the repo ↗</a>
+      <p>Working code in <code>examples/</code>: <code>sdf_shader.cssl</code> (F1 autodiff gate), <code>audio_callback.cssl</code> (<code>{NoAlloc}</code> + <code>{Deadline}</code>), <code>hello_triangle.cssl</code> (minimum Vulkan pipeline).</p>
+    </div>
+
+    <div class="next-card">
+      <span class="next-label">Specification Notation</span>
+      <a href="/CSLv3">CSL Reference</a>
+      <p>CSL is the 74-glyph LL(2) notation used to write the CSSL specification itself. If you want to read the 25 <code>.csl</code> spec files in the repo, start here — it explains the grammar, glyphs, compound types, and morpheme stacking.</p>
+    </div>
+
+    <div class="next-card">
+      <span class="next-label">Compiler Source</span>
+      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">github.com/Apocky/CSSL3 ↗</a>
+      <p>31 crates in <code>compiler-rs/</code>. <code>cssl-lex</code>, <code>cssl-parse</code>, <code>cssl-hir</code>, <code>cssl-mir</code>, <code>cssl-autodiff</code>, <code>csslc</code> driver. CI gates: fmt · clippy · test · doc · spec-xref · reproducibility.</p>
+    </div>
+
+    <div class="next-card">
+      <span class="next-label">Quality Methodology</span>
+      <a href="/thinking-guides">Thinking Guides</a>
+      <p>Seven failure modes of reasoning under throughput pressure. The verification methodology used on this site. Relevant for anyone building tools or specs on top of CSSL.</p>
+    </div>
+
+    <div class="next-card">
+      <span class="next-label">Ethics</span>
+      <a href="/ethics-guides">Ethics Guides</a>
+      <p>Foundational ethical principles for the system. The Prime Directive — encoded structurally in CSSL's IFC labels and effect system — is not a policy document. It is a type-level invariant.</p>
+    </div>
+
+  </div>
+
+  <div class="info-box" style="margin-top: 2rem;">
+    <span class="info-label">Contributing</span>
+    <p>
+      The compiler is written in Rust with a zero-warning, zero-clippy-lint standard.
+      Each commit must pass 6 CI gates: <code>fmt</code>, <code>clippy</code>,
+      <code>test</code>, <code>doc</code>, <code>spec-xref</code>, <code>reproducibility</code>.
+      See <code>DECISIONS.md</code> in the repository for the rationale behind key
+      architectural choices. Session handoffs are in <code>handoffs/</code>.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<aside class="toc" aria-label="Table of contents">
+  <details open>
+    <summary>Contents</summary>
+    <nav>
+      <a href="#status"><span class="num">§0</span>Pre-release Status</a>
+      <a href="#prerequisites"><span class="num">§1</span>Prerequisites</a>
+      <a href="#installation"><span class="num">§2</span>Installation</a>
+      <a href="#first-program"><span class="num">§3</span>Your First Program</a>
+      <a href="#project-structure"><span class="num">§4</span>Project Structure</a>
+      <a href="#compilation"><span class="num">§5</span>Compilation &amp; Running</a>
+      <a href="#key-concepts"><span class="num">§6</span>Key Concepts</a>
+      <a href="#next-steps"><span class="num">§7</span>Next Steps</a>
+    </nav>
+  </details>
+</aside>
+
+</div>
+
+<footer>
+  <div class="attribution">Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ</div>
+  <div>CSSL · Sigil · Getting Started · pre-1.0 · 2026-04-20</div>
+  <div class="links">
+    <a href="/">Home</a>
+    <a href="/sigil">Sigil (CSSL)</a>
+    <a href="/CSLv3">CSL Reference</a>
+    <a href="/thinking-guides">Thinking Guides</a>
+    <a href="/ethics-guides">Ethics Guides</a>
+    <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="/sitemap.xml">Site Map</a>
+    <a href="/site-map.html">Page Index</a>
+    <a href="/llms.txt">llms.txt</a>
+  </div>
+  <div style="margin-top: 1rem;">
+    Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+  </div>
+  <div class="tagline">density = sovereignty · consent = OS</div>
+</footer>
+
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</body>
+</html>

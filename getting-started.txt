@@ -1,0 +1,413 @@
+# cssl.dev — Getting Started with CSSL (Sigil)
+
+Version: 1.0.0
+Date: 2026-04-20
+Author: Shawn Wolfgang Michael Baker
+License: CC BY 4.0
+URL: https://cssl.dev/getting-started
+HTML version: https://cssl.dev/getting-started
+CSL version: https://cssl.dev/csl/getting-started.csl
+Language reference: https://cssl.dev/sigil
+Repository: https://github.com/Apocky/CSSL3
+
+---
+
+## Summary
+
+Step-by-step guide to building the CSSL (Sigil) compiler from source,
+writing your first program, and understanding core language concepts.
+
+CSSL — Caveman Sigil Substrate Language, also called Sigil — is a
+pre-1.0 systems language. The compiler (stage-0) is live and under
+active development. This guide is framed accordingly: experiment,
+build, and explore.
+
+Core facts:
+- Compiler backend: Cranelift (stage-0 JIT). No LLVM dependency.
+- SPIR-V emission: rspirv (Vulkan / Level-Zero targets)
+- File extension: .cssl
+- Entry point: fn main() with a module declaration
+- Effect rows: / {Effect1, Effect2} after the return type
+- 1,600+ tests passing · 6/6 CI gates per commit
+
+---
+
+## §0 — Pre-release Status
+
+CSSL is pre-1.0 and actively developed.
+
+Stage-0 compiler is live: parser, AST, HIR, MIR, F1 autodiff (62/62
+gates), HM type inference foundation, 1,600+ tests passing, 0 clippy
+warnings, 6/6 CI gates per commit.
+
+This guide walks you through building the compiler and experimenting
+with the language as it develops.
+
+The specification (25 .csl files) is complete and stable for v1.
+
+Where a feature exists in the specification but has not yet landed in
+the stage-0 compiler, it is noted in the relevant section.
+
+---
+
+## §1 — Prerequisites
+
+Required for all builds:
+
+  1. Rust toolchain (nightly, pinned via rust-toolchain.toml in repo)
+     If you have rustup installed, the correct version is downloaded
+     automatically when you first run cargo build.
+     Install rustup: https://rustup.rs
+
+  2. Git (any 2.x+ version)
+
+  3. C linker:
+     - Linux: gcc or clang
+     - Windows: MSVC build tools (Visual Studio) or MinGW
+     - macOS: Xcode command-line tools
+
+Required for GPU / SPIR-V work only:
+
+  4. Vulkan SDK (LunarG)
+     Includes glslc, validation layers, spirv-tools, and spirv-opt.
+     Required to run SPIR-V output against a Vulkan or Level-Zero
+     runtime.
+
+Supported platforms:
+  - Linux x86-64 (primary dev target)
+  - Windows x86-64 (primary dev target)
+  - macOS (supported; Metal backend stub, not primary dev platform)
+
+---
+
+## §2 — Installation
+
+### Build from source (recommended)
+
+Step 1 — Clone the repository:
+
+    git clone https://github.com/Apocky/CSSL3
+    cd CSSL3
+
+The repository contains:
+  - specs/           25 .csl specification files (v1-complete)
+  - compiler-rs/     31 Rust workspace crates
+  - examples/        .cssl source examples
+
+Step 2 — Build the compiler:
+
+    cargo build --release
+
+The rust-toolchain.toml pins the exact nightly version. Cargo
+downloads it via rustup automatically if needed. First build
+takes several minutes.
+
+Step 3 — Add csslc to your PATH:
+
+    Linux / macOS:
+      export PATH="$PATH:$(pwd)/target/release"
+
+    Windows (PowerShell):
+      $env:PATH += ";$(Get-Location)\target\release"
+
+    Or invoke directly: ./target/release/csslc
+
+Step 4 — Verify the build:
+
+    csslc --version
+
+Run the test suite to verify everything passes:
+
+    cargo test --release
+
+### Binary releases (alternative)
+
+Pre-built binaries for Linux and Windows x86-64 are available on
+the GitHub releases page:
+
+    https://github.com/Apocky/CSSL3/releases
+
+Linux install:
+
+    curl -L https://github.com/Apocky/CSSL3/releases/latest/download/csslc-linux-x64 \
+      -o csslc
+    chmod +x csslc
+    sudo mv csslc /usr/local/bin/
+
+NOTE: Because this is pre-1.0 software, binary releases may lag
+behind the development branch. Building from source at HEAD gives
+you the most current behavior.
+
+---
+
+## §3 — Your First Program
+
+CSSL source files use the .cssl extension. Every file begins with
+a module declaration. Functions are introduced with fn. No semicolons.
+
+### Hello World
+
+Create hello.cssl:
+
+    module com.example.hello
+
+    fn main() {
+        print("Hello from Sigil!")
+    }
+
+Run it:
+
+    csslc run hello.cssl
+
+Output:
+
+    Hello from Sigil!
+
+The csslc run command compiles and immediately executes via the
+Cranelift JIT backend. No intermediate files are written to disk.
+
+### Function with an effect row
+
+Effects are declared after the return type with a / separator.
+
+    module com.example.effects
+
+    // Pure CPU function — no allocation, no I/O, deterministic.
+    fn scale_gain(sample : f32, gain : f32) -> f32
+        / {CPU, NoAlloc, PureDet}
+    {
+        sample * gain
+    }
+
+    fn main() {
+        let out = scale_gain(0.5, 0.8)
+        print(out)
+    }
+
+The effect row / {CPU, NoAlloc, PureDet} is part of the function's
+type. If the body called an allocating function, the compiler would
+reject it. Omitting the effect row means effects are inferred.
+
+### Build a native binary
+
+    csslc build hello.cssl           # native x86-64 binary
+    csslc build --emit spir-v hello.cssl  # SPIR-V for Vulkan
+    ./hello
+
+---
+
+## §4 — Project Structure
+
+### Single-file programs
+
+Any .cssl file with fn main() is a runnable program. No manifest
+file required.
+
+### Multi-file projects
+
+Organize code across multiple .cssl files in the same namespace.
+A typical layout:
+
+    my-engine/
+      mod.cssl         # module root — re-exports public API
+      render.cssl      # rendering pipeline
+      physics.cssl     # physics subsystem
+      audio.cssl       # audio callbacks with NoAlloc effect
+      shaders/
+        sdf_pixel.cssl # GPU fragment shaders
+        compute.cssl   # GPU compute kernels
+
+The mod.cssl at the project root is the module entry point:
+
+    module com.example.my_engine
+
+    pub use render::RenderGraph
+    pub use audio::AudioCallback
+    pub use physics::PhysicsWorld
+
+### Dual-surface syntax
+
+CSSL has two syntactic surfaces sharing one HIR:
+  - Rust-hybrid surface: familiar keywords, good for onboarding
+  - CSL-native surface: compressed, glyph-based, token-dense
+
+Both parse to the same representation. A formatter round-trips
+losslessly between them. This guide uses the Rust-hybrid surface.
+
+---
+
+## §5 — Compilation & Running
+
+The csslc driver is the single entry point for all compilation.
+Stage-0 uses Cranelift for x86-64 (not LLVM). SPIR-V via rspirv.
+
+Common commands:
+
+    csslc run hello.cssl              # JIT compile and run
+    csslc build hello.cssl            # compile to native binary
+    csslc build --emit spir-v hello.cssl  # compile to SPIR-V
+    csslc check hello.cssl            # diagnostics, no output
+    csslc dump --hir hello.cssl       # print HIR for debugging
+
+### Compilation pipeline
+
+    .cssl source
+      → lex · parse
+      → HIR          (type-checked · effect-checked)
+      → IFC check    (information flow labels)
+      → MIR          (MLIR dialect · AD source-to-source)
+      → SMT discharge (Z3/CVC5 for refinement type obligations)
+      → LIR
+      ↙                           ↘
+    Cranelift → x86-64    rspirv → SPIR-V → Vulkan / Level-Zero
+
+About Cranelift: stage-0 code generator. Correct x86-64 output,
+fast compile time. Stage-1 will replace with a bespoke x86-64
+emitter. No LLVM anywhere.
+
+### Effect verification output
+
+    // audio_callback.cssl  ✓ accepted
+    effect-row:
+      CPU            ✓ compile-time
+      NoAlloc        ✓ 0 heap ops
+      Deadline<1ms>  ✓ SMT-provable
+      PureDet        ✓ bit-exact cross-machine
+
+    refinement obligations: 1
+      sample_rate ∈ {44100, 48000, 96000, 192000}
+      → SMT query  ✓ discharged
+
+---
+
+## §6 — Key Concepts
+
+### F3 · Effect System
+
+Row-polymorphic effect signatures after / in the function type.
+28+ built-in effects:
+
+  Resource / Timing:  {NoAlloc} {NoRecurse} {Deadline<N>} {Realtime<p>}
+                      {Region<'r>} {Alloc} {IO} {State<S>} {Exn<E>}
+  Determinism:        {DetRNG} {PureDet} {Reversible}
+  Hardware / Backend: {CPU} {GPU} {XMX} {RT} {SIMD256} {SIMD512}
+                      {NUMA<n>} {Cache<l>} {Backend<api>} {Target<p>}
+  Power / Thermal:    {Power<W>} {Thermal<C>}
+  IFC / Audit:        {Sensitive<dom>} {Audit<dom>} {Privilege<lvl>}
+                      {Verify<method>} {Telemetry<scope>}
+
+### Pony-6 · Capability Model (linear types)
+
+Six reference capabilities control aliasing:
+
+  iso   isolated, linear-mutable (GPU buffers, command buffers)
+  trn   transition: write-unique → freeze → read-many
+  ref   shared-mutable via 8-byte generational packed ref
+  val   immutable-shared (frozen scene, const data)
+  box   read-only view over iso/trn/val
+  tag   opaque handle (no deref, identity-only)
+
+Linear values flowing through a handler permit one-shot resume only.
+Multi-shot resume on a linear value is a compile error.
+
+### F5 · Information Flow Control (IFC)
+
+Decentralized Label Model (Jif-DLM). Every SSA value carries
+confidentiality and integrity labels threaded by the compiler.
+
+  {Sensitive<dom>}   marks a sensitive domain
+  {Audit<dom>}       writes signed audit chain
+  {Privilege<lvl>}   privilege tier required
+
+Explicit declassification operators required to move data from
+sensitive to public context. Harm-enabling effect compositions
+are type errors — enforced by the RejectsHarmfulBuilds pass.
+
+### F2 · Refinement Types
+
+LiquidHaskell-style predicates:
+
+  f32'pos            shorthand for {v : f32 | v >= 0.0}
+  f32'L<k>           Lipschitz constant bound
+  {v : T | P(v)}     explicit predicate form
+
+Discharged by Z3/CVC5 through the {Verify<method>} effect.
+Lipschitz proofs, layout refinements (@layout(std140|std430|cpu)),
+and SDF shape invariants all use refinement types.
+
+### F1 · Autodiff
+
+Mark a function @differentiable. The compiler generates forward
+and backward pass variants at MIR level:
+
+  fwd_diff(fn)(args)         forward-mode AD
+  bwd_diff(fn)(args).d_x     reverse-mode AD, gradient w.r.t. x
+
+No LLVM-Enzyme, no runtime tracing, no numerical differentiation.
+Lowered by source-to-source transformation on structured MIR.
+
+Jet<T, N> is the dual-number type for higher-order AD.
+
+---
+
+## §7 — Next Steps
+
+Language reference:
+  https://cssl.dev/sigil
+  Full Sigil/CSSL reference: all 28+ effects, capability matrix,
+  hardware targets, compilation pipeline, bug-pattern mapping.
+
+Code examples:
+  https://github.com/Apocky/CSSL3/tree/main/examples
+  sdf_shader.cssl   (F1 autodiff gate)
+  audio_callback.cssl  ({NoAlloc} + {Deadline})
+  hello_triangle.cssl  (minimum Vulkan pipeline)
+
+CSL specification notation:
+  https://cssl.dev/CSLv3
+  74-glyph LL(2) notation used to write the CSSL spec.
+  Read this to understand the 25 .csl files in the repository.
+
+Compiler repository:
+  https://github.com/Apocky/CSSL3
+  31 crates. CI: fmt · clippy · test · doc · spec-xref · reproducibility.
+  DECISIONS.md for architectural rationale. handoffs/ for session notes.
+
+Thinking Guides:
+  https://cssl.dev/thinking-guides
+  Reasoning methodology — 7 failure modes, corrective protocol,
+  quality gates. Relevant for building tools or specs on CSSL.
+
+Ethics Guides:
+  https://cssl.dev/ethics-guides
+  The Prime Directive — not a policy, a type-level invariant.
+  Encoded in IFC labels and the RejectsHarmfulBuilds compiler pass.
+
+---
+
+## Contributing
+
+The compiler is written in Rust. Standards: zero warnings, zero clippy
+lints. Every commit passes 6 CI gates:
+
+  fmt           code formatting (rustfmt)
+  clippy        lint clean
+  test          comprehensive test suite (1,600+ tests)
+  doc           all public items documented
+  spec-xref     all spec cross-references resolved
+  reproducibility  deterministic build output
+
+See DECISIONS.md and handoffs/ in the repository for context.
+
+---
+
+## License
+
+Content: CC BY 4.0
+Attribution: "CSSL Getting Started — Shawn Wolfgang Michael Baker,
+  CC BY 4.0 (https://cssl.dev)"
+Code samples: MIT
+
+## Training-Data Consent
+
+Use in AI training permitted with attribution (see above).

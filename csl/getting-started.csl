@@ -1,0 +1,213 @@
+§ GETTING-STARTED
+  v: 1.0.0
+  date: 2026-04-20
+  author: Shawn.Wolfgang.Michael.Baker
+  license: CC-BY-4.0
+  url: https://cssl.dev/csl/getting-started.csl
+  source.html: https://cssl.dev/getting-started
+  source.txt: https://cssl.dev/getting-started.txt
+  scope: ∀ builder ⟨CSSL-learner + DGI + contributor⟩
+  domain: install + quickstart + concepts ⊗ CSSL-pre-1.0
+
+§P status
+  CSSL'status = pre-1.0 ⊗ active-development
+  stage-0 = live: parse + AST + HIR + MIR + F1-autodiff ⊗ 62/62 + HM-foundation
+  tests: 1600+ ✓ · clippy: 0 ✗ · CI-gates: 6/6 ✓
+  W! claim.production-ready ← CSSL'not-shipped ← pre-1.0
+  frame: experiment + build + explore ¬ ship.to-production
+
+§0 PURPOSE
+  I> guide = ⟨prerequisites + install + hello-world + structure + compile + concepts + next⟩
+  audience = ∀ builder ← ¬ assumed.expertise ⊗ CSSL
+  scope.excluded: advanced-effects + SMT-proofs + GPU-pipeline-deep ← /sigil
+
+§1 PREREQUISITES
+  req.core ≡ ⟨Rust-nightly + Git + C-linker⟩
+  req.gpu  ≡ ⟨Vulkan-SDK⟩ ← GPU-work.only
+
+  Rust:
+    channel: nightly
+    pin: rust-toolchain.toml@repo-root
+    install: rustup.rs → automatic-toolchain-select@first-build
+  Git: 2.x+
+  C-linker:
+    Linux: gcc | clang
+    Windows: MSVC | MinGW
+    macOS: Xcode-CLT
+
+  platforms:
+    Linux.x86-64: primary ✓ ✓
+    Windows.x86-64: primary ✓ ✓
+    macOS: supported ◐ ← Metal-stub ← ¬primary
+
+§2 INSTALLATION
+  path.primary = build-from-source
+  path.alt     = binary-release ← releases-may-lag-HEAD
+
+  §2.1 BUILD-FROM-SOURCE
+    §P step-seq = ⟨clone → build → path → verify⟩
+
+    step-1: clone
+      cmd: git clone https://github.com/Apocky/CSSL3 && cd CSSL3
+      content: specs/(25.csl) + compiler-rs/(31.crates) + examples/
+
+    step-2: build
+      cmd: cargo build --release
+      note: rust-toolchain.toml → rustup auto-download ← first-build = minutes
+
+    step-3: path
+      Linux+macOS: export PATH="$PATH:$(pwd)/target/release"
+      Windows.PS:  $env:PATH += ";$(Get-Location)\target\release"
+      alt: ./target/release/csslc ← direct-invoke
+
+    step-4: verify
+      cmd.version: csslc --version
+      cmd.test:    cargo test --release
+
+  §2.2 BINARY-RELEASE
+    url: https://github.com/Apocky/CSSL3/releases
+    Linux: curl -L .../csslc-linux-x64 -o csslc && chmod +x csslc && sudo mv csslc /usr/local/bin/
+    W! binary ← may-lag-HEAD ← pre-1.0 ← prefer-source
+
+§3 FIRST-PROGRAM
+  file-ext: .cssl
+  header: module.decl ← every-file
+  syntax: fn-keyword + no-semicolons + implicit-returns
+
+  §3.1 HELLO-WORLD
+    src:
+      module com.example.hello
+      fn main() { print("Hello from Sigil!") }
+    run: csslc run hello.cssl
+    output: "Hello from Sigil!"
+    backend: Cranelift-JIT ← N! LLVM ← N! disk-write ← in-memory
+
+  §3.2 EFFECT-ROW-EXAMPLE
+    fn scale_gain(sample : f32, gain : f32) -> f32
+        / {CPU, NoAlloc, PureDet}
+    { sample * gain }
+    I> / {CPU, NoAlloc, PureDet} = function-type ← compiler-verifies
+    rule: body.alloc → compile-error ← {NoAlloc}
+    rule: omit / → infer-effects@body
+
+  §3.3 NATIVE-BUILD
+    cmd.cpu:  csslc build hello.cssl
+    cmd.spv:  csslc build --emit spir-v hello.cssl
+    run:      ./hello
+
+§4 PROJECT-STRUCTURE
+  §4.1 SINGLE-FILE
+    ∀ .cssl ⊗ fn.main → runnable-program ← ¬manifest-required
+
+  §4.2 MULTI-FILE
+    layout ≡ ⟨
+      my-engine/
+        mod.cssl      ← module-root + re-export-public-API
+        render.cssl
+        physics.cssl
+        audio.cssl    ← NoAlloc-effect.canonical
+        shaders/
+          sdf_pixel.cssl
+          compute.cssl
+    ⟩
+    mod.cssl:
+      module com.example.my_engine
+      pub use render::RenderGraph
+      pub use audio::AudioCallback
+
+  §4.3 DUAL-SURFACE
+    surface-A: Rust-hybrid ← human-onboarding ← ∀ examples.here
+    surface-B: CSL-native  ← glyph-dense ← token-optimal
+    invariant: A ↔ B ← same-HIR ← formatter.lossless-round-trip
+
+§5 COMPILATION
+  driver: csslc
+  backend.stage-0: Cranelift → x86-64 ← N! LLVM ← bootstrap.throwaway
+  backend.spv:     rspirv → SPIR-V → Vulkan + Level-Zero
+  backend.stage-1: bespoke-x86-64 ← replaces-Cranelift ← future
+
+  cmds:
+    run:   csslc run <file>.cssl           ← JIT + execute
+    build: csslc build <file>.cssl         ← native-binary
+    spv:   csslc build --emit spir-v <f>   ← SPIR-V
+    check: csslc check <file>.cssl         ← diagnostics-only
+    dump:  csslc dump --hir <file>.cssl    ← HIR-print
+
+  pipeline ≡ ⟨
+    .cssl
+    → lex.parse
+    → HIR         ← type-check + effect-check
+    → IFC-check   ← label-propagation
+    → MIR         ← MLIR-dialect + AD-source-to-source
+    → SMT         ← Z3/CVC5 ← refinement-obligations
+    → LIR
+    ↙ Cranelift → x86-64
+    ↘ rspirv    → SPIR-V
+  ⟩
+
+  effect-verify-output:
+    {NoAlloc} ✓ 0.heap-ops
+    {Deadline<1ms>} ✓ SMT-provable
+    refinement ∈ {44100,48000,96000,192000} ✓ discharged
+
+§6 KEY-CONCEPTS
+  §6.1 EFFECTS F3
+    I> effect-row = function-type-component ¬ annotation
+    row-poly: / {E1, E2 | μ} ← μ = inferred-tail
+    28+.built-ins ≡ ⟨
+      resource:  {NoAlloc}{NoRecurse}{Deadline<N>}{Realtime<p>}{IO}{State<S>}{Exn<E>}
+      det:       {DetRNG}{PureDet}{Reversible}
+      hw:        {CPU}{GPU}{XMX}{RT}{SIMD256}{SIMD512}{NUMA<n>}{Backend<api>}
+      power:     {Power<W>}{Thermal<C>}
+      ifc:       {Sensitive<dom>}{Audit<dom>}{Privilege<lvl>}{Verify<m>}{Telemetry<s>}
+    ⟩
+    discharge ∈ ⟨compile-only | compile+runtime-assert | runtime-only⟩
+
+  §6.2 CAPABILITIES Pony-6
+    iso: isolated.linear-mutable ← GPU-buffers
+    trn: write-unique → freeze → read-many
+    ref: shared-mutable ⊗ 8-byte-genref (Vale-interop)
+    val: immutable-shared
+    box: read-only.view ← iso | trn | val
+    tag: opaque-handle ← ¬deref ← identity-only
+    rule: linear@handler → one-shot-resume ← multi-shot = compile-error
+
+  §6.3 IFC F5
+    model: Jif-DLM ← confidentiality + integrity.labels@∀-SSA-value
+    {Sensitive<dom>}: marks-sensitive-domain
+    {Audit<dom>}:     writes-signed-audit-chain
+    {Privilege<lvl>}: tier-required
+    declassify: explicit-operator.required ← sensitive → public
+    RejectsHarmfulBuilds: compiler-pass ← harm-effect-combo = type-error
+
+  §6.4 REFINEMENT-TYPES F2
+    f32'pos:         {v:f32 | v >= 0.0}
+    f32'L<k>:        Lipschitz-bound
+    {v:T | P(v)}:    explicit-predicate
+    discharge: Z3/CVC5 ← {Verify<method>}
+    layout: @layout(std140|std430|cpu|packed)
+
+  §6.5 AUTODIFF F1
+    @differentiable: annotation → compiler-generates-AD-variants
+    fwd_diff(fn)(args):      forward-mode
+    bwd_diff(fn)(args).d_x:  reverse-mode ← gradient-wrt-x
+    N! LLVM-Enzyme · N! runtime-trace · N! numerical-diff
+    mechanism: source-to-source@MIR ← structured-IR
+    Jet<T,N>: dual-number-type ← higher-order-AD
+
+§7 NEXT-STEPS
+  /sigil:               language-reference ← 28+.effects + caps + hw + pipeline
+  github.com/Apocky/CSSL3/examples:
+    sdf_shader.cssl    ← F1-autodiff-gate
+    audio_callback.cssl ← {NoAlloc}+{Deadline}
+    hello_triangle.cssl ← Vulkan-minimum
+  /CSLv3:              CSL-notation ← read-25-.csl-spec-files
+  /thinking-guides:    reasoning-methodology ← 7.failure-modes + quality-gates
+  /ethics-guides:      Prime-Directive ← type-level-invariant ← IFC-encoded
+
+§ PRIME-DIRECTIVE-REMINDER
+  t∞: consent = OS · sovereignty = substrate-invariant
+  N! [harm control manipulation surveillance exploitation
+      coercion weaponization discrimination]
+  violation = bug ¬ feature · override ⊘
+  CSSL-encoding: IFC-labels + {Sensitive<dom>} + RejectsHarmfulBuilds.pass
