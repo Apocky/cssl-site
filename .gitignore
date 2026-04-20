@@ -28,7 +28,7 @@ dist/
 .mcp-probe
 BUILD_DECISIONS.md
 
-# Security credentials
+# Sensitive files — never commit
 .env
 .env.*
 *.env
@@ -39,5 +39,9 @@ BUILD_DECISIONS.md
 *.p12
 *.pfx
 *.secret
+*secret*
+*token*
+*credential*
+*password*
 credentials.json
 secrets.json
