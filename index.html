@@ -7,7 +7,6 @@
 <meta name="description" content="Sigil: A hardware-grounded programming language designed for AI authorship, video game engines, and dual-target compilation to native x86-64 + SPIR-V.">
 <meta name="author" content="Shawn Wolfgang Michael Baker">
 <link rel="canonical" href="https://cssl.dev/">
-<link rel="alternate" type="text/plain" href="/csl/index.csl" title="cssl.dev — CSL notation">
 <meta name="theme-color" content="#07070c">
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="Sigil — AI-First Game Engine Language">
@@ -24,7 +23,6 @@
 <meta name="twitter:title" content="Sigil — AI-First Game Engine Language">
 <meta name="twitter:description" content="One source. Two targets. Designed for how AI thinks.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
-<meta name="twitter:image:alt" content="Sigil — AI-First Game Engine Language">
 <meta name="keywords" content="Sigil, CSSL, Caveman Sigil Substrate Language, game engine language, shader language, SPIR-V, Vulkan, x86-64, autodiff, SMT verification, dimensional analysis, AI programming language, programming language, compiler, Rust, DGI">
 <script type="application/ld+json">
 {
@@ -76,38 +74,6 @@
   "keywords": "Sigil, CSSL, compiler, SPIR-V, Vulkan, x86-64, autodiff, SMT, effect system, dimensional analysis, game engine"
 }
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ComputerLanguage",
-  "name": "Sigil",
-  "alternateName": ["CSSL", "Caveman Sigil Substrate Language"],
-  "description": "A hardware-grounded programming language that compiles a single source file to both native x86-64 (AVX2+FMA3) and SPIR-V (Vulkan compute shaders). Designed for AI authorship, video game engines, and dual-target compilation. Features zero-cost dimensional analysis, coordinate space tracking, differentiable programming, and CSSL — a compact AI-first notation for dense specification.",
-  "url": "https://cssl.dev/",
-  "sameAs": [
-    "https://github.com/Apocky/CSSL3"
-  ],
-  "subjectOf": [
-    {
-      "@type": "TechArticle",
-      "name": "CSSL Language Reference",
-      "url": "https://cssl.dev/CSLv3",
-      "description": "Full specification and reference documentation for the CSSL language and Sigil compiler"
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "Sigil Compiler Source",
-      "codeRepository": "https://github.com/Apocky/CSSL3",
-      "programmingLanguage": "Rust",
-      "license": "https://opensource.org/licenses/MIT"
-    }
-  ],
-  "creator": {
-    "@type": "Person",
-    "name": "Shawn Wolfgang Michael Baker"
-  }
-}
-</script>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -151,14 +117,6 @@ body::after {
   pointer-events: none;
   z-index: 9999;
 }
-
-.skip-link {
-  position: absolute; left: -9999px; top: 0;
-  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
-  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem; z-index: 10000;
-}
-.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
 
 /* === LAYOUT === */
 .container {
@@ -228,22 +186,6 @@ code {
   border-radius: 3px;
   color: var(--gold-bright);
 }
-
-/* === SITE HEADER === */
-.site-header {
-  position: sticky; top: 0; z-index: 100;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0.9rem 2rem;
-  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
-}
-.site-header .site-brand { color: var(--gold); font-weight: 600; }
-.site-header .site-nav { display: flex; gap: 1.5rem; }
-.site-header .site-nav a { color: var(--text); text-decoration: none; border-bottom: none; transition: color 0.2s; }
-.site-header .site-nav a:hover { color: var(--gold-bright); }
-@media (max-width: 600px) { .site-header { padding: 0.75rem 1rem; } .site-header .site-nav { gap: 0.8rem; font-size: 0.7rem; } }
-@media print { .site-header { display: none !important; } }
 
 /* === HERO === */
 .hero {
@@ -1075,20 +1017,6 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 </head>
 <body>
 
-<a href="#main-content" class="skip-link">Skip to content</a>
-
-<header class="site-header">
-  <span class="site-brand">§ cssl.dev</span>
-  <nav class="site-nav" aria-label="Site navigation">
-    <a href="/getting-started">Getting Started</a>
-    <a href="/sigil">Sigil</a>
-    <a href="/CSLv3">CSL</a>
-    <a href="/thinking-guides">Thinking Guides</a>
-    <a href="/ethics-guides">Ethics Guides</a>
-    <a href="/faq">FAQ</a>
-  </nav>
-</header>
-
 <!-- HERO -->
 <header class="hero">
   <div class="hero-glyph">◇ § ◇</div>
@@ -1119,17 +1047,10 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <!-- START HERE -->
 <nav class="start-here" aria-label="Quick navigation">
   <div class="start-here-links">
-    <a class="start-link" href="/getting-started">Getting Started</a>
     <a class="start-link" href="#quickstart">Quickstart</a>
-    <a class="start-link" href="/sigil">Sigil</a>
     <a class="start-link" href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">Repo ↗</a>
     <a class="start-link" href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">Docs ↗</a>
     <a class="start-link" href="/CSLv3">CSL Spec</a>
-    <a class="start-link" href="/thinking-guides">Thinking Guides</a>
-    <a class="start-link" href="/ethics-guides">Ethics Guides</a>
-    <a class="start-link" href="/examples">Examples</a>
-    <a class="start-link" href="/faq">FAQ</a>
-    <a class="start-link" href="/contributing">Contributing</a>
   </div>
 </nav>
 
@@ -1601,7 +1522,7 @@ effect-row gate:
     </div>
     <div class="feature">
       <h3>Dual-Target Compilation</h3>
-      <p>One .cssl source file compiles to native x86-64 (via Cranelift) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
+      <p>One .cssl source file compiles to native x86-64 (via C/LLVM) and SPIR-V 1.3+ (for Vulkan compute). @cpu, @gpu, @both annotations control which target receives each function.</p>
     </div>
     <div class="feature">
       <h3>Zero-Cost Dimensions</h3>
@@ -1799,24 +1720,8 @@ effect-row gate:
       <a href="https://docs.cssl.dev" style="color: var(--gold-dim); text-decoration: none;" target="_blank" rel="noopener noreferrer">docs.cssl.dev</a>
       — the knowledge base
     </div>
-    <div class="links" style="margin-top: 1.25rem;">
-      <a href="/getting-started">Getting Started</a>
-      <a href="/sigil">Sigil</a>
-      <a href="/CSLv3">CSL Reference</a>
-      <a href="/examples">Examples</a>
-      <a href="/thinking-guides">Thinking Guides</a>
-      <a href="/ethics-guides">Ethics Guides</a>
-      <a href="/security-guides">Security Guides</a>
-      <a href="/philosophy">Philosophy</a>
-      <a href="/faq">FAQ</a>
-      <a href="/contributing">Contributing</a>
-      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="/sitemap.xml">Site Map</a>
-      <a href="/site-map.html">Page Index</a>
-      <a href="/llms.txt">llms.txt</a>
-    </div>
     <div class="license-line">
-      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
     </div>
     <div class="build-hash" data-hash="ed2305718499ab7d51db197600108e257bbbde93e94e19017435c73523ea3d42">sha256:ed2305718499ab7d · 2026-04-19</div>
   </div>
