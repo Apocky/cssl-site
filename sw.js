@@ -22,7 +22,9 @@ var PRECACHE = [
   '/js/kbd-nav.js',
   '/js/permalinks.js',
   '/js/toc.js',
-  '/js/glyph-table.js'
+  '/js/glyph-table.js',
+  '/js/search-palette.js',
+  '/js/compression-demo.js'
 ];
 
 self.addEventListener('install', function (e) {

@@ -19,7 +19,7 @@
   sessions  : 18
 
 § WHAT-IS  CSL
-  CSL :: "Caveman Spec Language v3"
+  CSL :: "Caveman Spec Language"
   CSL : specification-notation ¬ programming-language
     glyph-inventory  : 74
     grammar          : LL(2)  # 2-token lookahead ; ¬ backtracking
