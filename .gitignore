@@ -22,3 +22,16 @@ package-lock.json
 # Build artefacts (if added later)
 dist/
 .cache/
+
+# Sensitive files — never commit
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*secret*
+*token*
+*credential*
+*password*
+*.secret
