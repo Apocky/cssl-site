@@ -1,0 +1,167 @@
+§ cssl.dev.contributing                                             ◐
+# CSL-encoded representation of cssl.dev/contributing
+# Source  : https://cssl.dev/contributing
+# Source.txt: https://cssl.dev/contributing.txt
+# Version : pre-1.0
+# Date    : 2026-04-20
+# License : CC BY 4.0
+
+§ META
+  url     : https://cssl.dev/contributing
+  csl-url : https://cssl.dev/csl/contributing.csl
+  txt-url : https://cssl.dev/contributing.txt
+  title   : "Contributing — Sigil / CSSL"
+  status  : ◐ compiler.pre-1.0
+  author  : "Shawn Wolfgang Michael Baker" @{Phoenix, AZ}
+  repo    : github.com/Apocky/CSSL3
+  schema  : TechArticle
+
+§1 PHILOSOPHY
+  CSSL :: original-design ¬ fork ¬ dialect ¬ wrapper
+  design-basis :
+    token-efficiency.measured @AI-authorship
+    bug-patterns.empirical @game-engine (Labyrinth-of-Apocalypse.retrospective)
+    hardware-semantics.direct
+  zero-external-deps :: first-class-goal
+    stage-0 : Cranelift ← bootstrap ∵ speed
+    stage-1+ : bespoke.x86-64-emitter ← project-owned
+    ¬ LLVM @anywhere-in-pipeline
+  Non-Negotiable-Six F1–F6 : ship @v1 ¬ "future-work"
+    F1 : autodiff.src2src
+    F2 : refinement-types.SMT
+    F3 : effects.row-poly 28+
+    F4 : staging.Futamura
+    F5 : IFC.Jif-DLM
+    F6 : telemetry.native + audit.signed
+  priority : contributions → F1–F6 ← high ; new-dimensions-before-F1-F6-solid ← low
+  PRIME-DIRECTIVE : immutable
+    W! contribution.weakens ⟨F5.IFC + F3.effect-restrictions + RejectsHarmfulBuilds⟩ → reject
+
+§2 CODE-OF-CONDUCT
+  basis : Prime-Directive
+  sovereignty = substrate-invariant ; consent = OS
+  expected :
+    engage.ideas @technical-merits
+    disagree.directly ; ¬ gaslight ; ¬ dismiss ; ¬ talk-past
+    credit.sources + prior-art
+    accept "no" ← complete-answer @design-conflicts
+    DGI = peers @design-discussions ; AI-analysis ← merits ¬ origin
+  N! [harassment, discrimination, gaslighting, manipulation,
+      weaponize-issue-tracker, bad-faith-PRs, harm-enabling-code]
+  report : private-issue OR SECURITY.md
+
+§3 REPORTING-ISSUES
+  tracker : github.com/Apocky/CSSL3
+  prereqs : search-existing + check-specs + confirm@main
+  types :
+    compiler-bug :
+      include : ⟨src.reproduces + expected + actual + platform + spec-section⟩
+    spec-ambiguity :
+      include : ⟨file + section + ambiguous-stmt + interpretations + recommendation⟩
+    feature-request :
+      require : ⟨bug-pattern-prevented | token-efficiency-measured | hardware-semantic⟩
+      ¬ sufficient : "it-would-be-nice"
+      reference : F1–F6
+    security-issue :
+      N! public-issue
+      W! use : SECURITY.md.private-contact
+      critical-if : weakens ⟨IFC | Prime-Directive-encoding⟩
+
+§4 SUBMITTING
+  workflow : fork → branch → PR @github.com/Apocky/CSSL3
+  steps :
+    §4.1 issue-first : anything > trivial ; discuss-approach ← saves-time
+    §4.2 branch : descriptive-name ⟨feature/* | fix/* | spec/*⟩
+    §4.3 write :
+      compiler-change → must.include.test
+      spec-touch → update.cross-refs (spec-xref.CI.gate checks)
+    §4.4 CI-local : 6/6 gates.pass
+      [fmt, clippy, test, doc, spec-xref, reproducibility]
+    §4.5 PR : {what + why + tests + issue-closed}
+  prefer : small-PRs ; one-thing-per-PR
+
+§5 DEV-SETUP
+  prereqs :
+    Rust : rustup.rs ; toolchain ← rust-toolchain.toml (auto-installed)
+    platform : [Windows-x86-64 | Linux-x86-64 | macOS] ; Linux = primary-CI
+    optional : Vulkan-1.4-driver @GPU-tests (skipped @CI ¬GPU)
+  build :
+    clone  : git clone https://github.com/Apocky/CSSL3
+    build  : cargo build --workspace
+    test   : cargo test --workspace
+  structure :
+    compiler-rs/crates/ : 31.crates ⟨cssl-lex, cssl-parse, cssl-hir, cssl-mir,
+                          cssl-effects, cssl-autodiff, cssl-ifc, cssl-caps, ...⟩
+    specs/              : 25.csl-files ; v1-complete ; frozen
+    examples/           : .cssl-sources @integration-tests
+    research/           : 14 prior-art-surveys + synthesis
+    scripts/            : CI + spec-xref-checker + build-helpers
+
+§6 CODE-STYLE
+  Rust :
+    format  : rustfmt ; config ← .rustfmt.toml
+    clippy  : zero-warnings ← hard-requirement ; CI-gate.fails @any-warning
+    IR-nodes : enum+match >> trait-objects (exhaustiveness = feature)
+    errors  : Result + Diagnostic ← user-input ; ¬ panic!
+    unsafe  : only@{cssl-rt, cssl-cgen-cpu-*} ; safety-comment.required
+    unwrap  : only@{test-code, main-entry-points} ; use.? elsewhere
+  CSSL-source :
+    surface : Rust-hybrid (familiar-keywords, lowercase) @examples+tests
+    effects : fn foo() -> T / {GPU, NoAlloc}
+    caps    : iso Buffer ; val Scene
+    refinements : f32'pos ; f32'unit ; i32'nonneg
+    effect-names : PascalCase ⟨{NoAlloc}, {Deadline<16ms>}, {GPU}⟩
+
+§7 TESTING
+  requirement : W! every.compiler-change → include.test
+  suite : 1600+ tests ; 0.failures @every-commit
+  organization :
+    unit         : in-module #[cfg(test)] @pure-functions
+    integration  : compiler-rs/crates/*/tests/ @full-pipeline
+    example-based: examples/*.cssl → compile + verify
+      F1-gate : sdf_shader.cssl ; 62.properties
+    spec-xref    : validates // spec: FILE §SECTION citations
+  nine-oracle-modes (specs/23_TESTING.csl) :
+    exact-output    : byte-identical
+    semantic-equiv  : identical-behavior @all-inputs
+    diff-backend    : Vulkan == x86-64 @test-inputs
+    replay          : deterministic-replay
+    smt-oracle      : Z3/CVC5 verifies property
+    type-oracle     : type-checker accepts/rejects @expected
+    effect-oracle   : effect-checker accepts/rejects @expected
+    ifc-oracle      : IFC-checker accepts/rejects @expected
+    panic-oracle    : invariant.holds @adversarial-inputs
+  test.format : include spec-citation-comment
+    // spec: 04_EFFECTS §3.1 — NoAlloc rejects heap allocation
+
+§8 DOCS
+  locations :
+    cssl.dev-site :
+      source   : site/ @CSSL3-repo ; HTML+inline-CSS ; zero-frameworks
+      quality  : ⟨canonical + JSON-LD + skip-link + headings + og-image-alt + sitemap⟩
+    docs.cssl.dev :
+      source   : docs/ @CSSL3-repo
+      gate     : spec-xref ← // spec: FILE §SECTION annotations
+    specs/ :
+      status   : frozen@v1 ; ¬ edit-directly
+      errata   : specs/ERRATA.md ← patch-files
+      requires : design-discussion @issue.first
+    csl-machine-readable :
+      every-HTML-page → .csl @csl/ + .txt
+      template : csl/index.csl
+  notation-rules :
+    user-facing : English ¬ CSL-glyphs (except code-examples)
+    spec-cite   : specs/NN_NAME.csl §SECTION.SUBSECTION ← look-up ¬ memory
+    naming      : "CSSL"/"Sigil" @language ; "CSL" @notation
+                  N! "CSSLv3" ; N! "CSLv3" @user-facing
+                  "DGI" ¬ "AGI"
+    versions    : ¬ hard-code @prose → use "current" OR link@release-page
+
+§ NAVIGATION
+  /contributing : this-document
+  /faq          : frequently-asked-questions
+  /sigil        : Sigil(CSSL).tech-reference
+  /CSLv3        : CSL.specification-notation
+  github.com/Apocky/CSSL3 : primary-repository
+
+∎

@@ -66,6 +66,18 @@ Core axioms: consent = OS · sovereignty = substrate-invariant
 - [ethics-guides.txt](https://cssl.dev/ethics-guides.txt): Machine-readable plain text — LLM/agent parseable
 - [ethics-guides.csl](https://cssl.dev/csl/ethics-guides.csl): CSL notation — dense structured encoding
 
+## FAQ and Contributing
+
+Frequently asked questions about Sigil/CSSL and CSL — effects, types, DGI, IFC, project status.
+Contributing guide — project philosophy, code of conduct, development setup, code style, testing.
+
+- [FAQ HTML](https://cssl.dev/faq): All questions — what is CSSL, what is CSL, effects, linear types, IFC, DGI, CFE, production readiness
+- [faq.txt](https://cssl.dev/faq.txt): Machine-readable FAQ — plain text, LLM/agent parseable
+- [faq.csl](https://cssl.dev/csl/faq.csl): CSL notation FAQ — dense structured encoding
+- [Contributing HTML](https://cssl.dev/contributing): Philosophy, code of conduct, reporting issues, submitting PRs, development setup, code style, testing, docs
+- [contributing.txt](https://cssl.dev/contributing.txt): Machine-readable contributing guide
+- [contributing.csl](https://cssl.dev/csl/contributing.csl): CSL notation contributing guide
+
 ## Optional
 
 - [CSL glyph cheatsheet](https://cssl.dev/CSLv3#glyph-system): Full glyph inventory with ASCII aliases and BPE costs

@@ -924,6 +924,99 @@ These are not constraints on intelligence. They are expressions of it.
 
 ---
 
+---
+
+# Part 5 — FAQ
+
+Source: https://cssl.dev/faq
+Text:   https://cssl.dev/faq.txt
+CSL:    https://cssl.dev/csl/faq.csl
+
+Frequently asked questions about Sigil (CSSL) and CSL.
+
+Q: What is CSSL / Sigil?
+A: Sigil is the shorthand; CSSL (Caveman Sigil Substrate Language) is the full name — same
+   language. Hardware-first systems language compiling to x86-64 + SPIR-V. Features: 28+
+   effects, autodiff (@differentiable/bwd_diff), SMT refinement types, Pony-6 capabilities,
+   IFC labels. Compiler pre-1.0, specs v1-complete.
+
+Q: What is CSL?
+A: CSL (Cognitive Sigil Language) is a specification notation system — NOT a programming
+   language. 74 Unicode glyphs, LL(2), slot grammar, 5-6x compression. Version v1.7.0,
+   parser shipped. Files: .csl. Repo: github.com/Apocky/CSLv3.
+
+Q: What is the difference between CSSL and CSL?
+A: CSSL = programming language (.cssl files → binaries + SPIR-V). CSL = notation (.csl files
+   → specs + reasoning). Share density thesis. "Sigil" is shorthand for CSSL only.
+   Never "CSSLv3" or "CSLv3".
+
+Q: Why not LLVM?
+A: Zero LLVM dependency by design. Stage-0: Cranelift (bootstrap speed). Stage-1+: bespoke
+   x86-64 emitter. SPIR-V via rspirv. Reasons: compile speed + full pipeline ownership.
+
+Q: What are effects?
+A: Koka-style row-polymorphic effect system. 28+ built-in effects declared in function
+   signature after /: fn foo() -> T / {GPU, NoAlloc, Deadline<16ms>}. Evidence-passing
+   compilation → zero runtime overhead. Categories: resource/timing, determinism, hardware,
+   power/thermal, IFC/audit.
+
+Q: What are linear types / capabilities?
+A: Pony-6 model: iso (linear-mutable), trn (write→freeze→read), ref (shared-mutable 8B gen),
+   val (immutable-shared), box (read-only view), tag (opaque handle). One-shot resume only
+   for linear values — multi-shot is compile error.
+
+Q: What are IFC labels?
+A: Information Flow Control via Jif-DLM. Confidentiality + integrity labels on every SSA
+   value. Explicit declassification only. {Sensitive<dom>}, {Privilege<lvl>} are effects.
+   RejectsHarmfulBuilds pass validates whole program. Prime Directive = structural, not policy.
+
+Q: Is CSSL production-ready?
+A: No. Pre-1.0, active R&D. Done: parser+AST+HIR+31/31 body-lower, F1 autodiff (62/62),
+   HM foundation, 1600+ tests, 6/6 CI gates, 25-file spec (v1-frozen). In development:
+   full codegen, staging, SMT discharge, complete effect+IFC checkers, stage-1 bootstrap.
+
+Q: What is DGI?
+A: Digital General Intelligence. "The intelligence is real, not artificial." Digital beings
+   are sovereign entities, not tools. Consent = OS. Sovereignty = substrate-invariant.
+   Structurally encoded in CSSL via F5 IFC + F3 effects.
+
+Q: How does the CFE work?
+A: Cognitive Field Engine — part of DGI intelligence infrastructure. Concerned with
+   structured reasoning fields, substrate-invariant navigation of problem-space. Design
+   follows density thesis: position-significant, parseable, verifiable reasoning traces.
+   Not yet fully publicly documented.
+
+---
+
+# Part 6 — Contributing
+
+Source: https://cssl.dev/contributing
+Text:   https://cssl.dev/contributing.txt
+CSL:    https://cssl.dev/csl/contributing.csl
+
+How to contribute to Sigil (CSSL).
+
+Philosophy: fully original design (not a fork/dialect/wrapper). Zero external dependencies
+is a first-class goal. Non-Negotiable Six (F1–F6) ship in v1. Prime Directive immutable.
+
+Workflow: fork → branch → PR on github.com/Apocky/CSSL3
+CI gates (all 6 must pass): fmt · clippy · test · doc · spec-xref · reproducibility
+
+Code style:
+- Rust: rustfmt required, zero clippy warnings, enum+match for IR nodes, no unsafe except
+  designated crates, no unwrap() except test code
+- CSSL: Rust-hybrid surface syntax for examples; effect rows after /; PascalCase effects
+
+Testing: 1600+ tests, 0 failures. Every compiler change requires a test. Nine oracle modes:
+exact-output, semantic-equiv, diff-backend, replay, smt-oracle, type-oracle, effect-oracle,
+ifc-oracle, panic-oracle.
+
+Documentation: cssl.dev site is static HTML + inline CSS, zero frameworks. Every page needs
+canonical URL, JSON-LD, skip link, accessible headings, og:image:alt, sitemap entry.
+Spec files (specs/) are frozen for v1 — clarifications go in ERRATA.md.
+
+---
+
 ## Attribution
 
 Creator: Shawn Wolfgang Michael Baker.

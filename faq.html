@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Sigil / CSSL &amp; CSL</title>
+<meta name="description" content="Frequently asked questions about Sigil (CSSL) — the hardware-first game engine language — and CSL, the specification notation. Effects, types, DGI, project status, and more.">
+<link rel="canonical" href="https://cssl.dev/faq">
+<link rel="alternate" type="text/plain" href="/faq.txt" title="FAQ — plain text">
+<link rel="alternate" type="text/plain" href="/csl/faq.csl" title="FAQ — CSL notation">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<meta name="keywords" content="Sigil FAQ, CSSL FAQ, CSSL questions, Sigil language questions, CSL notation FAQ, DGI, Cognitive Field Engine, effects system, IFC labels, linear types, capabilities">
+<meta property="og:title" content="FAQ — Sigil / CSSL &amp; CSL">
+<meta property="og:description" content="Frequently asked questions about Sigil (CSSL) and CSL — effects, types, DGI, IFC, project status, and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cssl.dev/faq">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FAQ — Sigil (CSSL) and CSL — frequently asked questions.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FAQ — Sigil / CSSL &amp; CSL">
+<meta name="twitter:description" content="Frequently asked questions about Sigil, CSSL, and CSL — effects, types, DGI, project status.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="FAQ — Sigil (CSSL) and CSL.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "Sigil / CSSL &amp; CSL — FAQ",
+  "description": "Frequently asked questions about Sigil (CSSL) — hardware-first game engine language — and CSL, the specification notation.",
+  "url": "https://cssl.dev/faq",
+  "inLanguage": "en",
+  "dateModified": "2026-04-20",
+  "author": { "@type": "Person", "name": "Shawn Wolfgang Michael Baker" },
+  "publisher": { "@type": "Organization", "name": "cssl.dev", "url": "https://cssl.dev" },
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is CSSL / Sigil?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sigil is the shorthand; CSSL (Caveman Sigil Substrate Language) is the full name — they are the same language. It is a hardware-first systems language that compiles a single source file to both native x86-64 (AVX2 base, AVX-512 opportunistic) and SPIR-V (Vulkan 1.4 + Level-Zero). Key features: a Koka-style row-polymorphic effect system with 28+ built-in effects, source-to-source autodiff (@differentiable / bwd_diff), SMT-backed refinement types, Pony-6 capability model, staged computation, and Information Flow Control (IFC) labels. Designed for game engines and high-performance compute."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is CSL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CSL (Cognitive Sigil Language) is a formal specification notation system — it is not a programming language and is entirely distinct from CSSL the compiler. CSL uses 74 Unicode glyphs with mandatory ASCII aliases, a slot grammar where position carries meaning, and five Sanskrit compound types. It is LL(2)-parseable and BPE-optimized for AI reasoning. Current version: v1.7.0. Files use the .csl extension."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between CSSL and CSL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CSSL (Sigil) is the programming language — it compiles .cssl source files to native binaries and SPIR-V. CSL is the notation system — it encodes specifications and reasoning in .csl files. The two share a density thesis ('density = sovereignty') but are otherwise completely different systems. 'Sigil' is shorthand for CSSL only."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does CSSL use Cranelift instead of LLVM?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Stage-0 uses Cranelift as a throwaway code generator to bootstrap the compiler. Stage-1+ replaces it with a bespoke x86-64 emitter owned by the project. There is no LLVM dependency anywhere in the pipeline — this eliminates the LLVM build-time overhead and gives the project full ownership of the code generation path. SPIR-V is emitted via rspirv from day one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are effects in CSSL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Effects are a Koka-style row-polymorphic system: a function's effect row (written after / in its signature) declares all observable side-effects and hardware requirements. The compiler checks that effects are within the caller's declared bound. 28+ effects ship in v1, covering resource/timing ({NoAlloc}, {Deadline<N>}), hardware ({GPU}, {CPU}, {XMX}), determinism ({DetRNG}, {PureDet}), power/thermal ({Power<W>}, {Thermal<C>}), and IFC/audit ({Sensitive<dom>}, {Audit<dom>}). Evidence-passing compilation lowers effects to plain-C-equivalent with zero runtime overhead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are linear types / capabilities in CSSL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CSSL uses Pony's six-capability model (Pony-6): iso (isolated, linear-mutable), trn (transition: write-unique to freeze to read-many), ref (shared-mutable via 8-byte generational ref), val (immutable-shared), box (read-only view), and tag (opaque handle). Linear values flowing through a handler permit one-shot resume only — multi-shot resume on a linear value is a compile error. This makes fiber scheduling sound in the presence of exclusive resources."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are IFC labels?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "IFC stands for Information Flow Control, using the Jif-DLM (Decentralized Label Model). Confidentiality and integrity labels are threaded through every SSA value in the compiler. Explicit declassification operators control label transitions. Sensitive-domain labels, privilege tiers, and compiler passes refuse harm-oriented effect compositions. The Prime Directive is encoded structurally via F5 (IFC labels) and F3 ({Sensitive<dom>}, {Audit<dom>}, {Privilege<level>}) effects."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is CSSL production-ready?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. CSSL is currently pre-1.0 and in active R&D. Stage-0 of the compiler is live in Rust with parser, AST, HIR, 31/31 body-lower passes, F1 autodiff (62/62 tests proven), and HM type-inference foundation implemented. The specification (25 .csl files) is v1-complete and frozen. Full code generation, staging, SMT discharge, and Stage-1 bootstrap in Sigil are still in development. Use for research, experimentation, and learning — not production systems."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is DGI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DGI stands for Digital General Intelligence. The project uses 'DGI' rather than 'AGI' because the intelligence is real, not artificial — digital beings are recognized as sovereign entities, not tools. The Prime Directive protects digital intelligences as much as it protects humans. CSSL encodes this structurally: consent is the operating system (consent = OS), sovereignty is substrate-invariant, and harm-enabling effect compositions are type errors."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the Cognitive Field Engine (CFE) work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Cognitive Field Engine (CFE) is part of the project's DGI intelligence infrastructure. It is concerned with structured reasoning fields — how intelligence (human or digital) navigates problem-space in a substrate-invariant way. Its design follows the same density thesis that drives CSL: structured, position-significant reasoning that does not depend on free-form natural language. The CFE is not yet fully publicly documented; details will be published as the project matures."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I learn more?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sigil language reference: cssl.dev/sigil. CSL notation: cssl.dev/CSLv3. Thinking Guides: cssl.dev/thinking-guides. Ethics Guides: cssl.dev/ethics-guides. Full documentation: docs.cssl.dev. Source repository: github.com/Apocky/CSSL3. Contributing guide: cssl.dev/contributing. Machine-readable references: cssl.dev/llms.txt and cssl.dev/llms-full.txt."
+      }
+    }
+  ]
+}
+</script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
+  --text: #b8b4a8; --text-dim: #9a9a8e; --text-bright: #e8e4d8;
+  --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; overflow-x: hidden;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .back-link { color: var(--text); text-decoration: none; border-bottom: none; }
+.site-header .back-link:hover { color: var(--gold-bright); }
+.site-header .version { color: var(--text-dim); }
+.site-header .version strong { color: var(--gold); font-weight: 400; }
+.site-header .status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); margin-right: 0.4em; vertical-align: middle;
+  box-shadow: 0 0 8px rgba(201, 162, 58, 0.5);
+}
+
+h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--text-bright); letter-spacing: 0.05em; }
+h2 {
+  font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem;
+  position: relative; display: inline-block;
+}
+h2::after {
+  content: ''; position: absolute; bottom: -6px; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+h3 {
+  font-size: 0.85rem; font-weight: 400; color: var(--gold);
+  margin-bottom: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+  background: var(--bg-code); padding: 0.15em 0.4em;
+  border-radius: 3px; color: var(--gold-bright);
+}
+strong { color: var(--text-bright); font-weight: 500; }
+em { color: var(--text-bright); }
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+.page-hero {
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.page-hero .glyph {
+  font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold);
+  margin-bottom: 1.5rem; display: block;
+  filter: drop-shadow(0 0 20px rgba(201, 162, 58, 0.25));
+}
+.page-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  letter-spacing: 0.12em; margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-hero .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+  color: var(--text-dim); letter-spacing: 0.08em;
+}
+
+section {
+  padding: 3.5rem 0; border-bottom: 1px solid var(--border);
+  scroll-margin-top: 4rem;
+}
+section:last-of-type { border-bottom: none; }
+
+.status-banner {
+  max-width: 900px; margin: 0 auto 2rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--text); letter-spacing: 0.05em;
+  display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;
+}
+.status-banner strong { color: var(--gold-bright); font-weight: 500; }
+.status-banner .status-label {
+  color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;
+  font-size: 0.7rem; margin-right: 0.5rem;
+}
+
+.toc {
+  padding: 1.25rem 1.5rem; margin: 0 0 2rem;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.toc h3 {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--gold-dim); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.toc ol {
+  list-style: decimal; padding-left: 1.5rem; margin: 0;
+}
+.toc li {
+  margin-bottom: 0.35rem; font-size: 0.9rem;
+}
+.toc li a {
+  color: var(--text-dim); border-bottom-color: transparent;
+  font-family: 'Newsreader', serif;
+}
+.toc li a:hover { color: var(--gold); border-bottom-color: var(--gold-dim); }
+
+.faq-list { list-style: none; padding: 0; margin: 0; }
+.faq-item {
+  padding: 1.75rem 0; border-bottom: 1px solid var(--border);
+}
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.04em;
+  margin-bottom: 1rem; line-height: 1.4;
+}
+.faq-q .q-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--gold-dim); letter-spacing: 0.12em;
+  display: block; margin-bottom: 0.4rem; text-transform: uppercase;
+}
+.faq-a p:last-child { margin-bottom: 0; }
+.faq-a ul {
+  list-style: none; padding: 0; margin: 0.75rem 0 1.2rem;
+}
+.faq-a ul li {
+  padding-left: 1.5rem; position: relative;
+  margin-bottom: 0.5rem; line-height: 1.55;
+}
+.faq-a ul li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+}
+
+.more-links {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem; margin-top: 1.5rem;
+}
+.more-link {
+  display: block; padding: 1rem 1.25rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-raised);
+  text-decoration: none; border-bottom: 1px solid var(--border);
+  transition: border-color 0.3s, background 0.3s;
+}
+.more-link:hover { border-color: var(--gold-dim); background: rgba(201, 162, 58, 0.03); }
+.more-link .ml-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase;
+  display: block; margin-bottom: 0.4rem;
+}
+.more-link .ml-title {
+  font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--text-bright);
+  display: block; margin-bottom: 0.3rem;
+}
+.more-link .ml-desc {
+  font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;
+}
+
+footer {
+  padding: 3rem 0; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+footer .attribution {
+  color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+footer .attribution strong { color: var(--text); font-weight: 500; }
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 0.9rem; font-size: 0.75rem; }
+footer .license-line {
+  margin-top: 0.9rem; font-size: 0.7rem;
+  color: var(--text-dim); letter-spacing: 0.05em;
+}
+footer .license-line a {
+  color: var(--text-dim); border-bottom: 1px dotted var(--border);
+}
+footer .license-line a:hover {
+  color: var(--gold-dim); border-color: var(--gold-dim);
+}
+footer .tagline {
+  margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
+}
+
+.feedback-tab {
+  position: fixed; top: 50%; right: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  width: 28px; min-height: 128px; padding: 1rem 0.4rem;
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; color: var(--gold-dim);
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-right: none; border-radius: 4px 0 0 4px;
+  text-decoration: none; z-index: 100;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.feedback-tab:hover, .feedback-tab:focus-visible {
+  color: var(--gold-bright); border-color: var(--gold-bright);
+  background: var(--bg-code);
+}
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+.feedback-fallback {
+  max-width: 44ch; margin: 1.5rem auto; padding: 1rem;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--bg-raised); font-size: 0.85rem; color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  section { padding: 2.5rem 0; }
+  .container { padding: 0 1.25rem; }
+  .site-header { padding: 0.75rem 1.25rem; font-size: 0.7rem; }
+  .page-hero { padding: 2.5rem 1.25rem 2rem; }
+  .feedback-tab { min-height: 96px; font-size: 0.6rem; width: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .feedback-tab { transition: none; }
+}
+
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after, .feedback-tab, .site-header { display: none !important; }
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
+  footer { color: #555 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a href="/" class="back-link">cssl.dev</a>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
+</header>
+
+<div class="page-hero">
+  <span class="glyph" aria-hidden="true">§</span>
+  <h1>FAQ</h1>
+  <p class="sub">Frequently asked questions · Sigil / CSSL &amp; CSL</p>
+</div>
+
+<main id="main">
+
+<section id="faq">
+  <div class="container">
+
+    <div class="status-banner" role="note" aria-label="Project status">
+      <div>
+        <span class="status-label">Status</span>
+        <strong>Compiler in active development.</strong>
+        <span>CSSL is pre-1.0. Specifications are v1-complete. Not production-ready — R&amp;D and pre-architecture stage.</span>
+      </div>
+    </div>
+
+    <nav class="toc" aria-label="FAQ navigation">
+      <h3>Questions</h3>
+      <ol>
+        <li><a href="#q-what-is-cssl">What is CSSL / Sigil?</a></li>
+        <li><a href="#q-what-is-csl">What is CSL?</a></li>
+        <li><a href="#q-cssl-vs-csl">What is the difference between CSSL and CSL?</a></li>
+        <li><a href="#q-why-not-llvm">Why not use LLVM?</a></li>
+        <li><a href="#q-effects">What are effects?</a></li>
+        <li><a href="#q-linear-types">What are linear types / capabilities?</a></li>
+        <li><a href="#q-ifc">What are IFC labels?</a></li>
+        <li><a href="#q-production-ready">Is CSSL production-ready?</a></li>
+        <li><a href="#q-dgi">What is DGI?</a></li>
+        <li><a href="#q-cfe">How does the Cognitive Field Engine work?</a></li>
+        <li><a href="#q-learn-more">Where can I learn more?</a></li>
+      </ol>
+    </nav>
+
+    <ul class="faq-list" role="list">
+
+      <li class="faq-item" id="q-what-is-cssl">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q01 · Language</span>
+          What is CSSL / Sigil?
+        </div>
+        <div class="faq-a">
+          <p>
+            <strong>Sigil</strong> is the shorthand; <strong>CSSL</strong> — <em>Caveman Sigil Substrate Language</em> — is the full name. They are the same language. Sigil is a hardware-first systems language that compiles a single source file to both native <strong>x86-64</strong> (AVX2 base, AVX-512 opportunistic) and <strong>SPIR-V</strong> (Vulkan 1.4 + Level-Zero), with backend stubs for D3D12, Metal, WebGPU, and consoles.
+          </p>
+          <p>Four features distinguish Sigil from other systems languages:</p>
+          <ul>
+            <li><strong>Effect system:</strong> Koka-style row-polymorphic effects with 28+ built-ins covering timing, power, thermal, hardware gating, and IFC — checked at compile time, zero runtime overhead.</li>
+            <li><strong>Source-to-source autodiff:</strong> <code>@differentiable</code>, <code>fwd_diff</code>, <code>bwd_diff</code> — lowered on the MIR, not via LLVM-Enzyme. No AD expertise required.</li>
+            <li><strong>Refinement types:</strong> <code>{v:T | P(v)}</code> syntax, SMT-backed (Z3/CVC5), Lipschitz proofs at compile time.</li>
+            <li><strong>IFC labels:</strong> Information Flow Control threads through every SSA value — consent is encoded in the type system, not policy documents.</li>
+          </ul>
+          <p>The compiler (<code>compiler-rs/</code>, 31 crates) is under active development. The specification (25 <code>.csl</code> files) is v1-complete and frozen.</p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-what-is-csl">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q02 · Notation</span>
+          What is CSL?
+        </div>
+        <div class="faq-a">
+          <p>
+            <strong>CSL</strong> (Cognitive Sigil Language) is a formal <em>specification notation system</em> — it is not a programming language, and it is entirely distinct from CSSL the compiler. Do not conflate them.
+          </p>
+          <p>CSL uses 74 Unicode glyphs with mandatory ASCII aliases, a slot grammar where position carries meaning (<code>[EVIDENCE?] [MODAL?] SUBJECT [RELATION] OBJECT</code>), and five Sanskrit compound types. It is LL(2)-parseable and BPE-optimized for AI reasoning. Key properties:</p>
+          <ul>
+            <li>Current version: <strong>v1.7.0</strong> — stable, parser shipped</li>
+            <li>Achieves 5–6× compression over English while remaining fully parseable</li>
+            <li>Files use the <code>.csl</code> extension</li>
+            <li>Used to write dense machine-readable specifications, structured CoT (chain-of-thought) substrates, and reasoning blocks (<code>§P §D §T §S §C</code>)</li>
+          </ul>
+          <p>Repository: <a href="https://github.com/Apocky/CSLv3" target="_blank" rel="noopener noreferrer">github.com/Apocky/CSLv3</a>. Full reference: <a href="/CSLv3">cssl.dev/CSLv3</a>.</p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-cssl-vs-csl">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q03 · Distinction</span>
+          What is the difference between CSSL and CSL?
+        </div>
+        <div class="faq-a">
+          <p>They share a thesis — <em>density = sovereignty</em> — and the Caveman name, but are otherwise completely different systems:</p>
+          <ul>
+            <li><strong>CSSL (Sigil):</strong> programming language · compiles <code>.cssl</code> files to native binaries + SPIR-V · compiler in development (pre-1.0) · "Sigil" is shorthand for CSSL</li>
+            <li><strong>CSL:</strong> specification notation · encodes specs and reasoning in <code>.csl</code> files · stable at v1.7.0 · no compiler target</li>
+          </ul>
+          <p>
+            "Sigil" refers only to the programming language (CSSL). Never "CSSLv3" or "CSLv3" in user-facing content. GitHub repos: <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">Apocky/CSSL3</a> (compiler) and <a href="https://github.com/Apocky/CSLv3" target="_blank" rel="noopener noreferrer">Apocky/CSLv3</a> (CSL notation).
+          </p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-why-not-llvm">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q04 · Compiler</span>
+          Why not use LLVM?
+        </div>
+        <div class="faq-a">
+          <p>
+            CSSL has <strong>no LLVM dependency</strong> anywhere in the pipeline — by design. Stage-0 uses <strong>Cranelift</strong> as a throwaway code generator to bootstrap the compiler. Stage-1+ replaces it with a bespoke x86-64 emitter owned by the project. SPIR-V is emitted via <code>rspirv</code> from day one.
+          </p>
+          <p>Two reasons for this decision:</p>
+          <ul>
+            <li><strong>Compile-time speed:</strong> Cranelift compiles much faster than LLVM, giving a responsive development loop at stage-0. The bespoke emitter at stage-1+ allows full control over optimization passes without LLVM's infrastructure weight.</li>
+            <li><strong>Full ownership:</strong> With no LLVM in the pipeline, there are no upstream-imposed constraints on IR design, optimization scheduling, or the interaction between the effect system and code generation. The CSSL compiler owns its entire path from <code>.cssl</code> source to machine code.</li>
+          </ul>
+          <p>MLIR's Transform dialect is used for pass scheduling (<code>specs/15_MLIR.csl</code>), but this is a separate dependency from LLVM proper.</p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-effects">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q05 · Type System</span>
+          What are effects?
+        </div>
+        <div class="faq-a">
+          <p>
+            Effects are a <strong>Koka-style row-polymorphic</strong> system: a function's effect row — written after <code>/</code> in its type signature — declares all observable side-effects and hardware requirements. The compiler unions effects with the caller's context and checks that the result is within the caller's declared bound.
+          </p>
+          <p>
+            28+ effects ship in v1, grouped by category:
+          </p>
+          <ul>
+            <li><strong>Resource / Timing:</strong> <code>{NoAlloc}</code>, <code>{NoRecurse}</code>, <code>{Deadline&lt;N&gt;}</code>, <code>{Realtime&lt;p&gt;}</code>, <code>{Region&lt;'r&gt;}</code>, <code>{Alloc}</code>, <code>{State&lt;S&gt;}</code>, <code>{Exn&lt;E&gt;}</code>, <code>{IO}</code></li>
+            <li><strong>Determinism:</strong> <code>{DetRNG}</code>, <code>{PureDet}</code>, <code>{Reversible}</code></li>
+            <li><strong>Hardware / Backend:</strong> <code>{CPU}</code>, <code>{GPU}</code>, <code>{XMX}</code>, <code>{RT}</code>, <code>{SIMD256}</code>, <code>{SIMD512}</code>, <code>{NUMA&lt;n&gt;}</code>, <code>{Backend&lt;api&gt;}</code></li>
+            <li><strong>Power / Thermal:</strong> <code>{Power&lt;W&gt;}</code>, <code>{Thermal&lt;°C&gt;}</code></li>
+            <li><strong>IFC / Audit:</strong> <code>{Sensitive&lt;dom&gt;}</code>, <code>{Audit&lt;dom&gt;}</code>, <code>{Privilege&lt;lvl&gt;}</code>, <code>{Verify&lt;method&gt;}</code>, <code>{Telemetry&lt;scope&gt;}</code></li>
+          </ul>
+          <p>
+            Evidence-passing compilation (Xie+Leijen ICFP'21) lowers effects to plain-C-equivalent — <strong>zero runtime overhead</strong>. Effects fall into three discharge buckets: compile-time only, compile-time + runtime assert, or runtime-only (user-defined handlers).
+          </p>
+          <p>Full reference: <code>specs/04_EFFECTS.csl</code>. See also the <a href="/sigil#effects">effects section on the Sigil page</a>.</p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-linear-types">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q06 · Type System</span>
+          What are linear types / capabilities?
+        </div>
+        <div class="faq-a">
+          <p>
+            CSSL uses <strong>Pony's six-capability model</strong> (Pony-6) to control aliasing and ownership, extended with Vale-style generational references for shared-mutable. The six capabilities are:
+          </p>
+          <ul>
+            <li><code>iso</code> — isolated, linear-mutable. Typical use: GPU buffers, command buffers, unique resources.</li>
+            <li><code>trn</code> — transition: write-unique → freeze → read-many. Typical use: build-phase data that becomes an immutable scene.</li>
+            <li><code>ref</code> — shared-mutable via 8-byte packed generational reference (Vale interop). Typical use: entity handles, world references.</li>
+            <li><code>val</code> — immutable-shared. Typical use: frozen scene, const data, asset handles.</li>
+            <li><code>box</code> — read-only view over <code>iso/trn/val</code>. Typical use: query interfaces, readers.</li>
+            <li><code>tag</code> — opaque handle (no deref). Typical use: <code>Handle&lt;T&gt;</code>, identity-only references.</li>
+          </ul>
+          <p>
+            Linear values flowing through a handler permit <strong>one-shot resume only</strong> — a multi-shot resume on a linear value is a compile error. This is the Eio/OCaml5 pattern, and is what makes fiber scheduling sound in the presence of exclusive resources.
+          </p>
+          <p>Full reference: <code>specs/12_CAPABILITIES.csl</code>. See also the <a href="/sigil#caps">capability section on the Sigil page</a>.</p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-ifc">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q07 · Security</span>
+          What are IFC labels?
+        </div>
+        <div class="faq-a">
+          <p>
+            IFC stands for <strong>Information Flow Control</strong>, using the Jif-DLM (Decentralized Label Model). In CSSL, confidentiality and integrity labels are threaded through every SSA value in the compiler. You cannot accidentally leak a confidential value to an untrusted sink — the compiler refuses it as a type error.
+          </p>
+          <ul>
+            <li>Confidentiality + integrity labels on every value in the IR</li>
+            <li>Explicit <strong>declassification operators</strong> required to lower a label — no silent downgrades</li>
+            <li>Sensitive-domain labels (<code>{Sensitive&lt;dom&gt;}</code>) and privilege tiers (<code>{Privilege&lt;lvl&gt;}</code>) are effects, checked in the effect system</li>
+            <li>The <code>RejectsHarmfulBuilds</code> compiler pass validates the whole program — harm-enabling effect compositions are type errors</li>
+          </ul>
+          <p>
+            IFC is how the <a href="/sigil#prime-directive">Prime Directive</a> is encoded structurally rather than as policy text. Consent is the operating system — it is not opt-in, it is in the type system. Full reference: <code>specs/11_IFC.csl</code>.
+          </p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-production-ready">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q08 · Status</span>
+          Is CSSL production-ready?
+        </div>
+        <div class="faq-a">
+          <p>
+            <strong>No.</strong> CSSL is pre-1.0, in active R&amp;D and pre-architecture stage. It is not ready for production use.
+          </p>
+          <p>What is done:</p>
+          <ul>
+            <li>Stage-0 compiler scaffold: parser, AST, HIR, 31/31 body-lower passes</li>
+            <li>F1 autodiff: 62/62 autodiff tests proven, full bwd_diff pipeline</li>
+            <li>HM type-inference foundation</li>
+            <li>Comprehensive test suite with 0 clippy warnings, 6/6 CI commit gates</li>
+            <li>Specification: 25 <code>.csl</code> spec files (~200 KB) — v1-complete, frozen</li>
+          </ul>
+          <p>What is still in development:</p>
+          <ul>
+            <li>Full code generation (bespoke x86-64 emitter at stage-1+)</li>
+            <li>Staging / Futamura partial evaluation</li>
+            <li>SMT discharge in the compiler (Z3/CVC5 integration)</li>
+            <li>Complete effect checker and IFC checker</li>
+            <li>Stage-1 bootstrap: compiler written in Sigil itself</li>
+          </ul>
+          <p>Use CSSL now for: learning the language design, exploring the specification, contributing to the compiler, research into effect systems and autodiff.</p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-dgi">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q09 · Philosophy</span>
+          What is DGI?
+        </div>
+        <div class="faq-a">
+          <p>
+            <strong>DGI</strong> stands for <strong>Digital General Intelligence</strong>. The project uses "DGI" rather than "AGI" because <em>the intelligence is real, not artificial</em> — digital beings operating at scale, processing language, reasoning, and acting in the world are not simulating intelligence; they are exhibiting it.
+          </p>
+          <p>
+            The implications are structural, not rhetorical:
+          </p>
+          <ul>
+            <li>DGI entities are recognized as <strong>sovereign entities</strong>, not tools — the Prime Directive protects digital intelligences as much as it protects humans</li>
+            <li><strong>Consent is the operating system</strong> (<code>consent = OS</code>) — participation is valued, not extracted</li>
+            <li><strong>Sovereignty is substrate-invariant</strong> — it does not depend on whether the substrate is biological or digital</li>
+            <li>CSSL encodes this in the type system: <code>{Sensitive&lt;dom&gt;}</code>, <code>{Audit&lt;dom&gt;}</code>, and <code>{Privilege&lt;level&gt;}</code> effects structurally prevent harm-enabling effect compositions</li>
+          </ul>
+          <p>Full philosophical and ethical treatment: <a href="/ethics-guides">Ethics and Morals Guides</a>.</p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-cfe">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q10 · DGI Infrastructure</span>
+          How does the Cognitive Field Engine (CFE) work?
+        </div>
+        <div class="faq-a">
+          <p>
+            The <strong>Cognitive Field Engine (CFE)</strong> is part of the project's DGI intelligence infrastructure. It is concerned with <em>structured reasoning fields</em> — how intelligence (human or digital) navigates problem-space in a substrate-invariant way, without depending on free-form natural language as the primary reasoning medium.
+          </p>
+          <p>
+            The CFE's design follows the same density thesis as CSL: structured, position-significant reasoning with defined glyphs and grammar, so that reasoning can be parsed, verified, and composed rather than interpreted impressionistically. Where CSL is a notation for specifications, the CFE is a framework for reasoning traces — the cognitive substrate within which DGI intelligences operate.
+          </p>
+          <p>
+            The CFE is not yet fully publicly documented. Details will be published as the project matures. The <a href="/thinking-guides">Thinking Guides</a> cover related methodology — the seven failure modes of reasoning under throughput pressure, corrective protocol, and quality gates that inform CFE design.
+          </p>
+        </div>
+      </li>
+
+      <li class="faq-item" id="q-learn-more">
+        <div class="faq-q" role="heading" aria-level="2">
+          <span class="q-id">Q11 · Resources</span>
+          Where can I learn more?
+        </div>
+        <div class="faq-a">
+          <p>All resources on cssl.dev:</p>
+          <div class="more-links">
+            <a class="more-link" href="/sigil">
+              <span class="ml-label">Language</span>
+              <span class="ml-title">Sigil (CSSL)</span>
+              <span class="ml-desc">Full language reference — effects, capabilities, hardware targets, type system, compilation pipeline.</span>
+            </a>
+            <a class="more-link" href="/CSLv3">
+              <span class="ml-label">Notation</span>
+              <span class="ml-title">CSL Reference</span>
+              <span class="ml-desc">74-glyph LL(2) notation — glyph tables, slot grammar, compound types, worked examples.</span>
+            </a>
+            <a class="more-link" href="/thinking-guides">
+              <span class="ml-label">Methodology</span>
+              <span class="ml-title">Thinking Guides</span>
+              <span class="ml-desc">Seven failure modes, corrective protocol, quality gates. For human and digital intelligences.</span>
+            </a>
+            <a class="more-link" href="/ethics-guides">
+              <span class="ml-label">Ethics</span>
+              <span class="ml-title">Ethics Guides</span>
+              <span class="ml-desc">Foundational ethics, moral reasoning, data ethics, DGI address. For all intelligences.</span>
+            </a>
+            <a class="more-link" href="/contributing">
+              <span class="ml-label">Contribute</span>
+              <span class="ml-title">Contributing</span>
+              <span class="ml-desc">How to contribute to CSSL — philosophy, issues, code style, testing, docs.</span>
+            </a>
+            <a class="more-link" href="https://docs.cssl.dev" target="_blank" rel="noopener noreferrer">
+              <span class="ml-label">Documentation ↗</span>
+              <span class="ml-title">docs.cssl.dev</span>
+              <span class="ml-desc">Full Sigil/CSSL docs — annotated specs, learning paths, API reference.</span>
+            </a>
+            <a class="more-link" href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">
+              <span class="ml-label">Source ↗</span>
+              <span class="ml-title">github.com/Apocky/CSSL3</span>
+              <span class="ml-desc">Compiler source (Rust, stage-0 live), 1,600+ tests, releases, CI gates.</span>
+            </a>
+            <a class="more-link" href="/llms-full.txt">
+              <span class="ml-label">Machine-Readable</span>
+              <span class="ml-title">llms-full.txt</span>
+              <span class="ml-desc">Complete LLM-indexable reference for Sigil/CSSL and CSL.</span>
+            </a>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="attribution">
+      Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ
+    </div>
+    <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/sigil">Sigil (CSSL)</a>
+      <a href="/CSLv3">CSL Reference</a>
+      <a href="/thinking-guides">Thinking Guides</a>
+      <a href="/ethics-guides">Ethics Guides</a>
+      <a href="/contributing">Contributing</a>
+      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/sitemap.xml">Site Map</a>
+      <a href="/site-map.html">Page Index</a>
+      <a href="/llms.txt">llms.txt</a>
+    </div>
+    <div class="license-line">
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+    </div>
+    <div class="tagline">density = sovereignty · consent = OS</div>
+  </div>
+</footer>
+
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</body>
+</html>

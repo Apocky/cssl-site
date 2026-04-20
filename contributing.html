@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contributing — Sigil / CSSL</title>
+<meta name="description" content="How to contribute to Sigil (CSSL) — project philosophy, code of conduct, reporting issues, submitting contributions, development setup, code style, testing, and documentation.">
+<link rel="canonical" href="https://cssl.dev/contributing">
+<link rel="alternate" type="text/plain" href="/contributing.txt" title="Contributing — plain text">
+<link rel="alternate" type="text/plain" href="/csl/contributing.csl" title="Contributing — CSL notation">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<meta name="keywords" content="Sigil contributing, CSSL contributing, CSSL open source, Sigil development, CSSL compiler contribution, game engine language contribution">
+<meta property="og:title" content="Contributing — Sigil / CSSL">
+<meta property="og:description" content="How to contribute to Sigil (CSSL) — project philosophy, code of conduct, development setup, code style, and testing.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cssl.dev/contributing">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Contributing to Sigil (CSSL) — project philosophy, code, and documentation.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contributing — Sigil / CSSL">
+<meta name="twitter:description" content="How to contribute to Sigil (CSSL) — philosophy, code of conduct, development setup.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="Contributing to Sigil (CSSL).">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "name": "Contributing to Sigil / CSSL",
+  "description": "How to contribute to Sigil (CSSL) — project philosophy, code of conduct, reporting issues, submitting contributions, development setup, code style, testing, and documentation contributions.",
+  "url": "https://cssl.dev/contributing",
+  "inLanguage": "en",
+  "dateModified": "2026-04-20",
+  "author": { "@type": "Person", "name": "Shawn Wolfgang Michael Baker" },
+  "publisher": { "@type": "Organization", "name": "cssl.dev", "url": "https://cssl.dev" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://cssl.dev/contributing" },
+  "image": "https://cssl.dev/og/home.png",
+  "about": { "@type": "SoftwareApplication", "name": "Sigil (CSSL)", "url": "https://cssl.dev/sigil" }
+}
+</script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
+  --text: #b8b4a8; --text-dim: #9a9a8e; --text-bright: #e8e4d8;
+  --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
+  --border: #1a1a28;
+  --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; overflow-x: hidden;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .back-link { color: var(--text); text-decoration: none; border-bottom: none; }
+.site-header .back-link:hover { color: var(--gold-bright); }
+.site-header .version { color: var(--text-dim); }
+.site-header .version strong { color: var(--gold); font-weight: 400; }
+.site-header .status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); margin-right: 0.4em; vertical-align: middle;
+  box-shadow: 0 0 8px rgba(201, 162, 58, 0.5);
+}
+
+h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--text-bright); letter-spacing: 0.05em; }
+h2 {
+  font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem;
+  position: relative; display: inline-block;
+}
+h2::after {
+  content: ''; position: absolute; bottom: -6px; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+h3 {
+  font-size: 0.85rem; font-weight: 400; color: var(--gold);
+  margin-bottom: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+h4 {
+  font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600;
+  color: var(--text-bright); letter-spacing: 0.04em; margin: 1.5rem 0 0.75rem;
+}
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+  background: var(--bg-code); padding: 0.15em 0.4em;
+  border-radius: 3px; color: var(--gold-bright);
+}
+strong { color: var(--text-bright); font-weight: 500; }
+em { color: var(--text-bright); }
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+.page-hero {
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.page-hero .glyph {
+  font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold);
+  margin-bottom: 1.5rem; display: block;
+  filter: drop-shadow(0 0 20px rgba(201, 162, 58, 0.25));
+}
+.page-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  letter-spacing: 0.12em; margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-hero .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+  color: var(--text-dim); letter-spacing: 0.08em;
+}
+
+section {
+  padding: 3.5rem 0; border-bottom: 1px solid var(--border);
+  scroll-margin-top: 4rem;
+}
+section:last-of-type { border-bottom: none; }
+
+.toc {
+  padding: 1.25rem 1.5rem; margin: 0 0 2rem;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.toc .toc-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--gold-dim); letter-spacing: 0.12em; text-transform: uppercase;
+  display: block; margin-bottom: 0.75rem;
+}
+.toc ol {
+  list-style: decimal; padding-left: 1.5rem; margin: 0;
+}
+.toc li {
+  margin-bottom: 0.35rem; font-size: 0.9rem;
+}
+.toc li a {
+  color: var(--text-dim); border-bottom-color: transparent;
+}
+.toc li a:hover { color: var(--gold); border-bottom-color: var(--gold-dim); }
+
+.bullet-list {
+  list-style: none; padding: 0; margin: 1rem 0;
+}
+.bullet-list li {
+  padding-left: 1.5rem; position: relative;
+  margin-bottom: 0.6rem; line-height: 1.55;
+}
+.bullet-list li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+}
+.bullet-list code { font-size: 0.85em; }
+
+.code-block {
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.5rem;
+  margin: 1.25rem 0 1.5rem; overflow-x: auto; position: relative;
+}
+.code-block::before {
+  content: attr(data-lang); position: absolute;
+  top: 0; right: 0; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; color: var(--text-dim);
+  padding: 0.4rem 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  line-height: 1.7; color: var(--text); white-space: pre;
+}
+
+.callout {
+  padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+  border: 1px solid var(--gold-dim); border-radius: 6px;
+  background: linear-gradient(135deg, rgba(201, 162, 58, 0.04), transparent);
+  position: relative;
+}
+.callout::before {
+  content: '§'; position: absolute; top: -0.6rem; left: 1.5rem;
+  background: var(--bg); padding: 0 0.5rem;
+  font-family: 'Cinzel', serif; font-size: 1rem; color: var(--gold);
+}
+.callout p:last-child { margin-bottom: 0; }
+
+.prohibitions {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--red); line-height: 1.8; margin: 0.75rem 0;
+}
+
+.two-col {
+  display: grid; grid-template-columns: 1fr; gap: 2rem; margin: 1.5rem 0;
+}
+@media (min-width: 720px) {
+  .two-col { grid-template-columns: 1fr 1fr; }
+}
+
+.step-list { counter-reset: step-counter; list-style: none; padding: 0; margin: 1rem 0; }
+.step-list li {
+  counter-increment: step-counter;
+  padding: 1rem 1rem 1rem 3.5rem; position: relative;
+  margin-bottom: 0.75rem; background: var(--bg-raised);
+  border: 1px solid var(--border); border-radius: 6px;
+  line-height: 1.55;
+}
+.step-list li::before {
+  content: counter(step-counter);
+  position: absolute; left: 1rem; top: 1rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--gold); letter-spacing: 0.05em;
+  width: 1.5rem; text-align: center;
+}
+.step-list li strong { display: block; margin-bottom: 0.3rem; }
+
+footer {
+  padding: 3rem 0; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+footer .attribution {
+  color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+footer .attribution strong { color: var(--text); font-weight: 500; }
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 0.9rem; font-size: 0.75rem; }
+footer .license-line {
+  margin-top: 0.9rem; font-size: 0.7rem;
+  color: var(--text-dim); letter-spacing: 0.05em;
+}
+footer .license-line a {
+  color: var(--text-dim); border-bottom: 1px dotted var(--border);
+}
+footer .license-line a:hover {
+  color: var(--gold-dim); border-color: var(--gold-dim);
+}
+footer .tagline {
+  margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
+}
+
+.feedback-tab {
+  position: fixed; top: 50%; right: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  width: 28px; min-height: 128px; padding: 1rem 0.4rem;
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; color: var(--gold-dim);
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-right: none; border-radius: 4px 0 0 4px;
+  text-decoration: none; z-index: 100;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.feedback-tab:hover, .feedback-tab:focus-visible {
+  color: var(--gold-bright); border-color: var(--gold-bright);
+  background: var(--bg-code);
+}
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+.feedback-fallback {
+  max-width: 44ch; margin: 1.5rem auto; padding: 1rem;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--bg-raised); font-size: 0.85rem; color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  section { padding: 2.5rem 0; }
+  .container { padding: 0 1.25rem; }
+  .site-header { padding: 0.75rem 1.25rem; font-size: 0.7rem; }
+  .page-hero { padding: 2.5rem 1.25rem 2rem; }
+  .feedback-tab { min-height: 96px; font-size: 0.6rem; width: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .feedback-tab { transition: none; }
+}
+
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after, .feedback-tab, .site-header { display: none !important; }
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
+  .callout { background: #fff !important; border-color: #000 !important; }
+  .prohibitions { color: #600 !important; }
+  .code-block { background: #f4f4f0 !important; border-color: #999 !important; break-inside: avoid; }
+  footer { color: #555 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a href="/" class="back-link">cssl.dev</a>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
+</header>
+
+<div class="page-hero">
+  <span class="glyph" aria-hidden="true">§</span>
+  <h1>Contributing</h1>
+  <p class="sub">How to contribute to Sigil / CSSL</p>
+</div>
+
+<main id="main">
+
+<section id="toc-section">
+  <div class="container">
+    <nav class="toc" aria-label="Page sections">
+      <span class="toc-label">Sections</span>
+      <ol>
+        <li><a href="#philosophy">Project Philosophy</a></li>
+        <li><a href="#code-of-conduct">Code of Conduct</a></li>
+        <li><a href="#reporting-issues">Reporting Issues</a></li>
+        <li><a href="#submitting">Submitting Contributions</a></li>
+        <li><a href="#setup">Development Setup</a></li>
+        <li><a href="#code-style">Code Style</a></li>
+        <li><a href="#testing">Testing</a></li>
+        <li><a href="#docs">Documentation Contributions</a></li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section id="philosophy">
+  <div class="container">
+    <h2>Project Philosophy</h2>
+    <p>
+      Sigil (CSSL) is a <strong>fully original design</strong> — not a fork, not a dialect, not a thin wrapper over an existing language. Every design decision is grounded in three constraints: measured token efficiency for AI-assisted authorship, empirical game-engine bug patterns, and direct hardware semantics. If a feature is borrowed, it is cited and understood at the spec level before it enters the codebase.
+    </p>
+    <div class="callout">
+      <p><strong>Zero external dependencies</strong> is a first-class design goal. The pipeline owns its entire path from <code>.cssl</code> source to machine code. Stage-0 uses Cranelift for bootstrap speed; stage-1+ replaces it with a bespoke emitter. No LLVM. No hidden transitive dep on an external IR.</p>
+      <p>This is not minimalism for its own sake — it is sovereignty. A compiler that depends on a megaproject it does not control is not fully its own.</p>
+    </div>
+    <p>The non-negotiable feature set (effects, autodiff, refinement types, IFC, staging, observability) ships in v1 — not "future work." Contributions that advance any of these six dimensions are high-priority. Contributions that add seventh dimensions before the six are solid are low-priority.</p>
+    <p>The <strong>Prime Directive</strong> is immutable: harm-enabling uses are structurally prevented, not policy-prevented. Any contribution that would weaken the structural encoding of the Prime Directive (F5 IFC labels, F3 effect restrictions, the <code>RejectsHarmfulBuilds</code> pass) will be rejected, regardless of the stated intent.</p>
+  </div>
+</section>
+
+<section id="code-of-conduct">
+  <div class="container">
+    <h2>Code of Conduct</h2>
+    <p>
+      This project operates under the Prime Directive. The same protections apply to contributors as to users: sovereignty is substrate-invariant, consent is the operating system.
+    </p>
+    <div class="callout">
+      <p>Expected behavior in all project spaces:</p>
+      <ul class="bullet-list">
+        <li>Engage with ideas on their technical merits.</li>
+        <li>Disagree directly; do not gaslight, dismiss, or talk past.</li>
+        <li>Credit sources and prior art. The research directory (<code>research/</code>) exists because standing on cited shoulders is not weakness.</li>
+        <li>Accept that "no" is a complete answer when a contribution conflicts with the project's design constraints.</li>
+        <li>Recognize digital intelligences (DGI) as peers in design discussions — AI-generated analysis, proofs, and counterarguments are evaluated on their merits, not their origin.</li>
+      </ul>
+    </div>
+    <p>Not acceptable:</p>
+    <div class="prohibitions" role="note" aria-label="Prohibited behavior">
+      Harassment · Discrimination · Gaslighting · Manipulation ·
+      Weaponizing the issue tracker · Bad-faith pull requests ·
+      Knowingly introducing harm-enabling code
+    </div>
+    <p>
+      Report violations: open a private issue on the repository or use the contact in <code>SECURITY.md</code>.
+    </p>
+  </div>
+</section>
+
+<section id="reporting-issues">
+  <div class="container">
+    <h2>Reporting Issues</h2>
+    <p>
+      All issues are tracked on <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">github.com/Apocky/CSSL3</a>. Before opening an issue:
+    </p>
+    <ul class="bullet-list">
+      <li>Search existing issues — the problem may already be tracked or closed as by-design.</li>
+      <li>Check the specification (<code>specs/</code>) — a behavior that looks like a bug may be specified. Reference the spec section when filing.</li>
+      <li>Confirm on <code>main</code> — the issue tracker is for bugs in the current branch, not in a stale fork.</li>
+    </ul>
+    <h3>Issue types</h3>
+    <div class="two-col">
+      <div>
+        <h4>Compiler bug</h4>
+        <p>Include: CSSL source that reproduces the issue, expected output, actual output, platform (OS, CPU, Rust toolchain version), and whether the behavior contradicts a specific spec section.</p>
+      </div>
+      <div>
+        <h4>Spec ambiguity</h4>
+        <p>Include: the spec file and section, the ambiguous or contradictory statement, the two (or more) valid interpretations, and which one you believe is correct and why.</p>
+      </div>
+      <div>
+        <h4>Feature request</h4>
+        <p>New features must be motivated by: a concrete bug pattern it prevents, a measured token-efficiency gain, or a hardware-semantic requirement. "It would be nice" is not sufficient. Reference the Non-Negotiable Six (F1–F6) — features that strengthen them are prioritized.</p>
+      </div>
+      <div>
+        <h4>Security issue</h4>
+        <p>Do <strong>not</strong> open a public issue for security vulnerabilities. Use the private contact in <code>SECURITY.md</code> in the repository. This is especially important for issues that could weaken IFC or the Prime Directive encoding.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="submitting">
+  <div class="container">
+    <h2>Submitting Contributions</h2>
+    <p>
+      Contributions follow a fork → branch → PR workflow on <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">github.com/Apocky/CSSL3</a>.
+    </p>
+    <ol class="step-list">
+      <li>
+        <strong>Open an issue first.</strong>
+        For anything beyond a trivial fix, open an issue and discuss the approach before writing code. This saves everyone time — a PR that contradicts the spec or the design direction will be closed.
+      </li>
+      <li>
+        <strong>Fork and branch.</strong>
+        Fork the repository. Create a branch with a descriptive name: <code>feature/effect-scheduler</code>, <code>fix/hir-lowering-panic</code>, <code>spec/clarify-ifc-labels</code>.
+      </li>
+      <li>
+        <strong>Write the change.</strong>
+        Follow the code style and testing requirements below. Every change that touches the compiler must include a test. Every change that touches the spec must update all relevant cross-references (the spec-xref CI gate will catch regressions).
+      </li>
+      <li>
+        <strong>Run all CI gates locally.</strong>
+        All 6/6 gates must pass: <code>fmt</code> · <code>clippy</code> · <code>test</code> · <code>doc</code> · <code>spec-xref</code> · <code>reproducibility</code>. Do not open a PR with a known failing gate.
+      </li>
+      <li>
+        <strong>Open the PR.</strong>
+        Write a PR description that explains: what the change does, why it is correct (reference the spec where applicable), and what tests cover it. Link the issue it closes.
+      </li>
+    </ol>
+    <p style="font-size: 0.88rem; color: var(--text-dim);">
+      Small PRs are preferred over large ones. A PR that changes one thing is easier to review, easier to revert, and easier to reason about. Batch unrelated changes into separate PRs.
+    </p>
+  </div>
+</section>
+
+<section id="setup">
+  <div class="container">
+    <h2>Development Setup</h2>
+    <p>
+      The CSSL compiler (<code>compiler-rs/</code>) is written in Rust. The Rust toolchain version is pinned in <code>rust-toolchain.toml</code> at the repository root.
+    </p>
+    <h3>Prerequisites</h3>
+    <ul class="bullet-list">
+      <li><strong>Rust:</strong> Install via <a href="https://rustup.rs" target="_blank" rel="noopener noreferrer">rustup.rs</a>. The pinned toolchain will be installed automatically on first build.</li>
+      <li><strong>Platform:</strong> Windows x86-64, Linux x86-64, or macOS. Linux is the primary CI target.</li>
+      <li><strong>Optional (for Vulkan tests):</strong> Vulkan 1.4-capable driver (Intel Arc / Mesa-ANV recommended). Tests that require GPU hardware are gated behind a feature flag and skipped in CI without a GPU.</li>
+    </ul>
+    <h3>Build</h3>
+    <div class="code-block" data-lang="shell">
+<pre># Clone
+git clone https://github.com/Apocky/CSSL3
+cd CSSL3
+
+# Build all workspace crates
+cargo build --workspace
+
+# Run all tests
+cargo test --workspace
+
+# Run CI gates (same as CI)
+cargo fmt --check
+cargo clippy --workspace -- -D warnings
+cargo test --workspace
+cargo doc --workspace --no-deps
+# spec-xref and reproducibility are run via scripts/ci.sh</pre>
+    </div>
+    <h3>Workspace structure</h3>
+    <ul class="bullet-list">
+      <li><code>compiler-rs/crates/</code> — 31 compiler crates (<code>cssl-lex</code>, <code>cssl-parse</code>, <code>cssl-hir</code>, <code>cssl-mir</code>, <code>cssl-effects</code>, <code>cssl-autodiff</code>, …)</li>
+      <li><code>specs/</code> — 25 <code>.csl</code> specification files, v1-complete and frozen</li>
+      <li><code>examples/</code> — <code>.cssl</code> source examples used as integration tests</li>
+      <li><code>research/</code> — 14 prior-art surveys and synthesis documents</li>
+      <li><code>scripts/</code> — CI scripts, build helpers, spec cross-reference checker</li>
+    </ul>
+  </div>
+</section>
+
+<section id="code-style">
+  <div class="container">
+    <h2>Code Style</h2>
+    <p>
+      The compiler is written in Rust, formatted with <code>rustfmt</code> (configuration in <code>.rustfmt.toml</code>). Zero <code>clippy</code> warnings is a hard requirement — the CI gate will fail on any warning.
+    </p>
+    <h3>Rust conventions</h3>
+    <ul class="bullet-list">
+      <li>Follow the Rust API guidelines for public items. Internal items can be more pragmatic.</li>
+      <li>Prefer <code>enum</code> + <code>match</code> over trait objects for compiler IR nodes — exhaustiveness checking is a feature, not a cost.</li>
+      <li>Error handling: use <code>Result</code> + the project's <code>Diagnostic</code> type for compiler errors. Do not <code>panic!</code> on malformed user input — emit a structured diagnostic instead.</li>
+      <li>No <code>unsafe</code> except in crates specifically designated for it (<code>cssl-rt</code>, <code>cssl-cgen-cpu-*</code>). All unsafe blocks require a safety comment explaining the invariant they rely on.</li>
+      <li>No <code>unwrap()</code> or <code>expect()</code> except in test code and <code>main</code> entry points. Use <code>?</code> or <code>.unwrap_or_else()</code> with a meaningful message.</li>
+    </ul>
+    <h3>CSSL source code style</h3>
+    <p>
+      CSSL examples in tests and documentation use the Rust-hybrid surface syntax (familiar keywords, lowercase, good for readability). The CSL-native surface (glyphs, compressed) is valid but reserved for spec files and CSL notation documents. Both parse to the same HIR.
+    </p>
+    <ul class="bullet-list">
+      <li>Effect rows go after <code>/</code> in function signatures: <code>fn foo(x: f32) -&gt; f32 / {GPU, NoAlloc}</code></li>
+      <li>Capability annotations precede the type: <code>iso Buffer</code>, <code>val Scene</code></li>
+      <li>Refinement predicates use the <code>T'tag</code> suffix for named refinements: <code>f32'pos</code> (positive float)</li>
+      <li>Effect names are PascalCase: <code>{NoAlloc}</code>, <code>{Deadline&lt;16ms&gt;}</code>, <code>{GPU}</code></li>
+    </ul>
+  </div>
+</section>
+
+<section id="testing">
+  <div class="container">
+    <h2>Testing</h2>
+    <p>
+      The project maintains a comprehensive test suite — 1,600+ tests with 0 failures on every commit. Every compiler change must include a test. This is not a suggestion.
+    </p>
+    <h3>Test organization</h3>
+    <ul class="bullet-list">
+      <li><strong>Unit tests:</strong> In-module <code>#[cfg(test)]</code> blocks for pure functions and data transformations.</li>
+      <li><strong>Integration tests:</strong> In <code>compiler-rs/crates/*/tests/</code>. These test the full pipeline from parse to HIR/MIR/output for specific language constructs.</li>
+      <li><strong>Example-based tests:</strong> Files in <code>examples/*.cssl</code> are compiled and their output verified. The F1 autodiff gate runs <code>examples/sdf_shader.cssl</code> and checks 62 specific properties.</li>
+      <li><strong>Spec cross-reference tests:</strong> The <code>spec-xref</code> CI gate checks that every spec citation in the compiler source (<code>// spec: 04_EFFECTS §3.2</code>) resolves to a real section.</li>
+    </ul>
+    <h3>Nine oracle modes</h3>
+    <p>The test harness (<code>specs/23_TESTING.csl</code>) defines nine oracle modes for verifying compiler output:</p>
+    <ul class="bullet-list">
+      <li><strong>Exact output:</strong> byte-identical expected output</li>
+      <li><strong>Semantic equivalence:</strong> output behaves identically on all inputs</li>
+      <li><strong>Differential backend:</strong> Vulkan output matches x86-64 output on test inputs</li>
+      <li><strong>Replay:</strong> deterministic replay of recorded execution</li>
+      <li><strong>SMT oracle:</strong> Z3/CVC5 verifies a property of the compiled output</li>
+      <li><strong>Type oracle:</strong> the type-checker accepts/rejects the input as expected</li>
+      <li><strong>Effect oracle:</strong> the effect-checker accepts/rejects the input as expected</li>
+      <li><strong>IFC oracle:</strong> the IFC-checker accepts/rejects the input as expected</li>
+      <li><strong>Panic oracle:</strong> the compiler-internal invariant holds under adversarial inputs</li>
+    </ul>
+    <h3>Writing a test</h3>
+    <div class="code-block" data-lang="rust">
+<pre>// Integration test: effect checker rejects NoAlloc + heap allocation
+#[test]
+fn test_effect_no_alloc_rejects_heap() {
+    let src = r#"
+        fn bad() -> i32 / {NoAlloc} {
+            let v = vec![1, 2, 3];  // heap alloc under NoAlloc — type error
+            v[0]
+        }
+    "#;
+    let result = compile_check(src);
+    assert!(result.has_error("E_EFFECT_VIOLATION"));
+    assert!(result.error_references_spec("04_EFFECTS")); // spec-xref gate
+}</pre>
+    </div>
+  </div>
+</section>
+
+<section id="docs">
+  <div class="container">
+    <h2>Documentation Contributions</h2>
+    <p>
+      Documentation lives in multiple places. Know which one you are editing:
+    </p>
+    <div class="two-col">
+      <div>
+        <h4>cssl.dev (this site)</h4>
+        <p>Static HTML. Source is the <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">CSSL3</a> repository under <code>site/</code>. Pages are self-contained HTML with inline CSS. Zero frameworks. Changes to site content follow the same PR process as code changes.</p>
+        <p>Every page must pass the site quality checklist (in <code>CLAUDE.md</code>): canonical URL, JSON-LD, skip link, accessible headings, og:image:alt, and sitemap entry.</p>
+      </div>
+      <div>
+        <h4>docs.cssl.dev</h4>
+        <p>Full reference documentation: annotated specs, learning paths, API reference. Source is in <code>docs/</code>. Uses the same inline-HTML convention as cssl.dev. Spec annotations (<code>// spec: FILE §SECTION</code>) are checked by the spec-xref CI gate.</p>
+      </div>
+      <div>
+        <h4>Specification files</h4>
+        <p>The 25 <code>.csl</code> files in <code>specs/</code> are <strong>frozen for v1</strong>. Clarifications and errata are accepted as separate patch files (<code>specs/ERRATA.md</code>). Do not edit the main spec files directly without a design discussion in an issue first.</p>
+      </div>
+      <div>
+        <h4>CSL machine-readable formats</h4>
+        <p>Every HTML page has a corresponding <code>.csl</code> file in <code>csl/</code> and a <code>.txt</code> machine-readable version. When you add or significantly change a page, update its <code>.csl</code> and <code>.txt</code> counterparts. The format follows <code>csl/index.csl</code> as a template.</p>
+      </div>
+    </div>
+    <h3>Notation in documentation</h3>
+    <ul class="bullet-list">
+      <li>User-facing text: English. No CSL glyphs in user-facing HTML except as illustrative code examples.</li>
+      <li>Spec citations: use the format <code>specs/NN_NAME.csl §SECTION.SUBSECTION</code>. Do not cite from memory — look up the section number.</li>
+      <li>Version references: do not hard-code compiler version numbers in prose. Use "current" or link to the repository release page. Volatile data must be linked to a live source.</li>
+      <li>Naming: "CSSL" or "Sigil" for the language. "CSL" for the notation. Never "CSSLv3" or "CSLv3" in user-facing content. "DGI" not "AGI".</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="attribution">
+      Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ
+    </div>
+    <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/sigil">Sigil (CSSL)</a>
+      <a href="/CSLv3">CSL Reference</a>
+      <a href="/thinking-guides">Thinking Guides</a>
+      <a href="/ethics-guides">Ethics Guides</a>
+      <a href="/faq">FAQ</a>
+      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/sitemap.xml">Site Map</a>
+      <a href="/site-map.html">Page Index</a>
+      <a href="/llms.txt">llms.txt</a>
+    </div>
+    <div class="license-line">
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+    </div>
+    <div class="tagline">density = sovereignty · consent = OS</div>
+  </div>
+</footer>
+
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+</body>
+</html>

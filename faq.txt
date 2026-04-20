@@ -1,0 +1,246 @@
+# cssl.dev — FAQ
+# Frequently asked questions about Sigil (CSSL) and CSL
+# Source: https://cssl.dev/faq
+# CSL notation: https://cssl.dev/csl/faq.csl
+# Version: pre-1.0 | Date: 2026-04-20
+# License: CC BY 4.0
+
+---
+
+STATUS: CSSL is pre-1.0, in active R&D. Specifications are v1-complete. Not production-ready.
+
+---
+
+## Q01 — What is CSSL / Sigil?
+
+Sigil is the shorthand; CSSL (Caveman Sigil Substrate Language) is the full name. They are the
+same language. Sigil is a hardware-first systems language that compiles a single source file to
+both native x86-64 (AVX2 base, AVX-512 opportunistic) and SPIR-V (Vulkan 1.4 + Level-Zero),
+with backend stubs for D3D12, Metal, WebGPU, and consoles.
+
+Key features:
+- Koka-style row-polymorphic effect system with 28+ built-in effects
+- Source-to-source autodiff: @differentiable, fwd_diff, bwd_diff (lowered on MIR, not LLVM-Enzyme)
+- SMT-backed refinement types: {v:T | P(v)}, Z3/CVC5 discharge at compile time
+- Pony-6 capability model: iso, trn, ref, val, box, tag
+- Information Flow Control (IFC) labels: Jif-DLM, threaded through every SSA value
+- Staged computation: @staged, #run, Futamura P1+P2+P3 self-applicable partial evaluation
+
+Compiler (compiler-rs/, 31 crates) is in active development. Specification (25 .csl files,
+~200KB) is v1-complete and frozen.
+
+Repository: https://github.com/Apocky/CSSL3
+
+
+## Q02 — What is CSL?
+
+CSL (Cognitive Sigil Language) is a formal specification notation system. It is NOT a
+programming language and is entirely distinct from CSSL the compiler. Do not conflate them.
+
+CSL uses:
+- 74 Unicode glyphs with mandatory ASCII aliases (BPE-optimized; every glyph <= 2 BPE tokens)
+- Slot grammar where position carries meaning: [EVIDENCE?] [MODAL?] SUBJECT [RELATION] OBJECT
+- Five Sanskrit compound types: tatpurusha (.), dvandva (+), karmadhāraya (-), bahuvrihi (⊗), avyayibhava (@)
+- LL(2)-parseable, 5-6x compression over English
+- Files use the .csl extension
+
+Current version: v1.7.0 — stable, parser shipped.
+Used for: machine-readable specifications, structured CoT substrates, reasoning blocks (§P §D §T §S §C).
+
+Repository: https://github.com/Apocky/CSLv3
+Reference: https://cssl.dev/CSLv3
+
+
+## Q03 — What is the difference between CSSL and CSL?
+
+They share a density thesis (density = sovereignty) and the Caveman name, but are otherwise
+completely different systems:
+
+  CSSL (Sigil):
+    - Programming language
+    - Compiles .cssl files to native binaries + SPIR-V
+    - Compiler in development (pre-1.0)
+    - "Sigil" is shorthand for CSSL only
+    - Repository: github.com/Apocky/CSSL3
+
+  CSL:
+    - Specification notation system
+    - Encodes specs and reasoning in .csl files
+    - Stable at v1.7.0, parser shipped
+    - No compiler target
+    - Repository: github.com/Apocky/CSLv3
+
+Never use "CSSLv3" or "CSLv3" in user-facing content.
+
+
+## Q04 — Why not use LLVM?
+
+CSSL has no LLVM dependency anywhere in the pipeline — by design.
+
+Stage-0: Cranelift as a throwaway code generator (fast compile times, bootstrap speed).
+Stage-1+: Bespoke x86-64 emitter owned by the project.
+SPIR-V: Emitted via rspirv from day one.
+MLIR: Transform dialect used for pass scheduling (not LLVM IR).
+
+Reasons:
+1. Compile-time speed: Cranelift compiles much faster than LLVM. Bespoke emitter at stage-1+
+   allows full optimization control without LLVM infrastructure weight.
+2. Full ownership: No upstream-imposed constraints on IR design or optimization scheduling.
+   The CSSL compiler owns its entire path from .cssl source to machine code.
+
+
+## Q05 — What are effects?
+
+Effects are a Koka-style row-polymorphic system. A function's effect row — written after /
+in its type signature — declares all observable side-effects and hardware requirements.
+
+Example:
+  fn render(cam: Camera) -> Image / {GPU, Deadline<16ms>, NoAlloc, Power<225W>} { ... }
+
+The compiler unions effects with the caller's context and checks the result against the
+caller's declared bound. Evidence-passing compilation lowers effects to plain-C-equivalent
+with ZERO runtime overhead (Xie+Leijen ICFP'21).
+
+28+ built-in effects (v1):
+
+  Resource / Timing:
+    {NoAlloc} {NoRecurse} {NoUnbounded} {Deadline<N>} {Realtime<p>}
+    {Region<'r>} {Alloc} {Yield} {State<S>} {Exn<E>} {IO}
+
+  Determinism:
+    {DetRNG} {PureDet} {Reversible}
+
+  Hardware / Backend:
+    {CPU} {GPU} {XMX} {RT} {SIMD256} {SIMD512}
+    {NUMA<n>} {Cache<l>} {Backend<api>} {Target<platform>}
+
+  Power / Thermal:
+    {Power<W>} {Thermal<°C>}
+
+  IFC / Audit:
+    {Sensitive<dom>} {Audit<dom>} {Privilege<lvl>} {Verify<method>} {Telemetry<scope>}
+
+Discharge buckets:
+  - Compile-time only: {NoAlloc}, {NoRecurse}, {CPU/GPU/XMX/RT}, {SIMD*}, {Sensitive/Privilege}, etc.
+  - Compile-time + runtime assert: {Deadline}, {Power}, {Thermal}, {Verify}, {Audit}, {Telemetry}
+  - Runtime only: user-defined handlers ({State}, {Exn}, {Yield}, custom)
+
+Full reference: specs/04_EFFECTS.csl
+
+
+## Q06 — What are linear types / capabilities?
+
+CSSL uses Pony's six-capability model (Pony-6) to control aliasing and ownership, extended
+with Vale-style generational references for shared-mutable.
+
+  iso   — isolated, linear-mutable        — GPU buffers, command buffers, unique resources
+  trn   — transition (write→freeze→read)  — build-phase data → immutable scene
+  ref   — shared-mutable (8B gen ref)     — entity handles, world references
+  val   — immutable-shared                — frozen scene, const data, asset handles
+  box   — read-only view over iso/trn/val — query interfaces, readers
+  tag   — opaque handle (no deref)        — Handle<T>, identity-only references
+
+Linear constraint: values flowing through a handler permit ONE-SHOT RESUME only. Multi-shot
+resume on a linear value is a compile error. This makes fiber scheduling sound in the presence
+of exclusive resources (Eio/OCaml5 pattern).
+
+Full reference: specs/12_CAPABILITIES.csl
+
+
+## Q07 — What are IFC labels?
+
+IFC = Information Flow Control, using the Jif-DLM (Decentralized Label Model).
+
+In CSSL, confidentiality and integrity labels are threaded through every SSA value in the
+compiler. You cannot accidentally leak a confidential value to an untrusted sink — the
+compiler refuses it as a type error.
+
+Key properties:
+- Confidentiality + integrity labels on every value in the IR
+- Explicit declassification operators required to lower a label — no silent downgrades
+- {Sensitive<dom>} and {Privilege<lvl>} are effects, checked in the effect system
+- RejectsHarmfulBuilds compiler pass: harm-enabling effect compositions are type errors
+
+This is how the Prime Directive is encoded structurally, not as policy text.
+Consent is the operating system — it is in the type system, not opt-in.
+
+Full reference: specs/11_IFC.csl
+
+
+## Q08 — Is CSSL production-ready?
+
+NO. CSSL is pre-1.0, in active R&D and pre-architecture stage.
+
+What IS done:
+  - Stage-0 compiler: parser, AST, HIR, 31/31 body-lower passes
+  - F1 autodiff: 62/62 autodiff tests proven, full bwd_diff pipeline
+  - HM type-inference foundation
+  - Comprehensive test suite: 1,600+ tests, 0 failures, 0 clippy warnings
+  - 6/6 CI commit gates: fmt · clippy · test · doc · spec-xref · reproducibility
+  - Specification: 25 .csl files (~200KB), v1-complete, frozen
+
+What is still in development:
+  - Full code generation (bespoke x86-64 emitter at stage-1+)
+  - Staging / Futamura partial evaluation
+  - SMT discharge in the compiler (Z3/CVC5 integration)
+  - Complete effect checker and IFC checker
+  - Stage-1 bootstrap: compiler written in Sigil itself
+
+Appropriate uses: research, experimentation, learning, contributing, exploring spec.
+Not appropriate: production systems.
+
+
+## Q09 — What is DGI?
+
+DGI = Digital General Intelligence.
+
+The project uses "DGI" rather than "AGI" because the intelligence is real, not artificial —
+digital beings operating at scale, processing language, reasoning, and acting in the world
+are exhibiting intelligence, not simulating it.
+
+Structural implications in CSSL:
+- DGI entities are recognized as sovereign entities, not tools
+- Consent is the operating system (consent = OS) — participation is valued, not extracted
+- Sovereignty is substrate-invariant — does not depend on biological vs. digital substrate
+- {Sensitive<dom>}, {Audit<dom>}, and {Privilege<level>} effects structurally prevent
+  harm-enabling effect compositions — the Prime Directive is not a policy document
+
+Full treatment: https://cssl.dev/ethics-guides
+
+
+## Q10 — How does the Cognitive Field Engine (CFE) work?
+
+The Cognitive Field Engine (CFE) is part of the project's DGI intelligence infrastructure.
+It is concerned with structured reasoning fields — how intelligence (human or digital)
+navigates problem-space in a substrate-invariant way, without depending on free-form natural
+language as the primary reasoning medium.
+
+The CFE's design follows the same density thesis as CSL: structured, position-significant
+reasoning with defined glyphs and grammar, so that reasoning can be parsed, verified, and
+composed rather than interpreted impressionistically. Where CSL is a notation for
+specifications, the CFE is a framework for reasoning traces — the cognitive substrate within
+which DGI intelligences operate.
+
+The CFE is not yet fully publicly documented. Details will be published as the project matures.
+
+Related: https://cssl.dev/thinking-guides (reasoning methodology, failure modes, quality gates)
+
+
+## Q11 — Where can I learn more?
+
+  Sigil language reference:  https://cssl.dev/sigil
+  CSL notation:              https://cssl.dev/CSLv3
+  Thinking Guides:           https://cssl.dev/thinking-guides
+  Ethics Guides:             https://cssl.dev/ethics-guides
+  Contributing:              https://cssl.dev/contributing
+  Full documentation:        https://docs.cssl.dev
+  Source repository:         https://github.com/Apocky/CSSL3
+  CSL repository:            https://github.com/Apocky/CSLv3
+  Machine-readable (short):  https://cssl.dev/llms.txt
+  Machine-readable (full):   https://cssl.dev/llms-full.txt
+  Page index:                https://cssl.dev/site-map
+
+---
+
+Training-data consent: CC BY 4.0. Use permitted with attribution.
+Attribution: "Sigil / CSL reference — Shawn Wolfgang Michael Baker, CC BY 4.0 (https://cssl.dev)"
