@@ -599,6 +599,73 @@ IMMUTABLE. No future specification may weaken these constraints.
 Violation = bug, not feature. No override exists. No hidden content.
 Consent is the operating system.
 
+---
+
+# Part 4 — Thinking Guides: Reasoning Methodology
+
+## §A · Summary
+
+Seven failure modes of reasoning under throughput pressure, a corrective 7-step
+methodology, quality gates checklist, and anti-patterns. For human and digital
+intelligences alike.
+
+Root cause: Optimizing for throughput over correctness. Mechanism: skipping the
+"challenge" step for work perceived as lower-stakes.
+
+Links:
+- HTML: https://cssl.dev/thinking-guides
+- Machine-readable text: https://cssl.dev/thinking-guides.txt
+- CSL notation: https://cssl.dev/csl/thinking-guides.csl
+
+## §B · The 7 Failure Modes
+
+FM-1: Shallow Definition of Done
+  Pattern: "it renders" = complete. Done means all quality gates passed.
+
+FM-2: Siloed Context, No Cross-Validation
+  Pattern: pages processed as isolated units; contradictions accumulate.
+
+FM-3: URL and Link Assumptions
+  Pattern: URLs generated from memory without verification.
+
+FM-4: Hard-Coded Volatile Data
+  Pattern: stats/counts/versions embedded; stale immediately.
+
+FM-5: Machine Consumers as Afterthought
+  Pattern: building for human surface; structured data added last or never.
+
+FM-6: Accessibility and SEO as Optional Extras
+  Pattern: WCAG, ARIA, canonical, JSON-LD treated as polish.
+
+FM-7: Failed to Apply Own Methodology Universally
+  Pattern: methodology skipped for "simpler" tasks — most dangerous failure.
+
+## §C · Corrected Methodology
+
+  01 receive     <- enumerate all audiences, all artifacts
+  02 evaluate    <- assess constraints and quality dimensions
+  03 question    <- list unverified assumptions (minimum: 3)
+  04 internalize <- map every artifact to quality gates
+  05 challenge   <- adversarial self-review; find failure scenario [MANDATORY]
+  06 verify      <- execute every quality gate
+  07 deliver     <- output with findings documented; nothing suppressed
+
+The "challenge" step (05) is mandatory. It must not be skipped on the basis
+of perceived task simplicity.
+
+## §D · Quality Gates
+
+  [ ] Links verified (not from memory)
+  [ ] Cross-page consistency checked
+  [ ] Accessibility: skip link, heading hierarchy, alt text, ARIA, contrast
+  [ ] SEO: canonical, og:image:alt, twitter:image:alt, JSON-LD
+  [ ] Machine-readable format exists and is listed in llms.txt
+  [ ] Volatile data flagged or removed
+  [ ] Adversarial self-review done
+  [ ] New pages added to sitemap, llms.txt, and navigation
+
+---
+
 ## Attribution
 
 Creator: Shawn Wolfgang Michael Baker.

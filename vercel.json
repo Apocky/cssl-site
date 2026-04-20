@@ -36,9 +36,23 @@
       ]
     },
     {
-      "source": "/(|sigil|CSLv3)",
+      "source": "/(|sigil|CSLv3|thinking-guides|site-map)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(thinking-guides\\.txt|thinking-guides\\.html|site-map\\.html)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/csl/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     },
     {
