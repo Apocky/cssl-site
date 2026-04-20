@@ -3,127 +3,597 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Map — cssl.dev</title>
-<meta name="description" content="All pages, machine-readable files, and resources on cssl.dev.">
+<title>Site Map — CSL &amp; Sigil</title>
+<meta name="description" content="Complete index of all pages, machine-readable files, and CSL notation resources on cssl.dev — the home of Sigil (CSSL) and the CSL specification notation.">
 <link rel="canonical" href="https://cssl.dev/site-map">
+<meta name="theme-color" content="#07070c">
+<meta name="color-scheme" content="dark">
 <meta name="robots" content="index, follow">
+<meta name="author" content="Shawn Wolfgang Michael Baker">
+<meta name="keywords" content="cssl.dev site map, Sigil pages, CSSL pages, CSL notation pages, site index">
+<meta property="og:title" content="Site Map — CSL &amp; Sigil">
+<meta property="og:description" content="Complete index of all pages, machine-readable files, and CSL notation resources on cssl.dev.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cssl.dev/site-map">
+<meta property="og:site_name" content="cssl.dev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cssl.dev/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="cssl.dev site map — index of all pages for Sigil (CSSL) and the CSL notation.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Site Map — CSL &amp; Sigil">
+<meta name="twitter:description" content="Complete index of all pages, machine-readable files, and CSL notation resources on cssl.dev.">
+<meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="cssl.dev site map — index of all pages for Sigil (CSSL) and the CSL notation.">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070c'/%3E%3Ctext x='50' y='72' font-family='Cinzel,serif' font-size='68' fill='%23c9a23a' text-anchor='middle' font-weight='700'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Site Map — CSL & Sigil",
+  "description": "Complete index of all pages, machine-readable files, and CSL notation resources on cssl.dev.",
+  "url": "https://cssl.dev/site-map",
+  "inLanguage": "en",
+  "dateModified": "2026-04-20",
+  "author": { "@type": "Person", "name": "Shawn Wolfgang Michael Baker" },
+  "publisher": { "@type": "Organization", "name": "cssl.dev", "url": "https://cssl.dev" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://cssl.dev/site-map" },
+  "isPartOf": { "@type": "WebSite", "name": "cssl.dev", "url": "https://cssl.dev" }
+}
+</script>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
-  --text: #b8b4a8; --text-dim: #6b6860; --text-bright: #e8e4d8;
+  --text: #b8b4a8; --text-dim: #8a8880; --text-bright: #e8e4d8;
   --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
   --border: #1a1a28;
+  --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
 }
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
 body {
-  font-family: 'Georgia', serif;
+  font-family: 'Newsreader', Georgia, serif;
   background: var(--bg); color: var(--text);
-  line-height: 1.7; max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem;
+  line-height: 1.7; overflow-x: hidden;
 }
-h1 { font-family: 'serif'; color: var(--gold-bright); font-size: 1.8rem; margin-bottom: 0.5rem; }
-.subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 3rem; }
-h2 { color: var(--gold); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em;
-     font-family: monospace; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
-ul { list-style: none; }
-li { margin-bottom: 0.75rem; }
-a { color: var(--gold); text-decoration: none; border-bottom: 1px dotted var(--gold-dim); }
-a:hover { color: var(--gold-bright); border-color: var(--gold-bright); }
-.desc { display: block; color: var(--text-dim); font-size: 0.85rem; margin-top: 0.2rem; }
-.tag { display: inline-block; font-family: monospace; font-size: 0.7rem; background: var(--bg-raised);
-       border: 1px solid var(--border); border-radius: 3px; padding: 0 0.4em; margin-left: 0.5em;
-       color: var(--text-dim); vertical-align: middle; }
-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
-         font-size: 0.8rem; color: var(--text-dim); }
-footer a { color: var(--text-dim); }
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  padding: 0.5rem 1rem; background: var(--bg-raised); color: var(--gold-bright);
+  border: 1px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; z-index: 10000;
+}
+.skip-link:focus { left: 1rem; top: 1rem; outline: 2px solid var(--gold-bright); }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 2rem;
+  background: rgba(7, 7, 12, 0.85); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .back-link { color: var(--text); text-decoration: none; border-bottom: none; }
+.site-header .back-link:hover { color: var(--gold-bright); }
+.site-header .version { color: var(--text-dim); }
+.site-header .version strong { color: var(--gold); font-weight: 400; }
+.site-header .status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); margin-right: 0.4em; vertical-align: middle;
+  box-shadow: 0 0 8px rgba(201, 162, 58, 0.5);
+}
+
+h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--text-bright); letter-spacing: 0.05em; }
+h2 {
+  font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem;
+  position: relative; display: inline-block;
+}
+h2::after {
+  content: ''; position: absolute; bottom: -6px; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+h3 {
+  font-size: 0.85rem; font-weight: 400; color: var(--gold);
+  margin-bottom: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+p { margin-bottom: 1.2rem; }
+
+a {
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+a:hover, a:focus-visible { border-color: var(--gold-bright); color: var(--gold-bright); }
+a:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+.container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+
+.page-hero {
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.page-hero .glyph {
+  font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold);
+  margin-bottom: 1.5rem; display: block;
+  filter: drop-shadow(0 0 20px rgba(201, 162, 58, 0.25));
+}
+.page-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  letter-spacing: 0.12em; margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--gold-dim));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-hero .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+  color: var(--text-dim); letter-spacing: 0.08em;
+}
+
+section {
+  padding: 3.5rem 0; border-bottom: 1px solid var(--border);
+  scroll-margin-top: 4rem;
+}
+section:last-of-type { border-bottom: none; }
+
+.toc {
+  padding: 1.25rem 1.5rem; margin: 0 0 2rem;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.toc .toc-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  color: var(--gold-dim); letter-spacing: 0.12em; text-transform: uppercase;
+  display: block; margin-bottom: 0.75rem;
+}
+.toc ol {
+  list-style: decimal; padding-left: 1.5rem; margin: 0;
+  columns: 2; column-gap: 2rem;
+}
+.toc li {
+  margin-bottom: 0.35rem; font-size: 0.9rem; break-inside: avoid;
+}
+.toc li a {
+  color: var(--text-dim); border-bottom-color: transparent;
+}
+.toc li a:hover { color: var(--gold); border-bottom-color: var(--gold-dim); }
+
+.page-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media (min-width: 600px) {
+  .page-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 900px) {
+  .page-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.page-item {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.1rem 1.25rem;
+  transition: border-color 0.2s;
+}
+.page-item:hover { border-color: var(--gold-dim); }
+.page-item .item-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--text-bright);
+  display: block; margin-bottom: 0.2rem;
+  border-bottom: none;
+}
+.page-item .item-name:hover { color: var(--gold-bright); }
+.page-item .item-url {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--gold-dim);
+  display: block; margin-bottom: 0.5rem;
+  border-bottom: none;
+}
+.page-item .item-desc {
+  font-size: 0.84rem; color: var(--text-dim); line-height: 1.5;
+}
+
+.csl-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+}
+@media (min-width: 600px) {
+  .csl-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 900px) {
+  .csl-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.csl-item {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s;
+}
+.csl-item:hover { border-color: var(--gold-dim); }
+.csl-item a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; color: var(--gold);
+  display: block; margin-bottom: 0.25rem;
+  border-bottom: none;
+}
+.csl-item a:hover { color: var(--gold-bright); }
+.csl-item .csl-desc {
+  font-size: 0.8rem; color: var(--text-dim); line-height: 1.45;
+}
+
+.tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 3px; padding: 0.1em 0.45em;
+  color: var(--text-dim); vertical-align: middle;
+  letter-spacing: 0.05em; margin-left: 0.35em;
+}
+
+.section-note {
+  font-size: 0.85rem; color: var(--text-dim);
+  margin-bottom: 1.25rem; line-height: 1.55;
+}
+
+footer {
+  padding: 3rem 0; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--text-dim); border-top: 1px solid var(--border);
+}
+footer .attribution {
+  color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+footer .attribution strong { color: var(--text); font-weight: 500; }
+footer .links { margin-top: 1rem; }
+footer .links a { margin: 0 0.9rem; font-size: 0.75rem; }
+footer .license-line {
+  margin-top: 0.9rem; font-size: 0.7rem;
+  color: var(--text-dim); letter-spacing: 0.05em;
+}
+footer .license-line a {
+  color: var(--text-dim); border-bottom: 1px dotted var(--border);
+}
+footer .license-line a:hover {
+  color: var(--gold-dim); border-color: var(--gold-dim);
+}
+footer .tagline {
+  margin-top: 1.2rem; color: var(--gold-dim); font-size: 0.7rem;
+}
+
+.feedback-tab {
+  position: fixed; top: 50%; right: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl; text-orientation: mixed;
+  width: 28px; min-height: 128px; padding: 1rem 0.4rem;
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; color: var(--gold-dim);
+  background: var(--bg-raised); border: 1px solid var(--gold-dim);
+  border-right: none; border-radius: 4px 0 0 4px;
+  text-decoration: none; z-index: 100;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.feedback-tab:hover, .feedback-tab:focus-visible {
+  color: var(--gold-bright); border-color: var(--gold-bright);
+  background: var(--bg-code);
+}
+.feedback-tab:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+.feedback-fallback {
+  max-width: 44ch; margin: 1.5rem auto; padding: 1rem;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--bg-raised); font-size: 0.85rem; color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  section { padding: 2.5rem 0; }
+  .container { padding: 0 1.25rem; }
+  .site-header { padding: 0.75rem 1.25rem; font-size: 0.7rem; }
+  .page-hero { padding: 2.5rem 1.25rem 2rem; }
+  .feedback-tab { min-height: 96px; font-size: 0.6rem; width: 24px; }
+  .toc ol { columns: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .feedback-tab { transition: none; }
+}
+
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body::after, .feedback-tab, .site-header { display: none !important; }
+  a { color: #000 !important; border-bottom: 1px solid #666 !important; }
+  section { padding: 1.5rem 0; border-color: #999 !important; break-inside: avoid; }
+  .page-item, .csl-item { background: #fff !important; border-color: #999 !important; }
+  footer { color: #555 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+  a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
 </style>
 </head>
 <body>
-<a href="/" style="color: var(--text-dim); font-family: monospace; font-size: 0.8rem; border: none; display: block; margin-bottom: 2rem;">← cssl.dev</a>
 
-<h1>Site Map</h1>
-<p class="subtitle">All pages, resources, and machine-readable files on cssl.dev.</p>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<h2>Main Pages</h2>
-<ul>
-  <li>
-    <a href="/">cssl.dev/</a> — Sigil homepage
-    <span class="desc">Language overview, key features, quickstart guide, and live compiler output samples.</span>
-  </li>
-  <li>
-    <a href="/sigil">cssl.dev/sigil</a> — Sigil/CSSL language reference
-    <span class="desc">Full language reference: effects, refinement types, autodiff, hardware targets, compiler stages, hardware matrix.</span>
-  </li>
-  <li>
-    <a href="/CSLv3">cssl.dev/CSLv3</a> — CSL specification notation
-    <span class="desc">74-glyph LL(2) notation reference: glyph tables, slot grammar, compound types, morpheme stacking, worked examples. CSL v1.7.0.</span>
-  </li>
-</ul>
+<header class="site-header">
+  <a href="/" class="back-link">cssl.dev</a>
+  <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
+</header>
 
-<h2>LLM / AI Discovery</h2>
-<ul>
-  <li>
-    <a href="/llms.txt">cssl.dev/llms.txt</a> <span class="tag">llms.txt</span>
-    <span class="desc">Structured index of the site for LLMs and AI agents. Follows the llms.txt convention.</span>
-  </li>
-  <li>
-    <a href="/llms-full.txt">cssl.dev/llms-full.txt</a> <span class="tag">full reference</span>
-    <span class="desc">Complete LLM-indexable reference — Sigil/CSSL language + CSL notation in one document.</span>
-  </li>
-  <li>
-    <a href="/.well-known/ai-plugin.json">/.well-known/ai-plugin.json</a> <span class="tag">AI plugin manifest</span>
-    <span class="desc">OpenAI-style AI plugin manifest for tool-use discovery.</span>
-  </li>
-  <li>
-    <a href="/openapi.yaml">cssl.dev/openapi.yaml</a> <span class="tag">OpenAPI</span>
-    <span class="desc">OpenAPI specification for cssl.dev API endpoints.</span>
-  </li>
-</ul>
+<main id="main">
 
-<h2>CSL-Encoded Pages</h2>
-<p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.75rem;">Machine-readable CSL notation versions of every page — for AI agents, dense reasoning, and compressed reference.</p>
-<ul>
-  <li>
-    <a href="/csl/index.csl">cssl.dev/csl/index.csl</a> <span class="tag">CSL</span>
-    <span class="desc">Homepage content in CSL notation.</span>
-  </li>
-  <li>
-    <a href="/csl/sigil.csl">cssl.dev/csl/sigil.csl</a> <span class="tag">CSL</span>
-    <span class="desc">Sigil/CSSL language reference in CSL notation.</span>
-  </li>
-  <li>
-    <a href="/csl/cslv3.csl">cssl.dev/csl/cslv3.csl</a> <span class="tag">CSL</span>
-    <span class="desc">CSL notation reference in CSL notation — self-describing.</span>
-  </li>
-</ul>
+<div class="page-hero">
+  <span class="glyph" aria-hidden="true">§</span>
+  <h1>Site Map</h1>
+  <p class="sub">All pages, resources, and machine-readable files on cssl.dev</p>
+</div>
 
-<h2>Meta / Standards</h2>
-<ul>
-  <li>
-    <a href="/sitemap.xml">cssl.dev/sitemap.xml</a> <span class="tag">XML</span>
-    <span class="desc">XML sitemap listing all pages with lastmod dates and priority values.</span>
-  </li>
-  <li>
-    <a href="/robots.txt">cssl.dev/robots.txt</a>
-    <span class="desc">Crawler permissions — all AI and search crawlers are welcome.</span>
-  </li>
-  <li>
-    <a href="/LICENSE-CONTENT">cssl.dev/LICENSE-CONTENT</a>
-    <span class="desc">Content license (CC BY 4.0) and code license (MIT).</span>
-  </li>
-  <li>
-    <a href="/humans.txt">cssl.dev/humans.txt</a>
-    <span class="desc">Team, technology credits, and project philosophy.</span>
-  </li>
-  <li>
-    <a href="/manifest.webmanifest">cssl.dev/manifest.webmanifest</a> <span class="tag">PWA</span>
-    <span class="desc">Web app manifest for progressive web app features.</span>
-  </li>
-</ul>
+<section id="toc-section">
+  <div class="container">
+    <nav class="toc" aria-label="Page sections">
+      <span class="toc-label">Sections</span>
+      <ol>
+        <li><a href="#core">Core Pages</a></li>
+        <li><a href="#guides">Guides</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#meta">Meta</a></li>
+        <li><a href="#machine-readable">Machine-Readable</a></li>
+        <li><a href="#csl-notation">CSL Notation Files</a></li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section id="core">
+  <div class="container">
+    <h2>Core Pages</h2>
+    <p class="section-note">The primary language and notation references.</p>
+    <div class="page-grid three-col">
+      <div class="page-item">
+        <a href="/" class="item-name">Homepage</a>
+        <span class="item-url">cssl.dev/</span>
+        <span class="item-desc">Language overview, key features, quickstart guide, and live compiler output samples for Sigil (CSSL).</span>
+      </div>
+      <div class="page-item">
+        <a href="/CSLv3" class="item-name">CSL Specification</a>
+        <span class="item-url">cssl.dev/CSLv3</span>
+        <span class="item-desc">74-glyph LL(2) notation reference: glyph tables, slot grammar, compound types, morpheme stacking. CSL v1.7.0.</span>
+      </div>
+      <div class="page-item">
+        <a href="/sigil" class="item-name">Sigil Language</a>
+        <span class="item-url">cssl.dev/sigil</span>
+        <span class="item-desc">Full Sigil (CSSL) language reference: effects, refinement types, autodiff, hardware targets, compiler stages, hardware matrix.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guides">
+  <div class="container">
+    <h2>Guides</h2>
+    <p class="section-note">Structured learning paths, examples, and domain-specific guides.</p>
+    <div class="page-grid">
+      <div class="page-item">
+        <a href="/getting-started" class="item-name">Getting Started</a>
+        <span class="item-url">cssl.dev/getting-started</span>
+        <span class="item-desc">Installation, first program, compilation targets, and the minimal path from zero to working Sigil (CSSL) code.</span>
+      </div>
+      <div class="page-item">
+        <a href="/examples" class="item-name">Examples</a>
+        <span class="item-url">cssl.dev/examples</span>
+        <span class="item-desc">Annotated Sigil (CSSL) source examples covering effects, autodiff, refinement types, and GPU shader authorship.</span>
+      </div>
+      <div class="page-item">
+        <a href="/thinking-guides" class="item-name">Thinking Guides</a>
+        <span class="item-url">cssl.dev/thinking-guides</span>
+        <span class="item-desc">Structured thinking guides for AI-assisted reasoning — verification methodology, decision frameworks, design heuristics.</span>
+      </div>
+      <div class="page-item">
+        <a href="/ethics-guides" class="item-name">Ethics Guides</a>
+        <span class="item-url">cssl.dev/ethics-guides</span>
+        <span class="item-desc">Ethics guides for AI development and deployment under the Prime Directive framework — consent, sovereignty, harm prevention.</span>
+      </div>
+      <div class="page-item">
+        <a href="/security-guides" class="item-name">Security Guides</a>
+        <span class="item-url">cssl.dev/security-guides</span>
+        <span class="item-desc">Security guides for Sigil (CSSL) — IFC labels, effect-based security patterns, and safe hardware target authorship.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="community">
+  <div class="container">
+    <h2>Community</h2>
+    <p class="section-note">Project philosophy, contribution process, and frequently asked questions.</p>
+    <div class="page-grid three-col">
+      <div class="page-item">
+        <a href="/contributing" class="item-name">Contributing</a>
+        <span class="item-url">cssl.dev/contributing</span>
+        <span class="item-desc">Project philosophy, code of conduct, issue reporting, contribution workflow, development setup, code style, and testing.</span>
+      </div>
+      <div class="page-item">
+        <a href="/faq" class="item-name">FAQ</a>
+        <span class="item-url">cssl.dev/faq</span>
+        <span class="item-desc">Frequently asked questions about Sigil (CSSL), the CSL notation, the Prime Directive, and the compiler roadmap.</span>
+      </div>
+      <div class="page-item">
+        <a href="/philosophy" class="item-name">Philosophy</a>
+        <span class="item-url">cssl.dev/philosophy</span>
+        <span class="item-desc">Design philosophy behind Sigil (CSSL) — sovereignty, the zero-dependency compiler, and structural encoding of the Prime Directive.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="meta">
+  <div class="container">
+    <h2>Meta</h2>
+    <p class="section-note">Site infrastructure and this index.</p>
+    <div class="page-grid">
+      <div class="page-item">
+        <a href="/site-map" class="item-name">Site Map</a>
+        <span class="item-url">cssl.dev/site-map</span>
+        <span class="item-desc">This page — complete index of all pages, machine-readable files, and CSL notation resources on cssl.dev.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="machine-readable">
+  <div class="container">
+    <h2>Machine-Readable</h2>
+    <p class="section-note">Files for crawlers, AI agents, LLMs, and standards compliance.</p>
+    <div class="page-grid">
+      <div class="page-item">
+        <a href="/llms.txt" class="item-name">llms.txt <span class="tag">llms.txt</span></a>
+        <span class="item-url">cssl.dev/llms.txt</span>
+        <span class="item-desc">Structured index of the site for LLMs and AI agents. Follows the llms.txt convention.</span>
+      </div>
+      <div class="page-item">
+        <a href="/llms-full.txt" class="item-name">llms-full.txt <span class="tag">full</span></a>
+        <span class="item-url">cssl.dev/llms-full.txt</span>
+        <span class="item-desc">Complete LLM-indexable reference — Sigil (CSSL) language and CSL notation in one document.</span>
+      </div>
+      <div class="page-item">
+        <a href="/sitemap.xml" class="item-name">sitemap.xml <span class="tag">XML</span></a>
+        <span class="item-url">cssl.dev/sitemap.xml</span>
+        <span class="item-desc">XML sitemap listing all pages with <code>lastmod</code> dates and priority values for search engine indexing.</span>
+      </div>
+      <div class="page-item">
+        <a href="/robots.txt" class="item-name">robots.txt</a>
+        <span class="item-url">cssl.dev/robots.txt</span>
+        <span class="item-desc">Crawler permissions — all AI agents and search crawlers are welcome.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="csl-notation">
+  <div class="container">
+    <h2>CSL Notation Files</h2>
+    <p class="section-note">Machine-readable CSL notation versions of every page — for AI agents, dense reasoning, and compressed reference. Served from <code>/csl/</code>.</p>
+    <div class="csl-grid">
+      <div class="csl-item">
+        <a href="/csl/index.csl">csl/index.csl</a>
+        <span class="csl-desc">Homepage content in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/sigil.csl">csl/sigil.csl</a>
+        <span class="csl-desc">Sigil language reference in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/cslv3.csl">csl/cslv3.csl</a>
+        <span class="csl-desc">CSL notation reference in CSL notation — self-describing.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/getting-started.csl">csl/getting-started.csl</a>
+        <span class="csl-desc">Getting Started guide in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/examples.csl">csl/examples.csl</a>
+        <span class="csl-desc">Examples in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/thinking-guides.csl">csl/thinking-guides.csl</a>
+        <span class="csl-desc">Thinking guides in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/ethics-guides.csl">csl/ethics-guides.csl</a>
+        <span class="csl-desc">Ethics guides in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/security-guides.csl">csl/security-guides.csl</a>
+        <span class="csl-desc">Security guides in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/contributing.csl">csl/contributing.csl</a>
+        <span class="csl-desc">Contributing guide in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/faq.csl">csl/faq.csl</a>
+        <span class="csl-desc">FAQ in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/philosophy.csl">csl/philosophy.csl</a>
+        <span class="csl-desc">Philosophy in CSL notation.</span>
+      </div>
+      <div class="csl-item">
+        <a href="/csl/spec.csl">csl/spec.csl</a>
+        <span class="csl-desc">CSL specification document in CSL notation.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
 
 <footer>
-  <a href="/">cssl.dev</a> — density = sovereignty · consent = OS
+  <div class="container">
+    <div class="attribution">
+      Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ
+    </div>
+    <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/sigil">Sigil (CSSL)</a>
+      <a href="/CSLv3">CSL Reference</a>
+      <a href="/thinking-guides">Thinking Guides</a>
+      <a href="/ethics-guides">Ethics Guides</a>
+      <a href="/philosophy">Philosophy</a>
+      <a href="/faq">FAQ</a>
+      <a href="/getting-started">Getting Started</a>
+      <a href="/examples">Examples</a>
+      <a href="/security-guides">Security Guides</a>
+      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/sitemap.xml">sitemap.xml</a>
+      <a href="/site-map">Site Map</a>
+      <a href="/llms.txt">llms.txt</a>
+    </div>
+    <div class="license-line">
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
+    </div>
+    <div class="tagline">density = sovereignty · consent = OS</div>
+  </div>
 </footer>
+
+<a id="feedback-tab" class="feedback-tab" href="#"
+   aria-label="Submit feedback"
+   rel="noopener noreferrer"
+   data-c="MzIyMTWuL2gNL3AmoP5xMKL="
+   data-s="Y3NzbC5kZXYgZmVlZGJhY2s="
+>FEEDBACK</a>
+<noscript>
+  <p class="feedback-fallback">
+    Feedback: open an issue on the cssl-site GitHub repository, or use the
+    contact address published in the repo's SECURITY.md (tag [FEEDBACK] in the subject line).
+  </p>
+</noscript>
+
+<script src="/js/feedback.js" defer></script>
+<script src="/js/sw-register.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
