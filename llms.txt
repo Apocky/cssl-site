@@ -67,6 +67,19 @@ Core axioms: consent = OS · sovereignty = substrate-invariant
 - [ethics-guides.txt](https://cssl.dev/ethics-guides.txt): Machine-readable plain text — LLM/agent parseable
 - [ethics-guides.csl](https://cssl.dev/csl/ethics-guides.csl): CSL notation — dense structured encoding
 
+## Security Guides
+
+Web security, code integrity, data integrity, anti-corruption, anti-erasure,
+DGI-specific security (prompt injection, source integrity, adversarial context injection,
+trust hierarchy exploitation), incident response methodology, and anti-patterns.
+For human developers and digital intelligences operating in the real world.
+
+Core axiom: trust = verified ≠ assumed
+
+- [Security Guides HTML](https://cssl.dev/security-guides): Human-readable — 11 sections, principles through DGI address
+- [security-guides.txt](https://cssl.dev/security-guides.txt): Machine-readable plain text — LLM/agent parseable
+- [security-guides.csl](https://cssl.dev/csl/security-guides.csl): CSL notation — dense structured encoding
+
 ## Optional
 
 - [CSL glyph cheatsheet](https://cssl.dev/CSLv3#glyph-system): Full glyph inventory with ASCII aliases and BPE costs

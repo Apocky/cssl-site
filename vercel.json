@@ -36,13 +36,13 @@
       ]
     },
     {
-      "source": "/(|sigil|CSLv3|getting-started|thinking-guides|ethics-guides|site-map)",
+      "source": "/(|sigil|CSLv3|getting-started|thinking-guides|ethics-guides|security-guides|site-map)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     },
     {
-      "source": "/(getting-started\\.txt|getting-started\\.html|thinking-guides\\.txt|thinking-guides\\.html|ethics-guides\\.txt|ethics-guides\\.html|site-map\\.html)",
+      "source": "/(getting-started\\.txt|getting-started\\.html|thinking-guides\\.txt|thinking-guides\\.html|ethics-guides\\.txt|ethics-guides\\.html|security-guides\\.txt|security-guides\\.html|site-map\\.html)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
