@@ -23,6 +23,7 @@
 <meta name="twitter:title" content="Sigil · CSSL">
 <meta name="twitter:description" content="Single-source dual-emit systems language. Effects, refinement types, autodiff, caps.">
 <meta name="twitter:image" content="https://cssl.dev/og/home.png">
+<meta name="twitter:image:alt" content="Sigil — AI-authored systems language. CSSL.">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="alternate" type="text/plain" href="/csl/sigil.csl" title="Sigil/CSSL reference in CSL notation">
 <script type="application/ld+json">
@@ -55,7 +56,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --bg: #07070c; --bg-raised: #0e0e16; --bg-code: #11111b;
-  --text: #b8b4a8; --text-dim: #6b6860; --text-bright: #e8e4d8;
+  --text: #b8b4a8; --text-dim: #8a8880; --text-bright: #e8e4d8;
   --gold: #c9a23a; --gold-bright: #e8c85a; --gold-dim: #8a7028;
   --border: #1a1a28;
   --red: #a83232; --green: #4a8a3a; --blue: #3a6a9a;
@@ -459,7 +460,9 @@ footer .tagline {
   <span class="version"><span class="status-dot" aria-hidden="true"></span>CSSL <strong>pre-1.0</strong> · compiler in development</span>
 </header>
 
-<div class="hero" role="banner">
+<main id="main">
+
+<div class="hero">
   <div class="hero-glyph" aria-hidden="true">◇ § ◇</div>
   <h1><span>Sigil</span></h1>
   <div class="hero-sub">CSSL · Caveman Sigil Substrate Language</div>
@@ -468,8 +471,6 @@ footer .tagline {
     <span class="fact">28+ built-in effects</span> · <span class="fact">refinement types</span> · <span class="fact">source-to-source autodiff</span> · <span class="fact">Pony-6 capabilities</span> · <span class="fact">MLIR IR</span> · <span class="fact">Vulkan 1.4 + Level-Zero</span>
   </div>
 </div>
-
-<main id="main">
 
 <section id="status">
   <div class="container">
@@ -1029,15 +1030,24 @@ footer .tagline {
       Created by <strong>Shawn Wolfgang Michael Baker</strong> · Phoenix, AZ
     </div>
     <div>Sigil · CSSL · pre-1.0 · compiler in development</div>
-    <div class="links">
-      <a href="/CSLv3">CSL reference</a>
-      <a href="https://github.com/Apocky/CSSL3">GitHub</a>
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/getting-started">Getting Started</a>
+      <a href="/CSLv3">CSL Reference</a>
+      <a href="/thinking-guides">Thinking Guides</a>
+      <a href="/ethics-guides">Ethics Guides</a>
+      <a href="/security-guides">Security Guides</a>
+      <a href="/philosophy">Philosophy</a>
+      <a href="/faq">FAQ</a>
+      <a href="/contributing">Contributing</a>
+      <a href="https://github.com/Apocky/CSSL3" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/sitemap.xml">Site Map</a>
+      <a href="/site-map.html">Page Index</a>
       <a href="/llms.txt">llms.txt</a>
       <a href="/csl/sigil.csl">View in CSL</a>
-      <a href="/site-map">Site Map</a>
-    </div>
+    </nav>
     <div class="license-line">
-      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · Code licensed MIT
+      Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
     </div>
     <div class="tagline">density = sovereignty · consent = OS</div>
   </div>
