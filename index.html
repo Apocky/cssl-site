@@ -908,6 +908,51 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   <div class="hero-scroll" aria-hidden="true">scroll</div>
 </div>
 
+<!-- THIS IS SIGIL — language first, before anything else -->
+<section aria-labelledby="this-is-sigil">
+<div class="container">
+  <h2 id="this-is-sigil">This is Sigil.</h2>
+  <p>A function. Then a function with a side effect the compiler tracks. Then types the compiler reasons about. No setup, no install — just read.</p>
+
+  <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.92rem;"><strong>1.</strong> Hello world. <code>main</code> writes to stdout, so it declares the <code>{IO}</code> effect. <code>greet</code> is pure — no effect row needed.</p>
+  <div class="code-block" data-lang="hello.cssl">
+<pre><span class="kw">module</span> com.apocky.hello
+
+<span class="kw">fn</span> <span class="fn">greet</span>(name <span class="op">:</span> <span class="ty">str</span>) <span class="op">-&gt;</span> <span class="ty">str</span> {
+    str<span class="op">::</span>concat(<span class="str">"hello, "</span>, name)
+}
+
+<span class="kw">fn</span> <span class="fn">main</span>() <span class="op">-&gt;</span> () <span class="op">/</span> {<span class="eff">IO</span>} {
+    <span class="kw">let</span> msg <span class="op">=</span> greet(<span class="str">"Sigil"</span>)
+    print(msg)
+}</pre>
+  </div>
+
+  <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.92rem;"><strong>2.</strong> Variables and types. The <code>'pos</code> suffix on <code>f32</code> means "positive real number" — the compiler proves it everywhere this value flows. <code>vec3</code> is a built-in, not a library type.</p>
+  <div class="code-block" data-lang="types.cssl">
+<pre><span class="kw">let</span> count  <span class="op">:</span> <span class="ty">u32</span>          <span class="op">=</span> <span class="num">42</span>
+<span class="kw">let</span> ratio  <span class="op">:</span> <span class="ty">f64</span>          <span class="op">=</span> <span class="num">3.14159</span>
+<span class="kw">let</span> ok     <span class="op">:</span> <span class="ty">bool</span>         <span class="op">=</span> <span class="kw">true</span>
+<span class="kw">let</span> label  <span class="op">:</span> <span class="ty">str</span>          <span class="op">=</span> <span class="str">"density = sovereignty"</span>
+<span class="kw">let</span> radius <span class="op">:</span> <span class="ty">f32</span><span class="eff">'pos</span>      <span class="op">=</span> <span class="num">0.5</span>
+<span class="kw">let</span> origin <span class="op">:</span> <span class="ty">vec3</span>         <span class="op">=</span> vec3(<span class="num">0.0</span>, <span class="num">0.0</span>, <span class="num">0.0</span>)</pre>
+  </div>
+
+  <p style="margin-top: 2rem; color: var(--text-dim); font-size: 0.92rem;"><strong>3.</strong> The thing other systems languages can't do. The effect row after <code>/</code> is a contract the compiler enforces. <code>{NoAlloc}</code> means a heap allocation in this scope is a <em>compile error</em>. <code>{Deadline&lt;1ms&gt;}</code> means the SMT solver proves an upper bound at compile time.</p>
+  <div class="code-block" data-lang="audio.cssl">
+<pre><span class="kw">fn</span> <span class="fn">audio_block</span>(buf <span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> [<span class="ty">f32</span>]) <span class="op">-&gt;</span> ()
+    <span class="op">/</span> {<span class="eff">CPU</span>, <span class="eff">NoAlloc</span>, <span class="eff">Deadline</span><span class="op">&lt;</span><span class="num">1ms</span><span class="op">&gt;</span>}
+{
+    <span class="kw">for</span> sample <span class="kw">in</span> buf {
+        <span class="op">*</span>sample <span class="op">=</span> <span class="op">*</span>sample <span class="op">*</span> <span class="num">0.5</span>
+    }
+}</pre>
+  </div>
+
+  <p style="margin-top: 2rem;">That's the language. Functions, types, effect rows. Everything else is just more of those three ideas. <a href="/examples">Read more examples →</a> · <a href="/sigil">Full reference →</a></p>
+</div>
+</section>
+
 <!-- START HERE -->
 <section class="start-here" aria-labelledby="start-here-heading">
 <div class="container">
@@ -1339,7 +1384,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="license-line">
       Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
     </div>
-    <div class="build-hash" data-hash="3fcc1a61a93b3255dc1f8d2977028936e2de30c4fe074deac52bbf5c692a348f">sha256:3fcc1a61a93b3255 · 2026-04-28</div>
+    <div class="build-hash" data-hash="08034116673c4fadd3814546992cb6cbcacc83201790600e8152559c4d2b8acb">sha256:08034116673c4fad · 2026-04-28</div>
   </div>
 </footer>
 
