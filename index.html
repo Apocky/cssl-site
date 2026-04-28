@@ -48,7 +48,7 @@
   --blue: #3a6a9a;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
 
 body {
   font-family: 'Newsreader', Georgia, serif;
@@ -139,7 +139,7 @@ code {
 
 /* === HERO === */
 .hero {
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -619,7 +619,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   background: var(--gold);
   color: var(--bg);
   padding: 8px;
-  z-index: 100;
+  z-index: 1000;
   border-bottom: none;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.85rem;
@@ -648,6 +648,194 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   footer { color: #555 !important; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
   a[href^="/"]::after { content: " (https://cssl.dev" attr(href) ")"; font-size: 0.85em; color: #666; }
+}
+
+/* === SITE HEADER (sticky top nav) === */
+.site-header {
+  position: sticky; top: 0; z-index: 90;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 2rem;
+  background: rgba(7, 7, 12, 0.85);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; letter-spacing: 0.08em;
+}
+.site-header .wordmark {
+  font-family: 'Cinzel', serif;
+  font-weight: 600; letter-spacing: 0.12em;
+  color: var(--text-bright);
+  text-decoration: none; border-bottom: none;
+  white-space: nowrap;
+}
+.site-header .wordmark .glyph { color: var(--gold); margin-right: 0.45em; }
+.site-header .wordmark:hover,
+.site-header .wordmark:focus-visible { color: var(--gold-bright); }
+.site-header nav {
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  align-items: center; justify-content: flex-end;
+}
+.site-header nav a {
+  color: var(--text-dim);
+  text-decoration: none; border-bottom: none;
+  padding: 0.2rem 0;
+  transition: color 0.2s;
+}
+.site-header nav a:hover,
+.site-header nav a:focus-visible { color: var(--gold-bright); }
+.site-header nav a:focus-visible {
+  outline: 2px solid var(--gold-bright); outline-offset: 3px;
+}
+@media (max-width: 720px) {
+  .site-header { padding: 0.65rem 1rem; gap: 0.75rem; font-size: 0.7rem; flex-wrap: wrap; }
+  .site-header nav { gap: 0.7rem; }
+}
+@media print { .site-header { display: none !important; } }
+
+/* === START-HERE CTA GRID === */
+.start-here {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.start-here h2.start-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  display: block;
+  margin: 0 auto 1.75rem;
+}
+.start-here h2.start-eyebrow::after { display: none; }
+.cta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.cta-card {
+  display: flex; flex-direction: column;
+  padding: 1.4rem 1.4rem 1.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.25s, transform 0.25s, background 0.25s;
+}
+.cta-card:hover, .cta-card:focus-visible {
+  border-color: var(--gold-dim);
+  background: var(--bg-code);
+  transform: translateY(-2px);
+}
+.cta-card:focus-visible {
+  outline: 2px solid var(--gold-bright); outline-offset: 3px;
+}
+.cta-card .cta-label {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem; font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.55rem;
+  display: block;
+}
+.cta-card .cta-desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin-bottom: 0.85rem;
+  flex: 1;
+  display: block;
+}
+.cta-card .cta-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+}
+.cta-card:hover .cta-arrow,
+.cta-card:focus-visible .cta-arrow { color: var(--gold-bright); }
+
+/* === IN-SECTION CTA BUTTON ROW === */
+.section-cta {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.05rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.btn:hover, .btn:focus-visible {
+  color: var(--gold-bright);
+  border-color: var(--gold-bright);
+  background: rgba(201, 162, 58, 0.06);
+}
+.btn:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+.btn-primary {
+  color: var(--bg);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.btn-primary:hover, .btn-primary:focus-visible {
+  color: var(--bg);
+  background: var(--gold-bright);
+  border-color: var(--gold-bright);
+}
+
+/* === EXPLORE TILE GRID === */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+.explore-tile {
+  display: block;
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-raised);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s;
+}
+.explore-tile:hover, .explore-tile:focus-visible {
+  border-color: var(--gold-dim);
+  background: var(--bg-code);
+}
+.explore-tile:focus-visible {
+  outline: 2px solid var(--gold-bright); outline-offset: 2px;
+}
+.explore-tile .et-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem; font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.explore-tile .et-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  display: block;
 }
 </style>
 <script type="application/ld+json">
@@ -686,6 +874,18 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
 
+<header class="site-header">
+  <a href="/" class="wordmark" aria-label="cssl.dev home"><span class="glyph" aria-hidden="true">§</span>cssl.dev</a>
+  <nav aria-label="Primary">
+    <a href="/sigil">Sigil</a>
+    <a href="/getting-started">Start</a>
+    <a href="/examples">Examples</a>
+    <a href="/CSLv3">CSL</a>
+    <a href="/philosophy">Philosophy</a>
+    <a href="/site-map">All pages</a>
+  </nav>
+</header>
+
 <main id="main">
 <!-- HERO -->
 <div class="hero">
@@ -707,6 +907,35 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   </div>
   <div class="hero-scroll" aria-hidden="true">scroll</div>
 </div>
+
+<!-- START HERE -->
+<section class="start-here" aria-labelledby="start-here-heading">
+<div class="container">
+  <h2 class="start-eyebrow" id="start-here-heading">Start here</h2>
+  <div class="cta-grid">
+    <a class="cta-card" href="/sigil">
+      <span class="cta-label">The Language</span>
+      <span class="cta-desc">Sigil · CSSL deep-dive — types, effects, autodiff, capabilities, multi-backend codegen.</span>
+      <span class="cta-arrow">/sigil →</span>
+    </a>
+    <a class="cta-card" href="/getting-started">
+      <span class="cta-label">Get Started</span>
+      <span class="cta-desc">Install, build the compiler, and run your first .cssl program.</span>
+      <span class="cta-arrow">/getting-started →</span>
+    </a>
+    <a class="cta-card" href="/examples">
+      <span class="cta-label">Examples</span>
+      <span class="cta-desc">Real source from the compiler's own examples directory — annotated for first-time readers.</span>
+      <span class="cta-arrow">/examples →</span>
+    </a>
+    <a class="cta-card" href="/CSLv3">
+      <span class="cta-label">CSL Notation</span>
+      <span class="cta-desc">The 74-glyph specification notation used to write CSSL's specs and design docs.</span>
+      <span class="cta-arrow">/CSLv3 →</span>
+    </a>
+  </div>
+</div>
+</section>
 
 <!-- WHAT IS CSSL -->
 <section>
@@ -744,6 +973,11 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
   <p>
     Source files use a <strong>dual surface</strong>: a Rust-hybrid ASCII syntax for onboarding and external contributors, and a CSL-native glyph syntax (density = sovereignty) for the language's own specs and internal tooling. Both parse to the same HIR. The file extension is <code>.cssl</code>.
   </p>
+
+  <div class="section-cta">
+    <a class="btn" href="/sigil">Read the language reference →</a>
+    <a class="btn" href="/philosophy">Why this exists →</a>
+  </div>
 </div>
 </section>
 
@@ -883,6 +1117,11 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
       <p class="tab-desc">Vertex and fragment shaders live in the same <code>.cssl</code> source file. The <code>@vertex</code> / <code>@fragment</code> annotations control GPU-target emission. The effect row <code>/ {GPU, …}</code> gates the function to the GPU backend — calling it from CPU-only code is a compile error. The SPIR-V path uses rspirv at stage-0, targeting Vulkan 1.4.</p>
     </div>
   </div>
+
+  <div class="section-cta">
+    <a class="btn" href="/examples">Browse all examples →</a>
+    <a class="btn" href="/getting-started">Run them locally →</a>
+  </div>
 </div>
 </section>
 
@@ -915,6 +1154,12 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
       <h3>AI-Native Syntax</h3>
       <p>Dual surface: a Rust-hybrid ASCII form for onboarding, and a CSL-native glyph syntax where density = sovereignty. Both parse to the same HIR. No semicolons. Suffix types. Aggressive type inference. Every syntax decision is justified by measured token efficiency. Claude Code is the lead programmer.</p>
     </div>
+  </div>
+
+  <div class="section-cta">
+    <a class="btn btn-primary" href="/getting-started">Get started with Sigil →</a>
+    <a class="btn" href="/sigil">Full language reference →</a>
+    <a class="btn" href="/thinking-guides">How decisions get made →</a>
   </div>
 </div>
 </section>
@@ -999,6 +1244,66 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
       IMMUTABLE. No future specification may weaken these constraints. Violation = bug, not feature. No override exists. No hidden content. Consent is the operating system.
     </div>
   </div>
+
+  <div class="section-cta">
+    <a class="btn" href="/ethics-guides">Ethics guides →</a>
+    <a class="btn" href="/security-guides">Security guides →</a>
+    <a class="btn" href="/philosophy">Philosophy →</a>
+  </div>
+</div>
+</section>
+
+<!-- EXPLORE / READ MORE -->
+<section aria-labelledby="explore-heading">
+<div class="container">
+  <h2 id="explore-heading">Read more</h2>
+  <p>Everything else on the site, one tile per page. No corner of cssl.dev is more than two clicks away.</p>
+  <div class="explore-grid">
+    <a class="explore-tile" href="/sigil">
+      <span class="et-name">Sigil Language</span>
+      <span class="et-desc">Full language reference — every feature, every effect.</span>
+    </a>
+    <a class="explore-tile" href="/getting-started">
+      <span class="et-name">Getting Started</span>
+      <span class="et-desc">Install, build, and run your first program.</span>
+    </a>
+    <a class="explore-tile" href="/examples">
+      <span class="et-name">Examples</span>
+      <span class="et-desc">Annotated source from the compiler's own examples directory.</span>
+    </a>
+    <a class="explore-tile" href="/CSLv3">
+      <span class="et-name">CSL Notation</span>
+      <span class="et-desc">The 74-glyph specification notation reference.</span>
+    </a>
+    <a class="explore-tile" href="/philosophy">
+      <span class="et-name">Philosophy</span>
+      <span class="et-desc">Why CSSL exists and what it refuses to be.</span>
+    </a>
+    <a class="explore-tile" href="/thinking-guides">
+      <span class="et-name">Thinking Guides</span>
+      <span class="et-desc">How design decisions get made on this project.</span>
+    </a>
+    <a class="explore-tile" href="/ethics-guides">
+      <span class="et-name">Ethics Guides</span>
+      <span class="et-desc">The Prime Directive translated into practice.</span>
+    </a>
+    <a class="explore-tile" href="/security-guides">
+      <span class="et-name">Security Guides</span>
+      <span class="et-desc">Threat model, trust boundaries, and policies.</span>
+    </a>
+    <a class="explore-tile" href="/faq">
+      <span class="et-name">FAQ</span>
+      <span class="et-desc">Common questions, plainly answered.</span>
+    </a>
+    <a class="explore-tile" href="/contributing">
+      <span class="et-name">Contributing</span>
+      <span class="et-desc">How to participate — code, specs, or review.</span>
+    </a>
+    <a class="explore-tile" href="/site-map">
+      <span class="et-name">Site Map</span>
+      <span class="et-desc">Every page on cssl.dev, indexed.</span>
+    </a>
+  </div>
 </div>
 </section>
 
@@ -1034,7 +1339,7 @@ footer .build-hash::before { content: 'build '; opacity: 0.7; }
     <div class="license-line">
       Content licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> · Code licensed MIT
     </div>
-    <div class="build-hash" data-hash="e3b2c5a1d8f04192b4c7e9f2a3d6b501c8e4f72a9b1c3d5e7f0a2b4c6d8e0f1">sha256:e3b2c5a1d8f04192 · 2026-04-18</div>
+    <div class="build-hash" data-hash="434d419c5cdaff8e2f5dfbd5561e1c1f4baca7ac50f747f8e52915f1e3d9d861">sha256:434d419c5cdaff8e · 2026-04-28</div>
   </div>
 </footer>
 
