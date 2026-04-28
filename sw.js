@@ -10,7 +10,7 @@
  */
 'use strict';
 
-var CACHE = 'cssl-v3-2026-04-20';
+var CACHE = 'cssl-v3-2026-04-28-nav';
 var PRECACHE = [
   '/',
   '/CSLv3',
